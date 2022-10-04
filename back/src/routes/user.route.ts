@@ -5,10 +5,17 @@ import httpStatus from "http-status";
 import { UserService } from "../services";
 import * as BodyHelper from "../helpers/body.helpers";
 import { FastifyPluginDoneFunction } from "../types/global.types";
-import { RawRegisterBody } from "../types/body/userRequestBody.types";
+import {
+  RawLoginBody,
+  RawRegisterBody,
+} from "../types/body/userRequestBody.types";
 
 type RegisterRequest = FastifyRequest<{
   Body: RawRegisterBody;
+}>;
+
+type LoginRequest = FastifyRequest<{
+  Body: RawLoginBody;
 }>;
 
 export default (
@@ -28,6 +35,17 @@ export default (
     const token = await UserService.createUser(
       formatedBody.firstName,
       formatedBody.lastName,
+      formatedBody.email,
+      formatedBody.password,
+    );
+
+    res.status(httpStatus.OK).send(token);
+  });
+
+  instance.post("/login", async (req: LoginRequest, res: FastifyReply) => {
+    const formatedBody = BodyHelper.checkLoginBody(req.body);
+
+    const token = await UserService.loginUser(
       formatedBody.email,
       formatedBody.password,
     );

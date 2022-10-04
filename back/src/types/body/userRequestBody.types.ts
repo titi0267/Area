@@ -11,3 +11,13 @@ export interface FormatedRegisterBody {
   email: string;
   password: string;
 }
+
+export interface RawLoginBody {
+  email: string | undefined;
+  password: string | undefined;
+}
+
+export interface FormatedLoginBody {
+  email: string;
+  password: string;
+}

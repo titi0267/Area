@@ -8,9 +8,8 @@ import { FastifyRequest } from "fastify";
 
 const decodeToken = (token: string) => {
   const data = jwt.verify(token, ENV.secret);
-  if (typeof data === "object") {
-    return data as DecodedToken;
-  } else {
+
+  if (!(typeof data === "object")) {
     throw new ClientError({
       name: "ERROR_AUTHENTICATION",
       level: "warm",
@@ -18,6 +17,18 @@ const decodeToken = (token: string) => {
       message: "Invalid token",
     });
   }
+
+  const userInfos = data as DecodedToken;
+
+  if (userInfos.expTime > new Date()) {
+    throw new ClientError({
+      name: "ERROR_AUTHENTICATION",
+      level: "warm",
+      status: HttpStatus.UNAUTHORIZED,
+      message: "Token Timeout",
+    });
+  }
+  return userInfos;
 };
 
 const getUserInfos = (req: FastifyRequest) => {

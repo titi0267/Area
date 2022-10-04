@@ -15,6 +15,7 @@ export default () => {
         const decodedToken = SecurityMiddleware.decodeToken(
           req.headers["authorization"],
         );
+
         req.user = {
           id: decodedToken.id,
           email: decodedToken.email,

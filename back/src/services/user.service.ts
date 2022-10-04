@@ -48,4 +48,52 @@ const createUser = async (
   return { token };
 };
 
-export default { getAllUsers, createUser };
+const removeUserById = async (id: string | number): Promise<User> => {
+  const formatedId = typeof id === "string" ? parseInt(id) : id;
+
+  const doesUserExist = await prisma.user.findFirst({
+    where: { id: formatedId },
+  });
+
+  if (doesUserExist === null) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "id out of range",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  await prisma.tokensTable.delete({
+    where: { userId: formatedId },
+  });
+  const user = await prisma.user.delete({
+    where: { id: formatedId },
+  });
+
+  return user;
+};
+
+const removeUserByEmail = async (email: string): Promise<User> => {
+  const doesUserExist = await prisma.user.findFirst({
+    where: { email },
+  });
+
+  if (doesUserExist === null) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "email does not exist range",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  await prisma.tokensTable.delete({ where: { userId: doesUserExist.id } });
+  const user = await prisma.user.delete({
+    where: { email },
+  });
+
+  return user;
+};
+
+export default { getAllUsers, createUser, removeUserById, removeUserByEmail };

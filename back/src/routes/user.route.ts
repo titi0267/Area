@@ -1,18 +1,14 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { FastifyPluginOptions } from "fastify/types/plugin";
 import httpStatus from "http-status";
-import ClientError from "../error";
-import { UserService } from "../services";
 
+import { UserService } from "../services";
+import * as BodyHelper from "../helpers/body.helpers";
 import { FastifyPluginDoneFunction } from "../types/global.types";
+import { RawRegisterBody } from "../types/body/userRequestBody.types";
 
 type RegisterRequest = FastifyRequest<{
-  Body: {
-    firstName: string | undefined;
-    lastName: string | undefined;
-    email: string | undefined;
-    password: string | undefined;
-  };
+  Body: RawRegisterBody;
 }>;
 
 export default (
@@ -27,25 +23,13 @@ export default (
   });
 
   instance.post("/", async (req: RegisterRequest, res: FastifyReply) => {
-    if (
-      !req.body.firstName ||
-      !req.body.lastName ||
-      !req.body.email ||
-      !req.body.password
-    ) {
-      throw new ClientError({
-        name: "Missing element",
-        message: "One of the mandatory field was not provided",
-        level: "warm",
-        status: httpStatus.BAD_REQUEST,
-      });
-    }
+    const formatedBody = BodyHelper.checkRegisterBody(req.body);
 
     const token = await UserService.createUser(
-      req.body.firstName,
-      req.body.lastName,
-      req.body.email,
-      req.body.password,
+      formatedBody.firstName,
+      formatedBody.lastName,
+      formatedBody.email,
+      formatedBody.password,
     );
 
     res.status(httpStatus.OK).send(token);

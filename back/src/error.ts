@@ -13,6 +13,6 @@ export default class ClientError extends Error implements ClientErrorType {
     this.name = error.name;
     this.message = error.message;
     this.level = error.level;
-    this.status = error.status || httpStatus.INTERNAL_SERVER_ERROR;
+    this.status = error.status;
   }
 }

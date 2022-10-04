@@ -6,6 +6,7 @@ import { UserService } from "../services";
 import * as BodyHelper from "../helpers/body.helpers";
 import { FastifyPluginDoneFunction } from "../types/global.types";
 import { RawRegisterBody } from "../types/body/userRequestBody.types";
+import authentificationMiddleware from "../middlewares/authentification.middleware";
 
 type RegisterRequest = FastifyRequest<{
   Body: RawRegisterBody;

@@ -12,3 +12,20 @@ export interface ClientErrorType {
   name: string;
   status: number;
 }
+
+export interface UserInfos {
+  id: number;
+  email: string;
+  role: Role;
+}
+
+enum Role {
+  USER,
+  ADMIN,
+}
+
+export interface DecodedToken {
+  id: number;
+  email: string;
+  role: Role;
+}

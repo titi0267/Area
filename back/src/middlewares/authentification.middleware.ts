@@ -11,15 +11,26 @@ export default () => {
     next: HookHandlerDoneFunction,
   ): void => {
     if (req.headers["authorization"]) {
-      const decodedToken = SecurityMiddleware.decodeToken(
-        req.headers["authorization"],
-      );
-      req.user = {
-        id: decodedToken.id,
-        email: decodedToken.email,
-        role: decodedToken.role,
-      };
-      next();
+      try {
+        const decodedToken = SecurityMiddleware.decodeToken(
+          req.headers["authorization"],
+        );
+        req.user = {
+          id: decodedToken.id,
+          email: decodedToken.email,
+          role: decodedToken.role,
+        };
+        next();
+      } catch {
+        next(
+          new ClientError({
+            name: "ERROR_AUTHENTICATION",
+            level: "warm",
+            status: HttpStatus.UNAUTHORIZED,
+            message: "Invalid token",
+          }),
+        );
+      }
     } else {
       next(
         new ClientError({

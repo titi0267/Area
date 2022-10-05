@@ -1,4 +1,5 @@
 import { describe, test, expect } from "@jest/globals";
+import httpStatus from "http-status";
 import { UserService, TokenService } from "../../src/services";
 
 describe("Test put token service", () => {

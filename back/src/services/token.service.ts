@@ -12,7 +12,7 @@ const updateToken = async (
   youtubeToken: string | undefined,
   trelloToken: string | undefined,
   spotifyToken: string | undefined,
-  userId: number | undefined,
+  userId: number,
 ): Promise<TokensTable> => {
   const token = await prisma.tokensTable.update({
     where: {

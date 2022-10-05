@@ -5,6 +5,9 @@ import {
   RawLoginBody,
 } from "../../src/types/body/userRequestBody.types";
 import * as BodyHelper from "../../src/helpers/body.helpers";
+import httpStatus from "http-status";
+import { TokenService } from "../../src/services";
+import { RawTokenBody } from "../../src/types/body/tokenRequestBody.types";
 
 describe("Test register body helper", () => {
   describe("Test working cases", () => {
@@ -66,6 +69,43 @@ describe("Test login body helper", () => {
       } catch (e) {
         expect(e.status).toBe(400);
       }
+    });
+  });
+});
+
+describe("Test token body helper", () => {
+  describe("Test put without userId", () => {
+    test("Update token with invald userId", async () => {
+      const rawTokenBody: RawTokenBody = {
+        discordToken: "Discord",
+        twitterToken: undefined,
+        githubToken: undefined,
+        youtubeToken: "Youtube",
+        trelloToken: undefined,
+        spotifyToken: undefined,
+        userId: undefined,
+      };
+      try {
+        BodyHelper.checkTokenBody(rawTokenBody);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
+  });
+  describe("Test working cases", () => {
+    test("Get valid userId", () => {
+      const rawTokenBody: RawTokenBody = {
+        discordToken: "Discord",
+        twitterToken: undefined,
+        githubToken: undefined,
+        youtubeToken: "Youtube",
+        trelloToken: undefined,
+        spotifyToken: undefined,
+        userId: 1,
+      };
+      const formatedBody = BodyHelper.checkTokenBody(rawTokenBody);
+      expect(formatedBody.discordToken).toBe("Discord");
+      expect(formatedBody.twitterToken).toBe(undefined);
     });
   });
 });

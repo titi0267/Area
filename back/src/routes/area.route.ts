@@ -31,6 +31,12 @@ export default (
     res.status(httpStatus.OK).send(areas);
   });
 
+  instance.get("/", async (req: FastifyRequest, res: FastifyReply) => {
+    const areas = await AreaService.getAllArea();
+
+    res.status(httpStatus.OK).send(areas);
+  });
+
   done();
 };
 

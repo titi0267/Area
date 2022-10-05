@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AREA</string>
+    <string name="description_profile_button">This is the profile button that redirects you to the profile page.</string>
+    <string name="back_button">Back</string>
+</resources>

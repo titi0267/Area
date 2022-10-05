@@ -18,7 +18,7 @@
 <script lang="ts">
 import vue from 'vue';
 
-export default vue.extend ({
+export default vue.extend({
     data() {
         return {
             email: "",
@@ -31,7 +31,7 @@ export default vue.extend ({
     methods: {
         async sendLogin() {
             try {
-                let {data: resp} = await this.$axios.post('----', {
+                let {data: resp} = await this.$axios.post('URL', {
                     headers: {
                         Authorization: this.$store.getters.userToken,
                     },
@@ -40,6 +40,7 @@ export default vue.extend ({
                 })
                 localStorage.setItem('usr-token', resp.token);
                 this.$store.commit('updateToken', resp.token);
+                this.$router.push('/user-pannel');
             } catch (err) {
                 console.log(err);
             }

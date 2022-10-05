@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import axios from 'axios'
+import axios from './axiosInstance'
 
 import i18n from './lang/i18n'
 import Buefy from 'buefy'
@@ -32,16 +32,8 @@ Vue.use(Buefy, {
     css: true,
 });
 
-Vue.prototype.$axios = axios.create({
-    timeout: 1000,
-    withCredentials: true,
-    // baseURL: '',
-    headers: {
-        "Access-Control-Allow-Origin": "http://localhost:8080",
-        Accept: "application/json",
-        "Content-Type": "application/json",
-    },
-});
+Vue.prototype.$axios = axios;
+
 
 new Vue({
     i18n,

@@ -17,7 +17,7 @@
             <b-field label="Confirm password" label-position="on-border" :type="samePassword == true ? 'is-danger' : ''" message="This email is invalid">
                 <b-input v-model="register.confirmPassword" type="password" password-reveal></b-input>
             </b-field>
-            <b-button type="is-primary">Register</b-button>
+            <b-button @click="sendRegister()" type="is-primary">Register</b-button>
             <br/>
             <router-link to="/login">
                 <a>Already an account ? Login</a>
@@ -29,7 +29,7 @@
 <script lang="ts">
 import vue from 'vue';
 
-export default vue.extend ({
+export default vue.extend({
     data() {
         return {
             register: {
@@ -61,7 +61,7 @@ export default vue.extend ({
         },
         async sendRegister() {
             try {
-                let {data: resp} = await this.$axios.post('----', {
+                let {data: resp} = await this.$axios.post('/users', {
                     headers: {
                         Authorization: this.$store.getters.userToken,
                     },
@@ -72,8 +72,10 @@ export default vue.extend ({
                 })
                 localStorage.setItem('usr-token', resp.token);
                 this.$store.commit('updateToken', resp.token);
-                this.$router.go
+                this.$router.push('/user-pannel');
             } catch (err) {
+                if (err && err.response.data.statusCode == 400)
+                    console.log("E-mail already taken...");
                 console.log(err);
             }
         }

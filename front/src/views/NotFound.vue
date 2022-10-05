@@ -1,20 +1,17 @@
 <template>
-    <div class="home">
-        <img alt="Vue logo" src="../assets/logo.png">
+    <div id="notFound">
+        <h1>NotFound</h1>
     </div>
 </template>
 
 <script lang="ts">
 import vue from 'vue';
 
-export default vue.extend ({
+export default vue.extend({
     data() {
         return {
 
         }
-    },
-    components: {
-
     },
     methods: {
 

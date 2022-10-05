@@ -65,4 +65,21 @@ const removeAreaById = async (id: string | number): Promise<Area> => {
   return area;
 };
 
-export default { createArea, getAllArea, removeAreaById };
+const getAreasByUserId = async (id: number): Promise<Area[]> => {
+  const doesUserExist = await prisma.user.findUnique({ where: { id } });
+
+  if (doesUserExist === null) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "Id does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  const areas = await prisma.area.findMany({ where: { userId: id } });
+
+  return areas;
+};
+
+export default { createArea, getAllArea, removeAreaById, getAreasByUserId };

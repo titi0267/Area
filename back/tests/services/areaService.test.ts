@@ -1,8 +1,33 @@
 import { describe, test, expect } from "@jest/globals";
 import httpStatus from "http-status";
-import ClientError from "../../src/error";
 
 import { AreaService, UserService } from "../../src/services/";
+
+describe("Test get all area service", () => {
+  describe("Test working cases", () => {
+    test("Get all area", async () => {
+      await UserService.createUser("Ludo", "Str", "tim@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      await AreaService.createArea(
+        "Youtube",
+        "like",
+        "test",
+        "Spotify",
+        "Add to playlist",
+        "test",
+        users[0].id,
+      );
+      const areas = await AreaService.getAllArea();
+
+      expect(areas[0].actionService).toBe("Youtube");
+      expect(areas[0].reactionService).toBe("Spotify");
+
+      await AreaService.removeAreaById(areas[0].id);
+      await UserService.removeUserById(users[0].id);
+    });
+  });
+});
 
 describe("Test post area service", () => {
   describe("Test working cases", () => {
@@ -39,6 +64,42 @@ describe("Test post area service", () => {
           "test",
           1,
         );
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
+  });
+});
+
+describe("Test get area by user id", () => {
+  describe("Test working cases", () => {
+    test("Get a area from a user", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      await AreaService.createArea(
+        "Youtube",
+        "like",
+        "test",
+        "Spotify",
+        "Add to playlist",
+        "test",
+        users[0].id,
+      );
+      const areas = await AreaService.getAreasByUserId(users[0].id);
+
+      expect(areas[0].actionService).toBe("Youtube");
+      expect(areas[0].reactionService).toBe("Spotify");
+
+      await AreaService.removeAreaById(areas[0].id);
+      await UserService.removeUserById(users[0].id);
+    });
+  });
+
+  describe("Test invalid cases", () => {
+    test("Get areas with invalid user id", async () => {
+      try {
+        await AreaService.getAreasByUserId(1);
       } catch (e) {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }

@@ -9,7 +9,6 @@ describe("Test post area service", () => {
     test("Create one valid area", async () => {
       await UserService.createUser("Ludo", "Str", "tim@mail.com", "passwd");
       const users = await UserService.getAllUsers();
-      expect(users[0].email).toBe("tim@mail.com");
 
       await AreaService.createArea(
         "Youtube",
@@ -52,7 +51,6 @@ describe("Test remove area by id", () => {
     test("Remove one area", async () => {
       await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
       const users = await UserService.getAllUsers();
-      expect(users[0].email).toBe("test@mail.com");
 
       await AreaService.createArea(
         "Youtube",

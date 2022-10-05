@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 import ClientError from "../error";
 import { Token } from "../types/global.types";
 import ENV from "../env";
-import { UserService } from ".";
 
 const prisma = new PrismaClient();
 

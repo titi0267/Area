@@ -19,13 +19,16 @@ const main = async () => {
     origin: "http://localhost:8080",
   });
 
-  server.listen({ port: parseInt(ENV.port), host: "0.0.0.0" }, (err, address) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-    console.log(`Server listening at ${address}`);
-  });
+  server.listen(
+    { port: parseInt(ENV.port), host: ENV.host },
+    (err, address) => {
+      if (err) {
+        console.error(err);
+        process.exit(1);
+      }
+      console.log(`Server listening at ${address}`);
+    },
+  );
 };
 
 main()

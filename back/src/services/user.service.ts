@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import ClientError from "../error";
 import { Token } from "../types/global.types";
 import ENV from "../env";
+import { UserService } from ".";
 
 const prisma = new PrismaClient();
 
@@ -96,4 +97,9 @@ const removeUserByEmail = async (email: string): Promise<User> => {
   return user;
 };
 
-export default { getAllUsers, createUser, removeUserById, removeUserByEmail };
+export default {
+  getAllUsers,
+  createUser,
+  removeUserById,
+  removeUserByEmail,
+};

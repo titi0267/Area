@@ -5,6 +5,7 @@ import {
   RawLoginBody,
 } from "../../src/types/body/userRequestBody.types";
 import * as BodyHelper from "../../src/helpers/body.helpers";
+import httpStatus from "http-status";
 
 describe("Test register body helper", () => {
   describe("Test working cases", () => {
@@ -34,7 +35,7 @@ describe("Test register body helper", () => {
       try {
         BodyHelper.checkRegisterBody(rawRegisterBody);
       } catch (e) {
-        expect(e.status).toBe(400);
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }
     });
   });

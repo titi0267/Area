@@ -43,7 +43,12 @@ const createUser = async (
     },
   });
 
-  const token = jwt.sign({ id: user.id, email, role: user.role }, ENV.secret);
+  const exp = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
+
+  const token = jwt.sign(
+    { id: user.id, email, role: user.role, expTime: exp },
+    ENV.secret,
+  );
 
   return { token };
 };

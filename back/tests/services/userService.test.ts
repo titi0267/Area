@@ -40,6 +40,45 @@ describe("Test post user service", () => {
   });
 });
 
+describe("Test login user service", () => {
+  describe("Test working cases", () => {
+    test("Login one valid user", async () => {
+      await UserService.createUser("Ludo", "Str", "ludostr@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      const token = await UserService.loginUser("ludostr@mail.com", "passwd");
+
+      expect(token.token.length).toBeGreaterThan(1);
+
+      await UserService.removeUserById(users[0].id);
+    });
+  });
+
+  describe("Test error cases", () => {
+    test("Login user but with bad password", async () => {
+      await UserService.createUser("Ludo", "Str", "ludostr@mail.com", "passwd");
+
+      try {
+        await UserService.loginUser("ludostr@mail.com", "azertyuio");
+      } catch (e) {
+        expect(e.status).toBe(400);
+        await UserService.removeUserByEmail("ludostr@mail.com");
+      }
+    });
+
+    test("Login user but with bad password", async () => {
+      await UserService.createUser("Ludo", "Str", "ludostr@mail.com", "passwd");
+
+      try {
+        await UserService.loginUser("boumboum@mail.com", "azertyuio");
+      } catch (e) {
+        expect(e.status).toBe(400);
+        await UserService.removeUserByEmail("ludostr@mail.com");
+      }
+    });
+  });
+});
+
 describe("Test remove user service by email", () => {
   describe("Test working cases", () => {
     test("Remove a single user", async () => {

@@ -5,9 +5,16 @@ import { PrismaClient } from "@prisma/client";
 import fastifyCors from "@fastify/cors";
 
 import ENV from "./env";
+import { UserInfos } from "./types/global.types";
 
 const prisma = new PrismaClient();
 const server = fastify();
+
+declare module "fastify" {
+  interface FastifyRequest {
+    user: UserInfos | undefined;
+  }
+}
 
 const main = async () => {
   server.register(fastifyAutoload, {

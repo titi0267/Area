@@ -2,7 +2,7 @@ import { google } from "googleapis";
 
 const checkUploadedVideo = async (
   actionParam: string,
-  userToken: string,
+  userId: string,
   lastUpdate: Date,
 ): Promise<Boolean> => {
   const youtube = google.youtube("v3");

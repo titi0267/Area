@@ -11,7 +11,7 @@ interface Action {
   actionParamName: string;
   fct: (
     actionParam: string,
-    userToken: string,
+    userId: string,
     lastUpdate: Date,
   ) => Promise<Boolean>;
 }
@@ -20,7 +20,7 @@ interface Reaction {
   id: number;
   reactionName: string;
   reactionParamName: string;
-  fct: (reactionParam: string, userToken: string) => void;
+  fct: (reactionParam: string, userId: string) => void;
 }
 
 export type ServiceName = "Youtube" | "Twitter";

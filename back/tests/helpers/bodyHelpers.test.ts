@@ -1,14 +1,12 @@
 import { describe, test, expect } from "@jest/globals";
 
 import { RawAreaBody } from "../../src/types/body/areaRequestBody.types";
-import ClientError from "../../src/error";
 import {
   RawRegisterBody,
   RawLoginBody,
 } from "../../src/types/body/userRequestBody.types";
 import * as BodyHelper from "../../src/helpers/body.helpers";
 import httpStatus from "http-status";
-import { TokenService } from "../../src/services";
 import { RawTokenBody } from "../../src/types/body/tokenRequestBody.types";
 
 describe("Test register body helper", () => {
@@ -49,29 +47,29 @@ describe("Test area body helper", () => {
   describe("Test working cases", () => {
     test("Get a valid area body", async () => {
       const rawAreaBody: RawAreaBody = {
-        actionService: "Youtube",
-        action: "like",
+        actionServiceId: "1",
+        actionId: "1",
         actionParam: "test",
-        reactionService: "Spotify",
-        reaction: "Add to playlist",
+        reactionServiceId: "2",
+        reactionId: "1",
         reactionParam: "test",
         userId: 1,
       };
 
       const formatedBody = BodyHelper.checkAreaBody(rawAreaBody);
 
-      expect(formatedBody.actionService).toBe("Youtube");
+      expect(formatedBody.actionServiceId).toBe(1);
     });
   });
   describe("Test bad cases", () => {
     test("Get a Area body but one field undefined", async () => {
       const rawAreaBody: RawAreaBody = {
-        actionService: "on",
-        action: "zu",
+        actionServiceId: "1",
+        actionId: "1",
         actionParam: "in",
-        reactionService: undefined,
-        reaction: "to",
-        reactionParam: "vu",
+        reactionServiceId: "1",
+        reactionId: "2",
+        reactionParam: undefined,
         userId: 1,
       };
 

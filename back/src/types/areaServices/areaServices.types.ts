@@ -1,8 +1,8 @@
 export interface Service {
   id: number;
   serviceName: ServiceName;
-  action: Action[];
-  reaction: Reaction[];
+  actions: Action[];
+  reactions: Reaction[];
 }
 
 interface Action {

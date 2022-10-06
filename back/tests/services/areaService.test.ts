@@ -9,19 +9,11 @@ describe("Test get all area service", () => {
       await UserService.createUser("Ludo", "Str", "tim@mail.com", "passwd");
       const users = await UserService.getAllUsers();
 
-      await AreaService.createArea(
-        "Youtube",
-        "like",
-        "test",
-        "Spotify",
-        "Add to playlist",
-        "test",
-        users[0].id,
-      );
+      await AreaService.createArea(1, 1, "test", 2, 1, "test", users[0].id);
       const areas = await AreaService.getAllArea();
 
-      expect(areas[0].actionService).toBe("Youtube");
-      expect(areas[0].reactionService).toBe("Spotify");
+      expect(areas[0].actionServiceId).toBe(1);
+      expect(areas[0].reactionId).toBe(1);
 
       await AreaService.removeAreaById(areas[0].id);
       await UserService.removeUserById(users[0].id);
@@ -35,18 +27,10 @@ describe("Test post area service", () => {
       await UserService.createUser("Ludo", "Str", "tim@mail.com", "passwd");
       const users = await UserService.getAllUsers();
 
-      await AreaService.createArea(
-        "Youtube",
-        "like",
-        "test",
-        "Spotify",
-        "Add to playlist",
-        "test",
-        users[0].id,
-      );
+      await AreaService.createArea(1, 1, "test", 2, 1, "test", users[0].id);
       const areas = await AreaService.getAllArea();
 
-      expect(areas[0].actionService).toBe("Youtube");
+      expect(areas[0].actionServiceId).toBe(1);
 
       await AreaService.removeAreaById(areas[0].id);
       await UserService.removeUserById(users[0].id);
@@ -55,15 +39,7 @@ describe("Test post area service", () => {
   describe("Test invalid user id", () => {
     test("Create one invalid area", async () => {
       try {
-        await AreaService.createArea(
-          "Youtube",
-          "like",
-          "test",
-          "Spotify",
-          "Add to playlist",
-          "test",
-          1,
-        );
+        await AreaService.createArea(1, 1, "test", 45, 1, "test", 1);
       } catch (e) {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }
@@ -77,19 +53,11 @@ describe("Test get area by user id", () => {
       await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
       const users = await UserService.getAllUsers();
 
-      await AreaService.createArea(
-        "Youtube",
-        "like",
-        "test",
-        "Spotify",
-        "Add to playlist",
-        "test",
-        users[0].id,
-      );
+      await AreaService.createArea(1, 1, "test", 2, 1, "test", users[0].id);
       const areas = await AreaService.getAreasByUserId(users[0].id);
 
-      expect(areas[0].actionService).toBe("Youtube");
-      expect(areas[0].reactionService).toBe("Spotify");
+      expect(areas[0].actionServiceId).toBe(1);
+      expect(areas[0].reactionServiceId).toBe(2);
 
       await AreaService.removeAreaById(areas[0].id);
       await UserService.removeUserById(users[0].id);
@@ -113,23 +81,15 @@ describe("Test remove area by id", () => {
       await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
       const users = await UserService.getAllUsers();
 
-      await AreaService.createArea(
-        "Youtube",
-        "like",
-        "test",
-        "Spotify",
-        "Add to playlist",
-        "test",
-        users[0].id,
-      );
+      await AreaService.createArea(1, 1, "test", 2, 1, "test", users[0].id);
       const beforeAreas = await AreaService.getAllArea();
 
       const removedArea = await AreaService.removeAreaById(beforeAreas[0].id);
       const afterAreas = await AreaService.getAllArea();
       await UserService.removeUserById(users[0].id);
 
-      expect(removedArea.action).toHaveLength(4);
-      expect(beforeAreas[0].action).toBe("like");
+      expect(removedArea.actionId).toBe(1);
+      expect(beforeAreas[0].actionId).toBe(1);
       expect(afterAreas).toHaveLength(0);
     });
   });

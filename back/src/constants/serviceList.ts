@@ -1,4 +1,4 @@
-import { Service } from "../types/areaSeervices/areaServices.types";
+import { Service } from "../types/areaServices/areaServices.types";
 import * as YoutubeActions from "../ServiceRequest/youtube/youtube.action";
 import * as TwitterReaction from "../ServiceRequest/twitter/twitter.reaction";
 
@@ -6,7 +6,7 @@ export const SERVICES: Service[] = [
   {
     id: 1,
     serviceName: "Youtube",
-    action: [
+    actions: [
       {
         id: 1,
         actionName: "NewVideoUploaded",
@@ -14,13 +14,13 @@ export const SERVICES: Service[] = [
         fct: YoutubeActions.checkUploadedVideo,
       },
     ],
-    reaction: [],
+    reactions: [],
   },
   {
     id: 2,
     serviceName: "Twitter",
-    action: [],
-    reaction: [
+    actions: [],
+    reactions: [
       {
         id: 1,
         reactionName: "PostTweet",

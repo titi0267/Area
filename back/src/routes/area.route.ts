@@ -6,7 +6,6 @@ import { AreaService } from "../services";
 import httpStatus from "http-status";
 import { RawAreaBody } from "../types/body/areaRequestBody.types";
 import * as BodyHelper from "../helpers/body.helpers";
-import { format } from "path";
 
 type AreaRequest = FastifyRequest<{
   Body: RawAreaBody;
@@ -20,11 +19,11 @@ export default (
   instance.post("/", async (req: AreaRequest, res: FastifyReply) => {
     const formatedBody = BodyHelper.checkAreaBody(req.body);
     const areas = await AreaService.createArea(
-      formatedBody.actionService,
-      formatedBody.action,
+      formatedBody.actionServiceId,
+      formatedBody.actionId,
       formatedBody.actionParam,
-      formatedBody.reactionService,
-      formatedBody.reaction,
+      formatedBody.reactionServiceId,
+      formatedBody.reactionId,
       formatedBody.reactionParam,
       formatedBody.userId,
     );

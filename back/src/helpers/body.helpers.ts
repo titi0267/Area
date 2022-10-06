@@ -2,6 +2,10 @@ import httpStatus from "http-status";
 
 import ClientError from "../error";
 import {
+  FormatedTokenBody,
+  RawTokenBody,
+} from "../types/body/tokenRequestBody.types";
+import {
   RawRegisterBody,
   FormatedRegisterBody,
   RawLoginBody,
@@ -70,4 +74,24 @@ const checkLoginBody = (body: RawLoginBody): FormatedLoginBody => {
   return { email: body.email, password: body.password };
 };
 
-export { checkRegisterBody, checkLoginBody, checkAreaBody };
+const checkTokenBody = (body: RawTokenBody): FormatedTokenBody => {
+  if (!body.userId) {
+    throw new ClientError({
+      name: "Missing element",
+      message: "One of the mandatory field was not provided",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+  return {
+    discordToken: body.discordToken,
+    githubToken: body.githubToken,
+    spotifyToken: body.spotifyToken,
+    trelloToken: body.trelloToken,
+    twitterToken: body.twitterToken,
+    youtubeToken: body.youtubeToken,
+    userId: body.userId,
+  };
+};
+
+export { checkRegisterBody, checkLoginBody, checkAreaBody, checkTokenBody };

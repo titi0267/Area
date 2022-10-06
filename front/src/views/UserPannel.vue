@@ -38,12 +38,11 @@ export default vue.extend({
     methods: {
         getUserAreas() {
             try {
-                let { data: resp } = this.$axios.get('/areas', {
+                let { data: resp } = this.$axios.get('/users/areas', {
                     headers: {
                         Authorization: this.$store.getters.userToken,
                     },
                 })
-                console.log(resp);
                 this.areas = resp;
             } catch (err) {
                 console.log(err);

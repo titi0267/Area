@@ -79,6 +79,24 @@ describe("Test area body helper", () => {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }
     });
+
+    test("Get a Area body but one field invalid", async () => {
+      const rawAreaBody: RawAreaBody = {
+        actionServiceId: "test",
+        actionId: "1",
+        actionParam: "in",
+        reactionServiceId: "1",
+        reactionId: "2",
+        reactionParam: "test",
+        userId: 1,
+      };
+
+      try {
+        BodyHelper.checkAreaBody(rawAreaBody);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
   });
 });
 describe("Test login body helper", () => {

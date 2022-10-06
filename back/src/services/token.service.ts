@@ -16,6 +16,7 @@ const updateToken = async (
   const doesUserExist = await prisma.user.findFirst({
     where: { id: userId },
   });
+
   if (doesUserExist === null) {
     throw new ClientError({
       name: "Invalid Credential",
@@ -27,7 +28,7 @@ const updateToken = async (
 
   const token = await prisma.tokensTable.update({
     where: {
-      id: userId,
+      userId,
     },
     data: {
       discordToken,

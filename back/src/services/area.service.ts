@@ -1,16 +1,15 @@
 import { PrismaClient, Area, User } from "@prisma/client";
-import { Token } from "../types/global.types";
 import ClientError from "../error";
 import httpStatus from "http-status";
 
 const prisma = new PrismaClient();
 
 const createArea = async (
-  actionService: string,
-  action: string,
+  actionServiceId: number,
+  actionId: number,
   actionParam: string,
-  reactionService: string,
-  reaction: string,
+  reactionServiceId: number,
+  reactionId: number,
   reactionParam: string,
   userId: number,
 ): Promise<Area> => {
@@ -28,11 +27,11 @@ const createArea = async (
   }
   const area = prisma.area.create({
     data: {
-      actionService,
-      action,
+      actionServiceId,
+      actionId,
       actionParam,
-      reactionService,
-      reaction,
+      reactionServiceId,
+      reactionId,
       reactionParam,
       userId,
     },

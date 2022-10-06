@@ -13,11 +13,11 @@ const updateToken = async (
   spotifyToken: string | undefined,
   userId: number,
 ): Promise<TokensTable> => {
-  const doesUserExist = await prisma.tokensTable.findFirst({
+  const doesUserExist = await prisma.user.findFirst({
     where: { id: userId },
   });
+
   if (doesUserExist === null) {
-    console.log(doesUserExist);
     throw new ClientError({
       name: "Invalid Credential",
       message: "id out of range",
@@ -28,7 +28,7 @@ const updateToken = async (
 
   const token = await prisma.tokensTable.update({
     where: {
-      id: userId,
+      userId,
     },
     data: {
       discordToken,

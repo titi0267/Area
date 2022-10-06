@@ -21,8 +21,10 @@ describe("Test put token service", () => {
         undefined,
         users[0].id,
       );
+
       expect(token.discordToken).toBe("Discord");
       expect(token.githubToken).toBe(null);
+
       await UserService.removeUserById(users[0].id);
     });
   });

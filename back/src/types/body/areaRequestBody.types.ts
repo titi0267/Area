@@ -1,19 +1,19 @@
 export interface RawAreaBody {
-  actionService: string | undefined;
-  action: string | undefined;
+  actionServiceId: string | undefined;
+  actionId: string | undefined;
   actionParam: string | undefined;
-  reactionService: string | undefined;
-  reaction: string | undefined;
+  reactionServiceId: string | undefined;
+  reactionId: string | undefined;
   reactionParam: string | undefined;
   userId: number | undefined;
 }
 
 export interface FormatedAreaBody {
-  actionService: string;
-  action: string;
+  actionServiceId: number;
+  actionId: number;
   actionParam: string;
-  reactionService: string;
-  reaction: string;
+  reactionServiceId: number;
+  reactionId: number;
   reactionParam: string;
   userId: number;
 }

@@ -43,6 +43,39 @@ const createUser = async (
     },
   });
 
+  const exp = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
+
+  const token = jwt.sign(
+    { id: user.id, email, role: user.role, expTime: exp },
+    ENV.secret,
+  );
+
+  return { token };
+};
+
+const loginUser = async (email: string, password: string): Promise<Token> => {
+  const user = await prisma.user.findUnique({ where: { email } });
+
+  if (user === null) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "email does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  const same = await bcrypt.compare(password, user.password);
+
+  if (same === false) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "password doesn't match",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
   const token = jwt.sign({ id: user.id, email, role: user.role }, ENV.secret);
 
   return { token };
@@ -96,4 +129,10 @@ const removeUserByEmail = async (email: string): Promise<User> => {
   return user;
 };
 
-export default { getAllUsers, createUser, removeUserById, removeUserByEmail };
+export default {
+  getAllUsers,
+  createUser,
+  removeUserById,
+  removeUserByEmail,
+  loginUser,
+};

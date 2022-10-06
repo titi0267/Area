@@ -11,7 +11,7 @@ export default (
   done: FastifyPluginDoneFunction,
 ): void => {
   instance.get("/", async (req: FastifyRequest, res: FastifyReply) => {
-    const areas = await AreaService.getAllAreas();
+    const areas = await AreaService.getAllArea();
 
     res.status(httpStatus.OK).send(areas);
   });

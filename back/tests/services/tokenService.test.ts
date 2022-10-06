@@ -21,10 +21,26 @@ describe("Test put token service", () => {
         undefined,
         users[0].id,
       );
-      console.log(token);
       expect(token.discordToken).toBe("Discord");
       expect(token.githubToken).toBe(null);
       await UserService.removeUserById(users[0].id);
+    });
+  });
+  describe("Test invalid userId", () => {
+    test("Put token with invalid userId", async () => {
+      try {
+        await TokenService.updateToken(
+          "Discord",
+          undefined,
+          undefined,
+          "Youtube",
+          undefined,
+          undefined,
+          1,
+        );
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
     });
   });
 });

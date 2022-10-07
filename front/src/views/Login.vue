@@ -7,7 +7,7 @@
         <b-field label="Password" label-position="on-border">
             <b-input v-model="password"></b-input>
         </b-field>
-        <b-button type="is-primary">Login</b-button>
+        <b-button @click="sendLogin()" type="is-primary">Login</b-button>
         <br/>
         <router-link to="/register">
             <a>Not account ? Register</a>
@@ -31,7 +31,7 @@ export default vue.extend({
     methods: {
         async sendLogin() {
             try {
-                let {data: resp} = await this.$axios.post('URL', {
+                let {data: resp} = await this.$axios.post('/users/login', {
                     headers: {
                         Authorization: this.$store.getters.userToken,
                     },

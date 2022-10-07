@@ -6,6 +6,7 @@ import NotFound from '../views/NotFound.vue'
 import UserPannel from '../views/UserPannel.vue'
 import CreateArea from '../views/CreateArea.vue'
 import axios from '../axiosInstance';
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -29,13 +30,13 @@ const router = new VueRouter({
             path: '/user-pannel',
             name: 'userPannel',
             component: UserPannel,
-            meta: { requiresAuth: false } // Mettre à true dès que le login sera fait et le middleware de co
+            meta: { requiresAuth: true }
         },
         {
             path: '/create-area',
             name: 'createArea',
             component: CreateArea,
-            meta: { requiresAuth: false } // Mettre à true dès que le login sera fait et le middleware de co
+            meta: { requiresAuth: true }
         },
         {
             path: '/:pathMatch(.*)*',
@@ -52,15 +53,12 @@ router.beforeEach(async (to, from, next) => {
         if (usrToken === null)
             router.push("login");
         try {
-            let {data: resp} = await axios.get('/users', { // mettre une route qui nécessite un header "Autorization"
+            await axios.get('/users/areas', {
                 headers: {
                     Authorization: usrToken || 'noToken',
                 },
             })
-            // check si la valeur de retour de axios est ok ou non grâce au token
-            // si c'est ok => redirection vers la page user-pannel
-            // sinon redirection vers le login
-            router.push("user-pannel");
+            store.commit('updateToken', usrToken);
             next();
         } catch (err) {
             router.push("login");

@@ -23,8 +23,6 @@ const areaLoop = async () => {
 
     if (reaction === null) return;
 
-    console.log("Fini");
-
     reaction(area.reactionParam, "");
   }
 };

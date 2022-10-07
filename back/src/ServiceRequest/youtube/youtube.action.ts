@@ -1,15 +1,16 @@
 import { google } from "googleapis";
+import ENV from "../../env";
 
 const checkUploadedVideo = async (
   actionParam: string,
   userId: string,
   lastUpdate: Date,
 ): Promise<Boolean> => {
-  const youtube = google.youtube("v3");
+  const youtube = google.youtube({ version: "v3", auth: ENV.googleApiKey });
 
   const channel = await youtube.channels.list({
-    part: ["snippet"],
-    id: [actionParam],
+    forUsername: actionParam,
+    part: ["contentDetails"],
   });
 
   if (

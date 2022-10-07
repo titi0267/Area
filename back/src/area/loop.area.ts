@@ -1,4 +1,3 @@
-import { SERVICES } from "../constants/serviceList";
 import { AreaService } from "../services";
 import * as ServiceHelper from "../helpers/service.helpers";
 
@@ -14,6 +13,7 @@ const areaLoop = async () => {
     if (action === null) return;
     const doReaction = await action(area.actionParam, "", area.lastActionFetch);
 
+    console.log(doReaction);
     if (doReaction === false) return;
 
     const reaction = ServiceHelper.getReactionFct(
@@ -22,6 +22,8 @@ const areaLoop = async () => {
     );
 
     if (reaction === null) return;
+
+    console.log("Fini");
 
     reaction(area.reactionParam, "");
   }

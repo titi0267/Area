@@ -5,7 +5,7 @@ export interface RawAreaBody {
   reactionServiceId: string | undefined;
   reactionId: string | undefined;
   reactionParam: string | undefined;
-  userId: number | undefined;
+  userId: string | undefined;
 }
 
 export interface FormatedAreaBody {

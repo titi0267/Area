@@ -9,6 +9,8 @@ import { UserInfos } from "./types/global.types";
 import { AreaService } from "./services";
 import { SERVICES } from "./constants/serviceList";
 import areaLoop from "./area/loop.area";
+import { postNewTweet } from "./ServiceRequest/twitter/twitter.reaction";
+import { sendMessageToServer } from "./ServiceRequest/discord/discord.reaction";
 
 const prisma = new PrismaClient();
 const server = fastify();

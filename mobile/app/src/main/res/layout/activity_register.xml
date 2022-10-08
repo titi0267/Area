@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/request_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register_request"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/ip_field"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/register_ip_field_hint"
+        android:inputType="numberDecimal"
+        android:minHeight="48dp"
+        android:digits="0123456789."
+        app:layout_constraintBottom_toTopOf="@id/port_field"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/port_field"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/register_port_field_hint"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:digits="0123456789"
+        app:layout_constraintBottom_toTopOf="@id/first_name_field"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/first_name_field"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/register_first_name_field_hint"
+        android:inputType="text"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@id/last_name_field"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/last_name_field"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/register_last_name_field_hint"
+        android:inputType="text"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@id/email_field"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/email_field"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/register_email_field_hint"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@id/password_field"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/password_field"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/register_password_hint"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@id/request_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

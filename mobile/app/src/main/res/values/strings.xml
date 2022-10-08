@@ -2,4 +2,14 @@
     <string name="app_name">AREA</string>
     <string name="description_profile_button">This is the profile button that redirects you to the profile page.</string>
     <string name="back_button">Back</string>
+
+    <string name="register_request">Register</string>
+    <string name="register_first_name_field_hint">First name</string>
+    <string name="register_last_name_field_hint">Last name</string>
+    <string name="register_email_field_hint">Email</string>
+    <string name="register_password_hint">Password</string>
+    <string name="register_ip_field_hint">IP</string>
+    <string name="register_port_field_hint">Port</string>
+
+    <string name="profile_logout_button">Logout</string>
 </resources>

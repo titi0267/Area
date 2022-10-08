@@ -12,6 +12,8 @@ import com.example.area.model.RegisterFields
 import com.example.area.model.Token
 import com.example.area.repository.Repository
 import com.example.area.utils.*
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import javax.security.auth.callback.Callback
 
 class RegisterActivity : AppCompatActivity() {
@@ -25,8 +27,8 @@ class RegisterActivity : AppCompatActivity() {
         var token: String?
         button.setOnClickListener {
             val sessionManager = SessionManager(this)
-            val url = urlParser(findViewById<EditText>(R.id.ip_field).text.toString(),
-                findViewById<EditText>(R.id.port_field).text.toString())
+            val url = urlParser(findViewById<TextInputEditText>(R.id.register_ip_field_edit_text).text.toString(),
+                findViewById<TextInputEditText>(R.id.register_port_field_edit_text).text.toString())
             if (url == "error") {
                 Toast.makeText(this, "IP-Port combination is not valid!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -35,10 +37,10 @@ class RegisterActivity : AppCompatActivity() {
             val viewModelFactory = MainViewModelFactory(rep)
             viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
             val registerForm = RegisterFields(
-                findViewById<EditText>(R.id.first_name_field).text.toString(),
-                findViewById<EditText>(R.id.last_name_field).text.toString(),
-                findViewById<EditText>(R.id.email_field).text.toString(),
-                findViewById<EditText>(R.id.password_field).text.toString()
+                findViewById<TextInputEditText>(R.id.register_first_name_field_edit_text).text.toString(),
+                findViewById<TextInputEditText>(R.id.register_last_name_field_edit_text).text.toString(),
+                findViewById<TextInputEditText>(R.id.register_email_field_edit_text).text.toString(),
+                findViewById<EditText>(R.id.register_password_field_edit_text).text.toString()
             )
             if (!checkRegisterField(registerForm)) {
                 Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show()

@@ -10,6 +10,10 @@
     <string name="register_password_hint">Password</string>
     <string name="register_ip_field_hint">IP</string>
     <string name="register_port_field_hint">Port</string>
+    <string name="register_email_helper_text">E.g.: maxwell.frantz@epitech.eu</string>
+    <string name="register_port_helper_text">0–65535</string>
+    <string name="register_ip_helper_text">E.g.: 127.0.0.1</string>
+    <string name="register_password_helper_text">8 characters minimum</string>
 
     <string name="profile_logout_button">Logout</string>
     <string name="area_list_button">Area List</string>

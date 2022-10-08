@@ -17,4 +17,6 @@
     <string name="action_service_title">If ...</string>
     <string name="action_reaction_title">Does ...</string>
     <string name="reaction_service_title">Then ...</string>
+    <string name="not_logged_in_login_button_text">Log in</string>
+    <string name="not_logged_in_register_button_text">Register</string>
 </resources>

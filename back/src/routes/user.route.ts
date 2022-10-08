@@ -2,13 +2,15 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { FastifyPluginOptions } from "fastify/types/plugin";
 import httpStatus from "http-status";
 
-import { UserService } from "../services";
+import { AreaService, UserService } from "../services";
 import * as BodyHelper from "../helpers/body.helpers";
+import * as SecurityHelper from "../helpers/security.helper";
 import { FastifyPluginDoneFunction } from "../types/global.types";
 import {
   RawLoginBody,
   RawRegisterBody,
 } from "../types/body/userRequestBody.types";
+import authentificationMiddleware from "../middlewares/authentification.middleware";
 
 type RegisterRequest = FastifyRequest<{
   Body: RawRegisterBody;
@@ -52,6 +54,17 @@ export default (
 
     res.status(httpStatus.OK).send(token);
   });
+
+  instance.get(
+    "/areas",
+    { onRequest: [authentificationMiddleware()] },
+    async (req: FastifyRequest, res: FastifyReply) => {
+      const userInfos = SecurityHelper.getUserInfos(req);
+      const areas = await AreaService.getAreasByUserId(userInfos.id);
+
+      res.status(httpStatus.OK).send(areas);
+    },
+  );
 
   done();
 };

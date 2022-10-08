@@ -27,7 +27,7 @@ const main = async () => {
   });
 
   server.listen(
-    { port: parseInt(ENV.port), host: "0.0.0.0" },
+    { port: parseInt(ENV.port), host: ENV.host },
     (err, address) => {
       if (err) {
         console.error(err);

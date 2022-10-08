@@ -12,4 +12,9 @@
     <string name="register_port_field_hint">Port</string>
 
     <string name="profile_logout_button">Logout</string>
+    <string name="area_list_button">Area List</string>
+    <string name="area_creation_button">Create</string>
+    <string name="action_service_title">If ...</string>
+    <string name="action_reaction_title">Does ...</string>
+    <string name="reaction_service_title">Then ...</string>
 </resources>

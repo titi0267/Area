@@ -1,13 +1,13 @@
 import { describe, test, expect } from "@jest/globals";
 
 import { RawAreaBody } from "../../src/types/body/areaRequestBody.types";
-import ClientError from "../../src/error";
 import {
   RawRegisterBody,
   RawLoginBody,
 } from "../../src/types/body/userRequestBody.types";
 import * as BodyHelper from "../../src/helpers/body.helpers";
 import httpStatus from "http-status";
+import { RawTokenBody } from "../../src/types/body/tokenRequestBody.types";
 
 describe("Test register body helper", () => {
   describe("Test working cases", () => {
@@ -47,29 +47,47 @@ describe("Test area body helper", () => {
   describe("Test working cases", () => {
     test("Get a valid area body", async () => {
       const rawAreaBody: RawAreaBody = {
-        actionService: "Youtube",
-        action: "like",
+        actionServiceId: "1",
+        actionId: "1",
         actionParam: "test",
-        reactionService: "Spotify",
-        reaction: "Add to playlist",
+        reactionServiceId: "2",
+        reactionId: "1",
         reactionParam: "test",
         userId: 1,
       };
 
       const formatedBody = BodyHelper.checkAreaBody(rawAreaBody);
 
-      expect(formatedBody.actionService).toBe("Youtube");
+      expect(formatedBody.actionServiceId).toBe(1);
     });
   });
   describe("Test bad cases", () => {
     test("Get a Area body but one field undefined", async () => {
       const rawAreaBody: RawAreaBody = {
-        actionService: "on",
-        action: "zu",
+        actionServiceId: "1",
+        actionId: "1",
         actionParam: "in",
-        reactionService: undefined,
-        reaction: "to",
-        reactionParam: "vu",
+        reactionServiceId: "1",
+        reactionId: "2",
+        reactionParam: undefined,
+        userId: 1,
+      };
+
+      try {
+        BodyHelper.checkAreaBody(rawAreaBody);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
+
+    test("Get a Area body but one field invalid", async () => {
+      const rawAreaBody: RawAreaBody = {
+        actionServiceId: "test",
+        actionId: "1",
+        actionParam: "in",
+        reactionServiceId: "1",
+        reactionId: "2",
+        reactionParam: "test",
         userId: 1,
       };
 
@@ -106,6 +124,44 @@ describe("Test login body helper", () => {
         BodyHelper.checkLoginBody(rawLoginBody);
       } catch (e) {
         expect(e.status).toBe(400);
+      }
+    });
+  });
+});
+
+describe("Test token body helper", () => {
+  describe("Test working cases", () => {
+    test("Get valid userId", () => {
+      const rawTokenBody: RawTokenBody = {
+        discordToken: "Discord",
+        twitterToken: undefined,
+        githubToken: undefined,
+        youtubeToken: "Youtube",
+        trelloToken: undefined,
+        spotifyToken: undefined,
+        userId: 1,
+      };
+      const formatedBody = BodyHelper.checkTokenBody(rawTokenBody);
+      expect(formatedBody.discordToken).toBe("Discord");
+      expect(formatedBody.twitterToken).toBe(undefined);
+    });
+  });
+
+  describe("Test put without userId", () => {
+    test("Update token with invald userId", async () => {
+      const rawTokenBody: RawTokenBody = {
+        discordToken: "Discord",
+        twitterToken: undefined,
+        githubToken: undefined,
+        youtubeToken: "Youtube",
+        trelloToken: undefined,
+        spotifyToken: undefined,
+        userId: undefined,
+      };
+      try {
+        BodyHelper.checkTokenBody(rawTokenBody);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }
     });
   });

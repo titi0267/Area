@@ -19,7 +19,21 @@
             android:contentDescription="@string/description_profile_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_delete" />
+            app:srcCompat="@android:drawable/ic_delete"
+            tools:ignore="RedundantDescriptionCheck,RedundantDescriptionCheck" />
+
+        <Button
+            android:id="@+id/areaListButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#D9D9D9"
+            android:text="@string/area_list_button"
+            android:textColor="#000000"
+            app:cornerRadius="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,6 +65,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/_654040061336"
+                    tools:ignore="RedundantDescriptionCheck"
                     tools:targetApi="s" />
 
             </LinearLayout>

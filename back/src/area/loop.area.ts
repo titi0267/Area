@@ -11,9 +11,8 @@ const areaLoop = async () => {
     );
 
     if (action === null) return;
-    const doReaction = await action(area.actionParam, "", area.lastActionFetch);
+    const doReaction = await action(area);
 
-    console.log(doReaction);
     if (doReaction === false) return;
 
     const reaction = ServiceHelper.getReactionFct(

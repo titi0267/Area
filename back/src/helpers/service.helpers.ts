@@ -21,7 +21,7 @@ const rejectInvalidArea = (
   );
 
   const doesReactionExist = SERVICES.find(service =>
-    service.reactions.find(reaction => reaction.id === actionId),
+    service.reactions.find(reaction => reaction.id === reactionId),
   );
 
   if (

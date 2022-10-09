@@ -11,6 +11,7 @@ import { SERVICES } from "./constants/serviceList";
 import areaLoop from "./area/loop.area";
 import { postNewTweet } from "./ServiceRequest/twitter/twitter.reaction";
 import { sendMessageToServer } from "./ServiceRequest/discord/discord.reaction";
+import { checkVideoLike } from "./ServiceRequest/youtube/youtube.action";
 
 const prisma = new PrismaClient();
 const server = fastify();

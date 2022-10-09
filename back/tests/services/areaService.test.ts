@@ -110,3 +110,42 @@ describe("Test remove area by id", () => {
     });
   });
 });
+
+describe("Test update area values", () => {
+  describe("Test working cases", () => {
+    test("Update one area", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      const areaBefore = await AreaService.createArea(
+        1,
+        1,
+        "test",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
+      const areaAfter = await AreaService.updateAreaValues(
+        areaBefore.id,
+        "Value",
+      );
+
+      expect(areaBefore.lastActionValue).toBeNull();
+      expect(areaAfter.lastActionValue).toBe("Value");
+
+      await AreaService.removeAreaById(areaBefore.id);
+      await UserService.removeUserById(users[0].id);
+    });
+  });
+
+  describe("Test invalid cases", () => {
+    test("Update area with invalid Id", async () => {
+      try {
+        await AreaService.updateAreaValues(45, "Value");
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
+  });
+});

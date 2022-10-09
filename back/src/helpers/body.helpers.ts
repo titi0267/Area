@@ -55,8 +55,8 @@ const checkAreaBody = (body: RawAreaBody): FormatedAreaBody => {
 
   const actionServiceId = parseInt(body.actionServiceId);
   const actionId = parseInt(body.actionId);
-  const reactionServiceId = parseInt(body.actionServiceId);
-  const reactionId = parseInt(body.actionId);
+  const reactionServiceId = parseInt(body.reactionServiceId);
+  const reactionId = parseInt(body.reactionId);
   const userId = parseInt(body.userId);
 
   if (

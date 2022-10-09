@@ -1,3 +1,5 @@
+import { Area } from "@prisma/client";
+
 export interface Service {
   id: number;
   serviceName: ServiceName;
@@ -9,11 +11,7 @@ interface Action {
   id: number;
   actionName: string;
   actionParamName: string;
-  fct: (
-    actionParam: string,
-    userId: string,
-    lastUpdate: Date,
-  ) => Promise<Boolean>;
+  fct: (area: Area) => Promise<Boolean>;
 }
 
 interface Reaction {

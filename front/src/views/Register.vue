@@ -67,9 +67,6 @@ export default vue.extend({
         async sendRegister() {
             try {
                 let {data: resp} = await this.$axios.post('/users', {
-                    headers: {
-                        Authorization: this.$store.getters.userToken,
-                    },
                     'firstName': this.register.firstName,
                     'lastName': this.register.lastName,
                     'email': this.register.email,
@@ -79,7 +76,7 @@ export default vue.extend({
                 this.$store.commit('updateToken', resp.token);
                 this.$router.push('/user-pannel');
             } catch (err) {
-                if (err && err.response.data.statusCode == 400)
+                if (err && err.reponse && err.response.data.statusCode == 400)
                     console.log("E-mail already taken...");
                 console.log(err);
             }

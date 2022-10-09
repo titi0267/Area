@@ -55,7 +55,6 @@
 </template>
 
 <script lang="ts">
-import { text } from "@fortawesome/fontawesome-svg-core";
 import vue from "vue";
 
 export default vue.extend({

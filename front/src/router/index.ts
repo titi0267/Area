@@ -53,18 +53,14 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+    let usrToken = localStorage.getItem('usr-token');
+    if (usrToken != null)
+        store.commit('updateToken', usrToken)
     if (to.meta && to.meta.requiresAuth == true) {
-        let usrToken = localStorage.getItem('usr-token');
         if (usrToken === null)
             router.push("login");
         try {
-            await axios.get('/users/areas', {
-                headers: {
-                    Authorization: usrToken || 'noToken',
-                },
-            })
-            store.commit('updateToken', usrToken);
-            next();
+            await axios.get('/users/areas')
         } catch (err) {
             router.push("login");
         }

@@ -32,9 +32,6 @@ export default vue.extend({
         async sendLogin() {
             try {
                 let {data: resp} = await this.$axios.post('/users/login', {
-                    headers: {
-                        Authorization: this.$store.getters.userToken,
-                    },
                     'email': this.email,
                     'password': this.password
                 })

@@ -34,7 +34,6 @@ Vue.use(Buefy, {
 
 Vue.prototype.$axios = axios;
 
-
 new Vue({
     i18n,
     router,

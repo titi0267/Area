@@ -1,7 +1,11 @@
 # AREA Front
 
 Le côté client de l'area se compose en une partie.
-Elle gère toutes les pages lié à ce projet.
+Il gère toutes les pages lié à ce projet.
+
+### Langages
+- VueJs
+    => HTML, CSS (SCSS), TypeScript
 
 ### Installation
 
@@ -26,18 +30,15 @@ Toutes les routes du routeur front se trouvent dans le dossier router/main.ts.
 Elle permet de savoir si l'utilisateur doit se connecter, et le redirige vers la page necessaire de login.
 ```ts
 router.beforeEach(async (to, from, next) => {
+    let usrToken = localStorage.getItem('usr-token');
+    if (usrToken != null)
+        store.commit('updateToken', usrToken)
     if (to.meta && to.meta.requiresAuth == true) {
+        if (usrToken === null)
+            router.push("login");
         try {
-            let usrToken = localStorage.getItem('usr-token');
-            if (usrToken === null)
-                router.push("login");
-            await axios.get('/users/areas', {
-                headers: {
-                    Authorization: usrToken || 'noToken',
-                },
-            })
-            store.commit('updateToken', usrToken);
-        } catch {
+            await axios.get('/users/areas')
+        } catch (err) {
             router.push("login");
         }
     }
@@ -48,11 +49,11 @@ router.beforeEach(async (to, from, next) => {
 ## Les dossiers
 
 ### /Views
-- Login.vue : Page de connexion de l'utilisateur
-- Register.vue : Page d'inscription de l'utilisateur
-- UserPannel.vue : Page de visualisation des actions-réactions de l'utilisateur
-- CreateArea.vue : Page de création d'action-réaction
-- NotFound.vue : Si une page n'éxiste pas, l'utilisateur est redirigé sur cette page
+- **Login.vue** : Page de connexion de l'utilisateur
+- **Register.vue** : Page d'inscription de l'utilisateur
+- **UserPannel.vue** : Page de visualisation des actions-réactions de l'utilisateur
+- **CreateArea.vue** : Page de création d'action-réaction
+- **NotFound.vue** : Si une page n'éxiste pas, l'utilisateur est redirigé sur cette page
 
 ### /Components
 - 

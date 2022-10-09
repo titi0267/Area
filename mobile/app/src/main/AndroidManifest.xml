@@ -16,6 +16,7 @@
         <activity android:name=".ProfilePageActivity" />
         <activity android:name=".AreaMainActivity" />
         <activity android:name=".NotLoggedInActivity" />
+        <activity android:name=".LoginActivity" />
         <activity
             android:name=".AreaCreationActivity">
         </activity>

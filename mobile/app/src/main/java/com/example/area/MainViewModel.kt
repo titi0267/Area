@@ -3,6 +3,7 @@ package com.example.area
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.area.model.LoginFields
 import com.example.area.model.RegisterFields
 import com.example.area.model.Token
 import com.example.area.repository.Repository
@@ -16,6 +17,12 @@ class MainViewModel(private val repository: Repository):ViewModel() {
     fun register(registerFields: RegisterFields) {
         viewModelScope.launch {
             val response = repository.register(registerFields)
+            userResponse.value = response
+        }
+    }
+    fun login(loginFields: LoginFields) {
+        viewModelScope.launch {
+            val response = repository.login(loginFields)
             userResponse.value = response
         }
     }

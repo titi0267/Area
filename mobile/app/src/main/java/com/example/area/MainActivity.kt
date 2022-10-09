@@ -14,10 +14,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (sessionManager.fetchAuthToken() == null)
-            startActivity(Intent(applicationContext, RegisterActivity::class.java))
+            startActivity(Intent(applicationContext, NotLoggedInActivity::class.java))
         else {
-            findViewById<FloatingActionButton>(R.id.profileButton).setOnClickListener { startActivity(Intent(applicationContext, ProfilePageActivity::class.java)) }
-            findViewById<Button>(R.id.areaListButton).setOnClickListener { startActivity(Intent(applicationContext, AreaListActivity::class.java)) }
+            startActivity(Intent(applicationContext, AreaMainActivity::class.java))
         }
     }
 }

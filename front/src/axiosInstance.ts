@@ -1,13 +1,16 @@
 import axios from 'axios'
+import store from './store'
 
 const axios_instance = axios.create({
     timeout: 1000,
     withCredentials: true,
-    baseURL: 'http://localhost:3000/',
+    // baseURL: `http://${process.env.VUE_APP_HOST}:${process.env.VUE_APP_PORT}`,
+    baseURL: 'http://localhost:3000',
     headers: {
         "Access-Control-Allow-Origin": "http://localhost:8080",
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: localStorage.getItem('usr-token') || 'noToken',
     },
 });
 

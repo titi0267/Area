@@ -39,6 +39,11 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
+            path: '/',
+            redirect: '/user-pannel',
+            meta: { requiresAuth: false }
+        },
+        {
             path: '/:pathMatch(.*)*',
             name: 'notFound',
             component: NotFound,

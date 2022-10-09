@@ -55,14 +55,16 @@ const checkAreaBody = (body: RawAreaBody): FormatedAreaBody => {
 
   const actionServiceId = parseInt(body.actionServiceId);
   const actionId = parseInt(body.actionId);
-  const reactionServiceId = parseInt(body.actionServiceId);
-  const reactionId = parseInt(body.actionId);
+  const reactionServiceId = parseInt(body.reactionServiceId);
+  const reactionId = parseInt(body.reactionId);
+  const userId = parseInt(body.userId);
 
   if (
     Number.isNaN(actionServiceId) ||
     Number.isNaN(actionId) ||
     Number.isNaN(reactionId) ||
-    Number.isNaN(reactionServiceId)
+    Number.isNaN(reactionServiceId) ||
+    Number.isNaN(userId)
   ) {
     throw new ClientError({
       name: "Id not a int",
@@ -86,7 +88,7 @@ const checkAreaBody = (body: RawAreaBody): FormatedAreaBody => {
     reactionServiceId,
     reactionId,
     reactionParam: body.reactionParam,
-    userId: body.userId,
+    userId,
   };
 };
 

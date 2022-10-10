@@ -17,12 +17,9 @@
         <activity android:name=".AreaMainActivity" />
         <activity android:name=".NotLoggedInActivity" />
         <activity android:name=".LoginActivity" />
-        <activity
-            android:name=".AreaCreationActivity">
-        </activity>
-        <activity
-            android:name=".AreaListActivity">
-        </activity>
+        <activity android:name=".AreaCreationActivity" />
+        <activity android:name=".AreaListActivity" />
+        <activity android:name=".AreaListItemActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

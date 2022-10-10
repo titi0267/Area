@@ -26,4 +26,10 @@ class MainViewModel(private val repository: Repository):ViewModel() {
             userResponse.value = response
         }
     }
+    fun getUserAreaList() {
+        viewModelScope.launch {
+            val response = repository.getUserAreaList()
+            userResponse.value = response
+        }
+    }
 }

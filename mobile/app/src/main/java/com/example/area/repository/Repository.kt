@@ -13,4 +13,7 @@ class Repository(val URL_INPUT : String) {
     suspend fun login(loginFields: LoginFields) : Response<Token> {
         return RetrofitInstance(URL_INPUT).api.login(loginFields)
     }
+    suspend fun getUserAreaList(): Response<Token> {
+        return RetrofitInstance(URL_INPUT).api.getUserAreaList()
+    }
 }

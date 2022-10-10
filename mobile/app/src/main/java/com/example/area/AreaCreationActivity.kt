@@ -9,8 +9,11 @@ import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.area.data.Datasource
 
 class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+    var actionId = 0
+    var reactionId = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_area_creation)
@@ -22,6 +25,7 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         reactServSpi.adapter = ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, serviceList)
         findViewById<Button>(R.id.areaRealCreationButton).setOnClickListener {
             // Creates the area
+            Datasource().addArea(actionId, reactionId, "Like a video", "Post a tweet")
         }
         actServSpi.onItemSelectedListener = this@AreaCreationActivity
         reactServSpi.onItemSelectedListener = this@AreaCreationActivity
@@ -32,12 +36,16 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         val youtubeReactions = arrayOf("Post a Short", "Post a Video", "Like a Video")
         val twitterActions = arrayOf("New Follower", "New Retweet", "New Like")
         val twitterReactions = arrayOf("Tweet", "Remove Account", "MP Someone")
-        findViewById<Spinner>(R.id.actionSpinner).adapter = when (findViewById<Spinner>(R.id.actionServiceSpinner).selectedItemPosition) {
+        val actionSpinner = findViewById<Spinner>(R.id.actionServiceSpinner)
+        val reactionSpinner = findViewById<Spinner>(R.id.reactionServiceSpinner)
+        actionId = actionSpinner.selectedItemPosition
+        reactionId = reactionSpinner.selectedItemPosition
+        findViewById<Spinner>(R.id.actionSpinner).adapter = when (actionSpinner.selectedItemPosition) {
             0 -> ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, youtubeActions)
             1 -> ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, twitterActions)
             else -> ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, youtubeActions)
         }
-        findViewById<Spinner>(R.id.reactionSpinner).adapter = when (findViewById<Spinner>(R.id.reactionServiceSpinner).selectedItemPosition) {
+        findViewById<Spinner>(R.id.reactionSpinner).adapter = when (reactionSpinner.selectedItemPosition) {
             0 -> ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, youtubeReactions)
             1 -> ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, twitterReactions)
             else -> ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, youtubeReactions)

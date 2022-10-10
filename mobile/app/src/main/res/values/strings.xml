@@ -7,7 +7,11 @@
     <string name="action_service_title">If ...</string>
     <string name="action_reaction_title">Does ...</string>
     <string name="reaction_service_title">Then ...</string>
+    <string name="left_logo_desc">Left logo of a listView item</string>
+    <string name="right_logo_desc">Right logo of a listView item</string>
     <!-- Test start -->
+    <string name="test1">Hello</string>
+    <string name="test2">World</string>
     <string name="affirmation1">I am strong.</string>
     <string name="affirmation2">I believe in myself.</string>
     <string name="affirmation3">Each day is a new opportunity to grow and be a better version of myself.</string>

@@ -18,7 +18,7 @@ class AreaListActivity : AppCompatActivity() {
         findViewById<Button>(R.id.backFromAreaListButton).setOnClickListener { startActivity(Intent(applicationContext, MainActivity::class.java)) }
 
         // Scrolling management
-        val myDataSet = Datasource().loadAffirmations()
+        val myDataSet = Datasource().loadAreaInfo()
         val recycler = findViewById<RecyclerView>(R.id.recyclerView)
         recycler.adapter = ItemAdapter(this, myDataSet)
         recycler.setHasFixedSize(true)

@@ -15,7 +15,6 @@
             </div>
         </div>
         <div class="box">
-
         </div>
     </div>
 </template>

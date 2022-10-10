@@ -61,6 +61,7 @@ router.beforeEach(async (to, from, next) => {
             router.push("login");
         try {
             await axios.get('/users/areas')
+            next();
         } catch (err) {
             router.push("login");
         }

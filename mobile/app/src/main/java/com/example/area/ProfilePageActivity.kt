@@ -20,9 +20,8 @@ class ProfilePageActivity : AppCompatActivity() {
             )
         }
         findViewById<Button>(R.id.profileLogoutButton).setOnClickListener {
-            sessionManager.removeAuthToken(); startActivity(
-            Intent(applicationContext, MainActivity::class.java)
-        )
+            sessionManager.removeAuthToken("user_token");
+            startActivity(Intent(applicationContext, MainActivity::class.java))
         }
     }
 }

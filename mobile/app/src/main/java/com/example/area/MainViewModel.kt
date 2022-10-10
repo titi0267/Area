@@ -3,6 +3,7 @@ package com.example.area
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.area.model.AREAFields
 import com.example.area.model.LoginFields
 import com.example.area.model.RegisterFields
 import com.example.area.model.Token
@@ -23,6 +24,12 @@ class MainViewModel(private val repository: Repository):ViewModel() {
     fun login(loginFields: LoginFields) {
         viewModelScope.launch {
             val response = repository.login(loginFields)
+            userResponse.value = response
+        }
+    }
+    fun areaCreation(areaFields: AREAFields) {
+        viewModelScope.launch {
+            val response = repository.areaCreation(areaFields)
             userResponse.value = response
         }
     }

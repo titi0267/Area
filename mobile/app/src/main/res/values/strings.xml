@@ -2,6 +2,16 @@
     <string name="app_name">AREA</string>
     <string name="description_profile_button">This is the profile button that redirects you to the profile page.</string>
     <string name="back_button">Back</string>
+
+    <string name="register_request">Register</string>
+    <string name="register_first_name_field_hint">First name</string>
+    <string name="register_last_name_field_hint">Last name</string>
+    <string name="register_email_field_hint">Email</string>
+    <string name="register_password_hint">Password</string>
+    <string name="register_ip_field_hint">IP</string>
+    <string name="register_port_field_hint">Port</string>
+
+    <string name="profile_logout_button">Logout</string>
     <string name="area_list_button">Area List</string>
     <string name="area_creation_button">Create</string>
     <string name="action_service_title">If ...</string>
@@ -12,15 +22,7 @@
     <!-- Test start -->
     <string name="test1">Hello</string>
     <string name="test2">World</string>
-    <!-- <string name="affirmation1">I am strong.</string>
-    <string name="affirmation2">I believe in myself.</string>
-    <string name="affirmation3">Each day is a new opportunity to grow and be a better version of myself.</string>
-    <string name="affirmation4">Every challenge in my life is an opportunity to learn from.</string>
-    <string name="affirmation5">I have so much to be grateful for.</string>
-    <string name="affirmation6">Good things are always coming into my life.</string>
-    <string name="affirmation7">New opportunities await me at every turn.</string>
-    <string name="affirmation8">I have the courage to follow my heart.</string>
-    <string name="affirmation9">Things will unfold at precisely the right time.</string>
-    <string name="affirmation10">I will be present in all the moments that this day brings.</string> -->
     <!-- Test end -->
+    <string name="not_logged_in_login_button_text">Log in</string>
+    <string name="not_logged_in_register_button_text">Register</string>
 </resources>

@@ -21,7 +21,7 @@ const rejectInvalidArea = (
   );
 
   const doesReactionExist = SERVICES.find(service =>
-    service.reactions.find(reaction => reaction.id === actionId),
+    service.reactions.find(reaction => reaction.id === reactionId),
   );
 
   if (
@@ -39,4 +39,28 @@ const rejectInvalidArea = (
   }
 };
 
-export { rejectInvalidArea };
+const getActionFct = (actionServiceId: number, actionId: number) => {
+  const actionService = SERVICES.find(
+    service => service.id === actionServiceId,
+  );
+
+  if (actionService === undefined) return null;
+  const action = actionService.actions.find(action => action.id === actionId);
+
+  return action?.fct || null;
+};
+
+const getReactionFct = (reactionServiceId: number, reactionId: number) => {
+  const reactionService = SERVICES.find(
+    service => service.id === reactionServiceId,
+  );
+
+  if (reactionService === undefined) return null;
+  const reaction = reactionService.reactions.find(
+    reaction => reaction.id === reactionId,
+  );
+
+  return reaction?.fct || null;
+};
+
+export { rejectInvalidArea, getActionFct, getReactionFct };

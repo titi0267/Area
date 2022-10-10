@@ -53,7 +53,6 @@ describe("Test area body helper", () => {
         reactionServiceId: "2",
         reactionId: "1",
         reactionParam: "test",
-        userId: "1",
       };
 
       const formatedBody = BodyHelper.checkAreaBody(rawAreaBody);
@@ -70,7 +69,6 @@ describe("Test area body helper", () => {
         reactionServiceId: "1",
         reactionId: "2",
         reactionParam: undefined,
-        userId: "1",
       };
 
       try {
@@ -88,7 +86,6 @@ describe("Test area body helper", () => {
         reactionServiceId: "1",
         reactionId: "2",
         reactionParam: "test",
-        userId: "1",
       };
 
       try {

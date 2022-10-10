@@ -7,23 +7,19 @@ import com.example.area.R
 class SessionManager(context: Context) {
     private var prefs: SharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
 
-    companion object {
-        const val USER_TOKEN = "user_token"
-    }
-
-    fun saveAuthToken(token: String) {
+    fun saveAuthToken(prefName: String, token: String) {
         val editor = prefs.edit()
-        editor.putString(USER_TOKEN, token)
+        editor.putString(prefName, token)
         editor.apply()
     }
 
-    fun fetchAuthToken(): String? {
-        return (prefs.getString(USER_TOKEN, null))
+    fun fetchAuthToken(prefName: String): String? {
+        return (prefs.getString(prefName, null))
     }
 
-    fun removeAuthToken() {
+    fun removeAuthToken(prefName: String) {
         val editor = prefs.edit()
-        editor.remove(USER_TOKEN)
+        editor.remove(prefName)
         editor.apply()
     }
 }

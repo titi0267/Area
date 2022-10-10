@@ -10,13 +10,14 @@ class NotLoggedInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_not_logged_in)
-        findViewById<Button>(R.id.not_logged_in_login_button).setOnClickListener { /*startActivity(Intent(applicationContext, LoginActivity::class.java))*/ }
+        findViewById<Button>(R.id.not_logged_in_login_button).setOnClickListener {
+            startActivity(Intent(applicationContext, LoginActivity::class.java))
+        }
         findViewById<Button>(R.id.not_logged_in_register_button).setOnClickListener {
-            startActivity(
-                Intent(applicationContext, RegisterActivity::class.java)
-            )
+            startActivity(Intent(applicationContext, RegisterActivity::class.java))
         }
     }
+
     override fun onBackPressed() {
         moveTaskToBack(true)
     }

@@ -49,7 +49,8 @@ class RegisterActivity : AppCompatActivity() {
                 if (response.isSuccessful()) {
                     token = response.body()?.token
                     token?.let {
-                        sessionManager.saveAuthToken(token!!)
+                        sessionManager.saveAuthToken("user_token", token!!)
+                        sessionManager.saveAuthToken("url", url)
                     }
                     Toast.makeText(this, "Successfully logged in!", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(applicationContext, MainActivity::class.java))

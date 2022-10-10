@@ -3,6 +3,7 @@ package com.example.area
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.area.model.AREAFields
 import com.example.area.model.LoginFields
 import com.example.area.model.RegisterFields
 import com.example.area.model.Token
@@ -26,9 +27,9 @@ class MainViewModel(private val repository: Repository):ViewModel() {
             userResponse.value = response
         }
     }
-    fun getUserAreaList() {
+    fun areaCreation(areaFields: AREAFields) {
         viewModelScope.launch {
-            val response = repository.getUserAreaList()
+            val response = repository.areaCreation(areaFields)
             userResponse.value = response
         }
     }

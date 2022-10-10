@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         val sessionManager = SessionManager(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (sessionManager.fetchAuthToken() == null)
+        if (sessionManager.fetchAuthToken("user_token") == null)
             startActivity(Intent(applicationContext, NotLoggedInActivity::class.java))
         else {
             startActivity(Intent(applicationContext, AreaMainActivity::class.java))

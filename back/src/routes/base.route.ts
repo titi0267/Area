@@ -35,7 +35,7 @@ export default (
                 return {
                   id: reaction.id,
                   name: reaction.reactionName,
-                  actionParamName: reaction.reactionParamName,
+                  reactionParamName: reaction.reactionParamName,
                   description: "",
                 };
               }),

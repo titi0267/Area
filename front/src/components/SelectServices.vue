@@ -9,7 +9,7 @@
         }}
       </p>
     </div>
-    <div v-for="service in services">
+    <div v-for="service in services" :key="service.name">
       <div v-if="!serviceTypeStatus && service[type].length != 0">
         <b-button
           style="is-primary"
@@ -24,7 +24,7 @@
       </div>
       <div v-else-if="serviceTypeStatus">
         <div v-if="currentSelectedService.name == service.name">
-          <div v-for="area in service[type]">
+          <div v-for="area in service[type]" :key="area.name">
             <b-button
               :type="area.id == currentSelectedArea.id ? 'is-success' : ''"
               @click="(currentSelectedArea = area), saveAreaInfos(area.id)"
@@ -53,7 +53,7 @@ import vue from "vue";
 export default vue.extend({
   props: {
     type: String,
-    services: { type: Array },
+    services: Array,
   },
   data() {
     return {

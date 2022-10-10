@@ -31,27 +31,12 @@
 
 <script lang="ts">
 import vue from "vue";
-import SelectServices from "../component/SelectServices.vue";
+import SelectServices from "../components/SelectServices.vue";
 
 export default vue.extend({
   data() {
     return {
-      services: [] as {
-        id: number;
-        name: string;
-        actions: {
-          id: number;
-          name: string;
-          actionParamName: string;
-          description: string;
-        }[];
-        reactions: {
-          id: number;
-          name: string;
-          reactionParamName: string;
-          description: string;
-        }[];
-      }[],
+      services: {},
       actionServiceId: -1,
       actionId: -1,
       actionParam: "",
@@ -84,7 +69,7 @@ export default vue.extend({
     async getServices() {
       try {
         let { data: services } = await this.$axios.get("/about.json");
-        this.services = services;
+        this.services = services.server.services;
       } catch (err) {
         console.log(err);
       }

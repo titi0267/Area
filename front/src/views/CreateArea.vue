@@ -36,7 +36,7 @@ import SelectServices from "../components/SelectServices.vue";
 export default vue.extend({
   data() {
     return {
-      services: {},
+      services: [],
       actionServiceId: -1,
       actionId: -1,
       actionParam: "",

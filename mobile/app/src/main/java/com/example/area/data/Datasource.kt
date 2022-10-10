@@ -1,12 +1,13 @@
 package com.example.area.data
 
+import android.widget.Toast
 import com.example.area.R
 import com.example.area.model.AreaInfo
 
 class Datasource {
-    private val areaList = listOf<AreaInfo>()
+    private var areaList:List<AreaInfo> = ArrayList()
     fun addArea(actionId: Int, reactionId: Int, action: String, reaction: String) {
-        AreaInfo(getItemLogo(actionId), action, getItemLogo(reactionId), reaction)
+        areaList += (AreaInfo(getItemLogo(actionId), action, getItemLogo(reactionId), reaction))
     }
     private fun getItemLogo(logoToFind: Int): Int {
         return (when (logoToFind) {

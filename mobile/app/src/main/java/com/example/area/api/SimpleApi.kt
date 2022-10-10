@@ -7,6 +7,7 @@ import com.example.area.model.RegisterFields
 import com.example.area.model.Token
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface SimpleApi {
@@ -16,7 +17,7 @@ interface SimpleApi {
     @POST("users/login")
     suspend fun login(@Body post: LoginFields): Response<Token>
 
-    @GET("users/area")
+    @GET("users/areas")
     suspend fun getUserAreaList(): Response<Token>
 
     @POST("areas")

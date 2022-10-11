@@ -7,7 +7,7 @@ const ENV = {
   secret: process.env.SECRET as string,
   googleApiKey: process.env.YOUTUBE_API_TOKEN as string,
   host: (process.env.HOST as string) || "0.0.0.0",
-  discordBotToken: (process.env.DISCORD_BOT_TOKEN as string) || "",
+  discordBotToken: process.env.DISCORD_BOT_TOKEN as string,
 };
 
 export default ENV;

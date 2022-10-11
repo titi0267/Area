@@ -17,6 +17,12 @@ describe("Test reject invalid Area", () => {
 
 describe("Test getActionFct", () => {
   describe("Test valid cases", () => {
+    test("Test if valid return a fct", () => {
+      const action = ServiceHelper.getActionFct(1, 1);
+
+      expect(typeof action).toBe("function");
+    });
+
     test("Test with invalid action service", () => {
       const action = ServiceHelper.getActionFct(12, 12);
 
@@ -33,6 +39,12 @@ describe("Test getActionFct", () => {
 
 describe("Test getReactionFct", () => {
   describe("Test valid cases", () => {
+    test("Test if valid return a fct", () => {
+      const reaction = ServiceHelper.getReactionFct(3, 1);
+
+      expect(typeof reaction).toBe("function");
+    });
+
     test("Test with invalid reaction service", () => {
       const action = ServiceHelper.getReactionFct(12, 12);
 

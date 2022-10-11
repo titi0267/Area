@@ -5,6 +5,7 @@ import com.example.area.model.Token
 import com.example.area.api.RetrofitInstance
 import com.example.area.model.AREAFields
 import com.example.area.model.LoginFields
+import com.example.area.model.about.About
 import retrofit2.Response
 
 class Repository(val URL_INPUT : String) {
@@ -16,5 +17,8 @@ class Repository(val URL_INPUT : String) {
     }
     suspend fun areaCreation(areaFields: AREAFields) : Response<Token> {
         return RetrofitInstance(URL_INPUT).api.createArea(areaFields)
+    }
+    suspend fun getAboutJson() : Response<About> {
+        return RetrofitInstance(URL_INPUT).api.getAboutJson()
     }
 }

@@ -39,7 +39,7 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             viewModel.areaCreation(AREAFields(1, 1, 2, "oyKmeW2Kldc", 3, 1, "Nouveau like!"))
             viewModel.userResponse.observe(this, Observer { response ->
                 Toast.makeText(this, response.code().toString(), Toast.LENGTH_SHORT).show()
-                if (response.isSuccessful()) {
+                if (response.isSuccessful) {
                     Toast.makeText(this, "Area added successfully!", Toast.LENGTH_SHORT).show()
                 }
             })
@@ -55,8 +55,6 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         val twitterReactions = arrayOf("Tweet", "Remove Account", "MP Someone")
         val actionSpinner = findViewById<Spinner>(R.id.actionServiceSpinner)
         val reactionSpinner = findViewById<Spinner>(R.id.reactionServiceSpinner)
-        //val actionId = actionSpinner.selectedItemPosition
-        //val reactionId = reactionSpinner.selectedItemPosition
         findViewById<Spinner>(R.id.actionSpinner).adapter = when (actionSpinner.selectedItemPosition) {
             0 -> ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, youtubeActions)
             1 -> ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, twitterActions)

@@ -27,6 +27,7 @@ class AreaListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_area_list)
+
         // Button management
         findViewById<Button>(R.id.areaCreationButton).setOnClickListener {
             startActivity(Intent(applicationContext, AreaCreationActivity::class.java))
@@ -34,17 +35,15 @@ class AreaListActivity : AppCompatActivity() {
         findViewById<Button>(R.id.backFromAreaListButton).setOnClickListener { startActivity(Intent(applicationContext, MainActivity::class.java)) }
 
         // Scrolling management
-        val myDataSet = Datasource().loadAreaInfo()
+        val myDataSet = Datasource()
         val recycler = findViewById<RecyclerView>(R.id.recyclerView)
-        recycler.adapter = ItemAdapter(this, myDataSet) { position -> onItemClick(position) }
+        recycler.adapter = ItemAdapter(this, myDataSet.loadAreaInfo()) { position -> onItemClick(position) }
         recycler.setHasFixedSize(true)
-        //findViewById<RecyclerView>(R.id.recyclerView).addOnItemTouchListener()
 
         // Get area list (back request)
         val sessionManager = SessionManager(this)
         val rep = Repository(sessionManager.fetchAuthToken("url")!!)
         val viewModelFactory = MainViewModelFactory(rep)
-
         findViewById<Button>(R.id.area_list_fetch).setOnClickListener {
             viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
             viewModel.getUserAreaList(sessionManager.fetchAuthToken("user_token")!!)
@@ -52,6 +51,15 @@ class AreaListActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     Toast.makeText(this, "Successfully fetched list", Toast.LENGTH_SHORT).show()
                     val jsonArray: List<ActionReaction> = response.body()!!
+                    if (jsonArray.isNullOrEmpty()) {
+                        Toast.makeText(this, "It is empty", Toast.LENGTH_SHORT).show()
+                    }
+                    for (item in jsonArray) {
+                        myDataSet.addArea(item.actionServiceId, item.reactionServiceId, "Hello", "World")
+                        Toast.makeText(this, "Here!!!${item.id}", Toast.LENGTH_SHORT).show()
+                    }
+                    recycler.adapter = ItemAdapter(this, myDataSet.loadAreaInfo()) { position -> onItemClick(position) }
+                    recycler.setHasFixedSize(true)
                 }
             })
         }

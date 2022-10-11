@@ -1,6 +1,5 @@
 package com.example.area.data
 
-import android.widget.Toast
 import com.example.area.R
 import com.example.area.model.AreaInfo
 
@@ -21,9 +20,6 @@ class Datasource {
         })
     }
     fun loadAreaInfo(): List<AreaInfo> {
-        // Get action/reactions from back
-        // Parse to set services images, action id and reaction id
-        // Concat with the existing list
         return areaList
     }
 }

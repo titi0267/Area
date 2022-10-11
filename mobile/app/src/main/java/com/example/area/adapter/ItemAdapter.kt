@@ -29,7 +29,6 @@ class ItemAdapter(private val context: Context, private val dataset: List<AreaIn
         adapterLayout.findViewById<TextView>(R.id.actionItemText).text = dataset[test].actionStr
         adapterLayout.findViewById<TextView>(R.id.reactionItemText).text = dataset[test].reactionStr
         adapterLayout.findViewById<ImageView>(R.id.leftLogo).setImageResource((dataset[test].actionService))
-        Toast.makeText(parent.context, "Help${parent.id}", Toast.LENGTH_SHORT).show()
         adapterLayout.findViewById<ImageView>(R.id.rightLogo).setImageResource((dataset[test].reactionService))
         test++
 

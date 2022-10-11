@@ -3,22 +3,16 @@ package com.example.area
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.area.adapter.ItemAdapter
 import com.example.area.data.Datasource
-import com.example.area.model.GetUserAreaList
 import com.example.area.model.ActionReaction
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
-import com.example.area.utils.urlParser
-import javax.sql.DataSource
 
 class AreaListActivity : AppCompatActivity() {
 
@@ -52,7 +46,7 @@ class AreaListActivity : AppCompatActivity() {
                 val jsonArray: List<ActionReaction> = response.body()!!
                 myDataSet.clear()
                 for (item in jsonArray) {
-                    myDataSet.addArea(item.actionServiceId, item.reactionServiceId, "Hello", "World")
+                    myDataSet.addArea(item.actionServiceId, item.reactionServiceId, item.actionId.toString(), item.reactionId.toString())
                 }
                 recycler.adapter = ItemAdapter(this, myDataSet.loadAreaInfo()) { position -> onItemClick(position) }
                 recycler.setHasFixedSize(true)
@@ -66,7 +60,7 @@ class AreaListActivity : AppCompatActivity() {
                     val jsonArray: List<ActionReaction> = response.body()!!
                     myDataSet.clear()
                     for (item in jsonArray) {
-                        myDataSet.addArea(item.actionServiceId, item.reactionServiceId, "Hello", "World")
+                        myDataSet.addArea(item.actionServiceId, item.reactionServiceId, item.actionId.toString(), item.reactionId.toString())
                     }
                     recycler.adapter = ItemAdapter(this, myDataSet.loadAreaInfo()) { position -> onItemClick(position) }
                     recycler.setHasFixedSize(true)
@@ -75,6 +69,6 @@ class AreaListActivity : AppCompatActivity() {
         }
     }
     private fun onItemClick(position: Int) {
-        startActivity(Intent(applicationContext, AreaListItemActivity::class.java))
+        //startActivity(Intent(applicationContext, AreaListItemActivity::class.java))
     }
 }

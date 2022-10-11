@@ -50,6 +50,7 @@ class AreaListActivity : AppCompatActivity() {
         viewModel.userResponse2.observe(this, Observer { response ->
             if (response.isSuccessful) {
                 val jsonArray: List<ActionReaction> = response.body()!!
+                myDataSet.clear()
                 for (item in jsonArray) {
                     myDataSet.addArea(item.actionServiceId, item.reactionServiceId, "Hello", "World")
                 }
@@ -63,6 +64,7 @@ class AreaListActivity : AppCompatActivity() {
             viewModel.userResponse2.observe(this, Observer { response ->
                 if (response.isSuccessful) {
                     val jsonArray: List<ActionReaction> = response.body()!!
+                    myDataSet.clear()
                     for (item in jsonArray) {
                         myDataSet.addArea(item.actionServiceId, item.reactionServiceId, "Hello", "World")
                     }

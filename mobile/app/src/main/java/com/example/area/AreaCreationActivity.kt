@@ -36,7 +36,7 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         val viewModelFactory = MainViewModelFactory(rep)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         findViewById<Button>(R.id.areaRealCreationButton).setOnClickListener {
-            viewModel.areaCreation(AREAFields(1, 1, 2, "oyKmeW2Kldc", 3, 1, "Nouveau like!"))
+            viewModel.areaCreation(sessionManager.fetchAuthToken("user_token")!!, AREAFields(1, 1, 2, "oyKmeW2Kldc", 3, 1, "Nouveau like!"))
             viewModel.userResponse.observe(this, Observer { response ->
                 Toast.makeText(this, response.code().toString(), Toast.LENGTH_SHORT).show()
                 if (response.isSuccessful) {

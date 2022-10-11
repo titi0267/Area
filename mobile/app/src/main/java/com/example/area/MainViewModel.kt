@@ -38,9 +38,9 @@ class MainViewModel(private val repository: Repository):ViewModel() {
             userResponse2.value = response
         }
     }
-    fun areaCreation(areaFields: AREAFields) {
+    fun areaCreation(auth:String, areaFields: AREAFields) {
         viewModelScope.launch {
-            val response = repository.areaCreation(areaFields)
+            val response = repository.areaCreation(auth, areaFields)
             userResponse.value = response
         }
     }

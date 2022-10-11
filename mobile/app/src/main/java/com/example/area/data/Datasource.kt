@@ -4,7 +4,7 @@ import com.example.area.R
 import com.example.area.model.AreaInfo
 
 class Datasource {
-    private var areaList:List<AreaInfo> = ArrayList()
+    private var areaList:MutableList<AreaInfo> = ArrayList()
     fun addArea(actionId: Int, reactionId: Int, action: String, reaction: String) {
         areaList += (AreaInfo(getItemLogo(actionId), action, getItemLogo(reactionId), reaction))
     }
@@ -19,7 +19,10 @@ class Datasource {
             else -> 0
         })
     }
-    fun loadAreaInfo(): List<AreaInfo> {
+    fun clear() {
+        areaList.clear()
+    }
+    fun loadAreaInfo(): MutableList<AreaInfo> {
         return areaList
     }
 }

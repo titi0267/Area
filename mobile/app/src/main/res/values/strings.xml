@@ -4,6 +4,7 @@
     <string name="back_button">Back</string>
 
     <string name="register_request">Register</string>
+    <string name="login_request">Login</string>
     <string name="register_first_name_field_hint">First name</string>
     <string name="register_last_name_field_hint">Last name</string>
     <string name="register_email_field_hint">Email</string>

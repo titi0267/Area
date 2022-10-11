@@ -52,7 +52,7 @@ class AreaListActivity : AppCompatActivity() {
                 val jsonArray: List<ActionReaction> = response.body()!!
                 myDataSet.clear()
                 for (item in jsonArray) {
-                    myDataSet.addArea(item.actionServiceId, item.reactionServiceId, "Hello", "World")
+                    myDataSet.addArea(item.actionServiceId, item.reactionServiceId, item.actionId.toString(), item.reactionId.toString())
                 }
                 recycler.adapter = ItemAdapter(this, myDataSet.loadAreaInfo()) { position -> onItemClick(position) }
                 recycler.setHasFixedSize(true)
@@ -66,7 +66,7 @@ class AreaListActivity : AppCompatActivity() {
                     val jsonArray: List<ActionReaction> = response.body()!!
                     myDataSet.clear()
                     for (item in jsonArray) {
-                        myDataSet.addArea(item.actionServiceId, item.reactionServiceId, "Hello", "World")
+                        myDataSet.addArea(item.actionServiceId, item.reactionServiceId, item.actionId.toString(), item.reactionId.toString())
                     }
                     recycler.adapter = ItemAdapter(this, myDataSet.loadAreaInfo()) { position -> onItemClick(position) }
                     recycler.setHasFixedSize(true)
@@ -75,6 +75,6 @@ class AreaListActivity : AppCompatActivity() {
         }
     }
     private fun onItemClick(position: Int) {
-        startActivity(Intent(applicationContext, AreaListItemActivity::class.java))
+        //startActivity(Intent(applicationContext, AreaListItemActivity::class.java))
     }
 }

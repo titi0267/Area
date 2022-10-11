@@ -6,7 +6,7 @@ import com.example.area.model.AreaInfo
 class Datasource {
     private var areaList:MutableList<AreaInfo> = ArrayList()
     fun addArea(actionId: Int, reactionId: Int, action: String, reaction: String) {
-        areaList += (AreaInfo(getItemLogo(actionId), action, getItemLogo(reactionId), reaction))
+        areaList += (AreaInfo(getItemLogo(actionId-1), action, getItemLogo(reactionId-1), reaction))
     }
     private fun getItemLogo(logoToFind: Int): Int {
         return (when (logoToFind) {

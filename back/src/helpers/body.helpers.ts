@@ -42,8 +42,7 @@ const checkAreaBody = (body: RawAreaBody): FormatedAreaBody => {
     !body.actionServiceId ||
     !body.reactionServiceId ||
     !body.reactionId ||
-    !body.reactionParam ||
-    !body.userId
+    !body.reactionParam
   ) {
     throw new ClientError({
       name: "Missing element",
@@ -57,14 +56,12 @@ const checkAreaBody = (body: RawAreaBody): FormatedAreaBody => {
   const actionId = parseInt(body.actionId);
   const reactionServiceId = parseInt(body.reactionServiceId);
   const reactionId = parseInt(body.reactionId);
-  const userId = parseInt(body.userId);
 
   if (
     Number.isNaN(actionServiceId) ||
     Number.isNaN(actionId) ||
     Number.isNaN(reactionId) ||
-    Number.isNaN(reactionServiceId) ||
-    Number.isNaN(userId)
+    Number.isNaN(reactionServiceId)
   ) {
     throw new ClientError({
       name: "Id not a int",
@@ -88,7 +85,6 @@ const checkAreaBody = (body: RawAreaBody): FormatedAreaBody => {
     reactionServiceId,
     reactionId,
     reactionParam: body.reactionParam,
-    userId,
   };
 };
 

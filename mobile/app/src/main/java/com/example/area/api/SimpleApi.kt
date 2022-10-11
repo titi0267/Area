@@ -1,5 +1,10 @@
 package com.example.area.api
 
+import com.example.area.model.AREAFields
+import com.example.area.model.LoginFields
+import com.example.area.model.RegisterFields
+import com.example.area.model.Token
+import com.example.area.model.about.About
 import com.example.area.model.*
 import retrofit2.Response
 import retrofit2.http.Body
@@ -19,4 +24,7 @@ interface SimpleApi {
 
     @POST("areas")
     suspend fun createArea(@Body post: AREAFields): Response<Token>
+
+    @GET("about.json")
+    suspend fun getAboutJson(): Response<About>
 }

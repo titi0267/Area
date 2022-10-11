@@ -23,7 +23,7 @@ interface SimpleApi {
     suspend fun getUserAreaList(@Header("Authorization") auth: String): Response<List<ActionReaction>>
 
     @POST("areas")
-    suspend fun createArea(@Body post: AREAFields): Response<Token>
+    suspend fun createArea(@Header("Authorization") auth: String, @Body post: AREAFields): Response<Token>
 
     @GET("about.json")
     suspend fun getAboutJson(): Response<About>

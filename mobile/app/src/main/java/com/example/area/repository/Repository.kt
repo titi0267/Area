@@ -17,8 +17,8 @@ class Repository(private val URL_INPUT : String) {
     suspend fun getUserAreaList(auth: String): Response<List<ActionReaction>> {
         return RetrofitInstance(URL_INPUT).api.getUserAreaList(auth)
     }
-    suspend fun areaCreation(areaFields: AREAFields) : Response<Token> {
-        return RetrofitInstance(URL_INPUT).api.createArea(areaFields)
+    suspend fun areaCreation(auth: String, areaFields: AREAFields) : Response<Token> {
+        return RetrofitInstance(URL_INPUT).api.createArea(auth, areaFields)
     }
     suspend fun getAboutJson() : Response<About> {
         return RetrofitInstance(URL_INPUT).api.getAboutJson()

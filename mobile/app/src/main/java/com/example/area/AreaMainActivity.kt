@@ -15,12 +15,6 @@ class AreaMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_area_main)
         findViewById<FloatingActionButton>(R.id.profileButton).setOnClickListener {
-            if (getAboutJson(this, this, this) == null) {
-                Log.d("Woohoo", "NULL")
-            }
-            else {
-            Log.d("Woohoo", getAboutJson(this, this, this)!!.toString());
-        }
             startActivity(
             Intent(applicationContext, ProfilePageActivity::class.java)
         ) }

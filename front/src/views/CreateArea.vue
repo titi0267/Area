@@ -4,86 +4,75 @@
     <div class="hl"></div>
     <div class="action">
       <h2 class="actionText">Action</h2>
-      <b-button>{{ service[idAction].text }}</b-button>
-      <div>
-        <b-button style="is-primary" @click="getChosenServiceActionById(1)"
-          >Twitter</b-button
-        >
-        <b-button style="is-primary" @click="getChosenServiceActionById(2)"
-          >Youtube</b-button
-        >
-        <b-button style="is-primary" @click="getChosenServiceActionById(3)"
-          >Github</b-button
-        >
-        <b-button style="is-primary" @click="getChosenServiceActionById(4)"
-          >Discord</b-button
-        >
-        <b-button style="is-primary" @click="getChosenServiceActionById(5)"
-          >Trello</b-button
-        >
-        <b-button style="is-primary" @click="getChosenServiceActionById(6)"
-          >Spotify</b-button
-        >
-      </div>
+      <SelectServices
+        type="actions"
+        :services="services"
+        @actionParam="actionParam = $event"
+        @actionId="actionId = $event"
+        @actionServiceId="actionServiceId = $event"
+      />
     </div>
     <div class="vl"></div>
     <div class="reaction">
       <h2 class="reactionText">Reaction</h2>
-      <b-button>{{ service[idReaction].text }}</b-button>
-      <div>
-        <b-button style="is-primary" @click="getChosenServiceReactionById(1)"
-          >Twitter</b-button
-        >
-        <b-button style="is-primary" @click="getChosenServiceReactionById(2)"
-          >Youtube</b-button
-        >
-        <b-button style="is-primary" @click="getChosenServiceReactionById(3)"
-          >Github</b-button
-        >
-        <b-button style="is-primary" @click="getChosenServiceReactionById(4)"
-          >Discord</b-button
-        >
-        <b-button style="is-primary" @click="getChosenServiceReactionById(5)"
-          >Trello</b-button
-        >
-        <b-button style="is-primary" @click="getChosenServiceReactionById(6)"
-          >Spotify</b-button
-        >
-      </div>
+      <SelectServices
+        type="reactions"
+        :services="services"
+        @reactionParam="reactionParam = $event"
+        @reactionId="reactionId = $event"
+        @reactionServiceId="reactionServiceId = $event"
+      />
+    </div>
+    <div style="position: absolute; top: 0px">
+      <b-button @click="sendServices()">Create AREA</b-button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { text } from "@fortawesome/fontawesome-svg-core";
 import vue from "vue";
+import SelectServices from "../components/SelectServices.vue";
 
 export default vue.extend({
   data() {
     return {
-      service: [
-        { text: "Choose your service", id: 0 },
-        { text: "Connect to Twitter", id: 1 },
-        { text: "Connect to Youtube", id: 2 },
-        { text: "Connect to Github", id: 3 },
-        { text: "Connect to Discord", id: 4 },
-        { text: "Connect to Trello", id: 5 },
-        { text: "Connect to Spotify", id: 6 },
-      ],
-      button: {
-        text: "Hide",
-      },
-      idAction: 0,
-      idReaction: 0,
+      services: [],
+      actionServiceId: -1,
+      actionId: -1,
+      actionParam: "",
+      reactionServiceId: -1,
+      reactionId: -1,
+      reactionParam: "",
     };
   },
-  components: {},
+  mounted() {
+    this.getServices();
+  },
+  components: {
+    SelectServices,
+  },
   methods: {
-    async getChosenServiceActionById(serviceId: number) {
-      this.idAction = serviceId;
+    async sendServices() {
+      try {
+        await this.$axios.post("/areas", {
+          actionServiceId: this.actionServiceId,
+          actionId: this.actionId,
+          actionParam: this.actionParam,
+          reactionServiceId: this.reactionServiceId,
+          reactionId: this.reactionId,
+          reactionParam: this.reactionParam,
+        });
+      } catch (err) {
+        console.log(err);
+      }
     },
-    async getChosenServiceReactionById(serviceId: number) {
-      this.idReaction = serviceId;
+    async getServices() {
+      try {
+        let { data: services } = await this.$axios.get("/about.json");
+        this.services = services.server.services;
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 });

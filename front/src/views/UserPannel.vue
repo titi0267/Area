@@ -4,18 +4,15 @@
         <router-link to="/create-area">
             <b-button style="is-primary">Create</b-button>
         </router-link>
-        <div v-for="area in areas" :key="area['id'] + area['actionService']" class="box">
+        <div v-for="area in areas" :key="area.actionParam" class="box">
             <div class="action">
-                {{ area['actionService'] }}
-                {{ area['action'] }}
+                <p>{{ services.find(service => service.id == area.actionServiceId).name }}</p>
+                <!-- <p>{{ (services.find(service => service.id == area.actionId)).find(action => action.id == area.actionId) }}</p> -->
             </div>
             <div class="reaction">
-                {{ area['reactionService'] }}
-                {{ area['reaction'] }}
+                <p>{{ services.find(service => service.id == area.reactionServiceId).name }}</p>
+                <!-- <p>{{ (services.find(service => service.id == area.reactionId)).find(reaction => reaction.id == area.reactionId) }}</p> -->
             </div>
-        </div>
-        <div class="box">
-
         </div>
     </div>
 </template>
@@ -26,28 +23,34 @@ import vue from 'vue';
 export default vue.extend({
     data() {
         return {
-            areas: {},
+            areas: [],
+            services: [],
         }
     },
-    mounted() {9
+    mounted() {
         this.getUserAreas();
+        this.getServices();
     },
     components: {
 
     },
     methods: {
-        getUserAreas() {
+        async getUserAreas() {
             try {
-                let { data: resp } = this.$axios.get('/users/areas', {
-                    headers: {
-                        Authorization: this.$store.getters.userToken,
-                    },
-                })
+                let { data: resp } = await this.$axios.get('/users/areas')
                 this.areas = resp;
             } catch (err) {
                 console.log(err);
             }
-        }
+        },
+        async getServices() {
+            try {
+                let { data: services } = await this.$axios.get("/about.json");
+                this.services = services.server.services;
+            } catch (err) {
+                console.log(err);
+            }
+        },
     }
 })
 </script>

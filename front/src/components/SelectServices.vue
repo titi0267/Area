@@ -1,13 +1,13 @@
 <template>
   <div>
     <div>
-      <p>
+      <b-button>
         {{
-          currentSelectedService.length == 0
+          currentSelectedService.name.length == 0
             ? "Choose a service"
-            : currentSelectedService.name
+            : "Connect to " + currentSelectedService.name
         }}
-      </p>
+      </b-button>
     </div>
     <div v-for="service in services" :key="service.name">
       <div v-if="!serviceTypeStatus && service[type].length != 0">

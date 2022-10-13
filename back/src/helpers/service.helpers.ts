@@ -12,16 +12,16 @@ const rejectInvalidArea = (
     service => service.id === actionServiceId,
   );
 
-  const doesActionExist = SERVICES.find(service =>
-    service.actions.find(action => action.id === actionId),
+  const doesActionExist = doesActionServiceExist?.actions.find(
+    action => action.id === actionId,
   );
 
   const doesReactionServiceExist = SERVICES.find(
     service => service.id === reactionServiceId,
   );
 
-  const doesReactionExist = SERVICES.find(service =>
-    service.reactions.find(reaction => reaction.id === reactionId),
+  const doesReactionExist = doesReactionServiceExist?.reactions.find(
+    reaction => reaction.id === reactionId,
   );
 
   if (

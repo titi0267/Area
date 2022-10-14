@@ -11,22 +11,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.area.data.Datasource
 import com.example.area.model.AREAFields
 import com.example.area.repository.Repository
+import com.example.area.utils.AboutJsonCreator
 import com.example.area.utils.SessionManager
 
 class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private lateinit var viewModel: MainViewModel
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         val sessionManager = SessionManager(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_area_creation)
-        val serviceList = arrayOf("Youtube", "Twitter", "Trello", "Discord", "Github", "Spotify")
+            val serviceList = arrayOf<String>("", "")
+        
         val actServSpi = findViewById<Spinner>(R.id.actionServiceSpinner)
         val reactServSpi = findViewById<Spinner>(R.id.reactionServiceSpinner)
         findViewById<Button>(R.id.backFromCreationButton).setOnClickListener { startActivity(Intent(applicationContext, AreaListActivity::class.java)) }
@@ -36,7 +35,7 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         val viewModelFactory = MainViewModelFactory(rep)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         findViewById<Button>(R.id.areaRealCreationButton).setOnClickListener {
-            viewModel.areaCreation(sessionManager.fetchAuthToken("user_token")!!, AREAFields(1, 1, 2, "oyKmeW2Kldc", 3, 1, "Nouveau like!"))
+            viewModel.areaCreation(sessionManager.fetchAuthToken("user_token")!!, AREAFields(1, 1, 2, "yY1vTll0O1w", 3, 1, "Nouveau like!"))
             viewModel.userResponse.observe(this, Observer { response ->
                 if (response.isSuccessful) {
                     Toast.makeText(this, "Area added successfully!", Toast.LENGTH_SHORT).show()

@@ -7,6 +7,7 @@
       <SelectServices
         type="actions"
         :services="services"
+        :url="url"
         @actionParam="actionParam = $event"
         @actionId="actionId = $event"
         @actionServiceId="actionServiceId = $event"
@@ -43,6 +44,7 @@ export default vue.extend({
       reactionServiceId: -1,
       reactionId: -1,
       reactionParam: "",
+      url: process.env.VUE_APP_GOOGLE_URL,
     };
   },
   mounted() {

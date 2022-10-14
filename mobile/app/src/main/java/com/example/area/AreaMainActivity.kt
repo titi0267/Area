@@ -2,12 +2,8 @@ package com.example.area
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.util.Log.DEBUG
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.example.area.BuildConfig.DEBUG
-import com.example.area.utils.getAboutJson
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AreaMainActivity : AppCompatActivity() {

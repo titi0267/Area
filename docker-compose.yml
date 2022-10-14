@@ -13,12 +13,13 @@ services:
   back:
     build: ./back
     ports:
-      - "3000:3000"
+      - "8080:8080"
     depends_on:
       - db
     environment:
+      - CLIENT_PORT=8081
       - DATABASE_URL=mysql://root:password@db:3306/dev
-      - PORT=3000
+      - PORT=8080
       - SECRET=azertyuiop
       - YOUTUBE_API_TOKEN=AIzaSyD01AUjRv9uBgYpv0B9hO4QDLRPz0RH7dQ
       - DISCORD_BOT_TOKEN=MTAyNzk3ODUyMzk0NTczMDE3MA.Gkyfi3.LFSKhp8TyPxo5dS49FJQ0il5bGfCUB-AvRlpEY
@@ -26,11 +27,11 @@ services:
     build: ./front
     environment:
       - VUE_APP_URL=localhost
-      - VUE_APP_PORT=3000
+      - VUE_APP_PORT=8080
     volumes:
       - ./front/src:/usr/vue_app/
       - /usr/vue_app/node_modules
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
       - back

@@ -1,23 +1,11 @@
-export interface RawRegisterBody {
-  firstName: string | undefined;
-  lastName: string | undefined;
-  email: string | undefined;
-  password: string | undefined;
-}
-
-export interface FormatedRegisterBody {
+export interface RegisterBody {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
 }
 
-export interface RawLoginBody {
-  email: string | undefined;
-  password: string | undefined;
-}
-
-export interface FormatedLoginBody {
+export interface LoginBody {
   email: string;
   password: string;
 }

@@ -2,6 +2,8 @@ import { PrismaClient, Area, User } from "@prisma/client";
 import ClientError from "../error";
 import httpStatus from "http-status";
 
+import * as ServiceHelper from "../helpers/service.helpers";
+
 const prisma = new PrismaClient();
 
 const createArea = async (
@@ -13,6 +15,13 @@ const createArea = async (
   reactionParam: string,
   userId: number,
 ): Promise<Area> => {
+  ServiceHelper.rejectInvalidArea(
+    actionServiceId,
+    actionId,
+    reactionServiceId,
+    reactionId,
+  );
+
   const doesUserExist = await prisma.user.findUnique({
     where: { id: userId },
   });

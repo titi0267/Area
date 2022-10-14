@@ -4,13 +4,14 @@ import { FastifyPluginOptions } from "fastify/types/plugin";
 import { FastifyPluginDoneFunction } from "../types/global.types";
 import { AreaService } from "../services";
 import httpStatus from "http-status";
-import { RawAreaBody } from "../types/body/areaRequestBody.types";
-import * as BodyHelper from "../helpers/body.helpers";
+import { AreaBody } from "../types/body/areaRequestBody.types";
 import * as SecurityHelper from "../helpers/security.helper";
 import authentificationMiddleware from "../middlewares/authentification.middleware";
+import { areaBodyValidator } from "../shema/area.schema";
+import { throwBodyError } from "../helpers/error.helpers";
 
 type AreaRequest = FastifyRequest<{
-  Body: RawAreaBody;
+  Body: AreaBody;
 }>;
 
 export default (
@@ -23,14 +24,15 @@ export default (
     { onRequest: [authentificationMiddleware()] },
     async (req: AreaRequest, res: FastifyReply) => {
       const userInfos = SecurityHelper.getUserInfos(req);
-      const formatedBody = BodyHelper.checkAreaBody(req.body);
+      if (!areaBodyValidator(req.body)) throwBodyError();
+
       const areas = await AreaService.createArea(
-        formatedBody.actionServiceId,
-        formatedBody.actionId,
-        formatedBody.actionParam,
-        formatedBody.reactionServiceId,
-        formatedBody.reactionId,
-        formatedBody.reactionParam,
+        req.body.actionServiceId,
+        req.body.actionId,
+        req.body.actionParam,
+        req.body.reactionServiceId,
+        req.body.reactionId,
+        req.body.reactionParam,
         userInfos.id,
       );
       res.status(httpStatus.OK).send(areas);

@@ -2,11 +2,11 @@
   <div>
     <div>
       <b-button>
-        {{
+        <a v-bind:href="getGoogleOAuthURL()">{{
           currentSelectedService.name.length == 0
             ? "Choose a service"
             : "Connect to " + currentSelectedService.name
-        }}
+        }}</a>
       </b-button>
     </div>
     <div v-for="service in services" :key="service.name">
@@ -54,6 +54,7 @@ export default vue.extend({
   props: {
     type: String,
     services: Array,
+    url: String,
   },
   data() {
     return {
@@ -97,6 +98,25 @@ export default vue.extend({
       } else {
         this.$emit("reactionParam", input);
       }
+    },
+    getGoogleOAuthURL() {
+      const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+
+      const options = {
+        redirect_uri: process.env.VUE_APP_GOOGLE_OAUTH_REDIRECT_URL as string,
+        client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID as string,
+        access_type: "offline",
+        response_type: "code",
+        prompt: "consent",
+        scope: [
+          "https://www.googleapis.com/auth/userinfo.profile",
+          "https://www.googleapis.com/auth/userinfo.email",
+        ].join(" "),
+      };
+
+      const qs = new URLSearchParams(options);
+
+      return `${rootUrl}?${qs.toString()}`;
     },
   },
 });

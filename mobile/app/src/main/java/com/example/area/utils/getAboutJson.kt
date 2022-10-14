@@ -29,6 +29,7 @@ class AboutJsonCreator() {
         return viewModel.aboutResponse.observe(lifecycleOwner, Observer { response ->
             if (response.isSuccessful) {
                 mutableResponse.value = response.body()!!.copy()
+                function()
             }
         })
     }

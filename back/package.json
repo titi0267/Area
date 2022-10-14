@@ -20,6 +20,7 @@
     "@fastify/cors": "^8.1.0",
     "@prisma/client": "^4.3.1",
     "@types/node": "^18.7.16",
+    "ajv": "^8.11.0",
     "bcrypt": "^5.0.1",
     "discord.js": "^14.5.0",
     "dotenv": "^16.0.2",

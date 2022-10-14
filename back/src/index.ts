@@ -29,7 +29,7 @@ const main = async () => {
 
   server.register(fastifyCors, {
     credentials: true,
-    origin: "http://localhost:8080",
+    origin: `http://localhost:${ENV.clientPort}`,
   });
 
   server.listen(

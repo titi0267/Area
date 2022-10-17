@@ -27,4 +27,6 @@
     <string name="not_logged_in_login_button_text">Log in</string>
     <string name="not_logged_in_register_button_text">Register</string>
     <string name="area_list_fetch_button">Refresh</string>
+    <string name="action_parameter">Action Parameter</string>
+    <string name="reaction_parameter">Reaction Parameter</string>
 </resources>

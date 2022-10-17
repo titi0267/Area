@@ -16,11 +16,14 @@ import com.example.area.model.about.About
 import com.example.area.repository.Repository
 import com.example.area.utils.AboutJsonCreator
 import com.example.area.utils.SessionManager
+import com.google.android.material.textfield.TextInputEditText
 
 class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private lateinit var viewModel: MainViewModel
     private var abt: About? = null
+    private var actionSpinnerValue = 0
+    private var reactionSpinnerValue = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sessionManager = SessionManager(this)
@@ -32,24 +35,35 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             var serviceList = arrayOf<String>()
             val actServSpi = findViewById<Spinner>(R.id.actionServiceSpinner)
             val reactServSpi = findViewById<Spinner>(R.id.reactionServiceSpinner)
-            Toast.makeText(this, "Got no about", Toast.LENGTH_SHORT).show()
             if (abt != null) {
-                Toast.makeText(this, "Got about", Toast.LENGTH_SHORT).show()
                 for (elem in abt!!.server.services) {
                     serviceList += elem.name
                 }
             }
             if (serviceList.isNotEmpty()) {
-                Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show()
                 actServSpi.adapter = ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, serviceList)
                 reactServSpi.adapter = ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, serviceList)
                 findViewById<Button>(R.id.areaRealCreationButton).setOnClickListener {
-                    viewModel.areaCreation(sessionManager.fetchAuthToken("user_token")!!, AREAFields(1, 1, 2, "yY1vTll0O1w", 3, 1, "Nouveau like!"))
-                    viewModel.userResponse.observe(this, Observer { response ->
-                        if (response.isSuccessful) {
-                            Toast.makeText(this, "Area added successfully!", Toast.LENGTH_SHORT).show()
-                        }
-                    })
+                    if (isCreatable()) {
+                        findViewById<Spinner>(R.id.actionSpinner).selectedItemPosition
+                        viewModel.areaCreation(sessionManager.fetchAuthToken(
+                            "user_token")!!, AREAFields(
+                            actServSpi.selectedItemPosition+1,
+                            actionSpinnerValue+1,
+                            findViewById<TextInputEditText>(R.id.actionParamtextInput).text.toString(),
+                            reactServSpi.selectedItemPosition+1,
+                            reactionSpinnerValue+1,
+                            findViewById<TextInputEditText>(R.id.reactionParamTextInput).text.toString()))
+                        viewModel.userResponse.observe(this, Observer { response ->
+                            Toast.makeText(this, response.code().toString(), Toast.LENGTH_SHORT).show()
+                            if (response.isSuccessful) {
+                                Toast.makeText(this, "Area added successfully!", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    }
+                    else {
+                        Toast.makeText(this, "Fields are incomplete, no area has been created!", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 actServSpi.onItemSelectedListener = this@AreaCreationActivity
                 reactServSpi.onItemSelectedListener = this@AreaCreationActivity
@@ -58,7 +72,13 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         findViewById<Button>(R.id.backFromCreationButton).setOnClickListener { startActivity(Intent(applicationContext, AreaListActivity::class.java)) }
         val rep = Repository(sessionManager.fetchAuthToken("url")!!)
         val viewModelFactory = MainViewModelFactory(rep)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+    }
+
+    private fun changeItems(): AdapterView.OnItemSelectedListener? {
+        actionSpinnerValue = findViewById<Spinner>(R.id.actionSpinner).selectedItemPosition
+        reactionSpinnerValue = findViewById<Spinner>(R.id.reactionSpinner).selectedItemPosition
+        return this
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -83,4 +103,22 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
     override fun onNothingSelected(p0: AdapterView<*>?) {
         TODO("Not yet implemented")
     }
+
+    private fun isCreatable(): Boolean {
+        val actionServiceSpinner = findViewById<Spinner>(R.id.actionServiceSpinner)
+        val actionsSpinner = findViewById<Spinner>(R.id.actionSpinner)
+        val actionTextInput = findViewById<TextInputEditText>(R.id.actionParamtextInput)
+        val reactionServiceSpinner = findViewById<Spinner>(R.id.reactionServiceSpinner)
+        val reactionsSpinner = findViewById<Spinner>(R.id.reactionSpinner)
+        val reactionTextInput = findViewById<TextInputEditText>(R.id.reactionParamTextInput)
+
+        if (actionServiceSpinner.selectedItem == null) return false
+        if (actionsSpinner.selectedItem == null) return false
+        if (actionTextInput.text?.isEmpty() == true) return false
+        if (reactionServiceSpinner.selectedItem == null) return false
+        if (reactionsSpinner.selectedItem == null) return false
+        if (reactionTextInput.text?.isEmpty() == true) return false
+        return true
+    }
+
 }

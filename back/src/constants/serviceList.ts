@@ -49,4 +49,23 @@ export const SERVICES: Service[] = [
       },
     ],
   },
+  {
+    id: 1,
+    serviceName: "Spotify",
+    actions: [
+      {
+        id: 1,
+        actionName: "Test spotify",
+        actionParamName: "Channel Name",
+        fct: YoutubeActions.checkUploadedVideo,
+      },
+      {
+        id: 2,
+        actionName: "NewLikeOnAVideo",
+        actionParamName: "Video Id",
+        fct: YoutubeActions.checkVideoLike,
+      },
+    ],
+    reactions: [],
+  },
 ];

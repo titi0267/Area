@@ -3,7 +3,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import NotFound from "../views/NotFound.vue";
-import UserPannel from "../views/UserPannel.vue";
+import Home from "../views/Home.vue";
 import CreateArea from "../views/CreateArea.vue";
 import axios from "../axiosInstance";
 import store from "../store";
@@ -27,9 +27,9 @@ const router = new VueRouter({
             meta: { requiresAuth: false }
         },
         {
-            path: '/user-pannel',
-            name: 'userPannel',
-            component: UserPannel,
+            path: '/home',
+            name: 'home',
+            component: Home,
             meta: { requiresAuth: true }
         },
         {
@@ -61,6 +61,7 @@ router.beforeEach(async (to, from, next) => {
             router.push("login");
         try {
             await axios.get('/users/areas')
+            // router.push("home");
             next();
         } catch (err) {
             router.push("login");

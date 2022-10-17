@@ -74,7 +74,7 @@ export default vue.extend({
                 })
                 localStorage.setItem('usr-token', resp.token);
                 this.$store.commit('updateToken', resp.token);
-                this.$router.push('/user-pannel');
+                this.$router.push('/home');
             } catch (err) {
                 if (err && err.reponse && err.response.data.statusCode == 400)
                     console.log("E-mail already taken...");

@@ -1,6 +1,6 @@
 <template>
-    <div id="userPannel">
-        <h3>User Pannel</h3>
+    <div id="home">
+        <h3>Home</h3>
         <router-link to="/create-area">
             <b-button style="is-primary">Create</b-button>
         </router-link>

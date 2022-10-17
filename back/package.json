@@ -37,6 +37,7 @@
     "ts-jest": "^29.0.0",
     "ts-node": "^10.9.1",
     "tsc-watch": "^5.0.3",
+    "twitter-api-sdk": "^1.2.0",
     "twitter-api-v2": "^1.12.7"
   },
   "devDependencies": {

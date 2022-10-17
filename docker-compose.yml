@@ -28,10 +28,12 @@ services:
     environment:
       - VUE_APP_URL=localhost
       - VUE_APP_PORT=8080
+      - VUE_APP_GOOGLE_OAUTH_REDIRECT_URL=http://localhost:8080/oauth/google
+      - VUE_APP_GOOGLE_CLIENT_ID=715808628294-14als5l06v03slmfgq9droug4i97pi0b.apps.googleusercontent.com
     volumes:
       - ./front/src:/usr/vue_app/
       - /usr/vue_app/node_modules
     ports:
-      - "8081:8081"
+      - "8081:80"
     depends_on:
       - back

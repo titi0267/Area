@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve --port 8081",
     "build": "vue-cli-service build",
-    "watch:client": "vue-cli-service build --watch"
+    "watch:client": "vue-cli-service build --watch --port 8081"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.0",

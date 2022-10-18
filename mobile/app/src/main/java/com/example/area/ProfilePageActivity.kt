@@ -8,9 +8,11 @@ import com.example.area.utils.SessionManager
 
 class ProfilePageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val sessionManager = SessionManager(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+
+        //Button management
+        val sessionManager = SessionManager(this)
         findViewById<Button>(R.id.backButton).setOnClickListener {
             startActivity(
                 Intent(
@@ -21,7 +23,12 @@ class ProfilePageActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.profileLogoutButton).setOnClickListener {
             sessionManager.removeAuthToken("user_token");
-            startActivity(Intent(applicationContext, MainActivity::class.java))
+            startActivity(
+                Intent(
+                    applicationContext,
+                    MainActivity::class.java
+                )
+            )
         }
     }
 }

@@ -6,7 +6,7 @@ import { TokenBody } from "../types/body/tokenRequestBody.types";
 import * as ErrorHelper from "../helpers/error.helpers";
 import { TokenService } from "../services/";
 import httpStatus from "http-status";
-import { tokenBodyValidator } from "../shema/token.shema";
+import { tokenBodyValidator } from "../schema/token.schema";
 
 type TokenRequest = FastifyRequest<{
   Body: TokenBody;

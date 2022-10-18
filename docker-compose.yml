@@ -3,13 +3,10 @@ services:
   db:
     image: mariadb:10
     restart: always
-    environment:
-      - MYSQL_DATABASE=dev
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
-      - MYSQL_ROOT_PASSWORD=password
+    env_file:
+      - ./docker.env
     ports:
-      - "33060:3306"
+      - "33061:3306"
   back:
     build: ./back
     ports:
@@ -17,11 +14,11 @@ services:
     depends_on:
       - db
     env_file:
-      - ./back/docker.env
+      - ./docker.env
   front:
     build: ./front
     env_file:
-      - ./front/docker.env
+      - ./docker.env
 
     volumes:
       - ./front/src:/usr/vue_app/

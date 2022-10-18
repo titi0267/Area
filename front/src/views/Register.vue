@@ -70,7 +70,7 @@ export default vue.extend({
                     'firstName': this.register.firstName,
                     'lastName': this.register.lastName,
                     'email': this.register.email,
-                    'password': this.register.password
+                    'password': this.register.password,
                 })
                 localStorage.setItem('usr-token', resp.token);
                 this.$store.commit('updateToken', resp.token);

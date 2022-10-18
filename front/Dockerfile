@@ -10,5 +10,5 @@ RUN npm install @fortawesome/fontawesome-svg-core
 COPY . .
 RUN npm run build
 
-EXPOSE 80
-CMD ["npx", "serve", "-s", "-l", "tcp://0.0.0.0:80", "/vue_app/dist"]
+EXPOSE 8081
+CMD ["npx", "serve", "-s", "-l", "tcp://0.0.0.0:8081", "/vue_app/dist"]

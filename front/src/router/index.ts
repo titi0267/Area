@@ -33,15 +33,39 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
-            path: '/create-area',
+            path: '/create-tmp', // <-- C'est temporaire /!\
             name: 'createArea',
             component: CreateArea,
             meta: { requiresAuth: true }
         },
         {
+            path: '/choose-action-service',
+            name: 'chooseActionService',
+            // component: ,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/choose-reaction-service',
+            name: 'chooseReactionService',
+            // component: ,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/choose-action',
+            name: 'chooseAction',
+            // component: ,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/choose-reaction',
+            name: 'chooseReaction',
+            // component: ,
+            meta: { requiresAuth: true }
+        },
+        {
             path: '/',
-            redirect: '/user-pannel',
-            meta: { requiresAuth: false }
+            redirect: '/home',
+            meta: { requiresAuth: true }
         },
         {
             path: '/:pathMatch(.*)*',
@@ -57,12 +81,16 @@ router.beforeEach(async (to, from, next) => {
     if (usrToken != null)
         store.commit('updateToken', usrToken)
     if (to.meta && to.meta.requiresAuth == true) {
-        if (usrToken === null)
+        if (usrToken === null) {
             router.push("login");
+            return;
+        }
         try {
-            await axios.get('/users/areas')
-            // router.push("home");
-            next();
+            await axios.get('/users/areas', {
+                headers: {
+                    Authorization: usrToken,
+                }
+            })
         } catch (err) {
             router.push("login");
         }

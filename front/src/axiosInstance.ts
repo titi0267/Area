@@ -9,7 +9,7 @@ const axios_instance = axios.create({
     "Access-Control-Allow-Origin": "http://localhost:8081",
     Accept: "application/json",
     "Content-Type": "application/json",
-    Authorization: localStorage.getItem("usr-token") || "noToken",
+    Authorization: store.getters.userToken || localStorage.getItem("usr-token") || "noToken",
   },
 });
 

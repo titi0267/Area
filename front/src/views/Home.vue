@@ -1,17 +1,17 @@
 <template>
     <div id="home">
         <h3>Home</h3>
-        <router-link to="/create-area">
+        <router-link to="/create-tmp">
             <b-button style="is-primary">Create</b-button>
         </router-link>
         <div v-for="area in areas" :key="area.actionParam" class="box">
-            <div class="action">
-                <p>{{ services.find(service => service.id == area.actionServiceId).name }}</p>
-                <!-- <p>{{ (services.find(service => service.id == area.actionId)).find(action => action.id == area.actionId) }}</p> -->
+            <div class="action" v-if="getActionObject(area)">
+                <p> {{ getActionObject(area).name }} </p>
+                <p> {{ getActionObject(area).actions.find(action => action.id == area.actionId).name }} </p>
             </div>
-            <div class="reaction">
-                <p>{{ services.find(service => service.id == area.reactionServiceId).name }}</p>
-                <!-- <p>{{ (services.find(service => service.id == area.reactionId)).find(reaction => reaction.id == area.reactionId) }}</p> -->
+            <div class="reaction" v-if="getReactionObject(area)">
+                <p> {{ getReactionObject(area).name }} </p>
+                <p> {{ getReactionObject(area).reactions.find(reaction => reaction.id == area.reactionId).name }} </p>
             </div>
         </div>
     </div>
@@ -35,6 +35,14 @@ export default vue.extend({
 
     },
     methods: {
+        getActionObject(area) {
+            let result = this.services.find(service => service.id == area.actionServiceId)
+            return result;
+        },
+        getReactionObject(area) {
+            let result = this.services.find(service => service.id == area.reactionServiceId)
+            return result;
+        },
         async getUserAreas() {
             try {
                 let { data: resp } = await this.$axios.get('/users/areas')
@@ -58,7 +66,7 @@ export default vue.extend({
 <style lang="scss">
 .box {
     width: 100%;
-    height: 30px;
+    height: 50px;
     border: 1px solid black;
 }
 </style>

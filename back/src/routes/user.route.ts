@@ -7,7 +7,10 @@ import * as SecurityHelper from "../helpers/security.helper";
 import { FastifyPluginDoneFunction } from "../types/global.types";
 import { LoginBody, RegisterBody } from "../types/body/userRequestBody.types";
 import authentificationMiddleware from "../middlewares/authentification.middleware";
-import { loginBodyValidator, registerBodyValidator } from "../shema/user.shema";
+import {
+  loginBodyValidator,
+  registerBodyValidator,
+} from "../schema/user.schema";
 import { throwBodyError } from "../helpers/error.helpers";
 
 type RegisterRequest = FastifyRequest<{

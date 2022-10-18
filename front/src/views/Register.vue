@@ -40,7 +40,6 @@ export default vue.extend({
                 confirmPassword: ""
             },
             samePassword: false,
-            debounce: 0,
         }
     },
     components: {

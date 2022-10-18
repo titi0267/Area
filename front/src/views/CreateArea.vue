@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import vue from "vue";
-import SelectServices from "../components/SelectServices.vue";
+import SelectServices from "../components/OldSelectServices.vue";
 
 export default vue.extend({
   data() {

@@ -1,7 +1,7 @@
 <template>
     <div id="home">
         <h3>Home</h3>
-        <router-link to="/create-tmp">
+        <router-link to="/create">
             <b-button style="is-primary">Create</b-button>
         </router-link>
         <div v-for="area in areas" :key="area.actionParam" class="box">
@@ -68,5 +68,6 @@ export default vue.extend({
     width: 100%;
     height: 50px;
     border: 1px solid black;
+    padding: 0px !important;
 }
 </style>

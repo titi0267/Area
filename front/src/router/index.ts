@@ -5,6 +5,7 @@ import Register from "../views/Register.vue";
 import NotFound from "../views/NotFound.vue";
 import Home from "../views/Home.vue";
 import CreateArea from "../views/CreateArea.vue";
+import Area from "../views/Area.vue"
 import axios from "../axiosInstance";
 import store from "../store";
 
@@ -30,37 +31,19 @@ const router = new VueRouter({
             path: '/home',
             name: 'home',
             component: Home,
-            meta: { requiresAuth: true }
+            meta: { requiresAuth: false } //
         },
         {
             path: '/create-tmp', // <-- C'est temporaire /!\
             name: 'createArea',
             component: CreateArea,
-            meta: { requiresAuth: true }
+            meta: { requiresAuth: false } //
         },
         {
-            path: '/choose-action-service',
-            name: 'chooseActionService',
-            // component: ,
-            meta: { requiresAuth: true }
-        },
-        {
-            path: '/choose-reaction-service',
-            name: 'chooseReactionService',
-            // component: ,
-            meta: { requiresAuth: true }
-        },
-        {
-            path: '/choose-action',
-            name: 'chooseAction',
-            // component: ,
-            meta: { requiresAuth: true }
-        },
-        {
-            path: '/choose-reaction',
-            name: 'chooseReaction',
-            // component: ,
-            meta: { requiresAuth: true }
+            path: '/create',
+            name: 'create',
+            component: Area,
+            meta: { requiresAuth: false } //
         },
         {
             path: '/',

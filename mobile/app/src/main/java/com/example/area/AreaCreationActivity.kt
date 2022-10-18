@@ -45,19 +45,19 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
                 reactServSpi.adapter = ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, serviceList)
                 findViewById<Button>(R.id.areaRealCreationButton).setOnClickListener {
                     if (isCreatable()) {
-                        findViewById<Spinner>(R.id.actionSpinner).selectedItemPosition
+                        Toast.makeText(this, findViewById<Spinner>(R.id.actionSpinner).selectedItemPosition.toString(), Toast.LENGTH_SHORT).show()
                         viewModel.areaCreation(sessionManager.fetchAuthToken(
                             "user_token")!!, AREAFields(
                             actServSpi.selectedItemPosition+1,
-                            actionSpinnerValue+1,
+                            findViewById<Spinner>(R.id.actionSpinner).selectedItemPosition+1,
                             findViewById<TextInputEditText>(R.id.actionParamtextInput).text.toString(),
                             reactServSpi.selectedItemPosition+1,
-                            reactionSpinnerValue+1,
+                            findViewById<Spinner>(R.id.reactionSpinner).selectedItemPosition+1,
                             findViewById<TextInputEditText>(R.id.reactionParamTextInput).text.toString()))
                         viewModel.userResponse.observe(this, Observer { response ->
-                            Toast.makeText(this, response.code().toString(), Toast.LENGTH_SHORT).show()
                             if (response.isSuccessful) {
                                 Toast.makeText(this, "Area added successfully!", Toast.LENGTH_SHORT).show()
+                                startActivity(Intent(applicationContext, AreaListActivity::class.java))
                             }
                         })
                     }
@@ -73,12 +73,6 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         val rep = Repository(sessionManager.fetchAuthToken("url")!!)
         val viewModelFactory = MainViewModelFactory(rep)
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-    }
-
-    private fun changeItems(): AdapterView.OnItemSelectedListener? {
-        actionSpinnerValue = findViewById<Spinner>(R.id.actionSpinner).selectedItemPosition
-        reactionSpinnerValue = findViewById<Spinner>(R.id.reactionSpinner).selectedItemPosition
-        return this
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -120,5 +114,4 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
         if (reactionTextInput.text?.isEmpty() == true) return false
         return true
     }
-
 }

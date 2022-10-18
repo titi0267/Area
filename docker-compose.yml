@@ -34,6 +34,6 @@ services:
       - ./front/src:/usr/vue_app/
       - /usr/vue_app/node_modules
     ports:
-      - "8081:80"
+      - "8081:8081"
     depends_on:
       - back

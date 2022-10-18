@@ -1,6 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { FastifyPluginOptions } from "fastify/types/plugin";
-import httpStatus from "http-status";
 
 import { FastifyPluginDoneFunction } from "../types/global.types";
 import {
@@ -56,15 +55,10 @@ export default (
         clientSecret: ENV.spotifyClientSecret,
         redirectUri: ENV.spotifyRedirectUrl,
       });
-      spotifyApi.authorizationCodeGrant(code).then(function (data) {
-        console.log("The token expires in " + data.body["expires_in"]);
-        console.log("The access token is " + data.body["access_token"]);
-        console.log("The refresh token is " + data.body["refresh_token"]);
+      const tokens = (await spotifyApi.authorizationCodeGrant(code)).body;
 
-        // Set the access token on the API object to use it in later calls
-        spotifyApi.setAccessToken(data.body["access_token"]);
-        spotifyApi.setRefreshToken(data.body["refresh_token"]);
-      });
+      console.log(tokens);
+
       res.redirect("http://localhost:8081/");
     },
   );

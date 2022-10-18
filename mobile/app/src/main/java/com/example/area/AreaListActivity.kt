@@ -22,18 +22,11 @@ class AreaListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_area_list)
 
-        // Button management
-        findViewById<Button>(R.id.areaCreationButton).setOnClickListener {
-            startActivity(Intent(applicationContext, AreaCreationActivity::class.java))
-        }
-        findViewById<Button>(R.id.backFromAreaListButton).setOnClickListener { startActivity(Intent(applicationContext, MainActivity::class.java)) }
-
         // Scrolling management
         val myDataSet = Datasource()
         val recycler = findViewById<RecyclerView>(R.id.recyclerView)
         recycler.adapter = ItemAdapter(this, myDataSet.loadAreaInfo()) { position -> onItemClick(position) }
         recycler.setHasFixedSize(true)
-
 
         // Get area list (back request)
         val sessionManager = SessionManager(this)
@@ -52,15 +45,38 @@ class AreaListActivity : AppCompatActivity() {
                 recycler.setHasFixedSize(true)
             }
         })
+
+        // Button management
+        findViewById<Button>(R.id.areaCreationButton).setOnClickListener {
+            startActivity(
+                Intent(
+                    applicationContext,
+                    AreaCreationActivity::class.java
+                )
+            )
+        }
+        findViewById<Button>(R.id.backFromAreaListButton).setOnClickListener {
+            startActivity(
+                Intent(
+                    applicationContext,
+                    MainActivity::class.java
+                )
+            )
+        }
         findViewById<Button>(R.id.area_list_fetch).setOnClickListener {
-            viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+            viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
             viewModel.getUserAreaList(sessionManager.fetchAuthToken("user_token")!!)
             viewModel.userResponse2.observe(this, Observer { response ->
                 if (response.isSuccessful) {
                     val jsonArray: List<ActionReaction> = response.body()!!
                     myDataSet.clear()
                     for (item in jsonArray) {
-                        myDataSet.addArea(item.actionServiceId, item.reactionServiceId, item.actionId.toString(), item.reactionId.toString())
+                        myDataSet.addArea(
+                            item.actionServiceId,
+                            item.reactionServiceId,
+                            item.actionId.toString(),
+                            item.reactionId.toString()
+                        )
                     }
                     recycler.adapter = ItemAdapter(this, myDataSet.loadAreaInfo()) { position -> onItemClick(position) }
                     recycler.setHasFixedSize(true)

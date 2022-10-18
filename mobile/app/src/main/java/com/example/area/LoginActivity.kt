@@ -25,27 +25,29 @@ class LoginActivity : AppCompatActivity() {
         val button: Button = findViewById(R.id.request_button)
         var token: String?
         button.setOnClickListener {
+            lateinit var url: String;
             val sessionManager = SessionManager(this)
-            val url = urlParser(findViewById<EditText>(R.id.ip_field).text.toString(),
-                findViewById<EditText>(R.id.port_field).text.toString())
-            if (url == "error") {
-                Toast.makeText(this, "IP-Port combination is not valid!", Toast.LENGTH_SHORT).show()
+            val loginForm = LoginFields(
+                findViewById<EditText>(R.id.email_field).text.toString(),
+                findViewById<EditText>(R.id.password_field).text.toString(),
+            )
+            try {
+                url = urlParser(
+                    findViewById<EditText>(R.id.ip_field).text.toString(),
+                    findViewById<EditText>(R.id.port_field).text.toString()
+                )
+                checkLoginField(loginForm)
+            }
+            catch (e: IllegalArgumentException) {
+                Toast.makeText(this, "Error: " + e.message, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val rep = Repository(url)
             val viewModelFactory = MainViewModelFactory(rep)
             viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-            val loginForm = LoginFields(
-                findViewById<EditText>(R.id.email_field).text.toString(),
-                findViewById<EditText>(R.id.password_field).text.toString(),
-            )
-            if (!checkLoginField(loginForm)) {
-                Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
             viewModel.login(loginForm)
             viewModel.userResponse.observe(this, Observer { response ->
-                if (response.isSuccessful()) {
+                if (response.isSuccessful) {
                     token = response.body()?.token
                     token?.let {
                         sessionManager.saveAuthToken("user_token", token!!)

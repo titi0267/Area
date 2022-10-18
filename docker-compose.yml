@@ -22,6 +22,7 @@ services:
     build: ./front
     env_file:
       - ./front/docker.env
+
     volumes:
       - ./front/src:/usr/vue_app/
       - /usr/vue_app/node_modules

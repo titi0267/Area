@@ -17,7 +17,7 @@ const sendMessageToServer = async (reactionParam: string, userId: string) => {
   try {
     const channels = await guild.channels.fetch();
 
-    const channel = channels.find(item => item?.name === "général");
+    const channel = channels.find(item => item?.name === "tests");
 
     if (channel?.isTextBased()) channel.send(reactionParam);
     else {

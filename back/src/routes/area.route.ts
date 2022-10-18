@@ -7,7 +7,7 @@ import httpStatus from "http-status";
 import { AreaBody } from "../types/body/areaRequestBody.types";
 import * as SecurityHelper from "../helpers/security.helper";
 import authentificationMiddleware from "../middlewares/authentification.middleware";
-import { areaBodyValidator } from "../shema/area.schema";
+import { areaBodyValidator } from "../schema/area.schema";
 import { throwBodyError } from "../helpers/error.helpers";
 
 type AreaRequest = FastifyRequest<{

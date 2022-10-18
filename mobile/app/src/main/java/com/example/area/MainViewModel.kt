@@ -1,6 +1,5 @@
 package com.example.area
 
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,6 +20,7 @@ class MainViewModel(private val repository: Repository):ViewModel() {
     val aboutResponse: MutableLiveData<Response<About>> = MutableLiveData()
     val userResponse2: MutableLiveData<Response<List<ActionReaction>>> = MutableLiveData()
 
+    // Back calls
     fun register(registerFields: RegisterFields) {
         viewModelScope.launch {
             val response = repository.register(registerFields)

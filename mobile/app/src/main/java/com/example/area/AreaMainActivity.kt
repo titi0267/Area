@@ -10,11 +10,26 @@ class AreaMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_area_main)
+
+        // Profile button
         findViewById<FloatingActionButton>(R.id.profileButton).setOnClickListener {
             startActivity(
-            Intent(applicationContext, ProfilePageActivity::class.java)
-        ) }
-        findViewById<Button>(R.id.areaListButton).setOnClickListener { startActivity(Intent(applicationContext, AreaListActivity::class.java)) }
+                Intent(
+                    applicationContext,
+                    ProfilePageActivity::class.java
+                )
+            )
+        }
+
+        // Area list button
+        findViewById<Button>(R.id.areaListButton).setOnClickListener {
+            startActivity(
+                Intent(
+                    applicationContext,
+                    AreaListActivity::class.java
+                )
+            )
+        }
     }
 
     override fun onBackPressed() {

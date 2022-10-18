@@ -4,8 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.area.utils.SessionManager
-import android.widget.Button
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,10 +11,23 @@ class MainActivity : AppCompatActivity() {
         val sessionManager = SessionManager(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (sessionManager.fetchAuthToken("user_token") == null)
-            startActivity(Intent(applicationContext, NotLoggedInActivity::class.java))
+
+        // Redirect to the good activity (if the user is connected or not)
+        if (sessionManager.fetchAuthToken("user_token") == null) {
+            startActivity(
+                Intent(
+                    applicationContext,
+                    NotLoggedInActivity::class.java
+                )
+            )
+        }
         else {
-            startActivity(Intent(applicationContext, AreaMainActivity::class.java))
+            startActivity(
+                Intent(
+                    applicationContext,
+                    AreaMainActivity::class.java
+                )
+            )
         }
     }
 }

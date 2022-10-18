@@ -9,11 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.area.model.LoginFields
-import com.example.area.model.RegisterFields
-import com.example.area.model.Token
 import com.example.area.repository.Repository
 import com.example.area.utils.*
-import javax.security.auth.callback.Callback
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,15 +19,21 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
         val button: Button = findViewById(R.id.request_button)
         var token: String?
+
         button.setOnClickListener {
-            lateinit var url: String;
+            lateinit var url: String
             val sessionManager = SessionManager(this)
+
+            // Store email and password
             val loginForm = LoginFields(
                 findViewById<EditText>(R.id.email_field).text.toString(),
                 findViewById<EditText>(R.id.password_field).text.toString(),
             )
+
+            // Login error handling
             try {
                 url = urlParser(
                     findViewById<EditText>(R.id.ip_field).text.toString(),
@@ -42,10 +45,15 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: " + e.message, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
             val rep = Repository(url)
             val viewModelFactory = MainViewModelFactory(rep)
-            viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+            viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+
+            // Login post request
             viewModel.login(loginForm)
+
+            // Receive login response
             viewModel.userResponse.observe(this, Observer { response ->
                 if (response.isSuccessful) {
                     token = response.body()?.token
@@ -54,7 +62,12 @@ class LoginActivity : AppCompatActivity() {
                         sessionManager.saveAuthToken("url", url)
                     }
                     Toast.makeText(this, "Successfully logged in!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(applicationContext, MainActivity::class.java))
+                    startActivity(
+                        Intent(
+                            applicationContext,
+                            MainActivity::class.java
+                        )
+                    )
                 }
             })
         }

@@ -1,10 +1,10 @@
 <template>
     <div id="home">
         <h3>Home</h3>
-        <router-link to="/create">
-            <b-button style="is-primary">Create</b-button>
+        <router-link to="/create/action">
+            <b-button style="is-primary" @click="removeLocalStorageItem">Create</b-button>
         </router-link>
-        <div v-for="area in areas" :key="area.actionParam" class="box">
+        <div v-for="area in areas" :key="area.actionServiceId.toString() + area.actionParam + area.reactionId.toString() + area.actionId.toString()" class="area-list">
             <div class="action" v-if="getActionObject(area)">
                 <p> {{ getActionObject(area).name }} </p>
                 <p> {{ getActionObject(area).actions.find(action => action.id == area.actionId).name }} </p>
@@ -35,6 +35,9 @@ export default vue.extend({
 
     },
     methods: {
+        removeLocalStorageItem() {
+            localStorage.removeItem('area');
+        },
         getActionObject(area) {
             let result = this.services.find(service => service.id == area.actionServiceId)
             return result;
@@ -63,11 +66,10 @@ export default vue.extend({
 })
 </script>
 
-<style lang="scss">
-.box {
-    width: 100%;
-    height: 50px;
+<style scoped lang="scss">
+.area-list {
     border: 1px solid black;
-    padding: 0px !important;
+    display: flex;
+    justify-content: space-around;
 }
 </style>

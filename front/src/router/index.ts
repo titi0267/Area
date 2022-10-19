@@ -31,19 +31,25 @@ const router = new VueRouter({
             path: '/home',
             name: 'home',
             component: Home,
-            meta: { requiresAuth: false } //
+            meta: { requiresAuth: true }
         },
         {
-            path: '/create-tmp', // <-- C'est temporaire /!\
-            name: 'createArea',
-            component: CreateArea,
-            meta: { requiresAuth: false } //
-        },
-        {
-            path: '/create',
-            name: 'create',
+            path: '/create/action',
+            name: 'create-action',
             component: Area,
-            meta: { requiresAuth: false } //
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/create/reaction',
+            name: 'create-reaction',
+            component: Area,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/create/overview',
+            name: 'create-overview',
+            component: Area,
+            meta: { requiresAuth: true }
         },
         {
             path: '/',

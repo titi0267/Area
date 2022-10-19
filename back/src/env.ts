@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const ENV = {
-  port: (process.env.PORT as string) || "3000",
+  port: (process.env.PORT as string) || "8080",
   secret: process.env.SECRET as string,
   clientPort: (process.env.CLIENT_PORT as string) || "8081",
   googleApiKey: process.env.YOUTUBE_API_TOKEN as string,

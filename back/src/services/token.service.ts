@@ -1,16 +1,33 @@
 import { PrismaClient, TokensTable } from "@prisma/client";
+import httpStatus from "http-status";
+import ClientError from "../error";
 
 const prisma = new PrismaClient();
 
 const setGithubToken = async (
   userId: number,
-  token: string,
-): Promise<TokensTable | null> => {
+  token: string | undefined | null,
+): Promise<TokensTable> => {
+  if (!token) {
+    throw new ClientError({
+      name: "Invalid Token",
+      message: "Given token is invalid",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
   const tokensTableExist = await prisma.tokensTable.findUnique({
     where: { userId },
   });
 
-  if (!tokensTableExist) return null;
+  if (!tokensTableExist) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "UserId does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
 
   const tokenTable = await prisma.tokensTable.update({
     where: {
@@ -26,13 +43,29 @@ const setGithubToken = async (
 
 const setGoogleToken = async (
   userId: number,
-  token: string,
-): Promise<TokensTable | null> => {
+  token: string | undefined | null,
+): Promise<TokensTable> => {
+  if (!token) {
+    throw new ClientError({
+      name: "Invalid Token",
+      message: "Given token is invalid",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
   const tokensTableExist = await prisma.tokensTable.findUnique({
     where: { userId },
   });
 
-  if (!tokensTableExist) return null;
+  if (!tokensTableExist) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "UserId does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
 
   const tokenTable = await prisma.tokensTable.update({
     where: {
@@ -48,13 +81,29 @@ const setGoogleToken = async (
 
 const setSpotifyToken = async (
   userId: number,
-  token: string,
-): Promise<TokensTable | null> => {
+  token: string | undefined | null,
+): Promise<TokensTable> => {
+  if (!token) {
+    throw new ClientError({
+      name: "Invalid Token",
+      message: "Given token is invalid",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
   const tokensTableExist = await prisma.tokensTable.findUnique({
     where: { userId },
   });
 
-  if (!tokensTableExist) return null;
+  if (!tokensTableExist) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "UserId does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
 
   const tokenTable = await prisma.tokensTable.update({
     where: {

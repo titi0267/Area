@@ -5,22 +5,26 @@ import { FastifyPluginDoneFunction } from "../types/global.types";
 import {
   googleOauthQueryValidator,
   spotifyOauthQueryValidator,
-} from "../shema/oauth.schema";
+} from "../schema/oauth.schema";
 import {
-  GoogleOauthQuery,
-  SpotifyOauthQuery,
-} from "../types/query/oauthRequestQuery.types";
+  GoogleOauthBody,
+  SpotifyOauthBody,
+} from "../types/body/oauthRequestBody.types";
+import * as SecurityHelper from "../helpers/security.helper";
 import * as ErrorHelper from "../helpers/error.helpers";
 import { google } from "googleapis";
 import ENV from "../env";
 import SpotifyWebApi from "spotify-web-api-node";
+import authentificationMiddleware from "../middlewares/authentification.middleware";
+import { TokenService } from "../services";
+import httpStatus from "http-status";
 
 type GoogleOauthRequest = FastifyRequest<{
-  Querystring: GoogleOauthQuery;
+  Body: GoogleOauthBody;
 }>;
 
 type SpotifyOauthRequest = FastifyRequest<{
-  Querystring: SpotifyOauthQuery;
+  Body: SpotifyOauthBody;
 }>;
 
 export default (
@@ -28,11 +32,15 @@ export default (
   _opts: FastifyPluginOptions,
   done: FastifyPluginDoneFunction,
 ): void => {
-  instance.get(
+  instance.post(
     "/google",
+    { onRequest: [authentificationMiddleware()] },
     async (req: GoogleOauthRequest, res: FastifyReply) => {
-      if (!googleOauthQueryValidator(req.query)) ErrorHelper.throwBodyError();
-      const code = req.query.code;
+      if (!googleOauthQueryValidator(req.body)) ErrorHelper.throwBodyError();
+
+      const userInfos = SecurityHelper.getUserInfos(req);
+
+      const code = req.body.code;
 
       const oauthClient = new google.auth.OAuth2(
         ENV.googleClientId,
@@ -42,24 +50,38 @@ export default (
 
       const tokens = (await oauthClient.getToken(code)).tokens;
 
-      res.redirect("http://localhost:8081/");
+      const tokenTable = await TokenService.setGoogleToken(
+        userInfos.id,
+        tokens.refresh_token,
+      );
+
+      res.status(httpStatus.OK).send(tokenTable);
     },
   );
-  instance.get(
+
+  instance.post(
     "/spotify",
+    { onRequest: [authentificationMiddleware()] },
     async (req: SpotifyOauthRequest, res: FastifyReply) => {
-      if (!spotifyOauthQueryValidator(req.query)) ErrorHelper.throwBodyError();
-      const code = req.query.code;
+      if (!spotifyOauthQueryValidator(req.body)) ErrorHelper.throwBodyError();
+
+      const userInfos = SecurityHelper.getUserInfos(req);
+
+      const code = req.body.code;
       var spotifyApi = new SpotifyWebApi({
         clientId: ENV.spotifyClientId,
         clientSecret: ENV.spotifyClientSecret,
         redirectUri: ENV.spotifyRedirectUrl,
       });
+
       const tokens = (await spotifyApi.authorizationCodeGrant(code)).body;
 
-      console.log(tokens);
+      const tokenTable = await TokenService.setSpotifyToken(
+        userInfos.id,
+        tokens.refresh_token,
+      );
 
-      res.redirect("http://localhost:8081/");
+      res.status(httpStatus.OK).send(tokenTable);
     },
   );
 

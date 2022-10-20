@@ -27,6 +27,14 @@ describe("Test set Spotify token", () => {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }
     });
+
+    test("Put undefined token", async () => {
+      try {
+        await TokenService.setSpotifyToken(1, undefined);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
   });
 });
 
@@ -111,6 +119,14 @@ describe("Test get Github token", () => {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }
     });
+
+    test("Put undefined token", async () => {
+      try {
+        await TokenService.setGithubToken(1, undefined);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
   });
 });
 
@@ -135,6 +151,14 @@ describe("Test set Google token", () => {
     test("Put token with invalid userId", async () => {
       try {
         await TokenService.setGoogleToken(56, "token");
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
+
+    test("Put undefined token", async () => {
+      try {
+        await TokenService.setGoogleToken(1, undefined);
       } catch (e) {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }

@@ -23,6 +23,8 @@ export default (
             return {
               id: service.id,
               name: service.serviceName,
+              imageUrl: service.imageUrl,
+              backgroundColor: service.backgroundColor,
               actions: service.actions.map(action => {
                 return {
                   id: action.id,

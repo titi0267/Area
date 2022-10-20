@@ -3,6 +3,8 @@ import { Area } from "@prisma/client";
 export interface Service {
   id: number;
   serviceName: ServiceName;
+  imageUrl: string;
+  backgroundColor: string;
   actions: Action[];
   reactions: Reaction[];
 }

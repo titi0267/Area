@@ -21,4 +21,4 @@ interface Reaction {
   fct: (reactionParam: string, userId: string) => void;
 }
 
-export type ServiceName = "Youtube" | "Twitter" | "Discord";
+export type ServiceName = "Youtube" | "Twitter" | "Discord" | "Spotify";

@@ -3,6 +3,7 @@ node_modules
 /dist
 about.json
 .env
+docker.env
 
 # local env files
 .env.local

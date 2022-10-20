@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --port 8081",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --port 8081",
     "watch:client": "vue-cli-service build --watch --port 8081"
   },
   "dependencies": {

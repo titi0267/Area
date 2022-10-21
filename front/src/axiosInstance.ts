@@ -6,10 +6,10 @@ const axios_instance = axios.create({
   withCredentials: true,
   baseURL: `http://${process.env.VUE_APP_URL}:${process.env.VUE_APP_PORT}`,
   headers: {
-    "Access-Control-Allow-Origin": "http://localhost:8081",
+    "Access-Control-Allow-Origin": 'http://localhost:8081',
     Accept: "application/json",
     "Content-Type": "application/json",
-    Authorization: localStorage.getItem("usr-token") || "noToken",
+    Authorization: store.getters.userToken || localStorage.getItem("usr-token") || "noToken",
   },
 });
 

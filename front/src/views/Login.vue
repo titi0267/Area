@@ -37,7 +37,7 @@ export default vue.extend({
                 })
                 localStorage.setItem('usr-token', resp.token);
                 this.$store.commit('updateToken', resp.token);
-                this.$router.push('/user-pannel');
+                this.$router.push('/home');
             } catch (err) {
                 console.log(err);
             }

@@ -1,12 +1,12 @@
 import Ajv, { JSONSchemaType } from "ajv";
 import {
-  GoogleOauthQuery,
-  SpotifyOauthQuery,
-} from "../types/query/oauthRequestQuery.types";
+  GoogleOauthBody,
+  SpotifyOauthBody,
+} from "../types/body/oauthRequestBody.types";
 
 const ajv = new Ajv();
 
-const googleOauthQuerySchema: JSONSchemaType<GoogleOauthQuery> = {
+const googleOauthQuerySchema: JSONSchemaType<GoogleOauthBody> = {
   type: "object",
   properties: {
     code: { type: "string" },
@@ -14,7 +14,7 @@ const googleOauthQuerySchema: JSONSchemaType<GoogleOauthQuery> = {
   required: ["code"],
 };
 
-const spotifyOauthQuerySchema: JSONSchemaType<SpotifyOauthQuery> = {
+const spotifyOauthQuerySchema: JSONSchemaType<SpotifyOauthBody> = {
   type: "object",
   properties: {
     code: { type: "string" },

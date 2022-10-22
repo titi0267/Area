@@ -59,7 +59,7 @@ class AreaCreationFragment : Fragment(R.layout.fragment_area_creation),
                 view.findViewById<Button>(R.id.areaRealCreationButton).setOnClickListener {
                     viewModel.areaCreation(
                         sessionManager.fetchAuthToken("user_token")!!,
-                        AREAFields(1, 1, 2, "yY1vTll0O1w", 3, 1, "Nouveau like!")
+                        AREAFields(1, 2, "yY1vTll0O1w", 3, 1, "Nouveau like!")
                     )
                     viewModel.userResponse.observe(viewLifecycleOwner) { response ->
                         if (response.isSuccessful) {

@@ -83,10 +83,30 @@ const getYoutubeChannelName = (url: string) => {
   return matches[1] || null;
 };
 
+const injectParamInReaction = <T extends Object>(
+  reactionParam: string,
+  param: T,
+): string => {
+  const matchParamRegex = /(%(\w+)%)/;
+  const replaceRegex = /(%\w+%)/;
+
+  const matches = reactionParam.match(matchParamRegex);
+
+  if (!matches || !matches[2]) return reactionParam;
+  const key = matches[2];
+
+  if (!param.hasOwnProperty(key)) return reactionParam;
+
+  const value = String(param[key as keyof T]);
+
+  return reactionParam.replace(replaceRegex, value);
+};
+
 export {
   rejectInvalidArea,
   getActionFct,
   getReactionFct,
   getYoutubeVideoId,
   getYoutubeChannelName,
+  injectParamInReaction,
 };

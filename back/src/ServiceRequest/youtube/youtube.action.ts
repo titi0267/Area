@@ -46,7 +46,10 @@ const checkUploadedVideo = async (area: Area): Promise<string | null> => {
     channelName: lastVideo.snippet.channelTitle,
   };
 
-  return area.reactionParam;
+  return ServiceHelper.injectParamInReaction<typeof params>(
+    area.reactionParam,
+    params,
+  );
 };
 
 const checkVideoLike = async (area: Area): Promise<string | null> => {
@@ -84,7 +87,10 @@ const checkVideoLike = async (area: Area): Promise<string | null> => {
 
   if (parseInt(statistics.likeCount) > parseInt(area.lastActionValue)) {
     await AreaService.updateAreaValues(area.id, statistics.likeCount);
-    return area.reactionParam;
+    return ServiceHelper.injectParamInReaction<typeof params>(
+      area.reactionParam,
+      params,
+    );
   }
 
   return null;

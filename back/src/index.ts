@@ -11,10 +11,7 @@ import { SERVICES } from "./constants/serviceList";
 import areaLoop from "./area/loop.area";
 import { postNewTweet } from "./ServiceRequest/twitter/twitter.reaction";
 import { sendMessageToServer } from "./ServiceRequest/discord/discord.reaction";
-import {
-  checkUploadedVideo,
-  checkVideoLike,
-} from "./ServiceRequest/youtube/youtube.action";
+import * as ServiceHelper from "./helpers/service.helpers";
 
 const prisma = new PrismaClient();
 const server = fastify();
@@ -49,18 +46,18 @@ const main = async () => {
 
 setInterval(async () => {
   //await areaLoop();
-  await checkUploadedVideo({
-    id: 12,
-    actionId: 1,
-    actionServiceId: 1,
-    actionParam: "Floowmecofficiel",
-    reactionId: 1,
-    reactionServiceId: 1,
-    reactionParam: "",
-    userId: 1,
-    lastActionFetch: new Date(),
-    lastActionValue: null,
-  });
+  // await checkUploadedVideo({
+  //   id: 12,
+  //   actionId: 1,
+  //   actionServiceId: 1,
+  //   actionParam: "Floowmecofficiel",
+  //   reactionId: 1,
+  //   reactionServiceId: 1,
+  //   reactionParam: "",
+  //   userId: 1,
+  //   lastActionFetch: new Date(),
+  //   lastActionValue: null,
+  // });
 }, 0.1 * 60 * 1000);
 
 main()

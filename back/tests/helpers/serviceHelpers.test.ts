@@ -96,3 +96,47 @@ describe("Test getYoutubeChannelName", () => {
     });
   });
 });
+
+describe("Test injectParamInReaction", () => {
+  describe("Test valid cases", () => {
+    test("Test inject valid string field", () => {
+      const test = { name: "Ludo" };
+      const str = ServiceHelper.injectParamInReaction<typeof test>(
+        "My name is %name% !",
+        test,
+      );
+
+      expect(str).toBe("My name is Ludo !");
+    });
+
+    test("Test inject valid number field", () => {
+      const test = { age: 12 };
+      const str = ServiceHelper.injectParamInReaction<typeof test>(
+        "I'm %age% !",
+        test,
+      );
+
+      expect(str).toBe("I'm 12 !");
+    });
+
+    test("Test inject empty object field", () => {
+      const test = {};
+      const str = ServiceHelper.injectParamInReaction<typeof test>(
+        "I'm %age% !",
+        test,
+      );
+
+      expect(str).toBe("I'm %age% !");
+    });
+
+    test("Test with no insertion tokens", () => {
+      const test = {};
+      const str = ServiceHelper.injectParamInReaction<typeof test>(
+        "I'm age !",
+        test,
+      );
+
+      expect(str).toBe("I'm age !");
+    });
+  });
+});

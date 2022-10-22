@@ -9,7 +9,7 @@ npm i
 ## Start project :
 
 ```bash
-npm run db;migrate # Init database
+npm run db:migrate # Init database
 npm start # Launch the project in dev
 npm run start:local # Launch the project in watch mode
 npm build && node dist/src/index.js # Build the project and launch it

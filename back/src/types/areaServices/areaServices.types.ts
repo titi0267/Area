@@ -13,7 +13,7 @@ interface Action {
   id: number;
   actionName: string;
   actionParamName: string;
-  fct: (area: Area) => Promise<String | null>;
+  fct: (area: Area) => Promise<string | null>;
 }
 
 interface Reaction {

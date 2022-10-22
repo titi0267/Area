@@ -1,4 +1,4 @@
-package com.example.area
+package com.example.area.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.area.MainViewModel
+import com.example.area.MainViewModelFactory
+import com.example.area.R
 import com.example.area.model.AREAFields
 import com.example.area.model.about.About
 import com.example.area.repository.Repository
@@ -41,8 +44,12 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
             }
             if (serviceList.isNotEmpty()) {
                 Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show()
-                actServSpi.adapter = ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, serviceList)
-                reactServSpi.adapter = ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, serviceList)
+                actServSpi.adapter = ArrayAdapter(this,
+                    R.layout.layout_spinner,
+                    R.id.textSpinner, serviceList)
+                reactServSpi.adapter = ArrayAdapter(this,
+                    R.layout.layout_spinner,
+                    R.id.textSpinner, serviceList)
                 findViewById<Button>(R.id.areaRealCreationButton).setOnClickListener {
                     viewModel.areaCreation(sessionManager.fetchAuthToken("user_token")!!, AREAFields(1, 1, 2, "yY1vTll0O1w", 3, 1, "Nouveau like!"))
                     viewModel.userResponse.observe(this, Observer { response ->
@@ -71,13 +78,17 @@ class AreaCreationActivity : AppCompatActivity(), AdapterView.OnItemSelectedList
                 actionList += elem.name
             }
         }
-        findViewById<Spinner>(R.id.actionSpinner).adapter = ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, actionList)
+        findViewById<Spinner>(R.id.actionSpinner).adapter = ArrayAdapter(this,
+            R.layout.layout_spinner,
+            R.id.textSpinner, actionList)
         if (abt != null) {
             for (elem in abt!!.server.services[reactionSpinner.selectedItemPosition].reactions) {
                 reactionList += elem.name
             }
         }
-        findViewById<Spinner>(R.id.reactionSpinner).adapter = ArrayAdapter(this, R.layout.layout_spinner, R.id.textSpinner, reactionList)
+        findViewById<Spinner>(R.id.reactionSpinner).adapter = ArrayAdapter(this,
+            R.layout.layout_spinner,
+            R.id.textSpinner, reactionList)
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

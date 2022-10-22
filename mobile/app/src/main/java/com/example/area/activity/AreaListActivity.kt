@@ -1,5 +1,5 @@
 
-package com.example.area
+package com.example.area.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.example.area.MainViewModel
+import com.example.area.MainViewModelFactory
+import com.example.area.R
 import com.example.area.adapter.ItemAdapter
 import com.example.area.data.Datasource
 import com.example.area.model.ActionReaction

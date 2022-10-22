@@ -1,29 +1,33 @@
-package com.example.area
+package com.example.area.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.example.area.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class NotLoggedInActivity : AppCompatActivity() {
+class AreaMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_not_logged_in)
+        setContentView(R.layout.activity_area_main)
 
-        // Button management
-        findViewById<Button>(R.id.not_logged_in_login_button).setOnClickListener {
+        // Profile button
+        findViewById<FloatingActionButton>(R.id.profileButton).setOnClickListener {
             startActivity(
                 Intent(
                     applicationContext,
-                    LoginActivity::class.java
+                    ProfilePageActivity::class.java
                 )
             )
         }
-        findViewById<Button>(R.id.not_logged_in_register_button).setOnClickListener {
+
+        // Area list button
+        findViewById<Button>(R.id.areaListButton).setOnClickListener {
             startActivity(
                 Intent(
                     applicationContext,
-                    RegisterActivity::class.java
+                    AreaListActivity::class.java
                 )
             )
         }

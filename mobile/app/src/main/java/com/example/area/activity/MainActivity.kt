@@ -1,8 +1,9 @@
-package com.example.area
+package com.example.area.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.area.R
 import com.example.area.utils.SessionManager
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(
                 Intent(
                     applicationContext,
-                    NotLoggedInActivity::class.java
+                    UserConnectionActivity::class.java
                 )
             )
         }

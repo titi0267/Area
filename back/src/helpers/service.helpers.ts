@@ -63,4 +63,30 @@ const getReactionFct = (reactionServiceId: number, reactionId: number) => {
   return reaction?.fct || null;
 };
 
-export { rejectInvalidArea, getActionFct, getReactionFct };
+const getYoutubeVideoId = (url: string) => {
+  let regex = /(\w+:\/+[\w+.]+\/)(watch\?v=)(\w+)/;
+
+  const matches = url.match(regex);
+
+  if (!matches) return null;
+
+  return matches[3] || null;
+};
+
+const getYoutubeChannelName = (url: string) => {
+  let regex = /https:\/+www.youtube.com\/user\/(\w+)/;
+
+  const matches = url.match(regex);
+
+  if (!matches) return null;
+
+  return matches[1] || null;
+};
+
+export {
+  rejectInvalidArea,
+  getActionFct,
+  getReactionFct,
+  getYoutubeVideoId,
+  getYoutubeChannelName,
+};

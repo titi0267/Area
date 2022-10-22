@@ -58,3 +58,41 @@ describe("Test getReactionFct", () => {
     });
   });
 });
+
+describe("Test getYoutubeVideoId", () => {
+  describe("Test valid cases", () => {
+    test("Test if return video id", () => {
+      const videoId = ServiceHelper.getYoutubeVideoId(
+        "https://www.youtube.com/watch?v=iC2i9n00C68",
+      );
+
+      expect(videoId).toBe("iC2i9n00C68");
+    });
+
+    test("Test with random link", () => {
+      const videoId = ServiceHelper.getYoutubeVideoId(
+        "https://prettier.io/docs/en/ignore.html",
+      );
+      expect(videoId).toBeNull();
+    });
+  });
+});
+
+describe("Test getYoutubeChannelName", () => {
+  describe("Test valid cases", () => {
+    test("Test if return channel name", () => {
+      const channelName = ServiceHelper.getYoutubeChannelName(
+        "https://www.youtube.com/user/Floowmecofficiel",
+      );
+
+      expect(channelName).toBe("Floowmecofficiel");
+    });
+
+    test("Test with random link", () => {
+      const channelName = ServiceHelper.getYoutubeChannelName(
+        "https://prettier.io/docs/en/ignore.html",
+      );
+      expect(channelName).toBeNull();
+    });
+  });
+});

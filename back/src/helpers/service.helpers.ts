@@ -68,9 +68,9 @@ const getYoutubeVideoId = (url: string) => {
 
   const matches = url.match(regex);
 
-  if (!matches) return null;
+  if (!matches || !matches[3]) return null;
 
-  return matches[3] || null;
+  return matches[3];
 };
 
 const getYoutubeChannelName = (url: string) => {
@@ -78,9 +78,9 @@ const getYoutubeChannelName = (url: string) => {
 
   const matches = url.match(regex);
 
-  if (!matches) return null;
+  if (!matches || !matches[1]) return null;
 
-  return matches[1] || null;
+  return matches[1];
 };
 
 const injectParamInReaction = <T extends Object>(

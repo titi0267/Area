@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(
                 Intent(
                     applicationContext,
-                    AreaMainActivity::class.java
+                    AreaActivity::class.java
                 )
             )
         }

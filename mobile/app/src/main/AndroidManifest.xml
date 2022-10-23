@@ -13,10 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AREA"
         tools:targetApi="31">
-        <activity android:name=".activity.ProfilePageActivity" />
-        <activity android:name=".activity.AreaMainActivity" />
-        <activity android:name=".activity.AreaCreationActivity" />
-        <activity android:name=".activity.AreaListActivity" />
+        <activity android:name=".activity.AreaActivity" />
         <activity android:name=".activity.UserConnectionActivity" />
         <activity
             android:name=".activity.MainActivity"

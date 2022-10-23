@@ -5,13 +5,31 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 import ClientError from "../error";
-import { Token } from "../types/global.types";
+import { Token, UserWithTokens } from "../types/global.types";
 import ENV from "../env";
 
 const prisma = new PrismaClient();
 
 const getAllUsers = async (): Promise<User[]> => {
   return await prisma.user.findMany();
+};
+
+const getOneUser = async (userId: number): Promise<UserWithTokens> => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { tokensTable: true },
+  });
+
+  if (!user) {
+    throw new ClientError({
+      name: "Invalid User Id",
+      message: "user id does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  return user;
 };
 
 const createUser = async (
@@ -135,4 +153,5 @@ export default {
   removeUserById,
   removeUserByEmail,
   loginUser,
+  getOneUser,
 };

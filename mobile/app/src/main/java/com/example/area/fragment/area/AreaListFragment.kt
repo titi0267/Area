@@ -1,10 +1,13 @@
 package com.example.area.fragment.area
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -35,7 +38,10 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
         val rep = Repository(sessionManager.fetchAuthToken("url")!!)
         val viewModelFactory = MainViewModelFactory(rep)
 
-        recycler.adapter = ItemAdapter(context as AreaActivity, myDataSet.loadAreaInfo()) { position -> onItemClick(position) }
+        recycler.adapter = ItemAdapter(
+            context as AreaActivity,
+            myDataSet.loadAreaInfo()
+        ) { position -> onItemClick(position) }
         recycler.setHasFixedSize(true)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         viewModel.getUserAreaList(sessionManager.fetchAuthToken("user_token")!!)
@@ -44,9 +50,17 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
                 val jsonArray: List<ActionReaction> = response.body()!!
                 myDataSet.clear()
                 for (item in jsonArray) {
-                    myDataSet.addArea(item.actionServiceId, item.reactionServiceId, item.actionId.toString(), item.reactionId.toString())
+                    myDataSet.addArea(
+                        item.actionServiceId,
+                        item.reactionServiceId,
+                        item.actionId.toString(),
+                        item.reactionId.toString()
+                    )
                 }
-                recycler.adapter = ItemAdapter(context as AreaActivity, myDataSet.loadAreaInfo()) { position -> onItemClick(position) }
+                recycler.adapter = ItemAdapter(
+                    context as AreaActivity,
+                    myDataSet.loadAreaInfo()
+                ) { position -> onItemClick(position) }
                 recycler.setHasFixedSize(true)
             }
         })
@@ -71,7 +85,10 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
                             item.reactionId.toString()
                         )
                     }
-                    recycler.adapter = ItemAdapter(context as AreaActivity, myDataSet.loadAreaInfo()) { position -> onItemClick(position) }
+                    recycler.adapter = ItemAdapter(
+                        context as AreaActivity,
+                        myDataSet.loadAreaInfo()
+                    ) { position -> onItemClick(position) }
                     recycler.setHasFixedSize(true)
                 }
             })

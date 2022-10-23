@@ -2,6 +2,8 @@ import { PrismaClient, Area, User } from "@prisma/client";
 import ClientError from "../error";
 import httpStatus from "http-status";
 
+import * as ServiceHelper from "../helpers/service.helpers";
+
 const prisma = new PrismaClient();
 
 const createArea = async (
@@ -13,6 +15,13 @@ const createArea = async (
   reactionParam: string,
   userId: number,
 ): Promise<Area> => {
+  ServiceHelper.rejectInvalidArea(
+    actionServiceId,
+    actionId,
+    reactionServiceId,
+    reactionId,
+  );
+
   const doesUserExist = await prisma.user.findUnique({
     where: { id: userId },
   });
@@ -81,4 +90,33 @@ const getAreasByUserId = async (id: number): Promise<Area[]> => {
   return areas;
 };
 
-export default { createArea, getAllArea, removeAreaById, getAreasByUserId };
+const updateAreaValues = async (
+  id: number,
+  updateValue: string | null,
+): Promise<Area> => {
+  const doesAreaExist = await prisma.area.findUnique({ where: { id } });
+
+  if (doesAreaExist === null) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "Id does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  const area = await prisma.area.update({
+    where: { id },
+    data: { lastActionValue: updateValue, lastActionFetch: new Date() },
+  });
+
+  return area;
+};
+
+export default {
+  createArea,
+  getAllArea,
+  removeAreaById,
+  getAreasByUserId,
+  updateAreaValues,
+};

@@ -3,14 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "serve": "vue-cli-service serve --port 8081",
+    "build": "vue-cli-service build --port 8081",
+    "watch:client": "vue-cli-service build --watch --port 8081"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/vue-fontawesome": "^2.0.8",
     "axios": "^0.27.2",
     "buefy": "^0.9.22",
+    "fs": "^0.0.1-security",
+    "lodash": "^4.17.21",
     "vue": "^2.6.14",
     "vue-i18n": "^8.27.2",
     "vue-property-decorator": "^9.1.2",
@@ -19,6 +23,7 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
+    "@types/node": "^18.8.3",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",

@@ -1,6 +1,10 @@
+import { Area } from "@prisma/client";
+
 export interface Service {
   id: number;
   serviceName: ServiceName;
+  imageUrl: string;
+  backgroundColor: string;
   actions: Action[];
   reactions: Reaction[];
 }
@@ -9,18 +13,14 @@ interface Action {
   id: number;
   actionName: string;
   actionParamName: string;
-  fct: (
-    actionParam: string,
-    userToken: string,
-    lastUpdate: Date,
-  ) => Promise<Boolean>;
+  fct: (area: Area) => Promise<Boolean>;
 }
 
 interface Reaction {
   id: number;
   reactionName: string;
   reactionParamName: string;
-  fct: (reactionParam: string, userToken: string) => void;
+  fct: (reactionParam: string, userId: string) => void;
 }
 
-export type ServiceName = "Youtube" | "Twitter";
+export type ServiceName = "Youtube" | "Twitter" | "Discord" | "Spotify";

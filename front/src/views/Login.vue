@@ -32,15 +32,12 @@ export default vue.extend({
         async sendLogin() {
             try {
                 let {data: resp} = await this.$axios.post('/users/login', {
-                    headers: {
-                        Authorization: this.$store.getters.userToken,
-                    },
                     'email': this.email,
                     'password': this.password
                 })
                 localStorage.setItem('usr-token', resp.token);
                 this.$store.commit('updateToken', resp.token);
-                this.$router.push('/user-pannel');
+                this.$router.push('/home');
             } catch (err) {
                 console.log(err);
             }

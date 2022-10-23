@@ -13,15 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AREA"
         tools:targetApi="31">
-        <activity android:name=".ProfilePageActivity" />
+        <activity android:name=".activity.AreaActivity" />
+        <activity android:name=".activity.UserConnectionActivity" />
         <activity
-            android:name=".AreaCreationActivity">
-        </activity>
-        <activity
-            android:name=".AreaListActivity">
-        </activity>
-        <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +28,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".RegisterActivity" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

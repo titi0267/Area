@@ -3,21 +3,22 @@ import { FastifyPluginOptions } from "fastify/types/plugin";
 import httpStatus from "http-status";
 
 import { AreaService, UserService } from "../services";
-import * as BodyHelper from "../helpers/body.helpers";
 import * as SecurityHelper from "../helpers/security.helper";
 import { FastifyPluginDoneFunction } from "../types/global.types";
-import {
-  RawLoginBody,
-  RawRegisterBody,
-} from "../types/body/userRequestBody.types";
+import { LoginBody, RegisterBody } from "../types/body/userRequestBody.types";
 import authentificationMiddleware from "../middlewares/authentification.middleware";
+import {
+  loginBodyValidator,
+  registerBodyValidator,
+} from "../schema/user.schema";
+import { throwBodyError } from "../helpers/error.helpers";
 
 type RegisterRequest = FastifyRequest<{
-  Body: RawRegisterBody;
+  Body: RegisterBody;
 }>;
 
 type LoginRequest = FastifyRequest<{
-  Body: RawLoginBody;
+  Body: LoginBody;
 }>;
 
 export default (
@@ -32,24 +33,24 @@ export default (
   });
 
   instance.post("/", async (req: RegisterRequest, res: FastifyReply) => {
-    const formatedBody = BodyHelper.checkRegisterBody(req.body);
+    if (!registerBodyValidator(req.body)) throwBodyError();
 
     const token = await UserService.createUser(
-      formatedBody.firstName,
-      formatedBody.lastName,
-      formatedBody.email,
-      formatedBody.password,
+      req.body.firstName,
+      req.body.lastName,
+      req.body.email,
+      req.body.password,
     );
 
     res.status(httpStatus.OK).send(token);
   });
 
   instance.post("/login", async (req: LoginRequest, res: FastifyReply) => {
-    const formatedBody = BodyHelper.checkLoginBody(req.body);
+    if (!loginBodyValidator(req.body)) throwBodyError();
 
     const token = await UserService.loginUser(
-      formatedBody.email,
-      formatedBody.password,
+      req.body.email,
+      req.body.password,
     );
 
     res.status(httpStatus.OK).send(token);

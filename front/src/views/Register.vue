@@ -40,7 +40,6 @@ export default vue.extend({
                 confirmPassword: ""
             },
             samePassword: false,
-            debounce: 0,
         }
     },
     components: {
@@ -67,19 +66,16 @@ export default vue.extend({
         async sendRegister() {
             try {
                 let {data: resp} = await this.$axios.post('/users', {
-                    headers: {
-                        Authorization: this.$store.getters.userToken,
-                    },
                     'firstName': this.register.firstName,
                     'lastName': this.register.lastName,
                     'email': this.register.email,
-                    'password': this.register.password
+                    'password': this.register.password,
                 })
                 localStorage.setItem('usr-token', resp.token);
                 this.$store.commit('updateToken', resp.token);
-                this.$router.push('/user-pannel');
+                this.$router.push('/home');
             } catch (err) {
-                if (err && err.response.data.statusCode == 400)
+                if (err && err.reponse && err.response.data.statusCode == 400)
                     console.log("E-mail already taken...");
                 console.log(err);
             }

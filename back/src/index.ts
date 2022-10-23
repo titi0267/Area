@@ -6,6 +6,12 @@ import fastifyCors from "@fastify/cors";
 
 import ENV from "./env";
 import { UserInfos } from "./types/global.types";
+import { AreaService } from "./services";
+import { SERVICES } from "./constants/serviceList";
+import areaLoop from "./area/loop.area";
+import { postNewTweet } from "./ServiceRequest/twitter/twitter.reaction";
+import { sendMessageToServer } from "./ServiceRequest/discord/discord.reaction";
+import { checkVideoLike } from "./ServiceRequest/youtube/youtube.action";
 
 const prisma = new PrismaClient();
 const server = fastify();
@@ -23,7 +29,7 @@ const main = async () => {
 
   server.register(fastifyCors, {
     credentials: true,
-    origin: "http://localhost:8080",
+    origin: `http://localhost:${ENV.clientPort}`,
   });
 
   server.listen(
@@ -37,6 +43,10 @@ const main = async () => {
     },
   );
 };
+
+setInterval(async () => {
+  await areaLoop();
+}, 1 * 60 * 1000);
 
 main()
   .catch(e => {

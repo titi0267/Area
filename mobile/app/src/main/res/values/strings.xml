@@ -4,6 +4,7 @@
     <string name="back_button">Back</string>
 
     <string name="register_request">Register</string>
+    <string name="login_request">Login</string>
     <string name="register_first_name_field_hint">First name</string>
     <string name="register_last_name_field_hint">Last name</string>
     <string name="register_email_field_hint">Email</string>
@@ -21,4 +22,13 @@
     <string name="action_service_title">If ...</string>
     <string name="action_reaction_title">Does ...</string>
     <string name="reaction_service_title">Then ...</string>
+    <string name="left_logo_desc">Left logo of a listView item</string>
+    <string name="right_logo_desc">Right logo of a listView item</string>
+    <!-- Test start -->
+    <string name="test1">Hello</string>
+    <string name="test2">World</string>
+    <!-- Test end -->
+    <string name="not_logged_in_login_button_text">Log in</string>
+    <string name="not_logged_in_register_button_text">Register</string>
+    <string name="area_list_fetch_button">Refresh</string>
 </resources>

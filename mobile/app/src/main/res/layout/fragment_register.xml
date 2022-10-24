@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register_request"
+        app:cornerRadius="100dp"
         app:layout_constraintTop_toBottomOf="@id/register_password_field_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,9 +26,10 @@
         app:helperText="@string/register_ip_helper_text"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/register_first_name_field_layout"
-        app:layout_constraintStart_toStartOf="@id/register_first_name_field_layout">
+        app:layout_constraintStart_toStartOf="@id/register_first_name_field_layout"
+        app:errorEnabled="true">
 
-        <com.google.android.material.textfield.TextInputEditText
+    <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_ip_field_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,12 +40,12 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_port_field_layout"
-        android:layout_width="136dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:hint="@string/register_port_field_hint"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        android:paddingStart="32dp"
+        android:paddingStart="16dp"
         app:helperTextEnabled="true"
         app:helperText="@string/register_port_helper_text"
         app:layout_constraintTop_toTopOf="parent"
@@ -133,7 +135,8 @@
         app:layout_constraintTop_toBottomOf="@id/register_password_field_layout"
         app:layout_constraintBottom_toTopOf="@id/request_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_password_field_edit_text"

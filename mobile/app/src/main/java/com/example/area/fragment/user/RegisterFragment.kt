@@ -18,9 +18,9 @@ import com.example.area.activity.MainActivity
 import com.example.area.activity.UserConnectionActivity
 import com.example.area.model.RegisterFields
 import com.example.area.repository.Repository
-import com.example.area.utils.SessionManager
-import com.example.area.utils.checkRegisterField
-import com.example.area.utils.urlParser
+import com.example.area.utils.*
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
@@ -34,23 +34,30 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
 
         var token: String?
+
+        textFieldsFocusListener(view, R.id.register_ip_field_edit_text, R.id.register_ip_field_layout, ::checkIp)
+        textFieldsFocusListener(view, R.id.register_port_field_edit_text, R.id.register_port_field_layout, ::checkPort)
+        textFieldsFocusListener(view, R.id.register_first_name_field_edit_text, R.id.register_first_name_field_layout, ::checkNames)
+        textFieldsFocusListener(view, R.id.register_last_name_field_edit_text, R.id.register_last_name_field_layout, ::checkNames)
+        textFieldsFocusListener(view, R.id.register_email_field_edit_text, R.id.register_email_field_layout, ::checkEmail)
+        textFieldsFocusListener(view, R.id.register_password_field_edit_text, R.id.register_password_field_layout, ::checkPassword)
         view.findViewById<Button>(R.id.request_button).setOnClickListener {
             lateinit var url: String
             val sessionManager = SessionManager(context as UserConnectionActivity)
 
             //Store register fields
             val registerForm = RegisterFields(
-                view.findViewById<EditText>(R.id.first_name_field).text.toString(),
-                view.findViewById<EditText>(R.id.last_name_field).text.toString(),
-                view.findViewById<EditText>(R.id.email_field).text.toString(),
-                view.findViewById<EditText>(R.id.password_field).text.toString()
+                view.findViewById<EditText>(R.id.register_first_name_field_edit_text).text.toString(),
+                view.findViewById<EditText>(R.id.register_last_name_field_edit_text).text.toString(),
+                view.findViewById<EditText>(R.id.register_email_field_edit_text).text.toString(),
+                view.findViewById<EditText>(R.id.register_password_field_edit_text).text.toString()
             )
 
             // Check registration validity
             try {
                 url = urlParser(
-                    view.findViewById<EditText>(R.id.ip_field).text.toString(),
-                    view.findViewById<EditText>(R.id.port_field).text.toString()
+                    view.findViewById<EditText>(R.id.register_ip_field_edit_text).text.toString(),
+                    view.findViewById<EditText>(R.id.register_port_field_edit_text).text.toString()
                 )
                 checkRegisterField(registerForm)
             }
@@ -85,5 +92,23 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
 
         return view
+    }
+
+    private fun textFieldsFocusListener(view: View, idEditText: Int, idTextLayout: Int, function: (field: String)->Unit)
+    {
+        val editText = view.findViewById<TextInputEditText>(idEditText)
+        val textLayout = view.findViewById<TextInputLayout>(idTextLayout)
+        editText.setOnFocusChangeListener { _, focused ->
+            if (!focused) {
+                try {
+                    function(editText.text.toString())
+                }
+                catch (e: IllegalArgumentException) {
+                    textLayout.error = e.message
+                    return@setOnFocusChangeListener
+                }
+            }
+            textLayout.error = null
+        }
     }
 }

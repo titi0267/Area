@@ -6,7 +6,7 @@ import * as DiscordReaction from "../area/discord/discord.reaction";
 export const SERVICES: Service[] = [
   {
     id: 1,
-    serviceName: "Youtube",
+    serviceName: "Github",
     imageUrl:
       "https://www.edigitalagency.com.au/wp-content/uploads/Youtube-logo-white-only-png.png",
     backgroundColor: "#FF0000",

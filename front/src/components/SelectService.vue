@@ -12,7 +12,11 @@
               service[type + 's'].length != 0 &&
               service.name.toLowerCase().includes(filterInput.toLowerCase())
             "
-            @click="$emit(type + 'ServiceId', service.id), $emit('save')"
+            @click="
+              $emit(type + 'ServiceId', service.id),
+                $emit('save'),
+                getOauthUrl()
+            "
           >
             {{ service.name }}
           </div>
@@ -44,43 +48,36 @@ export default vue.extend({
       oauthURL: "",
     };
   },
-  mounted() {
-    this.getGoogleOauthUrl();
-    this.postGoogleOauthCode();
-    console.log(this.$route);
-  },
   props: {
     type: String,
     services: Array,
     area: Object,
   },
   components: {},
-  watch: {
-    // 'this.'
-  },
+  watch: {},
+  computed: {},
   methods: {
     debounceInput: _.debounce(function (input) {
       this.filterInput = input;
     }, 400),
-    async getGoogleOauthUrl() {
+    async getOauthUrl() {
       try {
-        const { data: url } = await this.$axios.get("/oauth/Youtube", () => {});
+        console.log(
+          "SERVICE = " + this.area[this.type + "ServiceId"],
+          this.services.find(
+            (service) => service.id == this.area[this.type + "ServiceId"]
+          ).name
+        );
+        let serviceName = this.services.find(
+          (service) => service.id == this.area[this.type + "ServiceId"]
+        ).name;
+        const { data: url } = await this.$axios.get(
+          "/oauth/" +
+            (serviceName == "Youtube" ? "google" : serviceName.toLowerCase()),
+          () => {}
+        );
         console.log(url);
         this.oauthURL = url;
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async postGoogleOauthCode() {
-      try {
-        console.log("test dans code");
-        const code = this.$route.query.code;
-
-        if (code == null) return;
-        console.log("code = " + code);
-        await this.$axios.post("/oauth/google", {
-          code: code,
-        });
       } catch (e) {
         console.log(e);
       }

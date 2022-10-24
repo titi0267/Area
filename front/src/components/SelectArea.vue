@@ -31,7 +31,7 @@ export default vue.extend({
         }
     },
     mounted() {
-
+        this.postOauthCode();
     },
     props: {
         type: String,
@@ -47,7 +47,28 @@ export default vue.extend({
             let service = this.services.find(service => service.id == this.area[this.type + 'ServiceId'])
             let paramName = service[this.type + 's'].find(actrea => actrea.id == this.area[this.type + 'Id'])[this.type + 'ParamName']
             return paramName;
-        }
+        },
+        async postOauthCode() {
+            try {
+                console.log("test dans code");
+                const code = this.$route.query.code;
+
+                if (code == null) return;
+                let serviceName = this.services.find(
+                (service) => service.id == this.area[this.type + "ServiceId"]
+                ).name;
+                console.log("code = " + code);
+                await this.$axios.post(
+                    "/oauth/" +
+                        (serviceName === "Youtube" ? "google" : serviceName.toLowerCase()),
+                    {
+                        code: code,
+                    }
+                );
+            } catch (e) {
+                console.log(e);
+            }
+        },
     }
 })
 </script>

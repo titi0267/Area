@@ -13,6 +13,9 @@ const ENV = {
   spotifyClientId: process.env.SPOTIFY_CLIENT_ID as string,
   spotifyClientSecret: process.env.SPOTIFY_CLIENT_SECRET as string,
   spotifyRedirectUrl: process.env.SPOTIFY_REDIRECT_URL as string,
+  githubClientId: process.env.GITHUB_CLIENT_ID as string,
+  githubClientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+  githubRedirectUrl: process.env.GITHUB_REDIRECT_URL as string,
   host: (process.env.HOST as string) || "0.0.0.0",
   discordBotToken: process.env.DISCORD_BOT_TOKEN as string,
 };

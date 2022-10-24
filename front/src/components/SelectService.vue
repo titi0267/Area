@@ -27,8 +27,8 @@
       "
       >Précédent</b-button
     >
-    <b-button @click="$emit('next'), $emit('save'), getGoogleOauthUrl()"
-      >Suivant</b-button
+    <b-button @click="$emit('next'), $emit('save')">
+      <a :href="oauthURL">Suivant</a></b-button
     >
   </div>
 </template>
@@ -41,9 +41,12 @@ export default vue.extend({
   data() {
     return {
       filterInput: "",
+      oauthURL: "",
     };
   },
-  mounted() {},
+  mounted() {
+    this.getGoogleOauthUrl();
+  },
   props: {
     type: String,
     services: Array,
@@ -55,7 +58,13 @@ export default vue.extend({
       this.filterInput = input;
     }, 400),
     async getGoogleOauthUrl() {
-      await this.$axios.get("/oauth/Youtube", () => {});
+      try {
+        const { data: url } = await this.$axios.get("/oauth/Youtube", () => {});
+        console.log(url);
+        this.oauthURL = url;
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 });

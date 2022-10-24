@@ -6,12 +6,7 @@ import fastifyCors from "@fastify/cors";
 
 import ENV from "./env";
 import { UserInfos } from "./types/global.types";
-import { AreaService } from "./services";
-import { SERVICES } from "./constants/serviceList";
 import areaLoop from "./area/loop.area";
-import { postNewTweet } from "./area/twitter/twitter.reaction";
-import { sendMessageToServer } from "./area/discord/discord.reaction";
-import { checkVideoLike } from "./area/youtube/youtube.action";
 
 const prisma = new PrismaClient();
 const server = fastify();

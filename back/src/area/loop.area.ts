@@ -11,9 +11,9 @@ const areaLoop = async () => {
     );
 
     if (action === null) return;
-    const doReaction = await action(area);
+    const reactionParam = await action(area);
 
-    if (doReaction === false) return;
+    if (reactionParam === null) return;
 
     const reaction = ServiceHelper.getReactionFct(
       area.reactionServiceId,
@@ -22,7 +22,7 @@ const areaLoop = async () => {
 
     if (reaction === null) return;
 
-    reaction(area.reactionParam, "");
+    reaction(reactionParam, "");
   }
 };
 

@@ -1,10 +1,11 @@
 import { Area } from "@prisma/client";
-import console from "console";
 import { google } from "googleapis";
+
 import ENV from "../../env";
 import { AreaService } from "../../services";
+import * as ServiceHelper from "../../helpers/service.helpers";
 
-const checkUploadedVideo = async (area: Area): Promise<Boolean> => {
+const checkUploadedVideo = async (area: Area): Promise<string | null> => {
   const youtube = google.youtube({ version: "v3", auth: ENV.googleApiKey });
 
   await AreaService.updateAreaValues(area.id, null);
@@ -18,7 +19,7 @@ const checkUploadedVideo = async (area: Area): Promise<Boolean> => {
     !channel.data.items ||
     !channel.data.items[0].contentDetails?.relatedPlaylists?.uploads
   )
-    return false;
+    return null;
 
   const videos = await youtube.playlistItems.list({
     maxResults: 1,
@@ -26,42 +27,71 @@ const checkUploadedVideo = async (area: Area): Promise<Boolean> => {
     playlistId: channel.data.items[0].contentDetails.relatedPlaylists.uploads,
   });
 
-  if (!videos.data.items || !videos.data.items[0].snippet?.publishedAt)
-    return false;
+  if (!videos.data.items || !videos.data.items[0]) return null;
 
-  if (new Date(videos.data.items[0].snippet.publishedAt) > area.lastActionFetch)
-    return true;
+  const lastVideo = videos.data.items[0];
 
-  return false;
+  if (
+    !lastVideo.snippet?.publishedAt ||
+    !lastVideo.snippet?.title ||
+    !lastVideo.snippet.channelTitle
+  )
+    return null;
+
+  if (new Date(lastVideo.snippet.publishedAt) > area.lastActionFetch)
+    return null;
+
+  const params = {
+    name: lastVideo.snippet.title,
+    channelName: lastVideo.snippet.channelTitle,
+  };
+
+  return ServiceHelper.injectParamInReaction<typeof params>(
+    area.reactionParam,
+    params,
+  );
 };
 
-const checkVideoLike = async (area: Area): Promise<Boolean> => {
+const checkVideoLike = async (area: Area): Promise<string | null> => {
   const youtube = google.youtube({ version: "v3", auth: ENV.googleApiKey });
+
+  const videoId = ServiceHelper.getYoutubeVideoId(area.actionParam);
+
+  if (!videoId) return null;
 
   const video = (
     await youtube.videos.list({
-      id: [area.actionParam],
+      id: [videoId],
       part: ["statistics"],
     })
   ).data.items;
 
-  if (!video || video.length < 1) return false;
+  if (!video || video.length < 1) return null;
 
   const statistics = video[0].statistics;
 
-  if (!statistics || !statistics.likeCount) return false;
+  if (!statistics || !statistics.likeCount || !statistics.dislikeCount)
+    return null;
+
+  const params = {
+    like: statistics.likeCount,
+    dislike: statistics.dislikeCount,
+  };
 
   if (area.lastActionValue === null) {
     await AreaService.updateAreaValues(area.id, statistics.likeCount);
-    return false;
+    return null;
   }
 
   if (parseInt(statistics.likeCount) > parseInt(area.lastActionValue)) {
     await AreaService.updateAreaValues(area.id, statistics.likeCount);
-    return true;
+    return ServiceHelper.injectParamInReaction<typeof params>(
+      area.reactionParam,
+      params,
+    );
   }
 
-  return false;
+  return null;
 };
 
 export { checkUploadedVideo, checkVideoLike };

@@ -18,9 +18,7 @@ Il gère toutes les pages et éléments interactif lié à ce projet.
 [![Languages](https://skillicons.dev/icons?i=scss)](https://sass-lang.com/)
 
 ## Installation
-1. `npm install` Installation des dependences.
-2. `npm run build` Génère le dossier de build.
-3. `npm run serve` En mode développement, permet d'avoir les mises à jour en temps réel.
+- `npm install` Installation des dependences.
 
 ## Variables d'environnement
 | Nom | Description | Type | Valeur par défaut |
@@ -69,6 +67,11 @@ Deux méthodes pour compiler le front
 # Informations générale
 
 ## LocalStorage
+Le localStorage est utilisé pour sauvegarder certaines données utilisateur.
+| Nom | Description | Type |
+|:----|:------------|:-----|
+| **token** | token utilisateur | `string` |
+| **area** | area creation | `objet` |
 
 # Utilisation des librairies
 
@@ -207,7 +210,7 @@ Chemin du fichier : `front/src/lang/fr.json`
 L'éxample ci-dessous illustre comment accèder à ces informations dans le code html.
 Le résultat interprété sera : "Nom".
 ```html
- <p> {{ $t('login.firstName') }} </p>
+<p> {{ $t('login.firstName') }} </p>
 ```
 ## Buefy
 Buefy est une bibliothèque de composants d'interface utilisateur pour VueJs.
@@ -239,3 +242,5 @@ Vue.use(Buefy, {
 ```
 
 # Tests unitaires
+Les tests unitaire permettent de tester chaque composant du projet.
+- `npm run test:unit` Lancer des unit test

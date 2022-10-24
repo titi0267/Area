@@ -1,6 +1,7 @@
 import { describe, test, expect } from "@jest/globals";
-import ClientError from "../../src/error";
+import httpStatus from "http-status";
 
+import ClientError from "../../src/error";
 import { UserService } from "../../src/services";
 
 describe("Test post user service", () => {
@@ -161,6 +162,32 @@ describe("Test list all users", () => {
       const userList = await UserService.getAllUsers();
 
       expect(userList).toHaveLength(0);
+    });
+  });
+});
+
+describe("Test get a user", () => {
+  describe("Test working cases", () => {
+    test("Test get a user", async () => {
+      await UserService.createUser("Sudo", "Str", "ludostr@mail.com", "passwd");
+
+      const userList = await UserService.getAllUsers();
+      const user = await UserService.getOneUser(userList[0].id);
+
+      expect(user.firstName).toBe("Sudo");
+      expect(user.tokensTable).not.toBeNull();
+
+      await UserService.removeUserByEmail("ludostr@mail.com");
+    });
+  });
+
+  describe("Test error cases", () => {
+    test("Get user with invalid user id", async () => {
+      try {
+        await UserService.getOneUser(47);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
     });
   });
 });

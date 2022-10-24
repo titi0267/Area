@@ -1,3 +1,5 @@
+import { TokensTable, User } from "@prisma/client";
+
 export type FastifyPluginDoneFunction = (err?: Error) => void;
 
 export interface Token {
@@ -29,4 +31,8 @@ export interface DecodedToken {
   email: string;
   role: Role;
   expTime: Date;
+}
+
+export interface UserWithTokens extends User {
+  tokensTable: TokensTable | null;
 }

@@ -32,6 +32,18 @@ export default (
     res.status(httpStatus.OK).send(users);
   });
 
+  instance.get(
+    "/me",
+    { onRequest: [authentificationMiddleware()] },
+    async (req: FastifyRequest, res: FastifyReply) => {
+      const userInfos = SecurityHelper.getUserInfos(req);
+
+      const user = await UserService.getOneUser(userInfos.id);
+
+      res.status(httpStatus.OK).send(user);
+    },
+  );
+
   instance.post("/", async (req: RegisterRequest, res: FastifyReply) => {
     if (!registerBodyValidator(req.body)) throwBodyError();
 

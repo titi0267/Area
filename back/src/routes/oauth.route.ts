@@ -58,6 +58,28 @@ export default (
       res.status(httpStatus.OK).send(tokenTable);
     },
   );
+  instance.get("/Youtube", (req: FastifyRequest, res: FastifyReply) => {
+    console.log("test");
+    const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+
+    const options = {
+      redirect_uri: ENV.googleRedirectUrl,
+      client_id: ENV.googleClientId,
+      access_type: "offline",
+      response_type: "code",
+      prompt: "consent",
+      scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/youtube.readonly",
+        "https://www.googleapis.com/auth/youtube",
+        "https://www.googleapis.com/auth/youtube.upload",
+      ].join(" "),
+    };
+    const qs = new URLSearchParams(options);
+
+    res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+  });
 
   instance.post(
     "/spotify",

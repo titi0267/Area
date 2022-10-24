@@ -14,7 +14,7 @@
             <b-field label="Password" label-position="on-border">
                 <b-input v-model="register.password" type="password" password-reveal></b-input>
             </b-field>
-            <b-field label="Confirm password" label-position="on-border" :type="samePassword == true ? 'is-danger' : ''" :message="samePassword == true ? 'Password are not the same' : ''">
+            <b-field class="confirmPassword" label="Confirm password" label-position="on-border" :type="samePassword == true ? 'is-danger' : ''" :message="samePassword == true ? 'Password are not the same' : ''">
                 <b-input v-model="register.confirmPassword" type="password" password-reveal></b-input>
             </b-field>
             <b-button @click="sendRegister()" type="is-primary">Register</b-button>

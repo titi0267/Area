@@ -1,7 +1,7 @@
 import { Service } from "../types/areaServices/areaServices.types";
-import * as YoutubeActions from "../ServiceRequest/youtube/youtube.action";
-import * as TwitterReaction from "../ServiceRequest/twitter/twitter.reaction";
-import * as DiscordReaction from "../ServiceRequest/discord/discord.reaction";
+import * as YoutubeActions from "../area/youtube/youtube.action";
+import * as TwitterReaction from "../area/twitter/twitter.reaction";
+import * as DiscordReaction from "../area/discord/discord.reaction";
 
 export const SERVICES: Service[] = [
   {

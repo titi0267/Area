@@ -68,8 +68,6 @@ const checkVideoLike = async (area: Area): Promise<string | null> => {
 
   if (!video || video.length < 1) return null;
 
-  console.log(video);
-
   const statistics = video[0].statistics;
 
   if (!statistics || !statistics.likeCount || !statistics.dislikeCount)

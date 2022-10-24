@@ -46,6 +46,8 @@ export default vue.extend({
   },
   mounted() {
     this.getGoogleOauthUrl();
+    this.postGoogleOauthCode();
+    console.log(this.$route);
   },
   props: {
     type: String,
@@ -53,6 +55,9 @@ export default vue.extend({
     area: Object,
   },
   components: {},
+  watch: {
+    // 'this.'
+  },
   methods: {
     debounceInput: _.debounce(function (input) {
       this.filterInput = input;
@@ -62,6 +67,20 @@ export default vue.extend({
         const { data: url } = await this.$axios.get("/oauth/Youtube", () => {});
         console.log(url);
         this.oauthURL = url;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async postGoogleOauthCode() {
+      try {
+        console.log("test dans code");
+        const code = this.$route.query.code;
+
+        if (code == null) return;
+        console.log("code = " + code);
+        await this.$axios.post("/oauth/google", {
+          code: code,
+        });
       } catch (e) {
         console.log(e);
       }

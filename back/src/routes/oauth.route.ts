@@ -59,7 +59,6 @@ export default (
     },
   );
   instance.get("/Youtube", (req: FastifyRequest, res: FastifyReply) => {
-    console.log("test");
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
 
     const options = {

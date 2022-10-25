@@ -3,84 +3,89 @@
 Le côté client de l'area se compose en une partie.
 Il gère toutes les pages et éléments interactif lié à ce projet.
 
-## Sommaire
-* [Langages](#langages)
-* [Librairies](#librairies)
+## Summary
+* [Languages](#languages)
 * [Installation](#installation)
-* [Variables d'environnement](#variables-denvironnement)
+* [Environnement](#environnement)
 * [Compilation](#compilation)
-* [Les dossiers](#les-dossiers)
+* [Folders, Components & Files](#folders-components--files)
+* [General Information](#general-information)
+    * [LocalStorage](#localstorage)
+    * [Unit tests](#unit-tests)
+* [Frameworks](#frameworks)
+    * [Axios](#axios)
+    * [VueX](#vuex)
+    * [Vue Router](#vue-router)
+    * [I18n](#vue-i18n)
+    * [Buefy](#buefy)
 
-## Langages
+## Languages
 [![Languages](https://skillicons.dev/icons?i=vue)](https://v2.vuejs.org/)
 [![Languages](https://skillicons.dev/icons?i=ts)](https://www.typescriptlang.org/)
 [![Languages](https://skillicons.dev/icons?i=html)](https://developer.mozilla.org/fr/docs/Web/HTML)
 [![Languages](https://skillicons.dev/icons?i=scss)](https://sass-lang.com/)
+[![Languages](https://skillicons.dev/icons?i=jest)](https://jestjs.io/en/)
 
 ## Installation
-- `npm install` Installation des dependences.
+- `npm install` Installation of dependencies.
 
-## Variables d'environnement
-| Nom | Description | Type | Valeur par défaut |
+## Environnement
+| Name | Description | Type | Default Value |
 |:----|:------------|:-----|:------------------|
 <span style="color: #FF5500; text-decoration: underline;">***APP VARIABLES***</span> | | | |
-| **VUE_APP_URL** | URL du serveur pour le front | `string` | *Pas de valeur par défaut* |
-| **VUE_APP_PORT** | Port du serveur pour le front | `number` | *8081* |
-<span style="color: #FF5500; text-decoration: underline;">***OAUTH SERVICES VARIABLES***</span> | | | |
-| **VUE_APP_GOOGLE_OAUTH_REDIRECT_URL** | Callback pour l'OAUTH Google | `?` | *Pas de valeur par défaut* |
-| **VUE_APP_GOOGLE_CLIENT_ID** | ID du client Google | `?` | *Pas de valeur par défaut* |
-| **VUE_APP_SPOTIFY_OAUTH_REDIRECT_URL** | Callback pour l'OAUTH Spotify | `?` | *Pas de valeur par défaut* |
-| **VUE_APP_SPOTIFY_CLIENT_ID** |  | `?` | *Pas de valeur par défaut* |
-| **VUE_APP_SPOTIFY_CLIENT_SECRET** |  | `?` | *Pas de valeur par défaut* |
-| **VUE_APP_GITHUB_OAUTH_REDIRECT_URL** |  | `?` | *Pas de valeur par défaut* |
-| **VUE_APP_GITHUB_CLIENT_ID** |  | `?` | *Pas de valeur par défaut* |
-| **VUE_APP_GITHUB_CLIENT_SECRET** |  | `?` | *Pas de valeur par défaut* |
+| **VUE_APP_URL** | URL of the frontend serveur | `string` | *No default value* |
+| **VUE_APP_PORT** | Port of the frontend serveur | `number` | *8081* |
 
 ## Compilation
-Deux méthodes pour compiler le front
+Two methods for compile the frontend
 - npm run build (`production`)
 - npm run serve (`developpement`)
 
-## Les dossiers
+## Folders, Components & Files
 
 ### /Views
-- **Login.vue** : Page de connexion de l'utilisateur
-- **Register.vue** : Page d'inscription de l'utilisateur
-- **Home.vue** : Page de principale de l'utiisateur. Il peut visualiser ses actions-réactions
-- **Area.vue** : Page de création d'action-réaction
-- **NotFound.vue** : Si une page n'éxiste pas, l'utilisateur est redirigé sur cette page
+- **Login.vue** : Login page
+- **Register.vue** : Register page
+- **Home.vue** : Home page of the user. He can view all of his action and reaction
+- **Area.vue** : Creation of action and reaction page
+- **NotFound.vue** : If a page does not exist, the user is redirect on this page
 
 ### /Components
-- **SelectServices.vue** : Gestion de la selection des services
-- **SelectArea.vue** : Gestion de la selection des actions et des réactions
-- **Overview.vue** : Visualisation de l'action - réaction crée par l'utilisateur à la fin d'une création
+- **SelectServices.vue** : Selection management of the services
+- **SelectArea.vue** : Selection management of the action and reaction
+- **Overview.vue** : Final view when an new action - reaction is created
 
 ### /Public
-- index.html: Page d'injection du VueJS
-- favicon.ico: Icon de la page
+- index.html: Injected Vuejs page
+- favicon.ico: Webpage icon
     ### /assets
-    - buefy.scss: Import de la librairie Buefy ainsi que son CSS
+    - buefy.scss: Buefy import with his CSS
 
 ### App.vue
-- Component parent de toute l'application.
+- Parent component of all the Vue application
 
-# Informations générale
+# General information
 
 ## LocalStorage
-Le localStorage est utilisé pour sauvegarder certaines données utilisateur.
-| Nom | Description | Type |
+The localStorage is user for save some users data.
+Here is a list of data saved
+| Name | Description | Type |
 |:----|:------------|:-----|
-| **token** | token utilisateur | `string` |
+| **token** | user token | `string` |
 | **area** | area creation | `objet` |
 
-# Utilisation des librairies
+## Unit tests
+The unit tests allow you to test each Vue file from the project.
+- `npm run test:unit` Command to run the unit tests
+
+# Frameworks
 
 ## Axios
-Axios est un client HTTP basé sur des Promesses. Il permet de faire des requêtes à une API.
-Ci-dessous le fichier de configuration de axios. Ce fichier contient principalement l'URL des requêtes côté serveur depuis le fichier .env. L'objet headers est envoyé à chaque requête et permet au côté serveur de contrôler la validité de la requête.
-Le header 'Authorization' permet de vérifier si l'utilisateur est connecté avec un token valide. Si ce token n'est pas valide, l'utilisateur est automatique redirigé vers la page de login
+Axios is an HTTP client based on promises. He is able to make requests to an `API`.
+The code just below is the configuration file of axios. This file principally contains the back-end URL requests from the .env file. The object `header` is sent to each request and allow the server to control the validity of the request.
+The `Authorization` header allows to verify if the user is connected with a valid token. If this token is not valid, the user is automatically redirected to the login page.
 
-Chemin du fichier : `front/src/axiosInstance.ts`
+Filepath : `front/src/axiosInstance.ts`
 ```ts
 const axios_instance = axios.create({
     timeout: 1000,
@@ -96,41 +101,41 @@ const axios_instance = axios.create({
 ```
 
 ## VueX
-VueX est le gestionnaire d'état du projet. Il permet de stocker des variables et de les récupérer de n'importe quel composant du projet.
-Ci-dessous se trouve l'architecture du magasin d'état. Il contient quatre objets : State, Getter, Mutation et Action.
+VueX is the state manager of the project. He allow to `stock variables` and to get it from any component of the project.
+The code just below is the state store architecture. He contains four objects : State, Getters, Mutations and Actions.
 
-Chemin du fichier : `front/src/store/index.ts`
+Filepath : `front/src/store/index.ts`
 ```ts
 export default new Vuex.Store({
     state: {
         // type : Object | Function
-        // fonction : stocker l'objet d'état du magasin
+        // description : store the state variable
     },
     getters: {
         // type : { [key: string]: Function(state) }
-        // fonction : récupérer la valeur d'un objet d'état du magasin
-        // accès : store.getters.monGetter
+        // description : retrieve store state variable
+        // accès : store.getters.myGetter
     },
     mutations: {
         // type : { [type: string]: Function}
-        // fonction : muter la valeur d'un objet d'état du magasin
-        // accès : store.commit('maFonction', newValue)
+        // description : mute store state variable
+        // accès : store.commit('myFunc', newValue)
     },
     actions: {
         // type : { [type: string]: Function(context) }
-        // fonction: les actions émettent des mutations
-        // accès : store.dispatch('maFonction')
+        // description: actions can emit mutations
+        // access : store.dispatch('myFunc')
     },
 })
 ```
 
 ## Vue Router
-Vue Router permet la gestion des routes du côté client. Chaque route est assigné à un composant.
-L'example ci-dessous tiré du code montre une route du nom de 'register' avec comme chemin d'accès '/register' et comme composant 'Register'. Ces informations permettent de relier la route '/register' au composant 'Register' importé plus haut.
-Le dernière élément du nom de 'meta' est un object qui peut contenir diverses informations pour chaque route.
-Dans ce cas, l'objet 'meta' sert à savoir si la route est protégé par une authentification.
+Vue Router allows the front-end routes management. Each route is assigned to a component.
+The example above, is taken from the code and shows you a route with the name `register`, with path `/register` and imported above the code, the component `Register`.
+The last element called `meta` is an object that contains divers information for each route.
+In that case, the object `meta` serves to know if the route is protected with an authentification.
 
-Chemin du fichier : `front/src/router/index.ts`
+Filepath : `front/src/router/index.ts`
 ```ts
 import Register from "../views/Register.vue";
 
@@ -145,13 +150,13 @@ const router = new VueRouter({
     ]
 })
 ```
-Chaque route est protégé par un système de vérification de connection de l'utilisateur.
-En récupérant le token dans le localStorage de l'utilisateur et le store, une requête est éxécutée à l'API.
-Si cette requête est validé avec le token de l'utilisateur, alors nous l'accès lui sera accordé.
-Dans le cas contraire, son accès sera redirigé vers la page de login.
-Le code ci-dessous permet de faire les redirections necessaires si le token est faux ou inexistant.
+Each route is `protected` with a user login verification system.
+While recovering the token in the localStorage of the user and in the store (VueX), a request is sent to the API.
+If this request is validated with the user token, so the access to the route will be granted.
+Otherwise, the user will be redirected to the login page.
+The code bellow allows to make the necessary redirection if the token is false or non-existent.
 
-Chemin du fichier : `front/src/router/index.ts`
+Filepath : `front/src/router/index.ts`
 ```ts
 router.beforeEach(async (to, from, next) => {
     let usrToken = localStorage.getItem('usr-token');
@@ -176,12 +181,12 @@ router.beforeEach(async (to, from, next) => {
 });
 ```
 ## Vue-I18n
-Vue-I18n est utilisé pour la gestion des langues sur l'interface utilisateur.
-Deux choix s'offrent à lui, l'Anglais ou le Français.
-Ci-dessous se trouve la déclaration de VueI18n, il permet de définir la langue par défaut qui est l'anglais.
-L'objet message contient toutes les langues importé plus haut.
+Vue I18n is used for the language management on the user interface.
+Two choices open to him, French or English.
+Just below is the VueI18n declaration, it allows to define the default language who is now English.
+The object message contains all of the imported languages.
 
-Chemin du fichier : `front/src/lang/i18n.ts`
+Filepath : `front/src/lang/i18n.ts`
 ```ts
 const en = require("./en.json");
 const fr = require('./fr.json');
@@ -195,34 +200,35 @@ export default new VueI18n({
     }
 });
 ```
-Les langues sont importées sous la forme d'un .JSON, chaque langue a son propre fichier.
-Le fichier ci-dessous contient les mots français.
+The languages are imported as a `.JSON` file, each language has her own file.
+The file below contains the english words.
 
-Chemin du fichier : `front/src/lang/fr.json`
+Filepath : `front/src/lang/fr.json`
 ```json
 {
-    "login": {
-        "firstName": "Nom",
-        "lastName": "Prénom",
+    "register": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        ...
     }
 }
 ```
-L'éxample ci-dessous illustre comment accèder à ces informations dans le code html.
-Le résultat interprété sera : "Nom".
+The example below shows you how to get the information in the HTML code.
+The result will be : `First Name`
 ```html
-<p> {{ $t('login.firstName') }} </p>
+<p> {{ $t('register.firstName') }} </p>
 ```
 ## Buefy
-Buefy est une bibliothèque de composants d'interface utilisateur pour VueJs.
-Nous l'utilison pour tous les éléments graphique de base.
-Il permet par exemple de remplacer les balises `<input>` classique par des balises `<b-input>` de la librairie buefy qui ont déjà un style css.
-Buefy utilise un gestionnaire d'icon appelé: Font Awesome.
+Buefy is a UI component library for VueJs.
+We use for all graphic elements.
+For example, it allows to replace the HTML tag `<input>` by `<b-input>` of the Buefy library with a CSS style.
+Also, buefy use an icon manager called: Font Awesome.
 
-Il permet d'ajouter des icons dans certaines circonstances, tel que des erreurs, des pop-up de validation...
+It allows to add icons in certain circumstances, like an error or a validation pop-up...
 
-Ci-dessous on retrouve l'initialisation de Buefy, avec l'import des logo Font Awesome ainsi que leurs taille d'affichage.
+Below you can see the initialization of Buefy, with the Font Awesome icon import, with their size.
 
-Chemin du fichier : `front/src/main.ts`
+Filepath : `front/src/main.ts`
 ```ts
 Vue.use(Buefy, {
     defaultIconComponent: FontAwesomeIcon,
@@ -240,7 +246,3 @@ Vue.use(Buefy, {
     css: true,
 });
 ```
-
-# Tests unitaires
-Les tests unitaire permettent de tester chaque composant du projet.
-- `npm run test:unit` Lancer des unit test

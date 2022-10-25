@@ -7,6 +7,7 @@ import fastifyCors from "@fastify/cors";
 import ENV from "./env";
 import { UserInfos } from "./types/global.types";
 import areaLoop from "./area/loop.area";
+import { checkNewVideoLiked } from "./area/youtube/youtube.action";
 
 const prisma = new PrismaClient();
 const server = fastify();
@@ -40,8 +41,20 @@ const main = async () => {
 };
 
 setInterval(async () => {
-  await areaLoop();
-}, 1 * 60 * 1000);
+  //await areaLoop();
+  const test = await checkNewVideoLiked({
+    userId: 553,
+    id: 1,
+    actionId: 1,
+    actionServiceId: 1,
+    actionParam: "",
+    reactionId: 1,
+    reactionServiceId: 1,
+    reactionParam: "",
+    lastActionValue: null,
+    lastActionFetch: new Date(),
+  });
+}, 0.1 * 60 * 1000);
 
 main()
   .catch(e => {

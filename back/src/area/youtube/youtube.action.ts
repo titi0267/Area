@@ -108,9 +108,9 @@ const checkNewVideoLiked = async (area: Area): Promise<string | null> => {
   ).data;
 
   if (!channel.items) return null;
-  console.log(channel.items[0].contentDetails?.relatedPlaylists?.likes);
 
   if (!channel.items[0].contentDetails?.relatedPlaylists?.likes) return null;
+
   const playlist = (
     await youtube.playlistItems.list({
       part: ["snippet"],
@@ -118,7 +118,40 @@ const checkNewVideoLiked = async (area: Area): Promise<string | null> => {
     })
   ).data;
 
-  console.log(playlist);
+  if (!playlist.pageInfo?.totalResults || !playlist.items) return null;
+
+  const lastVideo = playlist.items[0];
+
+  if (
+    !lastVideo.snippet ||
+    !lastVideo.snippet.videoOwnerChannelTitle ||
+    !lastVideo.snippet.title
+  )
+    return null;
+
+  const params = {
+    channel: lastVideo.snippet.videoOwnerChannelTitle,
+    title: lastVideo.snippet.title,
+  };
+
+  if (area.lastActionValue === null) {
+    await AreaService.updateAreaValues(
+      area.id,
+      String(playlist.pageInfo.totalResults),
+    );
+    return null;
+  }
+
+  if (playlist.pageInfo.totalResults > parseInt(area.lastActionValue)) {
+    await AreaService.updateAreaValues(
+      area.id,
+      String(playlist.pageInfo.totalResults),
+    );
+    return ServiceHelper.injectParamInReaction<typeof params>(
+      area.reactionParam,
+      params,
+    );
+  }
 
   return null;
 };

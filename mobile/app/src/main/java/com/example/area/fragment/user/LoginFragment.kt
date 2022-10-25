@@ -18,9 +18,7 @@ import com.example.area.activity.MainActivity
 import com.example.area.activity.UserConnectionActivity
 import com.example.area.model.LoginFields
 import com.example.area.repository.Repository
-import com.example.area.utils.SessionManager
-import com.example.area.utils.checkLoginField
-import com.example.area.utils.urlParser
+import com.example.area.utils.*
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
@@ -33,18 +31,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
 
+        loginFocusListener(view)
         view.findViewById<Button>(R.id.request_button).setOnClickListener {
             lateinit var url: String
             // Store email and password
             val loginForm = LoginFields(
-                view.findViewById<EditText>(R.id.email_field).text.toString(),
-                view.findViewById<EditText>(R.id.password_field).text.toString(),
+                view.findViewById<EditText>(R.id.login_email_field_edit_text).text.toString(),
+                view.findViewById<EditText>(R.id.login_password_field_edit_text).text.toString(),
             )
             // Login error handling
             try {
                 url = urlParser(
-                    view.findViewById<EditText>(R.id.ip_field).text.toString(),
-                    view.findViewById<EditText>(R.id.port_field).text.toString()
+                    view.findViewById<EditText>(R.id.login_ip_field_edit_text).text.toString(),
+                    view.findViewById<EditText>(R.id.login_port_field_edit_text).text.toString()
                 )
                 checkLoginField(loginForm)
             }
@@ -84,5 +83,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 )
             }
         })
+    }
+
+    private fun loginFocusListener(view: View)
+    {
+        textFieldsFocusListener(view, R.id.login_ip_field_edit_text, R.id.login_ip_field_layout, ::checkIp)
+        textFieldsFocusListener(view, R.id.login_port_field_edit_text, R.id.login_port_field_layout, ::checkPort)
+        textFieldsFocusListener(view, R.id.login_email_field_edit_text, R.id.login_email_field_layout, ::checkEmail)
+        textFieldsFocusListener(view, R.id.login_password_field_edit_text, R.id.login_password_field_layout, ::checkPasswordLogin)
     }
 }

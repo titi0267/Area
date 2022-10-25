@@ -19,8 +19,6 @@ import com.example.area.activity.UserConnectionActivity
 import com.example.area.model.RegisterFields
 import com.example.area.repository.Repository
 import com.example.area.utils.*
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
@@ -32,9 +30,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         savedInstanceState: Bundle?
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
-        registerFocusListener(view)
         val button = view.findViewById<Button>(R.id.request_button)
 
+        registerFocusListener(view)
         button.setOnClickListener {
             lateinit var url: String
             //Store register fields
@@ -60,21 +58,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
 
         return view
-    }
-    private fun textFieldsFocusListener(view: View, idEditText: Int, idTextLayout: Int, function: (field: String)->Unit) {
-        val editText = view.findViewById<TextInputEditText>(idEditText)
-        val textLayout = view.findViewById<TextInputLayout>(idTextLayout)
-        editText.setOnFocusChangeListener { _, focused ->
-            if (!focused) {
-                try {
-                    function(editText.text.toString())
-                } catch (e: IllegalArgumentException) {
-                    textLayout.error = e.message
-                    return@setOnFocusChangeListener
-                }
-            }
-            textLayout.error = null
-        }
     }
 
     private fun registerRequest(url: String, registerForm: RegisterFields) {
@@ -115,6 +98,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         textFieldsFocusListener(view, R.id.register_first_name_field_edit_text, R.id.register_first_name_field_layout, ::checkNames)
         textFieldsFocusListener(view, R.id.register_last_name_field_edit_text, R.id.register_last_name_field_layout, ::checkNames)
         textFieldsFocusListener(view, R.id.register_email_field_edit_text, R.id.register_email_field_layout, ::checkEmail)
-        textFieldsFocusListener(view, R.id.register_password_field_edit_text, R.id.register_password_field_layout, ::checkPassword)
+        textFieldsFocusListener(view, R.id.register_password_field_edit_text, R.id.register_password_field_layout, ::checkPasswordRegister)
     }
 }

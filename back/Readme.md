@@ -1,6 +1,6 @@
 # AREA: Back-end
 
-## Sommary :
+## Summary :
 
 - [Languages](#languages)
 - [Environnement](#environnement)
@@ -27,13 +27,22 @@
 
 ## Environnement :
 
-| Nom                   | Description               | Type     | Valeur par défaut          |
-| :-------------------- | :------------------------ | :------- | :------------------------- |
-| **DATABASE_URL**      | URL de la base de donnée  | `string` | _Pas de valeur par défaut_ |
-| **PORT**              | Port utilisé pour le back | `string` | _8080_                     |
-| **SECRET**            | Password cripting secret  | `string` | _Pas de valeur par défaut_ |
-| **YOUTUBE_API_TOKEN** | Youtube api token         | `string` | _Pas de valeur par défaut_ |
-| **DISCORD_BOT_TOKEN** | Discord bot token         | `string` | _Pas de valeur par défaut_ |
+| Nom                       | Description               | Type     | Valeur par défaut          |
+| :------------------------ | :------------------------ | :------- | :------------------------- |
+| **DATABASE_URL**          | URL de la base de donnée  | `string` | _Pas de valeur par défaut_ |
+| **PORT**                  | Port utilisé pour le back | `string` | _8080_                     |
+| **SECRET**                | Password cripting secret  | `string` | _Pas de valeur par défaut_ |
+| **CLIENT_PORT**           | Port of the client        | `string` | _Pas de valeur par défaut_ |
+| **YOUTUBE_API_TOKEN**     | Youtube api token         | `string` | _Pas de valeur par défaut_ |
+| **GOOGLE_CLIENT_SECRET**  | Google client secret      | `string` | _Pas de valeur par défaut_ |
+| **GOOGLE_CLIENT_ID**      | Google client id          | `string` | _Pas de valeur par défaut_ |
+| **GOOGLE_REDIRECT_URL**   | Google redirect url       | `string` | _Pas de valeur par défaut_ |
+| **SPOTIFY_CLIENT_SECRET** | Spotify client secret     | `string` | _Pas de valeur par défaut_ |
+| **SPOTIFY_CLIENT_ID**     | Spotify client id         | `string` | _Pas de valeur par défaut_ |
+| **SPOTIFY_REDIRECT_URL**  | Spotify redirect url      | `string` | _Pas de valeur par défaut_ |
+| **GITHUB_CLIENT_ID**      | Github client id          | `string` | _Pas de valeur par défaut_ |
+| **GITHUB_REDIRECT_URL**   | Github redirect url       | `string` | _Pas de valeur par défaut_ |
+| **DISCORD_BOT_TOKEN**     | Discord bot token         | `string` | _Pas de valeur par défaut_ |
 
 ## Dependency Installation :
 

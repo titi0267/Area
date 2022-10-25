@@ -3,6 +3,8 @@ import { Area } from "@prisma/client";
 export interface Service {
   id: number;
   serviceName: ServiceName;
+  imageUrl: string;
+  backgroundColor: string;
   actions: Action[];
   reactions: Reaction[];
 }
@@ -21,4 +23,4 @@ interface Reaction {
   fct: (reactionParam: string, userId: string) => void;
 }
 
-export type ServiceName = "Youtube" | "Twitter" | "Discord";
+export type ServiceName = "Youtube" | "Twitter" | "Discord" | "Spotify";

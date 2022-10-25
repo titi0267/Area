@@ -3,31 +3,22 @@ services:
   db:
     image: mariadb:10
     restart: always
-    environment:
-      - MYSQL_DATABASE=dev
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
-      - MYSQL_ROOT_PASSWORD=password
+    env_file:
+      - ./docker.env
     ports:
-      - "33060:3306"
+      - "33061:3306"
   back:
     build: ./back
     ports:
       - "8080:8080"
     depends_on:
       - db
-    environment:
-      - CLIENT_PORT=8081
-      - DATABASE_URL=mysql://root:password@db:3306/dev
-      - PORT=8080
-      - SECRET=azertyuiop
-      - YOUTUBE_API_TOKEN=AIzaSyD01AUjRv9uBgYpv0B9hO4QDLRPz0RH7dQ
-      - DISCORD_BOT_TOKEN=MTAyNzk3ODUyMzk0NTczMDE3MA.Gkyfi3.LFSKhp8TyPxo5dS49FJQ0il5bGfCUB-AvRlpEY
+    env_file:
+      - ./docker.env
   front:
     build: ./front
-    environment:
-      - VUE_APP_URL=localhost
-      - VUE_APP_PORT=8080
+    env_file:
+      - ./docker.env
     volumes:
       - ./front/src:/usr/vue_app/
       - /usr/vue_app/node_modules

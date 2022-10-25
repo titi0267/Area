@@ -3,8 +3,9 @@ import VueRouter, { RouteConfig } from "vue-router";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import NotFound from "../views/NotFound.vue";
-import UserPannel from "../views/UserPannel.vue";
+import Home from "../views/Home.vue";
 import CreateArea from "../views/CreateArea.vue";
+import Area from "../views/Area.vue"
 import axios from "../axiosInstance";
 import store from "../store";
 
@@ -27,21 +28,33 @@ const router = new VueRouter({
             meta: { requiresAuth: false }
         },
         {
-            path: '/user-pannel',
-            name: 'userPannel',
-            component: UserPannel,
+            path: '/home',
+            name: 'home',
+            component: Home,
             meta: { requiresAuth: true }
         },
         {
-            path: '/create-area',
-            name: 'createArea',
-            component: CreateArea,
+            path: '/create/action',
+            name: 'create-action',
+            component: Area,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/create/reaction',
+            name: 'create-reaction',
+            component: Area,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/create/overview',
+            name: 'create-overview',
+            component: Area,
             meta: { requiresAuth: true }
         },
         {
             path: '/',
-            redirect: '/user-pannel',
-            meta: { requiresAuth: false }
+            redirect: '/home',
+            meta: { requiresAuth: true }
         },
         {
             path: '/:pathMatch(.*)*',
@@ -57,11 +70,16 @@ router.beforeEach(async (to, from, next) => {
     if (usrToken != null)
         store.commit('updateToken', usrToken)
     if (to.meta && to.meta.requiresAuth == true) {
-        if (usrToken === null)
+        if (usrToken === null) {
             router.push("login");
+            return;
+        }
         try {
-            await axios.get('/users/areas')
-            next();
+            await axios.get('/users/areas', {
+                headers: {
+                    Authorization: usrToken,
+                }
+            })
         } catch (err) {
             router.push("login");
         }

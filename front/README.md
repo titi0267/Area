@@ -17,8 +17,12 @@ Il gère toutes les pages lié à ce projet.
 
 | Nom | Description | Type | Valeur par défaut |
 |:----|:------------|:-----|:------------------|
+<span style="color: #FF5500; text-decoration: underline;">***APP VARIABLES***</span> | | | |
 | **VUE_APP_URL** | URL du serveur pour le front | `string` | *Pas de valeur par défaut* |
 | **VUE_APP_PORT** | Port du serveur pour le front | `number` | *Pas de valeur par défaut* |
+<span style="color: #FF5500; text-decoration: underline;">***OAUTH SERVICES VARIABLES***</span> | | | |
+| **VUE_APP_GOOGLE_OAUTH_REDIRECT_URL** | Callback pour l'OAUTH Google | `url` | *Pas de valeur par défaut* |
+| **VUE_APP_GOOGLE_CLIENT_ID** | ID du client Google | `id` | *Pas de valeur par défaut* |
 
 ## Compilation
 
@@ -34,11 +38,16 @@ router.beforeEach(async (to, from, next) => {
     if (usrToken != null)
         store.commit('updateToken', usrToken)
     if (to.meta && to.meta.requiresAuth == true) {
-        if (usrToken === null)
+        if (usrToken === null) {
             router.push("login");
+            return;
+        }
         try {
-            await axios.get('/users/areas');
-            next();
+            await axios.get('/users/areas', {
+                headers: {
+                    Authorization: usrToken,
+                }
+            })
         } catch (err) {
             router.push("login");
         }
@@ -52,7 +61,7 @@ router.beforeEach(async (to, from, next) => {
 ### /Views
 - **Login.vue** : Page de connexion de l'utilisateur
 - **Register.vue** : Page d'inscription de l'utilisateur
-- **UserPannel.vue** : Page de visualisation des actions-réactions de l'utilisateur
+- **Home.vue** : Page de principale de l'utiisateur. Il peut visualiser ses actions-réactions
 - **CreateArea.vue** : Page de création d'action-réaction
 - **NotFound.vue** : Si une page n'éxiste pas, l'utilisateur est redirigé sur cette page
 
@@ -67,6 +76,9 @@ router.beforeEach(async (to, from, next) => {
 
 ### /Public
 - index.html: Page d'injection du VueJS
+- favicon.ico: Icon de la page
+    ### /assets
+    - buefy.scss: Import de la librairie Buefy ainsi que son CSS
 
 ### App.vue
 - Component parent de toute l'application.

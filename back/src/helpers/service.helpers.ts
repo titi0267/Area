@@ -1,6 +1,10 @@
+import { OAuth2Client } from "google-auth-library";
+import { google } from "googleapis";
 import httpStatus from "http-status";
 import { SERVICES } from "../constants/serviceList";
+import ENV from "../env";
 import ClientError from "../error";
+import { TokenService } from "../services";
 
 const rejectInvalidArea = (
   actionServiceId: number,
@@ -102,6 +106,24 @@ const injectParamInReaction = <T extends Object>(
   return reactionParam.replace(replaceRegex, value);
 };
 
+const getGoogleOauthClient = async (
+  userId: number,
+): Promise<OAuth2Client | null> => {
+  const refreshToken = await TokenService.getGoogleToken(userId);
+
+  if (!refreshToken) return null;
+
+  const oAuth2Client = new google.auth.OAuth2(
+    ENV.googleClientId,
+    ENV.googleClientSecret,
+    ENV.googleRedirectUrl,
+  );
+
+  oAuth2Client.setCredentials({ refresh_token: refreshToken });
+
+  return oAuth2Client;
+};
+
 export {
   rejectInvalidArea,
   getActionFct,
@@ -109,4 +131,5 @@ export {
   getYoutubeVideoId,
   getYoutubeChannelName,
   injectParamInReaction,
+  getGoogleOauthClient,
 };

@@ -90,8 +90,37 @@ const checkVideoLike = async (area: Area): Promise<string | null> => {
       params,
     );
   }
+  return null;
+};
+
+const checkNewVideoLiked = async (area: Area): Promise<string | null> => {
+  const oAuth2Client = await ServiceHelper.getGoogleOauthClient(area.userId);
+
+  if (!oAuth2Client) return null;
+
+  const youtube = google.youtube({ version: "v3", auth: oAuth2Client });
+
+  const channel = (
+    await youtube.channels.list({
+      part: ["contentDetails"],
+      mine: true,
+    })
+  ).data;
+
+  if (!channel.items) return null;
+  console.log(channel.items[0].contentDetails?.relatedPlaylists?.likes);
+
+  if (!channel.items[0].contentDetails?.relatedPlaylists?.likes) return null;
+  const playlist = (
+    await youtube.playlistItems.list({
+      part: ["snippet"],
+      playlistId: channel.items[0].contentDetails?.relatedPlaylists?.likes,
+    })
+  ).data;
+
+  console.log(playlist);
 
   return null;
 };
 
-export { checkUploadedVideo, checkVideoLike };
+export { checkUploadedVideo, checkVideoLike, checkNewVideoLiked };

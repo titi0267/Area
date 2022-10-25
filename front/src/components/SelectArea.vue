@@ -40,9 +40,7 @@ export default vue.extend({
     return {};
   },
   mounted() {
-    this.$nextTick(() => {
-      this.postOauthCode();
-    });
+    this.postOauthCode();
   },
   props: {
     type: String,

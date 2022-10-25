@@ -2,6 +2,7 @@ import { Service } from "../types/areaServices/areaServices.types";
 import * as YoutubeActions from "../area/youtube/youtube.action";
 import * as TwitterReaction from "../area/twitter/twitter.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
+import * as SpotifyAction from "../area/spotify/spotify.actions";
 
 export const SERVICES: Service[] = [
   {
@@ -67,15 +68,9 @@ export const SERVICES: Service[] = [
     actions: [
       {
         id: 1,
-        actionName: "Test spotify",
-        actionParamName: "Channel Name",
-        fct: YoutubeActions.checkUploadedVideo,
-      },
-      {
-        id: 2,
-        actionName: "NewLikeOnAVideo",
-        actionParamName: "Video Id",
-        fct: YoutubeActions.checkVideoLike,
+        actionName: "Skip to next song",
+        actionParamName: "Skip song",
+        fct: SpotifyAction.checkMusicSkip,
       },
     ],
     reactions: [],

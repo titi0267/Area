@@ -76,6 +76,9 @@ export default (
 
       const tokens = (await spotifyApi.authorizationCodeGrant(code)).body;
 
+      spotifyApi.setAccessToken(tokens.access_token);
+      spotifyApi.setRefreshToken(tokens.refresh_token);
+
       const tokenTable = await TokenService.setSpotifyToken(
         userInfos.id,
         tokens.refresh_token,

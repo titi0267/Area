@@ -33,11 +33,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
 
-        var token: String?
         view.findViewById<Button>(R.id.request_button).setOnClickListener {
             lateinit var url: String
-            val sessionManager = SessionManager(context as UserConnectionActivity)
-
             //Store register fields
             val registerForm = RegisterFields(
                 view.findViewById<EditText>(R.id.first_name_field).text.toString(),
@@ -45,7 +42,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 view.findViewById<EditText>(R.id.email_field).text.toString(),
                 view.findViewById<EditText>(R.id.password_field).text.toString()
             )
-
             // Check registration validity
             try {
                 url = urlParser(
@@ -58,32 +54,38 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 Toast.makeText(context as UserConnectionActivity, "Error: " + e.message, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
-            // Post request for registration
-            val rep = Repository(url)
-            val viewModelFactory = MainViewModelFactory(rep)
-            viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-            viewModel.register(registerForm)
-            viewModel.userResponse.observe(viewLifecycleOwner, Observer { response ->
-                if (response.isSuccessful) {
-                    token = response.body()?.token
-                    token?.let {
-                        sessionManager.saveAuthToken("user_token", token!!)
-                        sessionManager.saveAuthToken("url", url)
-                    }
-                    Toast.makeText(context as UserConnectionActivity, "Successfully logged in!", Toast.LENGTH_SHORT).show()
-
-                    // Redirect to main activity
-                    startActivity(
-                        Intent(
-                            context,
-                            MainActivity::class.java
-                        )
-                    )
-                }
-            })
+            registerRequest(url, registerForm)
         }
 
         return view
+    }
+
+    private fun registerRequest(url: String, registerForm: RegisterFields)
+    {
+        var token: String?
+        val rep = Repository(url)
+        val viewModelFactory = MainViewModelFactory(rep)
+        val sessionManager = SessionManager(context as UserConnectionActivity)
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        viewModel.register(registerForm)
+        viewModel.userResponse.observe(viewLifecycleOwner, Observer { response ->
+            if (response.isSuccessful) {
+                token = response.body()?.token
+                token?.let {
+                    sessionManager.saveAuthToken("user_token", token!!)
+                    sessionManager.saveAuthToken("url", url)
+                }
+                Toast.makeText(context as UserConnectionActivity, "Successfully logged in!", Toast.LENGTH_SHORT).show()
+
+                // Redirect to main activity
+                startActivity(
+                    Intent(
+                        context,
+                        MainActivity::class.java
+                    )
+                )
+            }
+        })
     }
 }

@@ -1,5 +1,8 @@
 # AREA: Back-end
 
+## Sommary :
+
+- [Languages](#languages)
 - [Environnement](#environnement)
 - [Dependency Installation](#dependency-installation)
 - [Useful commands](#useful-commands)
@@ -13,6 +16,14 @@
   - [/types](#types)
   - [/middlewares](#middlewares)
   - [/schema](#schemag)
+
+## Languages :
+
+[![Languages](https://skillicons.dev/icons?i=nodejs)](https://nodejs.org/en/)
+[![Languages](https://skillicons.dev/icons?i=ts)](https://www.typescriptlang.org/)
+[![Languages](https://skillicons.dev/icons?i=prisma)](https://www.prisma.io/)
+[![Languages](https://skillicons.dev/icons?i=mysql)](https://mariadb.org/)
+[![Languages](https://skillicons.dev/icons?i=jest)](https://jestjs.io/en/)
 
 ## Environnement :
 

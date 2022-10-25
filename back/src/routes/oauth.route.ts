@@ -110,6 +110,8 @@ export default (
         "user-read-playback-position",
         "user-read-recently-played",
         "playlist-read-private",
+        "user-read-currently-playing",
+        "user-read-playback-state",
       ].join(" "),
     };
 

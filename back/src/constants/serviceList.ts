@@ -7,8 +7,7 @@ export const SERVICES: Service[] = [
   {
     id: 1,
     serviceName: "Youtube",
-    imageUrl:
-      "https://www.edigitalagency.com.au/wp-content/uploads/Youtube-logo-white-only-png.png",
+    imageUrl: "https://www.iconsdb.com/icons/preview/white/youtube-6-xxl.png",
     backgroundColor: "#FF0000",
     actions: [
       {
@@ -29,8 +28,7 @@ export const SERVICES: Service[] = [
   {
     id: 2,
     serviceName: "Twitter",
-    imageUrl:
-      "https://toppng.com/uploads/preview/twitter-icon-white-transparent-11549537259z0sowbg17j.png",
+    imageUrl: "https://www.iconsdb.com/icons/preview/white/twitter-xxl.png",
     backgroundColor: "#1DA1F2",
     actions: [],
     reactions: [
@@ -45,8 +43,7 @@ export const SERVICES: Service[] = [
   {
     id: 3,
     serviceName: "Discord",
-    imageUrl:
-      "https://www.pngfind.com/pngs/m/28-283551_discord-discord-icon-transparent-white-hd-png-download.png",
+    imageUrl: "https://www.iconsdb.com/icons/preview/white/discord-2-xxl.png",
     backgroundColor: "#5865F2",
     actions: [],
     reactions: [
@@ -61,8 +58,7 @@ export const SERVICES: Service[] = [
   {
     id: 4,
     serviceName: "Spotify",
-    imageUrl:
-      "https://i.pinimg.com/originals/33/d7/d4/33d7d461d1d17c598319f3efd955e88c.png",
+    imageUrl: "https://www.iconsdb.com/icons/preview/white/spotify-xxl.png",
     backgroundColor: "#1DB954",
     actions: [
       {

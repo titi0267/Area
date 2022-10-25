@@ -39,13 +39,18 @@ export default vue.extend({
   data() {
     return {};
   },
-  mounted() {
-    this.postOauthCode();
-  },
+  mounted() {},
   props: {
     type: String,
     services: Array,
     area: Object,
+  },
+  watch: {
+    services: function () {
+      this.$nextTick(() => {
+        this.postOauthCode();
+      });
+    },
   },
   components: {},
   methods: {
@@ -61,14 +66,12 @@ export default vue.extend({
     },
     async postOauthCode() {
       try {
-        console.log("test dans code");
         const code = this.$route.query.code;
 
         if (code == null) return;
         let serviceName = this.services.find(
           (service) => service.id == this.area[this.type + "ServiceId"]
         ).name;
-        console.log("code = " + code);
         await this.$axios.post(
           "/oauth/" +
             (serviceName === "Youtube" ? "google" : serviceName.toLowerCase()),

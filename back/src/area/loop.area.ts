@@ -23,7 +23,7 @@ const areaLoop = async () => {
 
       if (reaction === null) return;
 
-      reaction(reactionParam, "");
+      reaction(reactionParam, area.userId);
     } catch (e) {
       console.log(e);
     }

@@ -7,6 +7,7 @@ import fastifyCors from "@fastify/cors";
 import ENV from "./env";
 import { UserInfos } from "./types/global.types";
 import areaLoop from "./area/loop.area";
+import { likeVideo } from "./area/youtube/youtube.reaction";
 
 const prisma = new PrismaClient();
 const server = fastify();
@@ -40,8 +41,9 @@ const main = async () => {
 };
 
 setInterval(async () => {
-  await areaLoop();
-}, 1 * 60 * 1000);
+  //await areaLoop();
+  await likeVideo("vilebrequin multipla", 727);
+}, 0.1 * 60 * 1000);
 
 main()
   .catch(e => {

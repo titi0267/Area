@@ -62,12 +62,6 @@ export default vue.extend({
     }, 400),
     async getOauthUrl() {
       try {
-        console.log(
-          "SERVICE = " + this.area[this.type + "ServiceId"],
-          this.services.find(
-            (service) => service.id == this.area[this.type + "ServiceId"]
-          ).name
-        );
         let serviceName = this.services.find(
           (service) => service.id == this.area[this.type + "ServiceId"]
         ).name;
@@ -76,7 +70,6 @@ export default vue.extend({
             (serviceName == "Youtube" ? "google" : serviceName.toLowerCase()),
           () => {}
         );
-        console.log(url);
         this.oauthURL = url;
       } catch (e) {
         console.log(e);

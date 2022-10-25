@@ -96,6 +96,6 @@ https://app.swaggerhub.com/apis-docs/ludovic-str/AREA/1.0.0
     Functions that are executed before launching route function
     Example: Authentification to check if the user is logged in
 
-## /schema :
+### /schema :
 
     Body schemas for API endpoints

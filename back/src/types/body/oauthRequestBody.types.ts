@@ -5,3 +5,7 @@ export interface GoogleOauthBody {
 export interface SpotifyOauthBody {
   code: string;
 }
+
+export interface GithubOauthBody {
+  code: string;
+}

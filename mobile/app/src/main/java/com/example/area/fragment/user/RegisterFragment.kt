@@ -32,13 +32,10 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         savedInstanceState: Bundle?
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
-        textFieldsFocusListener(view, R.id.register_ip_field_edit_text, R.id.register_ip_field_layout, ::checkIp)
-        textFieldsFocusListener(view, R.id.register_port_field_edit_text, R.id.register_port_field_layout, ::checkPort)
-        textFieldsFocusListener(view, R.id.register_first_name_field_edit_text, R.id.register_first_name_field_layout, ::checkNames)
-        textFieldsFocusListener(view, R.id.register_last_name_field_edit_text, R.id.register_last_name_field_layout, ::checkNames)
-        textFieldsFocusListener(view, R.id.register_email_field_edit_text, R.id.register_email_field_layout, ::checkEmail)
-        textFieldsFocusListener(view, R.id.register_password_field_edit_text, R.id.register_password_field_layout, ::checkPassword)
-        view.findViewById<Button>(R.id.request_button).setOnClickListener {
+        registerFocusListener(view)
+        val button = view.findViewById<Button>(R.id.request_button)
+
+        button.setOnClickListener {
             lateinit var url: String
             //Store register fields
             val registerForm = RegisterFields(
@@ -64,7 +61,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
         return view
     }
-
     private fun textFieldsFocusListener(view: View, idEditText: Int, idTextLayout: Int, function: (field: String)->Unit) {
         val editText = view.findViewById<TextInputEditText>(idEditText)
         val textLayout = view.findViewById<TextInputLayout>(idTextLayout)
@@ -81,8 +77,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
     }
 
-    private fun registerRequest(url: String, registerForm: RegisterFields)
-    {
+    private fun registerRequest(url: String, registerForm: RegisterFields) {
         var token: String?
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
@@ -97,7 +92,11 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     sessionManager.saveAuthToken("user_token", token!!)
                     sessionManager.saveAuthToken("url", url)
                 }
-                Toast.makeText(context as UserConnectionActivity, "Successfully logged in!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context as UserConnectionActivity,
+                    "Successfully logged in!",
+                    Toast.LENGTH_SHORT
+                ).show()
                 // Redirect to main activity
                 startActivity(
                     Intent(
@@ -107,5 +106,15 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 )
             }
         })
+    }
+
+    private fun registerFocusListener(view: View)
+    {
+        textFieldsFocusListener(view, R.id.register_ip_field_edit_text, R.id.register_ip_field_layout, ::checkIp)
+        textFieldsFocusListener(view, R.id.register_port_field_edit_text, R.id.register_port_field_layout, ::checkPort)
+        textFieldsFocusListener(view, R.id.register_first_name_field_edit_text, R.id.register_first_name_field_layout, ::checkNames)
+        textFieldsFocusListener(view, R.id.register_last_name_field_edit_text, R.id.register_last_name_field_layout, ::checkNames)
+        textFieldsFocusListener(view, R.id.register_email_field_edit_text, R.id.register_email_field_layout, ::checkEmail)
+        textFieldsFocusListener(view, R.id.register_password_field_edit_text, R.id.register_password_field_layout, ::checkPassword)
     }
 }

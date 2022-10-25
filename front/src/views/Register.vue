@@ -91,7 +91,7 @@ export default vue.extend({
             this.timeout = true;
             window.setTimeout(() => {
                 this.timeout = false;
-            }, 305)
+            }, 290)
         },
         checkNameInput(input, type) {
             const name_regex = (/^[a-zA-Z]+$/)

@@ -16,6 +16,7 @@ import retrofit2.Response
 
 class MainViewModel(private val repository: Repository):ViewModel() {
 
+    val linkResponse: MutableLiveData<Response<String>> = MutableLiveData()
     val userResponse: MutableLiveData<Response<Token>> = MutableLiveData()
     val aboutResponse: MutableLiveData<Response<About>> = MutableLiveData()
     val userResponse2: MutableLiveData<Response<List<ActionReaction>>> = MutableLiveData()
@@ -49,7 +50,12 @@ class MainViewModel(private val repository: Repository):ViewModel() {
         viewModelScope.launch {
             val response = repository.getAboutJson()
             aboutResponse.value = response
-            joinAll()
+        }
+    }
+    fun getServiceLink(service: String) {
+        viewModelScope.launch {
+            val response = repository.getServiceLink(service)
+            linkResponse.value = response
         }
     }
 }

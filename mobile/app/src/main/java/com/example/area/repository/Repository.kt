@@ -23,4 +23,7 @@ class Repository(private val URL_INPUT : String) {
     suspend fun getAboutJson() : Response<About> {
         return RetrofitInstance(URL_INPUT).api.getAboutJson()
     }
+    suspend fun getServiceLink(service: String) : Response<String>{
+        return RetrofitInstance(URL_INPUT).api.getServiceLink(service)
+    }
 }

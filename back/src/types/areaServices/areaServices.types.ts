@@ -13,14 +13,19 @@ interface Action {
   id: number;
   actionName: string;
   actionParamName: string;
-  fct: (area: Area) => Promise<Boolean>;
+  fct: (area: Area) => Promise<string | null>;
 }
 
 interface Reaction {
   id: number;
   reactionName: string;
   reactionParamName: string;
-  fct: (reactionParam: string, userId: string) => void;
+  fct: (reactionParam: string, userId: number) => void;
 }
 
-export type ServiceName = "Youtube" | "Twitter" | "Discord" | "Spotify";
+export type ServiceName =
+  | "Youtube"
+  | "Twitter"
+  | "Discord"
+  | "Spotify"
+  | "Github";

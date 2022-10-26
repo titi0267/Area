@@ -22,6 +22,12 @@ export const SERVICES: Service[] = [
         actionParamName: "Video Id",
         fct: YoutubeActions.checkVideoLike,
       },
+      {
+        id: 3,
+        actionName: "New Liked Video",
+        actionParamName: "None",
+        fct: YoutubeActions.checkNewVideoLiked,
+      },
     ],
     reactions: [],
   },

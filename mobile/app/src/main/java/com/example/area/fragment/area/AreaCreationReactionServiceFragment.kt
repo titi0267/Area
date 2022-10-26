@@ -16,12 +16,14 @@ import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.adapter.ServiceItemAdapter
 import com.example.area.data.ServiceDatasource
+import com.example.area.model.ActionReactionInfo
+import com.example.area.model.ServiceInfo
 import com.example.area.model.about.About
 import com.example.area.repository.Repository
 import com.example.area.utils.AboutJsonCreator
 import com.example.area.utils.SessionManager
 
-class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creation_action_service) {
+class AreaCreationReactionServiceFragment(private val actionService: ServiceInfo, private val action: ActionReactionInfo) : Fragment(R.layout.fragment_area_creation_reaction_service) {
     private lateinit var viewModel: MainViewModel
     private var abt: About? = null
     private var serviceSelectedIndex: Int = -1
@@ -37,7 +39,7 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
         val about = AboutJsonCreator()
         val rep = Repository(sessionManager.fetchAuthToken("url")!!)
         val viewModelFactory = MainViewModelFactory(rep)
-        val recycler = view.findViewById<RecyclerView>(R.id.recyclerViewActionService)
+        val recycler = view.findViewById<RecyclerView>(R.id.recyclerViewReactionService)
         val serviceList = ServiceDatasource()
 
         recycler.layoutManager = LinearLayoutManager(context as AreaActivity)
@@ -46,14 +48,14 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
             context as AreaActivity,
             serviceList.loadServiceInfo()
         ) { position -> onItemClick(position) }
-        view.findViewById<Button>(R.id.backFromActionServiceCreationButton).setOnClickListener {
+        view.findViewById<Button>(R.id.backFromReactionServiceCreationButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
-        view.findViewById<Button>(R.id.nextFromActionServiceCreation).setOnClickListener {
+        view.findViewById<Button>(R.id.nextFromReactionServiceCreation).setOnClickListener {
             if (serviceSelectedIndex != -1) {
-                (context as AreaActivity).changeFragment(AreaCreationActionFragment(serviceList.loadServiceInfo()[serviceSelectedIndex]), "action_creation")
+                (context as AreaActivity).changeFragment(AreaCreationReactionFragment(actionService, action, serviceList.loadServiceInfo()[serviceSelectedIndex]), "reaction_creation")
             } else {
-                Toast.makeText(context as AreaActivity, "Please select an action service", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context as AreaActivity, "Please select an reaction service", Toast.LENGTH_SHORT).show()
             }
         }
         about.getAboutJson(context as AreaActivity, this, this) {

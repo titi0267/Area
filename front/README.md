@@ -1,7 +1,6 @@
 # AREA Front
-
-Le côté client de l'area se compose en une partie.
-Il gère toutes les pages et éléments interactif lié à ce projet.
+The Area front-end is composed in two parts.
+It manages all the pages and interactive elements linked to this project.
 
 ## Summary
 * [Languages](#languages)
@@ -33,8 +32,8 @@ Il gère toutes les pages et éléments interactif lié à ce projet.
 | Name | Description | Type | Default Value |
 |:----|:------------|:-----|:------------------|
 <span style="color: #FF5500; text-decoration: underline;">***APP VARIABLES***</span> | | | |
-| **VUE_APP_URL** | URL of the frontend serveur | `string` | *No default value* |
-| **VUE_APP_PORT** | Port of the frontend serveur | `number` | *8081* |
+| **VUE_APP_URL** | Front-end server URL | `string` | *No default value* |
+| **VUE_APP_PORT** | Front-end server PORT | `number` | *8081* |
 
 ## Compilation
 Two methods for compile the frontend

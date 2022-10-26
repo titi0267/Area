@@ -31,6 +31,7 @@ export default (
                   name: action.actionName,
                   actionParamName: action.actionParamName,
                   description: "",
+                  availableInjectParams: action.availableInjectParams,
                 };
               }),
               reactions: service.reactions.map(reaction => {

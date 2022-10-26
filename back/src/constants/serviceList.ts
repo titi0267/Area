@@ -1,5 +1,6 @@
 import { Service } from "../types/areaServices/areaServices.types";
 import * as YoutubeActions from "../area/youtube/youtube.action";
+import * as YoutubeReactions from "../area/youtube/youtube.reaction";
 import * as TwitterReaction from "../area/twitter/twitter.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
 
@@ -29,7 +30,20 @@ export const SERVICES: Service[] = [
         fct: YoutubeActions.checkNewVideoLiked,
       },
     ],
-    reactions: [],
+    reactions: [
+      {
+        id: 1,
+        reactionName: "Like a video",
+        reactionParamName: "Video to like",
+        fct: YoutubeReactions.likeVideo,
+      },
+      {
+        id: 2,
+        reactionName: "Dislike a video",
+        reactionParamName: "Video to dislike",
+        fct: YoutubeReactions.dislikeVideo,
+      },
+    ],
   },
   {
     id: 2,

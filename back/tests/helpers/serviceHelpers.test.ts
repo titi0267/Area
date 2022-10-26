@@ -2,6 +2,7 @@ import { describe, test, expect } from "@jest/globals";
 import httpStatus from "http-status";
 
 import * as ServiceHelper from "../../src/helpers/service.helpers";
+import { TokenService, UserService } from "../../src/services";
 
 describe("Test reject invalid Area", () => {
   describe("Test working cases", () => {
@@ -55,6 +56,113 @@ describe("Test getReactionFct", () => {
       const action = ServiceHelper.getReactionFct(1, 12);
 
       expect(action).toBeNull();
+    });
+  });
+});
+
+describe("Test getYoutubeVideoId", () => {
+  describe("Test valid cases", () => {
+    test("Test if return video id", () => {
+      const videoId = ServiceHelper.getYoutubeVideoId(
+        "https://www.youtube.com/watch?v=iC2i9n00C68",
+      );
+
+      expect(videoId).toBe("iC2i9n00C68");
+    });
+
+    test("Test with random link", () => {
+      const videoId = ServiceHelper.getYoutubeVideoId(
+        "https://prettier.io/docs/en/ignore.html",
+      );
+      expect(videoId).toBeNull();
+    });
+  });
+});
+
+describe("Test getYoutubeChannelName", () => {
+  describe("Test valid cases", () => {
+    test("Test if return channel name", () => {
+      const channelName = ServiceHelper.getYoutubeChannelName(
+        "https://www.youtube.com/user/Floowmecofficiel",
+      );
+
+      expect(channelName).toBe("Floowmecofficiel");
+    });
+
+    test("Test with random link", () => {
+      const channelName = ServiceHelper.getYoutubeChannelName(
+        "https://prettier.io/docs/en/ignore.html",
+      );
+      expect(channelName).toBeNull();
+    });
+  });
+});
+
+describe("Test injectParamInReaction", () => {
+  describe("Test valid cases", () => {
+    test("Test inject valid string field", () => {
+      const test = { name: "Ludo" };
+      const str = ServiceHelper.injectParamInReaction<typeof test>(
+        "My name is %name% !",
+        test,
+      );
+
+      expect(str).toBe("My name is Ludo !");
+    });
+
+    test("Test inject valid number field", () => {
+      const test = { age: 12 };
+      const str = ServiceHelper.injectParamInReaction<typeof test>(
+        "I'm %age% !",
+        test,
+      );
+
+      expect(str).toBe("I'm 12 !");
+    });
+
+    test("Test inject empty object field", () => {
+      const test = {};
+      const str = ServiceHelper.injectParamInReaction<typeof test>(
+        "I'm %age% !",
+        test,
+      );
+
+      expect(str).toBe("I'm %age% !");
+    });
+
+    test("Test with no insertion tokens", () => {
+      const test = {};
+      const str = ServiceHelper.injectParamInReaction<typeof test>(
+        "I'm age !",
+        test,
+      );
+
+      expect(str).toBe("I'm age !");
+    });
+  });
+});
+
+describe("Test getGoogleOauthClient", () => {
+  describe("Test valid cases", () => {
+    test("Test to get a valid oauth client", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      await TokenService.setGoogleToken(users[0].id, "test");
+
+      const oauthClient = await ServiceHelper.getGoogleOauthClient(users[0].id);
+
+      expect(oauthClient).not.toBeNull();
+
+      await UserService.removeUserById(users[0].id);
+    });
+
+    describe("Test Error cases", () => {
+      test("Test to get a valid oauth client with invalid user", async () => {
+        const oauthClient = await ServiceHelper.getGoogleOauthClient(12);
+
+        expect(oauthClient).toBeNull();
+      });
     });
   });
 });

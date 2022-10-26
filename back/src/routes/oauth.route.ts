@@ -45,8 +45,6 @@ export default (
     async (req: GoogleOauthRequest, res: FastifyReply) => {
       if (!googleOauthQueryValidator(req.body)) ErrorHelper.throwBodyError();
 
-      console.log("lol");
-
       const userInfos = SecurityHelper.getUserInfos(req);
 
       const code = req.body.code;

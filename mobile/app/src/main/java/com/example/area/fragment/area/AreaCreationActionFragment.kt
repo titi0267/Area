@@ -64,7 +64,7 @@ class AreaCreationActionFragment(private val actionService: ServiceInfo) : Fragm
         recycler.adapter = ActionReactionItemAdapter(
             context as AreaActivity,
             actionReactionList.loadActionReactionInfo()
-        ) { position -> onItemClick(position) }
+        ) { position -> onItemClick(position, actionReactionList.loadActionReactionInfo()[position].name) }
 
         view.findViewById<Button>(R.id.backFromActionCreationButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
@@ -99,7 +99,7 @@ class AreaCreationActionFragment(private val actionService: ServiceInfo) : Fragm
                 recycler.adapter = ActionReactionItemAdapter(
                     context as AreaActivity,
                     actionReactionList.loadActionReactionInfo()
-                ) { position -> onItemClick(position) }
+                ) { position -> onItemClick(position, actionReactionList.loadActionReactionInfo()[position].name) }
             }
         }
 
@@ -107,7 +107,8 @@ class AreaCreationActionFragment(private val actionService: ServiceInfo) : Fragm
         return view
     }
 
-    private fun onItemClick(position: Int) {
+    private fun onItemClick(position: Int, toPrint: String) {
         actionSelectedIndex = position
+        Toast.makeText(context as AreaActivity, "$toPrint selected", Toast.LENGTH_SHORT).show()
     }
 }

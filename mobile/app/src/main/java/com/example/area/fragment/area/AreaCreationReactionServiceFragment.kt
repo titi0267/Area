@@ -47,7 +47,7 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceInfo
         recycler.adapter = ServiceItemAdapter(
             context as AreaActivity,
             serviceList.loadServiceInfo()
-        ) { position -> onItemClick(position) }
+        ) { position -> onItemClick(position, serviceList.loadServiceInfo()[position].name) }
         view.findViewById<Button>(R.id.backFromReactionServiceCreationButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
@@ -69,14 +69,15 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceInfo
                 recycler.adapter = ServiceItemAdapter(
                     context as AreaActivity,
                     serviceList.loadServiceInfo()
-                ) { position -> onItemClick(position) }
+                ) { position -> onItemClick(position, serviceList.loadServiceInfo()[position].name) }
             }
         }
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         return view
     }
 
-    private fun onItemClick(position: Int) {
+    private fun onItemClick(position: Int, toPrint: String) {
         serviceSelectedIndex = position
+        Toast.makeText(context as AreaActivity, "$toPrint selected", Toast.LENGTH_SHORT).show()
     }
 }

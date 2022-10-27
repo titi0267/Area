@@ -1,6 +1,6 @@
 # AREA: Back-end
 
-## Summary :
+## Summary
 
 - [Languages](#languages)
 - [Environnement](#environnement)
@@ -17,7 +17,7 @@
   - [/middlewares](#middlewares)
   - [/schema](#schema)
 
-## Languages :
+## Languages
 
 [![Languages](https://skillicons.dev/icons?i=nodejs)](https://nodejs.org/en/)
 [![Languages](https://skillicons.dev/icons?i=ts)](https://www.typescriptlang.org/)
@@ -25,7 +25,7 @@
 [![Languages](https://skillicons.dev/icons?i=mysql)](https://mariadb.org/)
 [![Languages](https://skillicons.dev/icons?i=jest)](https://jestjs.io/en/)
 
-## Environnement :
+## Environnement
 
 | Name                      | Description              | Type     | Default Value      |
 | :------------------------ | :----------------------- | :------- | :----------------- |
@@ -44,13 +44,13 @@
 | **GITHUB_REDIRECT_URL**   | Github redirect url      | `string` | _No default value_ |
 | **DISCORD_BOT_TOKEN**     | Discord bot token        | `string` | _No default value_ |
 
-## Dependency Installation :
+## Dependency Installation
 
 ```
 npm i
 ```
 
-## Useful commands :
+## Useful commands
 
 ```bash
 npm run db:migrate # Init database
@@ -59,15 +59,15 @@ npm run start:local # Launch the project in watch mode
 npm build && node dist/src/index.js # Build the project and launch it
 ```
 
-## API Documentation :
+## API Documentation
 
 ```
 https://app.swaggerhub.com/apis-docs/ludovic-str/AREA/1.0.0
 ```
 
-## Folder Organisation :
+## Folder Organisation
 
-### /routes :
+### /routes
 
 Project API endpoints
 
@@ -81,7 +81,7 @@ instance.get("/", async (req: FastifyRequest, res: FastifyReply) => {
 });
 ```
 
-### /services :
+### /services
 
 Functions that interact with the database mostly called in route files.
 
@@ -93,7 +93,7 @@ const getAllUsers = async (): Promise<User[]> => {
 };
 ```
 
-### /constants :
+### /constants
 
 Constants which don't need to be in .env here service list
 
@@ -125,13 +125,13 @@ const SERVICES: Service[] = [
 ];
 ```
 
-### /area :
+### /area
 
 Files linked to Action and Reaction: loop.area.ts contain the loop of launching action and reaction if action return true. Other folders are here to store actions and reactions.
 
 Example:
 
-### /helpers :
+### /helpers
 
 Groups of utility functions for a given part of the program
 
@@ -150,7 +150,7 @@ const getActionFct = (actionServiceId: number, actionId: number) => {
 };
 ```
 
-### /types :
+### /types
 
 Project typescript interfaces and types
 
@@ -163,7 +163,7 @@ interface Action {
 }
 ```
 
-### /middlewares :
+### /middlewares
 
 Functions that are executed before launching route function
 
@@ -183,7 +183,7 @@ instance.get(
 );
 ```
 
-### /schema :
+### /schema
 
 Body schemas for API endpoints
 

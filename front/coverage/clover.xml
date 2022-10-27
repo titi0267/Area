@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1666883718361" clover="3.2.0">
+  <project timestamp="1666883718361" name="All files">
+    <metrics statements="60" coveredstatements="56" conditionals="20" coveredconditionals="8" methods="12" coveredmethods="4" elements="92" coveredelements="68" complexity="0" loc="60" ncloc="60" packages="7" files="13" classes="13"/>
+    <package name="public.assets">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="buefy.scss" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/public/assets/buefy.scss">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src">
+      <metrics statements="4" coveredstatements="4" conditionals="3" coveredconditionals="3" methods="0" coveredmethods="0"/>
+      <file name="axiosInstance.ts" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/axiosInstance.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="3" coveredconditionals="3" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components">
+      <metrics statements="7" coveredstatements="7" conditionals="4" coveredconditionals="0" methods="3" coveredmethods="0"/>
+      <file name="Overview.vue" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/components/Overview.vue">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="3" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+      </file>
+      <file name="SelectArea.vue" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/components/SelectArea.vue">
+        <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="3" type="cond" truecount="0" falsecount="2"/>
+        <line num="36" count="1" type="stmt"/>
+      </file>
+      <file name="SelectService.vue" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/components/SelectService.vue">
+        <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="3" type="cond" truecount="0" falsecount="2"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.lang">
+      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="i18n.ts" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/lang/i18n.ts">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.router">
+      <metrics statements="23" coveredstatements="20" conditionals="5" coveredconditionals="4" methods="2" coveredmethods="2"/>
+      <file name="index.ts" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/router/index.ts">
+        <metrics statements="23" coveredstatements="20" conditionals="5" coveredconditionals="4" methods="2" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="68" count="2" type="stmt"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="70" count="2" type="cond" truecount="0" falsecount="1"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="72" count="3" type="cond" truecount="3" falsecount="0"/>
+        <line num="73" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="74" count="1" type="stmt"/>
+        <line num="75" count="1" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="87" count="1" type="stmt"/>
+        <line num="90" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.store">
+      <metrics statements="6" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+      <file name="index.ts" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/store/index.ts">
+        <metrics statements="6" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.views">
+      <metrics statements="13" coveredstatements="13" conditionals="8" coveredconditionals="1" methods="5" coveredmethods="1"/>
+      <file name="Area.vue" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/views/Area.vue">
+        <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="3" type="cond" truecount="0" falsecount="2"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+      </file>
+      <file name="Home.vue" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/views/Home.vue">
+        <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="3" type="cond" truecount="0" falsecount="2"/>
+        <line num="21" count="1" type="stmt"/>
+      </file>
+      <file name="Login.vue" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/views/Login.vue">
+        <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="3" type="cond" truecount="0" falsecount="2"/>
+        <line num="23" count="1" type="stmt"/>
+      </file>
+      <file name="NotFound.vue" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/views/NotFound.vue">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="3" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+      </file>
+      <file name="Register.vue" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/views/Register.vue">
+        <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="1" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="95" count="1" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

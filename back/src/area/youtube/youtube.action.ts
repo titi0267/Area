@@ -53,10 +53,10 @@ const checkUploadedVideo = async (area: Area): Promise<string | null> => {
 };
 
 const checkVideoLike = async (area: Area): Promise<string | null> => {
+  console.log("coucou");
   const youtube = google.youtube({ version: "v3", auth: ENV.googleApiKey });
 
   const videoId = ServiceHelper.getYoutubeVideoId(area.actionParam);
-
   if (!videoId) return null;
 
   const video = (
@@ -70,12 +70,12 @@ const checkVideoLike = async (area: Area): Promise<string | null> => {
 
   const statistics = video[0].statistics;
 
-  if (!statistics || !statistics.likeCount || !statistics.dislikeCount)
+  if (!statistics || !statistics.likeCount || !statistics.viewCount)
     return null;
 
   const params = {
     like: statistics.likeCount,
-    dislike: statistics.dislikeCount,
+    view: statistics.viewCount,
   };
 
   if (area.lastActionValue === null) {

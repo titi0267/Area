@@ -16,6 +16,7 @@ import retrofit2.Response
 
 class MainViewModel(private val repository: Repository):ViewModel() {
 
+    val emptyResponse: MutableLiveData<Response<Unit>> = MutableLiveData()
     val linkResponse: MutableLiveData<Response<String>> = MutableLiveData()
     val userResponse: MutableLiveData<Response<Token>> = MutableLiveData()
     val aboutResponse: MutableLiveData<Response<About>> = MutableLiveData()
@@ -56,6 +57,12 @@ class MainViewModel(private val repository: Repository):ViewModel() {
         viewModelScope.launch {
             val response = repository.getServiceLink(service)
             linkResponse.value = response
+        }
+    }
+    fun postServiceCode(auth: String, service: String, code: OAuthCode) {
+        viewModelScope.launch {
+            val response = repository.postServiceCode(auth, service, code)
+            emptyResponse.value = response
         }
     }
 }

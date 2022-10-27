@@ -16,6 +16,7 @@ import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.activity.MainActivity
 import com.example.area.activity.UserConnectionActivity
+import com.example.area.model.OAuthCode
 import com.example.area.model.RegisterFields
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
@@ -32,7 +33,8 @@ class NewRequestTestFragment : Fragment(R.layout.fragment_new_request_test) {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
 
         view.findViewById<Button>(R.id.request_test_button).setOnClickListener {
-            getOAuthLinkRequest("google")
+            getOAuthLinkRequest("github")
+            postServiceCode("github", OAuthCode("7021164c15c7f963e44c"))
         }
         return view
     }
@@ -40,8 +42,7 @@ class NewRequestTestFragment : Fragment(R.layout.fragment_new_request_test) {
     private fun getOAuthLinkRequest(service: String)
     {
         val sessionManager = SessionManager(context as AreaActivity)
-        val url = sessionManager.fetchAuthToken("url")
-        url ?: return
+        val url = sessionManager.fetchAuthToken("url") ?: return
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
 
@@ -50,6 +51,23 @@ class NewRequestTestFragment : Fragment(R.layout.fragment_new_request_test) {
         viewModel.linkResponse.observe(viewLifecycleOwner, Observer { response ->
             if (response.isSuccessful) {
                 Toast.makeText(context as AreaActivity, response.body()!!.toString(), Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun postServiceCode(service: String, code: OAuthCode)
+    {
+        val sessionManager = SessionManager(context as AreaActivity)
+        val url = sessionManager.fetchAuthToken("url") ?: return
+        val token = sessionManager.fetchAuthToken("token") ?: return
+        val rep = Repository(url)
+        val viewModelFactory = MainViewModelFactory(rep)
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        viewModel.postServiceCode(token, service, code)
+        viewModel.emptyResponse.observe(viewLifecycleOwner, Observer { response ->
+            if (response.isSuccessful) {
+                Toast.makeText(context as AreaActivity, "Code successfully added", Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -6,6 +6,7 @@ import com.example.area.model.LoginFields
 import com.example.area.model.about.About
 import com.example.area.model.*
 import retrofit2.Response
+import java.net.URL
 
 class Repository(private val URL_INPUT : String) {
     suspend fun register(registerFields: RegisterFields) : Response<Token> {
@@ -25,5 +26,8 @@ class Repository(private val URL_INPUT : String) {
     }
     suspend fun getServiceLink(service: String) : Response<String>{
         return RetrofitInstance(URL_INPUT).api.getServiceLink(service)
+    }
+    suspend fun postServiceCode(auth: String, service: String, code: OAuthCode) : Response<Unit> {
+        return RetrofitInstance(URL_INPUT).api.postServiceCode(auth, service, code)
     }
 }

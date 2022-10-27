@@ -53,7 +53,6 @@ const checkUploadedVideo = async (area: Area): Promise<string | null> => {
 };
 
 const checkVideoLike = async (area: Area): Promise<string | null> => {
-  console.log("coucou");
   const youtube = google.youtube({ version: "v3", auth: ENV.googleApiKey });
 
   const videoId = ServiceHelper.getYoutubeVideoId(area.actionParam);

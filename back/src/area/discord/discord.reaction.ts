@@ -1,7 +1,7 @@
 import { Client, GatewayIntentBits, Message } from "discord.js";
 import ENV from "../../env";
 
-const sendMessageToServer = async (reactionParam: string, userId: string) => {
+const sendMessageToServer = async (reactionParam: string, userId: number) => {
   const client = new Client({
     intents: [GatewayIntentBits.Guilds],
   });

@@ -20,7 +20,12 @@ interface Reaction {
   id: number;
   reactionName: string;
   reactionParamName: string;
-  fct: (reactionParam: string, userId: string) => void;
+  fct: (reactionParam: string, userId: number) => void;
 }
 
-export type ServiceName = "Youtube" | "Twitter" | "Discord" | "Spotify";
+export type ServiceName =
+  | "Youtube"
+  | "Twitter"
+  | "Discord"
+  | "Spotify"
+  | "Github";

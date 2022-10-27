@@ -4,5 +4,5 @@ import com.example.area.model.LoginFields
 
 fun checkLoginField(loginFields: LoginFields) {
     checkEmail(loginFields.email)
-    checkPassword(loginFields.password)
+    checkPasswordLogin(loginFields.password)
 }

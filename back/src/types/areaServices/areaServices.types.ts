@@ -13,6 +13,7 @@ interface Action {
   id: number;
   actionName: string;
   actionParamName: string;
+  availableInjectParams: string[];
   fct: (area: Area) => Promise<string | null>;
 }
 

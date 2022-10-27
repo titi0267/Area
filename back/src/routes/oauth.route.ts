@@ -1,5 +1,9 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { FastifyPluginOptions } from "fastify/types/plugin";
+import { OAuthApp } from "@octokit/oauth-app";
+import { google } from "googleapis";
+import SpotifyWebApi from "spotify-web-api-node";
+import httpStatus from "http-status";
 
 import { FastifyPluginDoneFunction } from "../types/global.types";
 import {
@@ -14,13 +18,9 @@ import {
 } from "../types/body/oauthRequestBody.types";
 import * as SecurityHelper from "../helpers/security.helper";
 import * as ErrorHelper from "../helpers/error.helpers";
-import { google } from "googleapis";
 import ENV from "../env";
-import SpotifyWebApi from "spotify-web-api-node";
 import authentificationMiddleware from "../middlewares/authentification.middleware";
 import { TokenService } from "../services";
-import httpStatus from "http-status";
-import axios from "axios";
 
 type GoogleOauthRequest = FastifyRequest<{
   Body: GoogleOauthBody;
@@ -73,23 +73,16 @@ export default (
 
       const userInfos = SecurityHelper.getUserInfos(req);
 
-      const body = {
-        client_id: ENV.githubClientId,
-        client_secret: ENV.githubClientSecret,
-        code: req.body.code,
-      };
-      const opts = { headers: { accept: "application/json" } };
+      const app = new OAuthApp({
+        clientType: "oauth-app",
+        clientId: ENV.githubClientId,
+        clientSecret: ENV.githubClientSecret,
+      });
 
-      const tokens = await axios.post(
-        "https://github.com/login/oauth/access_token",
-        body,
-        opts,
-      );
+      const token = (await app.createToken({ code: req.body.code }))
+        .authentication.token;
 
-      const tokenTable = await TokenService.setGithubToken(
-        userInfos.id,
-        tokens.data.access_token,
-      );
+      const tokenTable = await TokenService.setGithubToken(userInfos.id, token);
 
       res.status(httpStatus.OK).send(tokenTable);
     },

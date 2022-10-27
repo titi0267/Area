@@ -3,6 +3,7 @@ package com.example.area.api
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 class RetrofitInstance(val URL_INPUT : String) {
 
@@ -14,6 +15,7 @@ class RetrofitInstance(val URL_INPUT : String) {
         Retrofit.Builder()
             .baseUrl(URL_INPUT)
             .client(client)
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

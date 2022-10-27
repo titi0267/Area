@@ -7,10 +7,7 @@ import com.example.area.model.Token
 import com.example.area.model.about.About
 import com.example.area.model.*
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Header
+import retrofit2.http.*
 
 interface SimpleApi {
     @POST("users")
@@ -27,4 +24,10 @@ interface SimpleApi {
 
     @GET("about.json")
     suspend fun getAboutJson(): Response<About>
+
+    @GET("/oauth/{service}/link/mobile")
+    suspend fun getServiceLink(@Path("service") service: String) : Response<String>
+
+    @POST("/oauth/{service}")
+    suspend fun postServiceCode(@Header("Authorization") auth: String, @Path("service") service: String, @Body post: OAuthCode) : Response<Unit>
 }

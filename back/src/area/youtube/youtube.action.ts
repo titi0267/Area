@@ -74,7 +74,7 @@ const checkVideoLike = async (area: Area): Promise<string | null> => {
 
   const params = {
     like: statistics.likeCount,
-    view: statistics.viewCount,
+    viewCount: statistics.viewCount,
   };
 
   if (area.lastActionValue === null) {

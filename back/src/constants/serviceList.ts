@@ -23,7 +23,7 @@ export const SERVICES: Service[] = [
         actionName: "NewLikeOnAVideo",
         actionParamName: "Video Id",
         fct: YoutubeActions.checkVideoLike,
-        availableInjectParams: ["like", "dislike"],
+        availableInjectParams: ["like", "viewCount"],
       },
       {
         id: 3,

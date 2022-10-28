@@ -65,12 +65,6 @@ export default vue.extend({
         let serviceIndex = -1;
         var servicesLength = Object.keys(this.services).length;
         for (let i = 0; i < servicesLength; i++) {
-          console.log(
-            "Id = " +
-              this.services[i].id +
-              " & action = " +
-              this.area[this.type + "ServiceId"]
-          );
           if (this.services[i].id == this.area[this.type + "ServiceId"])
             serviceIndex = i;
         }

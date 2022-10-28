@@ -67,28 +67,16 @@ export default vue.extend({
     async postOauthCode() {
       try {
         const code = this.$route.query.code;
-        console.log("le code = " + code);
 
         if (code == null || code == undefined) return;
         let serviceIndex = -1;
         var servicesLength = await Object.keys(this.services).length;
-        console.log(
-          "Service len = " + servicesLength + " & total = " + this.services
-        );
         for (let i = 0; i < servicesLength; i++) {
-          console.log(
-            "Id = " +
-              this.services[i].id +
-              " & action = " +
-              this.area[this.type + "ServiceId"]
-          );
           if (this.services[i].id == this.area[this.type + "ServiceId"])
             serviceIndex = i;
         }
-        console.log("Index = " + serviceIndex);
         if (serviceIndex == -1) return;
         let serviceName = this.services[serviceIndex].name;
-        console.log("code = " + code);
         await this.$axios.post(
           "/oauth/" +
             (serviceName === "Youtube" ? "google" : serviceName.toLowerCase()),

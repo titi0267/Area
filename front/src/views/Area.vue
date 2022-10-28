@@ -57,6 +57,7 @@ export default vue.extend({
         serviceName: "";
         imageUrl: "";
         backgroundColor: "";
+        oauthName: "";
         actions: {
           id: 1;
           name: "";
@@ -108,7 +109,6 @@ export default vue.extend({
       try {
         let { data: services } = await this.$axios.get("/about.json");
         this.services = services.server.services;
-        console.log("About = " + services);
       } catch (err) {
         console.log(err);
       }

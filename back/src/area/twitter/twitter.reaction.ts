@@ -1,6 +1,6 @@
 import { TwitterApi } from "twitter-api-v2";
 
-const postNewTweet = async (reactionParam: string, userId: string) => {
+const postNewTweet = async (reactionParam: string, userId: number) => {
   console.log("Test");
 
   // const client = new TwitterApi({

@@ -25,12 +25,14 @@ export default (
               name: service.serviceName,
               imageUrl: service.imageUrl,
               backgroundColor: service.backgroundColor,
+              oauthName: service.oauthName,
               actions: service.actions.map(action => {
                 return {
                   id: action.id,
                   name: action.actionName,
                   actionParamName: action.actionParamName,
                   description: "",
+                  availableInjectParams: action.availableInjectParams,
                 };
               }),
               reactions: service.reactions.map(reaction => {

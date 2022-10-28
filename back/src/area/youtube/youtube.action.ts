@@ -56,7 +56,6 @@ const checkVideoLike = async (area: Area): Promise<string | null> => {
   const youtube = google.youtube({ version: "v3", auth: ENV.googleApiKey });
 
   const videoId = ServiceHelper.getYoutubeVideoId(area.actionParam);
-
   if (!videoId) return null;
 
   const video = (
@@ -70,12 +69,12 @@ const checkVideoLike = async (area: Area): Promise<string | null> => {
 
   const statistics = video[0].statistics;
 
-  if (!statistics || !statistics.likeCount || !statistics.dislikeCount)
+  if (!statistics || !statistics.likeCount || !statistics.viewCount)
     return null;
 
   const params = {
     like: statistics.likeCount,
-    dislike: statistics.dislikeCount,
+    viewCount: statistics.viewCount,
   };
 
   if (area.lastActionValue === null) {
@@ -90,8 +89,70 @@ const checkVideoLike = async (area: Area): Promise<string | null> => {
       params,
     );
   }
+  return null;
+};
+
+const checkNewVideoLiked = async (area: Area): Promise<string | null> => {
+  const oAuth2Client = await ServiceHelper.getGoogleOauthClient(area.userId);
+
+  if (!oAuth2Client) return null;
+
+  const youtube = google.youtube({ version: "v3", auth: oAuth2Client });
+
+  const channel = (
+    await youtube.channels.list({
+      part: ["contentDetails"],
+      mine: true,
+    })
+  ).data;
+
+  if (!channel.items) return null;
+
+  if (!channel.items[0].contentDetails?.relatedPlaylists?.likes) return null;
+
+  const playlist = (
+    await youtube.playlistItems.list({
+      part: ["snippet"],
+      playlistId: channel.items[0].contentDetails?.relatedPlaylists?.likes,
+    })
+  ).data;
+
+  if (!playlist.pageInfo?.totalResults || !playlist.items) return null;
+
+  const lastVideo = playlist.items[0];
+
+  if (
+    !lastVideo.snippet ||
+    !lastVideo.snippet.videoOwnerChannelTitle ||
+    !lastVideo.snippet.title
+  )
+    return null;
+
+  const params = {
+    channel: lastVideo.snippet.videoOwnerChannelTitle,
+    title: lastVideo.snippet.title,
+  };
+
+  if (area.lastActionValue === null) {
+    await AreaService.updateAreaValues(
+      area.id,
+      String(playlist.pageInfo.totalResults),
+    );
+    return null;
+  }
+
+  if (playlist.pageInfo.totalResults > parseInt(area.lastActionValue)) {
+    await AreaService.updateAreaValues(
+      area.id,
+      String(playlist.pageInfo.totalResults),
+    );
+    return ServiceHelper.injectParamInReaction<typeof params>(
+      area.reactionParam,
+      params,
+    );
+  }
 
   return null;
 };
 
-export { checkUploadedVideo, checkVideoLike };
+export { checkUploadedVideo, checkVideoLike, checkNewVideoLiked };

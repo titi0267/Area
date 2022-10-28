@@ -1,23 +1,26 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { FastifyPluginOptions } from "fastify/types/plugin";
+import { OAuthApp } from "@octokit/oauth-app";
+import { google } from "googleapis";
+import SpotifyWebApi from "spotify-web-api-node";
+import httpStatus from "http-status";
 
 import { FastifyPluginDoneFunction } from "../types/global.types";
 import {
   googleOauthQueryValidator,
   spotifyOauthQueryValidator,
+  githubOauthQueryValidator,
 } from "../schema/oauth.schema";
 import {
   GoogleOauthBody,
   SpotifyOauthBody,
+  GithubOauthBody,
 } from "../types/body/oauthRequestBody.types";
 import * as SecurityHelper from "../helpers/security.helper";
 import * as ErrorHelper from "../helpers/error.helpers";
-import { google } from "googleapis";
 import ENV from "../env";
-import SpotifyWebApi from "spotify-web-api-node";
 import authentificationMiddleware from "../middlewares/authentification.middleware";
 import { TokenService } from "../services";
-import httpStatus from "http-status";
 
 type GoogleOauthRequest = FastifyRequest<{
   Body: GoogleOauthBody;
@@ -25,6 +28,10 @@ type GoogleOauthRequest = FastifyRequest<{
 
 type SpotifyOauthRequest = FastifyRequest<{
   Body: SpotifyOauthBody;
+}>;
+
+type GithubOauthRequest = FastifyRequest<{
+  Body: GithubOauthBody;
 }>;
 
 export default (
@@ -58,6 +65,127 @@ export default (
       res.status(httpStatus.OK).send(tokenTable);
     },
   );
+  instance.post(
+    "/github",
+    { onRequest: [authentificationMiddleware()] },
+    async (req: GithubOauthRequest, res: FastifyReply) => {
+      if (!githubOauthQueryValidator(req.body)) ErrorHelper.throwBodyError();
+
+      const userInfos = SecurityHelper.getUserInfos(req);
+
+      const app = new OAuthApp({
+        clientType: "oauth-app",
+        clientId: ENV.githubClientId,
+        clientSecret: ENV.githubClientSecret,
+      });
+
+      const token = (await app.createToken({ code: req.body.code }))
+        .authentication.token;
+
+      const tokenTable = await TokenService.setGithubToken(userInfos.id, token);
+
+      res.status(httpStatus.OK).send(tokenTable);
+    },
+  );
+  instance.get(
+    "/spotify/link/front",
+    (req: FastifyRequest, res: FastifyReply) => {
+      const rootUrl = "https://accounts.spotify.com/authorize";
+      const options = {
+        client_id: ENV.spotifyClientId,
+        response_type: "code",
+        redirect_uri: ENV.spotifyRedirectUrl,
+        scope: [
+          "user-read-private",
+          "user-read-email",
+          "user-modify-playback-state",
+          "user-read-playback-position",
+          "user-read-recently-played",
+          "playlist-read-private",
+          "user-read-currently-playing",
+          "user-read-playback-state",
+        ].join(" "),
+      };
+
+      const qs = new URLSearchParams(options);
+
+      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+    },
+  );
+  instance.get(
+    "/spotify/link/mobile",
+    (req: FastifyRequest, res: FastifyReply) => {
+      const rootUrl = "https://accounts.spotify.com/authorize";
+      const options = {
+        client_id: ENV.spotifyClientId,
+        response_type: "code",
+        redirect_uri: ENV.spotifyRedirectUrlMobile,
+        scope: [
+          "user-read-private",
+          "user-read-email",
+          "user-modify-playback-state",
+          "user-read-playback-position",
+          "user-read-recently-played",
+          "playlist-read-private",
+          "user-read-currently-playing",
+          "user-read-playback-state",
+        ].join(" "),
+      };
+
+      const qs = new URLSearchParams(options);
+
+      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+    },
+  );
+
+  instance.get(
+    "/google/link/front",
+    (req: FastifyRequest, res: FastifyReply) => {
+      const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+
+      const options = {
+        redirect_uri: ENV.googleRedirectUrl,
+        client_id: ENV.googleClientId,
+        access_type: "offline",
+        response_type: "code",
+        prompt: "consent",
+        scope: [
+          "https://www.googleapis.com/auth/userinfo.profile",
+          "https://www.googleapis.com/auth/userinfo.email",
+          "https://www.googleapis.com/auth/youtube.readonly",
+          "https://www.googleapis.com/auth/youtube",
+          "https://www.googleapis.com/auth/youtube.upload",
+        ].join(" "),
+      };
+      const qs = new URLSearchParams(options);
+
+      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+    },
+  );
+  instance.get(
+    "/google/link/mobile",
+    (req: FastifyRequest, res: FastifyReply) => {
+      const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+
+      const options = {
+        redirect_uri: ENV.googleRedirectUrlMobile,
+        client_id: ENV.googleClientId,
+        access_type: "offline",
+        response_type: "code",
+        prompt: "consent",
+        scope: [
+          "https://www.googleapis.com/auth/userinfo.profile",
+          "https://www.googleapis.com/auth/userinfo.email",
+          "https://www.googleapis.com/auth/youtube.readonly",
+          "https://www.googleapis.com/auth/youtube",
+          "https://www.googleapis.com/auth/youtube.upload",
+        ].join(" "),
+      };
+      const qs = new URLSearchParams(options);
+
+      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+    },
+  );
 
   instance.post(
     "/spotify",
@@ -85,6 +213,34 @@ export default (
       );
 
       res.status(httpStatus.OK).send(tokenTable);
+    },
+  );
+  instance.get(
+    "/github/link/front",
+    (req: FastifyRequest, res: FastifyReply) => {
+      const rootUrl = "https://github.com/login/oauth/authorize";
+
+      const options = {
+        redirect_uri: ENV.githubRedirectUrl,
+        client_id: ENV.githubClientId,
+      };
+      const qs = new URLSearchParams(options);
+
+      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+    },
+  );
+  instance.get(
+    "/github/link/mobile",
+    (req: FastifyRequest, res: FastifyReply) => {
+      const rootUrl = "https://github.com/login/oauth/authorize";
+
+      const options = {
+        redirect_uri: ENV.githubRedirectUrlMobile,
+        client_id: ENV.githubClientId,
+      };
+      const qs = new URLSearchParams(options);
+
+      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
     },
   );
 

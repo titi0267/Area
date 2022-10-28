@@ -1,23 +1,12 @@
 import { Area } from "@prisma/client";
-import SpotifyWebApi from "spotify-web-api-node";
 import { AreaService, TokenService } from "../../services";
 import ENV from "../../env";
 import * as ServiceHelper from "../../helpers/service.helpers";
 
 const checkMusicSkip = async (area: Area): Promise<string | null> => {
-  var spotifyApi = new SpotifyWebApi({
-    clientId: ENV.spotifyClientId,
-    clientSecret: ENV.spotifyClientSecret,
-  });
+  const spotifyApi = await ServiceHelper.getSpotifyClient(area.userId);
 
-  const refreshToken = await TokenService.getSpotifyToken(area.userId);
-
-  if (refreshToken == null) return null;
-  spotifyApi.setRefreshToken(refreshToken);
-
-  const accessToken = await (await spotifyApi.refreshAccessToken()).body;
-
-  spotifyApi.setAccessToken(accessToken.access_token);
+  if (!spotifyApi) return null;
 
   const currentSong = (await spotifyApi.getMyCurrentPlayingTrack()).body;
 
@@ -41,33 +30,26 @@ const checkMusicSkip = async (area: Area): Promise<string | null> => {
 };
 
 const checkIsMusicLiked = async (area: Area): Promise<string | null> => {
-  var spotifyApi = new SpotifyWebApi({
-    clientId: ENV.spotifyClientId,
-    clientSecret: ENV.spotifyClientSecret,
-  });
-  const refreshToken = await TokenService.getSpotifyToken(area.userId);
+  const spotifyApi = await ServiceHelper.getSpotifyClient(area.userId);
 
-  if (refreshToken == null) return null;
-  spotifyApi.setRefreshToken(refreshToken);
+  if (!spotifyApi) return null;
 
-  const accessToken = (await spotifyApi.refreshAccessToken()).body;
+  const likedTracks = (await spotifyApi.getMySavedTracks()).body;
 
-  spotifyApi.setAccessToken(accessToken.access_token);
-
-  const isLiked = await spotifyApi.getMySavedTracks();
   if (area.lastActionValue == null) {
-    await AreaService.updateAreaValues(area.id, isLiked.body.total.toString());
+    await AreaService.updateAreaValues(area.id, likedTracks.total.toString());
     return null;
   }
 
   const params = {
-    songName: isLiked.body.items[0].track.name,
-    artists: isLiked.body.items[0].track.artists[0].name,
+    songName: likedTracks.items[0].track.name,
+    artists: likedTracks.items[0].track.artists[0].name,
   };
-  if (isLiked.body.total != parseInt(area.lastActionValue)) {
-    await AreaService.updateAreaValues(area.id, isLiked.body.total.toString());
+
+  if (likedTracks.total != parseInt(area.lastActionValue)) {
+    await AreaService.updateAreaValues(area.id, likedTracks.total.toString());
   }
-  if (isLiked.body.total > parseInt(area.lastActionValue)) {
+  if (likedTracks.total > parseInt(area.lastActionValue)) {
     return ServiceHelper.injectParamInReaction<typeof params>(
       area.reactionParam,
       params,

@@ -19,7 +19,6 @@
     "@fastify/autoload": "^5.4.0",
     "@fastify/cors": "^8.1.0",
     "@octokit/auth-oauth-user": "^2.0.4",
-    "@octokit/core": "^4.1.0",
     "@octokit/oauth-app": "^4.1.0",
     "@prisma/client": "^4.3.1",
     "@types/node": "^18.7.16",

@@ -15,7 +15,7 @@ class AreaActivity : AppCompatActivity() {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
                 add<MainFragment>(R.id.area_fragment_container, "main_fragment")
-            }
+            }   
         }
         setContentView(R.layout.activity_area)
     }

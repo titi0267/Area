@@ -43,7 +43,7 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
             myDataSet.loadAreaInfo()
         ) { position -> onItemClick(position) }
         recycler.setHasFixedSize(true)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         viewModel.getUserAreaList(sessionManager.fetchAuthToken("user_token")!!)
         viewModel.userResponse2.observe(viewLifecycleOwner, Observer { response ->
             if (response.isSuccessful) {
@@ -65,7 +65,7 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
             }
         })
         view.findViewById<Button>(R.id.areaCreationButton).setOnClickListener {
-            (context as AreaActivity).changeFragment(AreaCreationFragment(), "creation")
+            (context as AreaActivity).changeFragment(AreaCreationActionServiceFragment(), "action_service_creation")
         }
         view.findViewById<Button>(R.id.backFromAreaListButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()

@@ -3,6 +3,7 @@ import * as YoutubeActions from "../area/youtube/youtube.action";
 import * as YoutubeReactions from "../area/youtube/youtube.reaction";
 import * as TwitterReaction from "../area/twitter/twitter.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
+import * as GithubAction from "../area/github/github.action";
 
 export const SERVICES: Service[] = [
   {
@@ -94,6 +95,22 @@ export const SERVICES: Service[] = [
         actionParamName: "Channel Name",
         fct: YoutubeActions.checkUploadedVideo,
         availableInjectParams: ["name", "channelName"],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 5,
+    serviceName: "Github",
+    imageUrl: "https://www.iconsdb.com/icons/preview/white/github-9-xxl.png",
+    backgroundColor: "#000000",
+    actions: [
+      {
+        id: 1,
+        actionName: "New follower",
+        actionParamName: "",
+        fct: GithubAction.checkNewFollowingUser,
+        availableInjectParams: ["lastFollowingUserName"],
       },
     ],
     reactions: [],

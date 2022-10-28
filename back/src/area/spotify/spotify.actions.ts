@@ -45,7 +45,7 @@ const checkIsMusicLiked = async (area: Area): Promise<string | null> => {
     clientId: ENV.spotifyClientId,
     clientSecret: ENV.spotifyClientSecret,
   });
-
+  console.log("ICI");
   const refreshToken = await TokenService.getSpotifyToken(area.userId);
 
   if (refreshToken == null) return null;
@@ -55,14 +55,30 @@ const checkIsMusicLiked = async (area: Area): Promise<string | null> => {
 
   spotifyApi.setAccessToken(accessToken.access_token);
 
-  const currentSong = (await spotifyApi.getMyCurrentPlayingTrack()).body.item
-    ?.id;
+  // const currentSong = (await spotifyApi.getMyCurrentPlayingTrack()).body.item
+  //   ?.id;
 
-  if (currentSong == undefined) return null;
-  const isLiked = await spotifyApi.containsMySavedTracks([currentSong]);
-  console.log(isLiked);
+  //if (currentSong == undefined) return null;
+  const isLiked = await spotifyApi.getMySavedTracks();
+  if (area.lastActionValue == null) {
+    await AreaService.updateAreaValues(area.id, isLiked.body.total.toString());
+    return null;
+  }
+
+  const params = {
+    songName: isLiked.body.items[0].track.name,
+    artists: isLiked.body.items[0].track.artists[0].name,
+  };
+
+  if (isLiked.body.total > parseInt(area.lastActionValue)) {
+    await AreaService.updateAreaValues(area.id, isLiked.body.total.toString());
+    console.log(params);
+    return ServiceHelper.injectParamInReaction<typeof params>(
+      area.reactionParam,
+      params,
+    );
+  }
   return null;
-  //const likedTrack = await spotifyApi.containsMySavedTracks();
 };
 
 export { checkMusicSkip, checkIsMusicLiked };

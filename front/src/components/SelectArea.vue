@@ -39,15 +39,18 @@ export default vue.extend({
   data() {
     return {};
   },
-  mounted() {
-    this.$nextTick(() => {  
-      this.postOauthCode();
-    });
-  },
+  mounted() {},
   props: {
     type: String,
     services: Array,
     area: Object,
+  },
+  watch: {
+    services: function () {
+      this.$nextTick(() => {
+        this.postOauthCode();
+      });
+    },
   },
   components: {},
   methods: {

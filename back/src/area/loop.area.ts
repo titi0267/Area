@@ -11,18 +11,22 @@ const areaLoop = async () => {
     );
 
     if (action === null) return;
-    const reactionParam = await action(area);
+    try {
+      const reactionParam = await action(area);
 
-    if (reactionParam === null) return;
+      if (reactionParam === null) return;
 
-    const reaction = ServiceHelper.getReactionFct(
-      area.reactionServiceId,
-      area.reactionId,
-    );
+      const reaction = ServiceHelper.getReactionFct(
+        area.reactionServiceId,
+        area.reactionId,
+      );
 
-    if (reaction === null) return;
+      if (reaction === null) return;
 
-    reaction(reactionParam, "");
+      reaction(reactionParam, area.userId);
+    } catch (e) {
+      console.log(e);
+    }
   }
 };
 

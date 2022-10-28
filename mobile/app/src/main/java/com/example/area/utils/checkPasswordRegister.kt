@@ -1,8 +1,6 @@
 package com.example.area.utils
 
-import android.util.Log
-
-fun checkPassword(password: String) {
+fun checkPasswordRegister(password: String) {
     if (password.isEmpty() || password.isBlank())
         throw IllegalArgumentException("Password mustn't be empty or blank")
     if (password.length < 8)

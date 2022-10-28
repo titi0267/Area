@@ -1,7 +1,7 @@
 <template>
     <div id="register">
-        <h3>Register</h3>
-        <section>
+        <section class="registerForm">
+            <h3>Create your account</h3>
             <b-field label="First Name" label-position="on-border" :type="register.firstName.error != '' ? 'is-danger' : ''" :message="register.firstName.error">
                 <b-input v-model="register.firstName.value" type="firstname" @input="checkNameInput($event, 'firstName')"></b-input>
             </b-field>
@@ -22,10 +22,11 @@
                     <b-button @click="validate == true ? sendRegister() : ''" :type="validate == true ? 'is-success is-light' : 'is-danger is-light'">Register</b-button>
                 </div>
             </div>
-            <br/>
-            <router-link to="/login">
-                <a>Already an account ? Login</a>
-            </router-link>
+            <div class="login">
+                <router-link to="/login">
+                    <a>Already an account ? Login</a>
+                </router-link>
+            </div>
         </section>
     </div>
 </template>
@@ -174,6 +175,31 @@ export default vue.extend({
 
 <style scoped lang="scss">
 #register {
+    display: flex;
+    .registerForm {
+        background-color: white;
+        min-width: 400px;
+        width: 450px;
+        height: fit-content;
+        position: absolute;
+        box-shadow: 0 0 30px 1px black;
+        border-radius: 20px;
+        padding: 20px 25px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        h3 {
+            font-size: 40px;
+            margin-bottom: 25px;
+            font-family: Bebas Regular;
+        }
+        :deep(.field) {
+            margin-bottom: 20px;
+        }
+        .login {
+            margin-top: 15px;
+        }
+    }
     .buttonContent {
         transform: translate(calc(50% - 100px), 0%);
         position: relative;

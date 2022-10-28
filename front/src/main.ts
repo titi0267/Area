@@ -27,9 +27,10 @@ Vue.use(Buefy, {
                 'is-medium': '2x',
                 'is-large': '3x'
             },
+            iconPrefix: "",
         },
     },
-    css: true,
+    // css: true,
 });
 
 Vue.prototype.$axios = axios;

@@ -69,12 +69,10 @@ export default vue.extend({
             serviceIndex = i;
         }
         if (serviceIndex == -1) return;
-        let serviceName = this.services[serviceIndex].name;
+        let serviceName = this.services[serviceIndex].oauthName;
         console.log(serviceName);
         const { data: url } = await this.$axios.get(
-          "/oauth/" +
-            (serviceName == "Youtube" ? "google" : serviceName.toLowerCase()) +
-            "/link/front"
+          "/oauth/" + serviceName + "/link/front"
         );
         this.oauthURL = url;
         console.log(this.oauthURL);

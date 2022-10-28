@@ -87,7 +87,7 @@ export const SERVICES: Service[] = [
     serviceName: "Spotify",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/spotify-xxl.png",
     backgroundColor: "#1DB954",
-    oauthName: "none",
+    oauthName: "spotify",
     actions: [
       {
         id: 1,

@@ -76,14 +76,10 @@ export default vue.extend({
             serviceIndex = i;
         }
         if (serviceIndex == -1) return;
-        let serviceName = this.services[serviceIndex].name;
-        await this.$axios.post(
-          "/oauth/" +
-            (serviceName === "Youtube" ? "google" : serviceName.toLowerCase()),
-          {
-            code: code,
-          }
-        );
+        let serviceName = this.services[serviceIndex].oauthName;
+        await this.$axios.post("/oauth/" + serviceName, {
+          code: code,
+        });
       } catch (e) {
         console.log(e);
       }

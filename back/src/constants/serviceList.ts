@@ -8,6 +8,7 @@ export const SERVICES: Service[] = [
   {
     id: 1,
     serviceName: "Youtube",
+    oauthName: "google",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/youtube-6-xxl.png",
     backgroundColor: "#FF0000",
     actions: [
@@ -54,6 +55,7 @@ export const SERVICES: Service[] = [
     imageUrl: "https://www.iconsdb.com/icons/preview/white/twitter-xxl.png",
     backgroundColor: "#1DA1F2",
     actions: [],
+    oauthName: "none",
     reactions: [
       {
         id: 1,
@@ -68,6 +70,7 @@ export const SERVICES: Service[] = [
     serviceName: "Discord",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/discord-2-xxl.png",
     backgroundColor: "#5865F2",
+    oauthName: "none",
     actions: [],
     reactions: [
       {
@@ -83,6 +86,7 @@ export const SERVICES: Service[] = [
     serviceName: "Spotify",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/spotify-xxl.png",
     backgroundColor: "#1DB954",
+    oauthName: "none",
     actions: [
       {
         id: 1,

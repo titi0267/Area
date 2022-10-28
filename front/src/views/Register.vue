@@ -2,12 +2,14 @@
     <div id="register">
         <section class="registerForm">
             <h3>Create your account</h3>
-            <b-field label="First Name" label-position="on-border" :type="register.firstName.error != '' ? 'is-danger' : ''" :message="register.firstName.error">
-                <b-input v-model="register.firstName.value" type="firstname" @input="checkNameInput($event, 'firstName')"></b-input>
-            </b-field>
-            <b-field label="Last Name" label-position="on-border" :type="register.lastName.error != '' ? 'is-danger' : ''" :message="register.lastName.error">
-                <b-input v-model="register.lastName.value" type="lastname" @input="checkNameInput($event, 'lastName')"></b-input>
-            </b-field>
+            <div class="names">
+                <b-field label="First Name" label-position="on-border" :type="register.firstName.error != '' ? 'is-danger' : ''" :message="register.firstName.error">
+                    <b-input v-model="register.firstName.value" type="firstname" @input="checkNameInput($event, 'firstName')"></b-input>
+                </b-field>
+                <b-field label="Last Name" label-position="on-border" :type="register.lastName.error != '' ? 'is-danger' : ''" :message="register.lastName.error">
+                    <b-input v-model="register.lastName.value" type="lastname" @input="checkNameInput($event, 'lastName')"></b-input>
+                </b-field>
+            </div>
             <b-field label="E-mail" label-position="on-border" :type="register.email.error != '' ? 'is-danger' : ''" :message="register.email.error">
                 <b-input type="email" v-model="register.email.value" @input="checkEmail($event)"></b-input>
             </b-field>
@@ -192,6 +194,13 @@ export default vue.extend({
             font-size: 40px;
             margin-bottom: 25px;
             font-family: Bebas Regular;
+        }
+        .names {
+            display: flex;
+            justify-content: space-between;
+            :deep(.field) {
+                width: 48%;
+            }
         }
         :deep(.field) {
             margin-bottom: 20px;

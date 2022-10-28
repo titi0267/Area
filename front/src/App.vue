@@ -1,8 +1,20 @@
 <template>
     <div id="app">
+        <NavBar v-if="$route.name != 'register' && $route.name != 'login'"/>
         <router-view/>
     </div>
 </template>
+
+<script scoped lang="ts">
+import vue from 'vue';
+import NavBar from './components/NavBar.vue'
+
+export default vue.extend({
+    components: {
+        NavBar,
+    },
+})
+</script>
 
 <style scoped lang="scss">
 #app {

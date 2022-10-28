@@ -1,9 +1,6 @@
 <template>
     <div id="home">
         <h3>Home</h3>
-        <router-link to="/create/action">
-            <b-button style="is-primary" @click="removeLocalStorageItem">Create</b-button>
-        </router-link>
         <div v-for="area in areas" :key="area.actionServiceId.toString() + area.actionParam + area.reactionId.toString() + area.actionId.toString()" class="area-list">
             <div class="action" v-if="getActionObject(area)">
                 <p> {{ getActionObject(area).name }} </p>
@@ -35,9 +32,6 @@ export default vue.extend({
 
     },
     methods: {
-        removeLocalStorageItem() {
-            localStorage.removeItem('area');
-        },
         getActionObject(area) {
             let result = this.services.find(service => service.id == area.actionServiceId)
             return result;

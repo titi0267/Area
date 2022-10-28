@@ -1,13 +1,15 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
+import axios from "../axiosInstance";
+import store from "../store";
+
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import NotFound from "../views/NotFound.vue";
 import Home from "../views/Home.vue";
-import CreateArea from "../views/CreateArea.vue";
-import Area from "../views/Area.vue"
-import axios from "../axiosInstance";
-import store from "../store";
+import Area from "../views/Area.vue";
+import Profile from "../views/Profile.vue";
+import Services from "../views/Services.vue";
 
 Vue.use(VueRouter);
 
@@ -52,13 +54,25 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
+            path: '/profile',
+            name: 'profile',
+            component: Profile,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/services',
+            name: 'services',
+            component: Services,
+            meta: { requiresAuth: true }
+        },
+        {
             path: '/',
             redirect: '/home',
             meta: { requiresAuth: true }
         },
         {
             path: '/:pathMatch(.*)*',
-            name: 'notFound',
+            name: 'not-found',
             component: NotFound,
             meta: { requiresAuth: false }
         },

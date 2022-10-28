@@ -72,6 +72,12 @@ export const SERVICES: Service[] = [
         actionParamName: "Skip song",
         fct: SpotifyAction.checkMusicSkip,
       },
+      {
+        id: 2,
+        actionName: "Get liked track",
+        actionParamName: "Liked track",
+        fct: SpotifyAction.checkIsMusicLiked,
+      },
     ],
     reactions: [],
   },

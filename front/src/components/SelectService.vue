@@ -62,15 +62,28 @@ export default vue.extend({
     }, 400),
     async getOauthUrl() {
       try {
-        let serviceName = this.services.find(
-          (service) => service.id == this.area[this.type + "ServiceId"]
-        ).name;
+        let serviceIndex = -1;
+        var servicesLength = Object.keys(this.services).length;
+        for (let i = 0; i < servicesLength; i++) {
+          console.log(
+            "Id = " +
+              this.services[i].id +
+              " & action = " +
+              this.area[this.type + "ServiceId"]
+          );
+          if (this.services[i].id == this.area[this.type + "ServiceId"])
+            serviceIndex = i;
+        }
+        if (serviceIndex == -1) return;
+        let serviceName = this.services[serviceIndex].name;
+        console.log(serviceName);
         const { data: url } = await this.$axios.get(
           "/oauth/" +
             (serviceName == "Youtube" ? "google" : serviceName.toLowerCase()),
           () => {}
         );
         this.oauthURL = url;
+        console.log(this.oauthURL);
       } catch (e) {
         console.log(e);
       }

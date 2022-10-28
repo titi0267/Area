@@ -40,4 +40,29 @@ const checkMusicSkip = async (area: Area): Promise<string | null> => {
   return null;
 };
 
-export { checkMusicSkip };
+const checkIsMusicLiked = async (area: Area): Promise<string | null> => {
+  var spotifyApi = new SpotifyWebApi({
+    clientId: ENV.spotifyClientId,
+    clientSecret: ENV.spotifyClientSecret,
+  });
+
+  const refreshToken = await TokenService.getSpotifyToken(area.userId);
+
+  if (refreshToken == null) return null;
+  spotifyApi.setRefreshToken(refreshToken);
+
+  const accessToken = (await spotifyApi.refreshAccessToken()).body;
+
+  spotifyApi.setAccessToken(accessToken.access_token);
+
+  const currentSong = (await spotifyApi.getMyCurrentPlayingTrack()).body.item
+    ?.id;
+
+  if (currentSong == undefined) return null;
+  const isLiked = await spotifyApi.containsMySavedTracks([currentSong]);
+  console.log(isLiked);
+  return null;
+  //const likedTrack = await spotifyApi.containsMySavedTracks();
+};
+
+export { checkMusicSkip, checkIsMusicLiked };

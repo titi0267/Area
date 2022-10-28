@@ -95,7 +95,6 @@ export default (
     },
   );
   instance.get("/spotify", (req: FastifyRequest, res: FastifyReply) => {
-    console.log("test");
     const rootUrl = "https://accounts.spotify.com/authorize";
     const options = {
       client_id: ENV.spotifyClientId,
@@ -108,6 +107,11 @@ export default (
         "user-read-playback-position",
         "user-read-recently-played",
         "playlist-read-private",
+        "user-read-currently-playing",
+        "user-library-modify",
+        "playlist-modify-private",
+        "playlist-modify-public",
+        "user-library-read",
       ].join(" "),
     };
 

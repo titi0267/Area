@@ -68,10 +68,15 @@ export default vue.extend({
       try {
         const code = this.$route.query.code;
 
-        if (code == null) return;
-        let serviceName = this.services.find(
-          (service) => service.id == this.area[this.type + "ServiceId"]
-        ).name;
+        if (code == null || code == undefined) return;
+        let serviceIndex = -1;
+        var servicesLength = await Object.keys(this.services).length;
+        for (let i = 0; i < servicesLength; i++) {
+          if (this.services[i].id == this.area[this.type + "ServiceId"])
+            serviceIndex = i;
+        }
+        if (serviceIndex == -1) return;
+        let serviceName = this.services[serviceIndex].name;
         await this.$axios.post(
           "/oauth/" +
             (serviceName === "Youtube" ? "google" : serviceName.toLowerCase()),

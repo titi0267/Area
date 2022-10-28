@@ -104,6 +104,10 @@ export default (
           "playlist-read-private",
           "user-read-currently-playing",
           "user-read-playback-state",
+          "user-library-modify",
+          "playlist-modify-private",
+          "playlist-modify-public",
+          "user-library-read",
         ].join(" "),
       };
 

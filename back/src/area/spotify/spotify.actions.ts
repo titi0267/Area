@@ -40,4 +40,40 @@ const checkMusicSkip = async (area: Area): Promise<string | null> => {
   return null;
 };
 
-export { checkMusicSkip };
+const checkIsMusicLiked = async (area: Area): Promise<string | null> => {
+  var spotifyApi = new SpotifyWebApi({
+    clientId: ENV.spotifyClientId,
+    clientSecret: ENV.spotifyClientSecret,
+  });
+  const refreshToken = await TokenService.getSpotifyToken(area.userId);
+
+  if (refreshToken == null) return null;
+  spotifyApi.setRefreshToken(refreshToken);
+
+  const accessToken = (await spotifyApi.refreshAccessToken()).body;
+
+  spotifyApi.setAccessToken(accessToken.access_token);
+
+  const isLiked = await spotifyApi.getMySavedTracks();
+  if (area.lastActionValue == null) {
+    await AreaService.updateAreaValues(area.id, isLiked.body.total.toString());
+    return null;
+  }
+
+  const params = {
+    songName: isLiked.body.items[0].track.name,
+    artists: isLiked.body.items[0].track.artists[0].name,
+  };
+  if (isLiked.body.total != parseInt(area.lastActionValue)) {
+    await AreaService.updateAreaValues(area.id, isLiked.body.total.toString());
+  }
+  if (isLiked.body.total > parseInt(area.lastActionValue)) {
+    return ServiceHelper.injectParamInReaction<typeof params>(
+      area.reactionParam,
+      params,
+    );
+  }
+  return null;
+};
+
+export { checkMusicSkip, checkIsMusicLiked };

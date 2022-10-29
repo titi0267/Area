@@ -4,7 +4,6 @@ import { OAuthApp } from "@octokit/oauth-app";
 import { google } from "googleapis";
 import SpotifyWebApi from "spotify-web-api-node";
 import httpStatus from "http-status";
-import axios from "axios";
 import DiscordOauthClient from "discord-oauth2";
 
 import { FastifyPluginDoneFunction } from "../types/global.types";

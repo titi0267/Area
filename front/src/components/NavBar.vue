@@ -1,6 +1,6 @@
 <template>
     <div id="NavBar">
-        <b-image class="logo"/>
+        <b-image class="logo" :src="require('@/assets/area_logo.png')"/>
         <div class="links">
             <a @click="$router.push('/home')">Home</a>
             <a @click="$router.push('/create/action'), removeLocalStorageItem()">Create</a>
@@ -75,7 +75,7 @@ export default vue.extend({
          * A method that is called when the user clicks on the logout button.
          */
         logout(): void {
-            this.$store.commit('updateToken', "");
+            this.$store.commit('updateToken', '');
             localStorage.setItem('usr-token', '');
             this.$router.push('/login');
         },
@@ -85,42 +85,55 @@ export default vue.extend({
          * @async
          */
         async getUserInfos(): Promise<any> {
-            try {
-                let {data: user} = await this.$axios.get('/users/me')
-                this.user = user
-            } catch(err) {
-                console.log(err);
-            }
+            let {data: user} = await this.$axios.get('/users/me')
+            this.user = user
         }
     }
 })
 </script>
 
 <style lang="scss" scoped>
+$navbar-height: 75px;
+
 #NavBar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: white;
-    height: 75px;
+    height: $navbar-height;
     width: 100%;
     border-bottom: 1px solid rgb(202, 202, 202);
     position: static;
     .logo {
-
+        position: relative;
+        :deep(img) {
+            height: $navbar-height;
+            width: auto;
+        }
     }
     .links {
-
-    }
-    .profile {
-        .navbarItem {
-            // position: relative;
-            .userIcon {
-                // height: 50px;
-                // width: 50px;
+        a:first-child {
+            margin-right: 15px;
+        }
+        a {
+            color: white;
+            font-family: Bebas Regular;
+            font-size: 30px;
+            background-color: #37474F;
+            padding: 3px 6px;
+            &:hover {
+                color: #7DCEA0;
             }
         }
 
+    }
+    .profile {
+        width: 206.53px;
+        display: flex;
+        justify-content: flex-end;
+        >:deep(div) {
+            margin-right: 15px;
+        }
     }
 }
 .dropItem {

@@ -27,6 +27,6 @@ export default vue.extend({
 
 @font-face {
     font-family: "Bebas Regular";
-    src: url("@/fonts/BEBASNEUE-REGULAR.ttf");
+    src: url("@/assets/fonts/BEBASNEUE-REGULAR.ttf");
 }
 </style>

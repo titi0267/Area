@@ -28,6 +28,8 @@ model TokensTable {
   twitterToken      String?
   githubToken       String?
   googleToken      String?
+  discordGuildId    String?
+  discordToken      String?
   trelloToken       String?
   spotifyToken      String?
   user              User          @relation(references: [id], fields: [userId])

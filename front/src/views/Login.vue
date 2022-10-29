@@ -101,7 +101,7 @@ export default vue.extend({
                 this.$store.commit('updateToken', resp.token);
                 this.$router.push('/home');
             } catch (err) {
-                console.log(err);
+                this.toast(err.response.data.message, 'is-danger');
             }
         }
     }

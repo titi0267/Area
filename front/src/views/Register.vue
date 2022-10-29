@@ -166,9 +166,7 @@ export default vue.extend({
                 this.$store.commit('updateToken', resp.token);
                 this.$router.push('/home');
             } catch (err) {
-                if (err && err.reponse && err.response.data.statusCode == 400)
-                    console.log("E-mail already taken...");
-                console.log(err);
+                this.toast(err.response.data.message, 'is-danger');
             }
         }
     }

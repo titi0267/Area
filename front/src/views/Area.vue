@@ -84,17 +84,14 @@ export default vue.extend({
                     reactionParam: this.area.reactionParam,
                 });
                 this.$router.push('/home')
+                this.toast('Your actions - reaction has been created', 'is-success');
             } catch (err) {
-                console.log(err);
+                this.toast(err.response.data.message, 'is-danger');
             }
         },
         async getServices() {
-            try {
-                let { data: services } = await this.$axios.get("/about.json");
-                this.services = services.server.services;
-            } catch (err) {
-                console.log(err);
-            }
+            let { data: services } = await this.$axios.get("/about.json");
+            this.services = services.server.services;
         },
     }
 })

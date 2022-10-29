@@ -1,8 +1,8 @@
 <template>
-    <div id="home">
-        <h3>Home</h3>
+    <div id="Home">
         <div v-for="area in areas" :key="area.actionServiceId.toString() + area.actionParam + area.reactionId.toString() + area.actionId.toString()" class="area-list">
             <div class="action" v-if="getActionObject(area)">
+                <b-image :src="getActionObject(area).imageUrl"></b-image>
                 <p> {{ getActionObject(area).name }} </p>
                 <p> {{ getActionObject(area).actions.find(action => action.id == area.actionId).name }} </p>
             </div>
@@ -41,26 +41,24 @@ export default vue.extend({
             return result;
         },
         async getUserAreas() {
-            try {
-                let { data: resp } = await this.$axios.get('/users/areas')
-                this.areas = resp;
-            } catch (err) {
-                console.log(err);
-            }
+            let { data: resp } = await this.$axios.get('/users/areas')
+            this.areas = resp;
         },
         async getServices() {
-            try {
-                let { data: services } = await this.$axios.get("/about.json");
-                this.services = services.server.services;
-            } catch (err) {
-                console.log(err);
-            }
+            let { data: services } = await this.$axios.get("/about.json");
+            this.services = services.server.services;
         },
     }
 })
 </script>
 
 <style scoped lang="scss">
+#Home {
+    padding: 20px;
+    .area-list {
+        
+    }
+}
 .area-list {
     border: 1px solid black;
     display: flex;

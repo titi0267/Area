@@ -3,11 +3,14 @@ import * as YoutubeActions from "../area/youtube/youtube.action";
 import * as YoutubeReactions from "../area/youtube/youtube.reaction";
 import * as TwitterReaction from "../area/twitter/twitter.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
+import * as SpotifyAction from "../area/spotify/spotify.actions";
+import * as GithubAction from "../area/github/github.action";
 
 export const SERVICES: Service[] = [
   {
     id: 1,
     serviceName: "Youtube",
+    oauthName: "google",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/youtube-6-xxl.png",
     backgroundColor: "#FF0000",
     actions: [
@@ -54,6 +57,7 @@ export const SERVICES: Service[] = [
     imageUrl: "https://www.iconsdb.com/icons/preview/white/twitter-xxl.png",
     backgroundColor: "#1DA1F2",
     actions: [],
+    oauthName: "none",
     reactions: [
       {
         id: 1,
@@ -68,6 +72,7 @@ export const SERVICES: Service[] = [
     serviceName: "Discord",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/discord-2-xxl.png",
     backgroundColor: "#5865F2",
+    oauthName: "none",
     actions: [],
     reactions: [
       {
@@ -83,13 +88,38 @@ export const SERVICES: Service[] = [
     serviceName: "Spotify",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/spotify-xxl.png",
     backgroundColor: "#1DB954",
+    oauthName: "none",
     actions: [
       {
         id: 1,
-        actionName: "Test spotify",
-        actionParamName: "Channel Name",
-        fct: YoutubeActions.checkUploadedVideo,
-        availableInjectParams: ["name", "channelName"],
+        actionName: "Skip to next song",
+        actionParamName: "Skip song",
+        fct: SpotifyAction.checkMusicSkip,
+        availableInjectParams: ["songName"],
+      },
+      {
+        id: 2,
+        actionName: "Get liked track",
+        actionParamName: "Liked track",
+        fct: SpotifyAction.checkIsMusicLiked,
+        availableInjectParams: ["songName", "artists"],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 5,
+    serviceName: "Github",
+    imageUrl: "https://www.iconsdb.com/icons/preview/white/github-9-xxl.png",
+    backgroundColor: "#000000",
+    oauthName: "github",
+    actions: [
+      {
+        id: 1,
+        actionName: "New follower",
+        actionParamName: "",
+        fct: GithubAction.checkNewFollowingUser,
+        availableInjectParams: ["lastFollowingUserName"],
       },
     ],
     reactions: [],

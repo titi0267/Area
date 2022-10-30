@@ -35,11 +35,12 @@
 
 <script lang="ts">
 import vue from 'vue';
+import { Register } from '../types/index'
 
 export default vue.extend({
     data() {
         return {
-            register: {
+            register: { /** It's a variable that contains all the data of the register form. */
                 firstName: {
                     value: "",
                     error: "",
@@ -65,13 +66,18 @@ export default vue.extend({
                     error: "",
                     valide: false,
                 }
-            },
-            timeout: false,
-            validate: false,
+            } as Register,
+            validate: false, /** If this variable is true all the fields form are valides. */
+            timeout: false, /** This variable is used to block the time of the button animation */
         }
     },
     methods: {
-        valideForm() {
+        /**
+         * It's a function that check if the entire form is valide or not.
+         * @data {Object} register
+         * @data {Boolean} validate
+         */
+        valideForm(): void {
             if (this.register.firstName.valide == true &&
             this.register.lastName.valide == true &&
             this.register.email.valide == true &&
@@ -82,7 +88,11 @@ export default vue.extend({
             } else
                 this.validate = false;
         },
-        moveButton() {
+        /**
+         * It's a function that move the button to the left or to the right when the form is not valid.
+         * @data {Boolean} timeout
+         */
+        moveButton(): void {
             let button = this.$refs.registerButton as HTMLElement;
             button.style.transitionProperty = "left";
             button.style.transitionDuration = "0.3s";
@@ -96,7 +106,13 @@ export default vue.extend({
                 this.timeout = false;
             }, 290)
         },
-        checkNameInput(input, type) {
+        /**
+         * It's a function that check if the name is valide or not.
+         * @param {String} input - Text input
+         * @param {String} type - firstName or lastName
+         * @data {Object} register
+         */
+        checkNameInput(input: String, type: string): void {
             const name_regex = (/^[a-zA-Z]+$/)
             if (input == "") {
                 this.register[type].error = "Cannot be empty";
@@ -113,7 +129,12 @@ export default vue.extend({
             }
             this.valideForm();
         },
-        checkEmail(input) {
+        /**
+         * It's a function that check if the email is valide or not.
+         * @param {String} input - Text input
+         * @data {Object} login
+         */
+        checkEmail(input: String): void {
             const email_regex = (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
             if (input == "") {
                 this.register.email.error = "Cannot be empty";
@@ -127,7 +148,13 @@ export default vue.extend({
             }
             this.valideForm();
         },
-        checkPassword(input, type) {
+        /**
+         * It's a function that check if the password is valide or not.
+         * @param {String} input - Text input
+         * @param {String} type - Password or confirmPassword
+         * @data {Object} register
+         */
+        checkPassword(input: String, type: any): void {
             const password_regex = (/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*"'-]).{8,}$/)
             if (type == "password") {
                 if (!input.match(password_regex)) {
@@ -154,7 +181,12 @@ export default vue.extend({
             }
             this.valideForm();
         },
-        async sendRegister() {
+        /**
+         * It's a function that send the register form to the server.
+         * @data {Object} register
+         * @async
+         */
+        async sendRegister(): Promise<any> {
             try {
                 let {data: resp} = await this.$axios.post('/users', {
                     'firstName': this.register.firstName.value,

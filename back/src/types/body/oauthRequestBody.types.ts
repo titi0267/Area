@@ -9,3 +9,9 @@ export interface SpotifyOauthBody {
 export interface GithubOauthBody {
   code: string;
 }
+
+export interface DiscordOauthBody {
+  code: string;
+  permissions: number;
+  guild_id: string;
+}

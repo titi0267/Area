@@ -35,6 +35,7 @@
 
 <script lang="ts">
 import vue from 'vue';
+import { Area, Service } from '../types/index'
 import SelectArea from '../components/SelectArea.vue'
 import SelectService from '../components/SelectService.vue'
 import Overview from '../components/Overview.vue'
@@ -42,37 +43,50 @@ import Overview from '../components/Overview.vue'
 export default vue.extend({
     data() {
         return {
-            services: [],
-            area: {
-                state: 0,
-                actionServiceId: -1,
-                actionId: -1,
-                actionParam: "",
-                reactionServiceId: -1,
-                reactionId: -1,
-                reactionParam: "",
-            }
+            services: [] as Service[], /** An array that will be filled with the about.json from the server. */
+            area: { /** The data that is used in the area creation. */
+                state: 0, /** The status of the area creation. (.../4) */
+                actionServiceId: -1, /** The action service ID of the selected service. */
+                actionId: -1, /** The ID of the selected action. */
+                actionParam: "", /** The parameter linked to the selected action */
+                reactionServiceId: -1, /** The reaction service ID of the selected service. */
+                reactionId: -1, /** The ID of the selected reaction. */
+                reactionParam: "", /** The parameter linked to the selected reaction */
+            } as Area
         }
     },
     mounted() {
-        this.getServices();
+        this.getAbout();
         this.getLocalStorage();
     },
     components: {
-        SelectArea,
-        SelectService,
-        Overview,
+        SelectService, /** Component used for the services selection */
+        SelectArea, /** Component used for the action - reaction selection */
+        Overview, /** Component used for view the current action -reaction creation */
     },
     methods: {
-        getLocalStorage() {
+        /**
+         * It gets the area from the localStorage.
+         * @data {Object} area
+         */
+        getLocalStorage(): void {
             let area = JSON.parse(localStorage.getItem('area'));
             if (area != null)
                 this.area = area;
         },
-        saveAreaLocalStorage() {
+        /**
+         * It saves the area creation in localStorage.
+         * @data {Object} area
+         */
+        saveAreaLocalStorage(): void {
             localStorage.setItem('area', JSON.stringify(this.area))
         },
-        async sendServices() {
+        /**
+         * A function that sends the area creation to the server.
+         * @data {Object} area
+         * @async
+         */
+        async sendServices(): Promise<void> {
             try {
                 await this.$axios.post("/areas", {
                     actionServiceId: this.area.actionServiceId,
@@ -88,9 +102,18 @@ export default vue.extend({
                 this.toast(err.response.data.message, 'is-danger');
             }
         },
-        async getServices() {
-            let { data: services } = await this.$axios.get("/about.json");
-            this.services = services.server.services;
+        /**
+         * A function that gets the about.json from the server.
+         * @data {Array} services
+         * @async
+         */
+        async getAbout(): Promise<void> {
+            try {
+                let { data: services } = await this.$axios.get("/about.json");
+                this.services = services.server.services;
+            } catch (err) {
+                console.log(err);
+            }
         },
     }
 })

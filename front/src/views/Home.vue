@@ -24,37 +24,61 @@
 
 <script lang="ts">
 import vue from 'vue';
+import { Areas, Service } from '../types/index'
 
 export default vue.extend({
     data() {
         return {
-            areas: [],
-            services: [],
+            areas: [] as Areas[], /** An array that will be filled with the actions and reactions of the users */
+            services: [] as Service[], /** An array that will be filled with the about.json from the server. */
         }
     },
     mounted() {
         this.getUserAreas();
-        this.getServices();
-    },
-    components: {
-
+        this.getAbout();
     },
     methods: {
-        getActionObject(area) {
-            let result = this.services.find(service => service.id == area.actionServiceId)
-            return result;
+        /**
+         * It removes the localStorage item called 'area'
+         */
+        removeLocalStorageItem(): void {
+            localStorage.removeItem('area');
         },
-        getReactionObject(area) {
-            let result = this.services.find(service => service.id == area.reactionServiceId)
-            return result;
+        /**
+         * A method that returns a service object.
+         * @param {Object} area - Area creation
+         * @param {String} type - Action or Reaction
+         * @data {Array} services
+         */
+        getService(area, type): Service {
+            let serviceObject = this.services.find(service => service.id == area[type + "ServiceId"])
+            return serviceObject;
         },
-        async getUserAreas() {
-            let { data: resp } = await this.$axios.get('/users/areas')
-            this.areas = resp;
+        /**
+         * A function that gets the actions and reactions of the user from the server.
+         * @data {Array} areas
+         * @async
+         */
+        async getUserAreas(): Promise<void> {
+            try {
+                let { data: resp } = await this.$axios.get('/users/areas')
+                this.areas = resp;
+            } catch (err) {
+                console.log(err);
+            }
         },
-        async getServices() {
-            let { data: services } = await this.$axios.get("/about.json");
-            this.services = services.server.services;
+        /**
+         * A function that gets the about.json from the server.
+         * @data {Array} services
+         * @async
+         */
+        async getAbout(): Promise<void> {
+            try {
+                let { data: services } = await this.$axios.get("/about.json");
+                this.services = services.server.services;
+            } catch (err) {
+                console.log(err);
+            }
         },
     }
 })

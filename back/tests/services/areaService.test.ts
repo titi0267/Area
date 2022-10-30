@@ -9,7 +9,15 @@ describe("Test get all area service", () => {
       await UserService.createUser("Ludo", "Str", "tim@mail.com", "passwd");
       const users = await UserService.getAllUsers();
 
-      await AreaService.createArea(1, 1, "test", 2, 1, "test", users[0].id);
+      await AreaService.createArea(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
       const areas = await AreaService.getAllArea();
 
       expect(areas[0].actionServiceId).toBe(1);
@@ -27,7 +35,15 @@ describe("Test post area service", () => {
       await UserService.createUser("Ludo", "Str", "tim@mail.com", "passwd");
       const users = await UserService.getAllUsers();
 
-      await AreaService.createArea(1, 1, "test", 2, 1, "test", users[0].id);
+      await AreaService.createArea(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
       const areas = await AreaService.getAllArea();
 
       expect(areas[0].actionServiceId).toBe(1);
@@ -60,7 +76,15 @@ describe("Test get area by user id", () => {
       await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
       const users = await UserService.getAllUsers();
 
-      await AreaService.createArea(1, 1, "test", 2, 1, "test", users[0].id);
+      await AreaService.createArea(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
       const areas = await AreaService.getAreasByUserId(users[0].id);
 
       expect(areas[0].actionServiceId).toBe(1);
@@ -88,7 +112,15 @@ describe("Test remove area by id", () => {
       await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
       const users = await UserService.getAllUsers();
 
-      await AreaService.createArea(1, 1, "test", 2, 1, "test", users[0].id);
+      await AreaService.createArea(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
       const beforeAreas = await AreaService.getAllArea();
 
       const removedArea = await AreaService.removeAreaById(beforeAreas[0].id);
@@ -127,7 +159,7 @@ describe("Test update area values", () => {
       const areaBefore = await AreaService.createArea(
         1,
         1,
-        "test",
+        "https://www.youtube.com/c/VilebrequinAuto",
         2,
         1,
         "test",

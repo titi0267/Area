@@ -3,6 +3,7 @@ import * as YoutubeActions from "../area/youtube/youtube.action";
 import * as YoutubeReactions from "../area/youtube/youtube.reaction";
 import * as TwitterReaction from "../area/twitter/twitter.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
+import { FORMAT } from "./paramFormat";
 
 export const SERVICES: Service[] = [
   {
@@ -14,21 +15,24 @@ export const SERVICES: Service[] = [
       {
         id: 1,
         actionName: "NewVideoUploaded",
-        actionParamName: "Channel Name",
+        actionParamName: "Channel link",
         fct: YoutubeActions.checkUploadedVideo,
+        paramFormat: FORMAT.youtubeChannelUrl,
         availableInjectParams: ["name", "channelName"],
       },
       {
         id: 2,
         actionName: "NewLikeOnAVideo",
-        actionParamName: "Video Id",
+        actionParamName: "Video link",
         fct: YoutubeActions.checkVideoLike,
+        paramFormat: FORMAT.youtubeVideoUrl,
         availableInjectParams: ["like", "viewCount"],
       },
       {
         id: 3,
         actionName: "New Liked Video",
         actionParamName: "None",
+        paramFormat: null,
         fct: YoutubeActions.checkNewVideoLiked,
         availableInjectParams: ["channel", "title"],
       },
@@ -38,12 +42,14 @@ export const SERVICES: Service[] = [
         id: 1,
         reactionName: "Like a video",
         reactionParamName: "Video to like",
+        paramFormat: null,
         fct: YoutubeReactions.likeVideo,
       },
       {
         id: 2,
         reactionName: "Dislike a video",
         reactionParamName: "Video to dislike",
+        paramFormat: null,
         fct: YoutubeReactions.dislikeVideo,
       },
     ],
@@ -59,6 +65,7 @@ export const SERVICES: Service[] = [
         id: 1,
         reactionName: "PostTweet",
         reactionParamName: "Text to write before",
+        paramFormat: null,
         fct: TwitterReaction.postNewTweet,
       },
     ],
@@ -74,6 +81,7 @@ export const SERVICES: Service[] = [
         id: 1,
         reactionName: "Send a message to général",
         reactionParamName: "Message to write",
+        paramFormat: null,
         fct: DiscordReaction.sendMessageToServer,
       },
     ],
@@ -88,6 +96,7 @@ export const SERVICES: Service[] = [
         id: 1,
         actionName: "Test spotify",
         actionParamName: "Channel Name",
+        paramFormat: null,
         fct: YoutubeActions.checkUploadedVideo,
         availableInjectParams: ["name", "channelName"],
       },

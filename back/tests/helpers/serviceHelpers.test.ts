@@ -8,7 +8,7 @@ describe("Test reject invalid Area", () => {
   describe("Test working cases", () => {
     test("Reject invalid area body", async () => {
       try {
-        ServiceHelper.rejectInvalidArea(12, 12, 12, 12);
+        ServiceHelper.rejectInvalidArea(12, 12, "", 12, 12, "");
       } catch (e) {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }

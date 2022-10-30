@@ -9,8 +9,10 @@ import { TokenService } from "../services";
 const rejectInvalidArea = (
   actionServiceId: number,
   actionId: number,
+  actionParam: string,
   reactionServiceId: number,
   reactionId: number,
+  reactionParam: string,
 ) => {
   const doesActionServiceExist = SERVICES.find(
     service => service.id === actionServiceId,
@@ -27,6 +29,30 @@ const rejectInvalidArea = (
   const doesReactionExist = doesReactionServiceExist?.reactions.find(
     reaction => reaction.id === reactionId,
   );
+
+  if (
+    doesActionExist?.paramFormat &&
+    !actionParam.match(doesActionExist.paramFormat)
+  ) {
+    throw new ClientError({
+      name: "Invalid Param",
+      message: "Action param does not match the require format",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  if (
+    doesReactionExist?.paramFormat &&
+    !reactionParam.match(doesReactionExist.paramFormat)
+  ) {
+    throw new ClientError({
+      name: "Invalid Param",
+      message: "Reaction param does not match the require format",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
 
   if (
     !doesActionExist ||

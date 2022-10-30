@@ -4,6 +4,7 @@ import * as YoutubeReactions from "../area/youtube/youtube.reaction";
 import * as TwitterReaction from "../area/twitter/twitter.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
 import * as SpotifyAction from "../area/spotify/spotify.actions";
+import * as GithubAction from "../area/github/github.action";
 
 export const SERVICES: Service[] = [
   {
@@ -94,7 +95,7 @@ export const SERVICES: Service[] = [
         actionName: "Skip to next song",
         actionParamName: "Skip song",
         fct: SpotifyAction.checkMusicSkip,
-        availableInjectParams: [],
+        availableInjectParams: ["songName"],
       },
       {
         id: 2,
@@ -102,6 +103,23 @@ export const SERVICES: Service[] = [
         actionParamName: "Liked track",
         fct: SpotifyAction.checkIsMusicLiked,
         availableInjectParams: ["songName", "artists"],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 5,
+    serviceName: "Github",
+    imageUrl: "https://www.iconsdb.com/icons/preview/white/github-9-xxl.png",
+    backgroundColor: "#000000",
+    oauthName: "github",
+    actions: [
+      {
+        id: 1,
+        actionName: "New follower",
+        actionParamName: "",
+        fct: GithubAction.checkNewFollowingUser,
+        availableInjectParams: ["lastFollowingUserName"],
       },
     ],
     reactions: [],

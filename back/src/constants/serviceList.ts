@@ -3,6 +3,7 @@ import * as YoutubeActions from "../area/youtube/youtube.action";
 import * as YoutubeReactions from "../area/youtube/youtube.reaction";
 import * as TwitterReaction from "../area/twitter/twitter.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
+import * as SpotifyAction from "../area/spotify/spotify.actions";
 import * as GithubAction from "../area/github/github.action";
 
 export const SERVICES: Service[] = [
@@ -91,10 +92,17 @@ export const SERVICES: Service[] = [
     actions: [
       {
         id: 1,
-        actionName: "Test spotify",
-        actionParamName: "Channel Name",
-        fct: YoutubeActions.checkUploadedVideo,
-        availableInjectParams: ["name", "channelName"],
+        actionName: "Skip to next song",
+        actionParamName: "Skip song",
+        fct: SpotifyAction.checkMusicSkip,
+        availableInjectParams: ["songName"],
+      },
+      {
+        id: 2,
+        actionName: "Get liked track",
+        actionParamName: "Liked track",
+        fct: SpotifyAction.checkIsMusicLiked,
+        availableInjectParams: ["songName", "artists"],
       },
     ],
     reactions: [],
@@ -104,6 +112,7 @@ export const SERVICES: Service[] = [
     serviceName: "Github",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/github-9-xxl.png",
     backgroundColor: "#000000",
+    oauthName: "github",
     actions: [
       {
         id: 1,

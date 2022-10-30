@@ -104,6 +104,10 @@ export default (
           "playlist-read-private",
           "user-read-currently-playing",
           "user-read-playback-state",
+          "user-library-modify",
+          "playlist-modify-private",
+          "playlist-modify-public",
+          "user-library-read",
         ].join(" "),
       };
 
@@ -203,6 +207,9 @@ export default (
       });
 
       const tokens = (await spotifyApi.authorizationCodeGrant(code)).body;
+
+      spotifyApi.setAccessToken(tokens.access_token);
+      spotifyApi.setRefreshToken(tokens.refresh_token);
 
       const tokenTable = await TokenService.setSpotifyToken(
         userInfos.id,

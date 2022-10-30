@@ -71,7 +71,7 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
             }
         }
         view.findViewById<Button>(R.id.areaCreationButton).setOnClickListener {
-            (context as AreaActivity).changeFragment(AreaCreationFragment(), "creation")
+            (context as AreaActivity).changeFragment(AreaCreationActionServiceFragment(), "action_service_creation")
         }
         view.findViewById<Button>(R.id.backFromAreaListButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()

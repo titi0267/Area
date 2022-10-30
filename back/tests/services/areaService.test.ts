@@ -55,14 +55,38 @@ describe("Test post area service", () => {
   describe("Test invalid user id", () => {
     test("Create one invalid area", async () => {
       try {
-        await AreaService.createArea(1, 1, "test", 45, 1, "test", 1);
+        await AreaService.createArea(
+          1,
+          1,
+          "https://www.youtube.com/c/VilebrequinAuto",
+          45,
+          1,
+          "test",
+          1,
+        );
       } catch (e) {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }
     });
     test("Create one area with invalid user id", async () => {
       try {
-        await AreaService.createArea(1, 1, "test", 2, 1, "test", -1);
+        await AreaService.createArea(
+          1,
+          1,
+          "https://www.youtube.com/c/VilebrequinAuto",
+          2,
+          1,
+          "test",
+          -1,
+        );
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
+
+    test("Create one area with action param", async () => {
+      try {
+        await AreaService.createArea(1, 1, "lol", 2, 1, "test", -1);
       } catch (e) {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }

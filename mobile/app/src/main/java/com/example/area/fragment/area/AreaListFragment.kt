@@ -1,15 +1,10 @@
 package com.example.area.fragment.area
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.StrictMode
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,7 +20,6 @@ import com.example.area.model.about.About
 import com.example.area.repository.Repository
 import com.example.area.utils.AboutJsonCreator
 import com.example.area.utils.SessionManager
-import java.net.URL
 
 class AreaListFragment : Fragment(R.layout.fragment_area_list) {
 
@@ -45,11 +39,10 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
         val viewModelFactory = MainViewModelFactory(rep)
         val about = AboutJsonCreator()
 
-
         recycler.adapter = ItemAdapter(
             context as AreaActivity,
             myDataSet.loadAreaInfo()
-        ) { position -> onItemClick(position) }
+        ) { position -> onItemClick(position, null) }
         recycler.setHasFixedSize(true)
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         viewModel.getUserAreaList(sessionManager.fetchAuthToken("user_token")!!)
@@ -61,8 +54,6 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
                         val jsonArray: List<ActionReaction> = response.body()!!
                         myDataSet.clear()
                         for (item in jsonArray) {
-                            Log.d("Dumb ids", "actionServiceId: ${item.actionServiceId}, reactionServiceId: ${item.reactionServiceId}, actionId: ${item.actionId}, reactionId: ${item.reactionId}")
-                            Log.d("WTF", abt!!.server.services[1].name)
                             myDataSet.addArea(
                                 abt!!.server.services[item.actionServiceId-1].imageUrl,
                                 abt!!.server.services[item.reactionServiceId-1].imageUrl,
@@ -73,7 +64,7 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
                         recycler.adapter = ItemAdapter(
                             context as AreaActivity,
                             myDataSet.loadAreaInfo()
-                        ) { position -> onItemClick(position) }
+                        ) { position -> onItemClick(position, jsonArray[position]) }
                         recycler.setHasFixedSize(true)
                     }
                 })
@@ -106,7 +97,7 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
                             recycler.adapter = ItemAdapter(
                                 context as AreaActivity,
                                 myDataSet.loadAreaInfo()
-                            ) { position -> onItemClick(position) }
+                            ) { position -> onItemClick(position, jsonArray[position])}
                             recycler.setHasFixedSize(true)
                         }
                     })
@@ -116,7 +107,7 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
         return view
     }
 
-    private fun onItemClick(position: Int) {
-        //startActivity(Intent(applicationContext, AreaListItemActivity::class.java))
+    private fun onItemClick(position: Int, item: ActionReaction?) {
+        (context as AreaActivity).changeFragment(AreaListItemFragment(item!!), "area_list_item")
     }
 }

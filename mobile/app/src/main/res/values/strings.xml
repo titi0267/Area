@@ -35,4 +35,7 @@
     <string name="area_list_fetch_button">Refresh</string>
     <string name="action_parameter">Action Parameter</string>
     <string name="reaction_parameter">Reaction Parameter</string>
+    <string name="profile_user_first_name">First name:</string>
+    <string name="profile_user_last_name">Last name:</string>
+    <string name="profile_user_email">Email:</string>
 </resources>

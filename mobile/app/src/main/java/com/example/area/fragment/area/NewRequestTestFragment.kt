@@ -2,6 +2,7 @@ package com.example.area.fragment.area
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,10 +34,27 @@ class NewRequestTestFragment : Fragment(R.layout.fragment_new_request_test) {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
 
         view.findViewById<Button>(R.id.request_test_button).setOnClickListener {
-            getOAuthLinkRequest("github")
-            postServiceCode("github", OAuthCode("7021164c15c7f963e44c"))
+            getUserInfo()
         }
         return view
+    }
+
+    private fun getUserInfo()
+    {
+        val sessionManager = SessionManager(context as AreaActivity)
+        val url = sessionManager.fetchAuthToken("url") ?: return
+        val userToken = sessionManager.fetchAuthToken("user_token") ?: return
+        val rep = Repository(url)
+        val viewModelFactory = MainViewModelFactory(rep)
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        viewModel.getUserInfo(userToken)
+        viewModel.userInfoResponse.observe(viewLifecycleOwner, Observer { response ->
+            if (response.isSuccessful) {
+                Toast.makeText(context as AreaActivity, response.body()!!.toString(), Toast.LENGTH_SHORT).show()
+                Log.d("UserInfo", response.body()!!.toString())
+            }
+        })
     }
 
     private fun getOAuthLinkRequest(service: String)

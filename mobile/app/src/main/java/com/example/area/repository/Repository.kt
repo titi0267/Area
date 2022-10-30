@@ -15,6 +15,9 @@ class Repository(private val URL_INPUT : String) {
     suspend fun login(loginFields: LoginFields) : Response<Token> {
         return RetrofitInstance(URL_INPUT).api.login(loginFields)
     }
+    suspend fun getUserInfo(auth: String): Response<UserInfo> {
+        return RetrofitInstance(URL_INPUT).api.getUserInfo(auth)
+    }
     suspend fun getUserAreaList(auth: String): Response<List<ActionReaction>> {
         return RetrofitInstance(URL_INPUT).api.getUserAreaList(auth)
     }

@@ -7,7 +7,7 @@ import fastifyCors from "@fastify/cors";
 import ENV from "./env";
 import { UserInfos } from "./types/global.types";
 import areaLoop from "./area/loop.area";
-import { checkIsMusicLiked } from "./area/spotify/spotify.actions";
+import { newMailFrom } from "./area/gmail/gmail.action";
 
 const prisma = new PrismaClient();
 const server = fastify();
@@ -41,8 +41,19 @@ const main = async () => {
 };
 
 setInterval(async () => {
-  await areaLoop();
-}, 0.5 * 60 * 1000);
+  newMailFrom({
+    id: 1,
+    actionId: 1,
+    actionServiceId: 1,
+    actionParam: "jsutter@sac-indus.fr",
+    reactionId: 1,
+    reactionParam: "",
+    reactionServiceId: 1,
+    userId: 79,
+    lastActionFetch: new Date(),
+    lastActionValue: null,
+  });
+}, 0.1 * 60 * 1000);
 
 main()
   .catch(e => {

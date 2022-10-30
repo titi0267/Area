@@ -63,7 +63,7 @@ export default vue.extend({
     async getOauthUrl() {
       try {
         let serviceIndex = -1;
-        var servicesLength = Object.keys(this.services).length;
+        var servicesLength = await Object.keys(this.services).length;
         for (let i = 0; i < servicesLength; i++) {
           if (this.services[i].id == this.area[this.type + "ServiceId"])
             serviceIndex = i;
@@ -77,7 +77,6 @@ export default vue.extend({
             "/link/front"
         );
         this.oauthURL = url;
-        console.log(this.oauthURL);
       } catch (e) {
         console.log(e);
       }

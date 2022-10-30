@@ -52,25 +52,7 @@ export default vue.extend({
         reactionId: -1,
         reactionParam: "",
       },
-      services: [] as {
-        id: 1;
-        serviceName: "";
-        imageUrl: "";
-        backgroundColor: "";
-        oauthName: "";
-        actions: {
-          id: 1;
-          name: "";
-          actionParamName: "";
-          fct: "";
-        }[];
-        reactions: {
-          id: 1;
-          name: "";
-          reactionParamName: "";
-          fct: "";
-        }[];
-      }[],
+      services: [],
     };
   },
   mounted() {

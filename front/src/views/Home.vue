@@ -4,19 +4,19 @@
             <p>You currently have no action - reaction</p>
         </div>
         <div v-else class="area-list" v-for="area in areas" :key="area.actionServiceId.toString() + area.actionParam + area.reactionId.toString() + area.actionId.toString()"
-            :style="{ 'background' : `linear-gradient(to right, ${getActionObject(area) ? getActionObject(area).backgroundColor : ''}, ${getReactionObject(area) ? getReactionObject(area).backgroundColor : ''})` }">
-            <div class="action" v-if="getActionObject(area)">
-                <b-image :src="getActionObject(area).imageUrl"></b-image>
-                <p> {{ getActionObject(area).name }} </p>
-                <p> {{ getActionObject(area).actions.find(action => action.id == area.actionId).name }} </p>
+            :style="{ 'background' : `linear-gradient(to right, ${getService(area, 'action') ? getService(area, 'action').backgroundColor : ''}, ${getService(area, 'reaction') ? getService(area, 'reaction').backgroundColor : ''})` }">
+            <div class="action" v-if="getService(area, 'action')">
+                <b-image :src="getService(area, 'action').imageUrl"></b-image>
+                <p> {{ getService(area, 'action').name }} </p>
+                <p> {{ getService(area, 'action').actions.find(action => action.id == area.actionId).name }} </p>
             </div>
             <div class="edit">
                 <p>Edit</p>
             </div>
-            <div class="reaction" v-if="getReactionObject(area)">
-                <p> {{ getReactionObject(area).reactions.find(reaction => reaction.id == area.reactionId).name }} </p>
-                <p> {{ getReactionObject(area).name }} </p>
-                <b-image :src="getReactionObject(area).imageUrl"></b-image>
+            <div class="reaction" v-if="getService(area, 'reaction')">
+                <p> {{ getService(area, 'reaction').reactions.find(reaction => reaction.id == area.reactionId).name }} </p>
+                <p> {{ getService(area, 'reaction').name }} </p>
+                <b-image :src="getService(area, 'reaction').imageUrl"></b-image>
             </div>
         </div>
     </div>

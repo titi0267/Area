@@ -9,7 +9,7 @@
             :style="{ 'background-color': service.backgroundColor }"
             :class="{ selected: service.id == area[type + 'ServiceId'] }"
             v-if="service[type + 's'].length != 0 && service.name.toLowerCase().includes(filterInput.toLowerCase())"
-            @click="$emit(type + 'ServiceId', service.id), $emit('save'), getOauthUrl()">
+            @click="$emit(type + 'ServiceId', service.id), $emit('save'), getOAuthUrl()">
                 <b-image :src="service.imageUrl"></b-image>
                 <p> {{ service.name }} </p>
           </div>
@@ -18,10 +18,10 @@
     </div>
     <div class="buttons">
         <b-button @click="$emit('previous'), $emit('save'), $router.push(area.state == -1 ? '/home' : '/create/action')">
-            Previous
+          Previous
         </b-button>
-        <b-button @click="$emit('next'), $emit('save')" :disabled="oauthURL == ''">
-            <a :href="oauthURL">Next</a>
+        <b-button @click="$emit('next'), $emit('save'), $emit('loading'), redirectOAuth()" :disabled="oauthURL == ''">
+          Next
         </b-button>
     </div>
   </div>
@@ -34,51 +34,39 @@ import _ from "lodash";
 export default vue.extend({
   data() {
     return {
-      filterInput: "", /** It's a filter input used for search a service */
-      oauthURL: "", /** This variable contains the oAuth URL of the right service */
+      filterInput: "",
+      oauthURL: "",
     };
   },
   props: {
-    type: String, /** Type between 'action' or 'reaction' */
-    services: Array, /** Array that contains the About.JSON file */
-    area: Object, /** Object that contains the area creation fields */
+    type: String,
+    services: Array,
+    area: Object,
+  },
+  watch: {
+    services: function () {
+        this.$nextTick(() => this.getOAuthUrl());
+    },
   },
   methods: {
-    /**
-     * It's a function that waits for 400ms before executing the the input function.
-     * @param {String} input - Text input
-     * @data {String} filterInput
-     */
     debounceInput: _.debounce(function (input) {
       this.filterInput = input;
     }, 400),
-    /**
-     * An async function that gets the oauth url for the service selected.
-     * @data {Object} area
-     * @data {Array} services
-     * @data {String} type
-     * @async
-     */
     async getOAuthUrl(): Promise<any> {
       try {
-        let serviceIndex = -1;
-        var servicesLength = await Object.keys(this.services).length;
-        for (let i = 0; i < servicesLength; i++) {
-          if (this.services[i].id == this.area[this.type + "ServiceId"])
-            serviceIndex = i;
-        }
-        if (serviceIndex == -1) return;
-        let serviceName = this.services[serviceIndex].name;
-        console.log(serviceName);
+        let serviceName = this.services.find(service => service.id == this.area[this.type + "ServiceId"]).name;
         const { data: url } = await this.$axios.get(
           "/oauth/" + (serviceName == "Youtube" ? "google" : serviceName.toLowerCase()) +
             "/link/front"
         );
         this.oauthURL = url;
-      } catch {
+      } catch (err) {
         this.oauthURL = '';
       }
     },
+    redirectOAuth(): void {
+      window.location.href = this.oauthURL;
+    }
   },
 });
 </script>
@@ -133,7 +121,6 @@ export default vue.extend({
             justify-content: space-between;
             cursor: pointer;
             padding: 5px;
-            filter: brightness(0.5)
             p {
                 font-size: 20px;
                 font-family: Hitmo Regular;
@@ -141,7 +128,6 @@ export default vue.extend({
             }
             &.selected:not(p) {
                 outline: 2px solid black;
-                filter: brightness(1)
             }
         }
     }

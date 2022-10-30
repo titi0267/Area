@@ -9,6 +9,7 @@
             @next="area.state++"
             @save="saveAreaLocalStorage"
             @previous="area.state--"
+            @loading="loading = true"
             :type="$route.path.split('/')[2]"
         />
         <SelectArea
@@ -22,6 +23,7 @@
             @next="area.state++"
             @previous="area.state--"
             @save="saveAreaLocalStorage"
+            @loading="loading = false"
             :type="$route.path.split('/')[2]"
         />
         <Overview
@@ -30,6 +32,7 @@
             @previous="area.state--"
             :area="area"
         />
+        <b-loading :is-full-page="true" v-model="loading"/>
     </div>
 </template>
 
@@ -52,7 +55,8 @@ export default vue.extend({
                 reactionServiceId: -1, /** The reaction service ID of the selected service. */
                 reactionId: -1, /** The ID of the selected reaction. */
                 reactionParam: "", /** The parameter linked to the selected reaction */
-            } as Area
+            } as Area,
+            loading: false, /** When the page is loading this variable is set to true */
         }
     },
     mounted() {

@@ -36,6 +36,11 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
+            path: '/create',
+            redirect: '/create/action',
+            meta: { requiresAuth: true }
+        },
+        {
             path: '/create/action',
             name: 'create-action',
             component: Area,

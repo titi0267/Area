@@ -3,7 +3,7 @@
         <b-image class="logo" :src="require('@/assets/area_logo.png')"/>
         <div class="links">
             <a @click="$router.push('/home')">Home</a>
-            <a @click="$router.push('/create/action'), removeLocalStorageItem()">Create</a>
+            <a @click="$router.push('/create'), removeLocalStorageItem()">Create</a>
         </div>
         <div class="profile">
             <b-dropdown

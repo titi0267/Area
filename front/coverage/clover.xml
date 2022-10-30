@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1667147411508" clover="3.2.0">
+  <project timestamp="1667147411508" name="All files">
+    <metrics statements="34" coveredstatements="30" conditionals="8" coveredconditionals="7" methods="4" coveredmethods="3" elements="46" coveredelements="40" complexity="0" loc="34" ncloc="34" packages="4" files="6" classes="6"/>
+    <package name="public.assets">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="buefy.scss" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/public/assets/buefy.scss">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src">
+      <metrics statements="4" coveredstatements="4" conditionals="3" coveredconditionals="3" methods="0" coveredmethods="0"/>
+      <file name="axiosInstance.ts" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/axiosInstance.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="3" coveredconditionals="3" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+      </file>
+      <file name="shims-tsx.d.ts" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/shims-tsx.d.ts">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+      <file name="shims-vue.d.ts" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/shims-vue.d.ts">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+    </package>
+    <package name="src.router">
+      <metrics statements="23" coveredstatements="20" conditionals="5" coveredconditionals="4" methods="2" coveredmethods="2"/>
+      <file name="index.ts" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/router/index.ts">
+        <metrics statements="23" coveredstatements="20" conditionals="5" coveredconditionals="4" methods="2" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="68" count="2" type="stmt"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="70" count="2" type="cond" truecount="0" falsecount="1"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="72" count="3" type="cond" truecount="3" falsecount="0"/>
+        <line num="73" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="74" count="1" type="stmt"/>
+        <line num="75" count="1" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="87" count="1" type="stmt"/>
+        <line num="90" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.store">
+      <metrics statements="6" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+      <file name="index.ts" path="/home/timothe/git_epi/tek3/area/B-DEV-500-STG-5-1-area-mathieu.brujan/front/src/store/index.ts">
+        <metrics statements="6" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

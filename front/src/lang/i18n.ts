@@ -7,10 +7,10 @@ const fr = require('./fr.json');
 vue.use(VueI18n);
 
 export default new VueI18n({
-    locale: "en",
-    fallbackLocale: ['en'],
+    locale: "en-US",
+    fallbackLocale: ['en-US'],
     messages: {
-        en: en,
-        fr: fr,
+        "en-US": en,
+        "fr-FR": fr,
     }
 });

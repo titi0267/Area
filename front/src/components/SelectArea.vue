@@ -36,59 +36,65 @@
 import vue from "vue";
 
 export default vue.extend({
-  data() {
-    return {};
-  },
-  mounted() {},
-  props: {
-    type: String,
-    services: Array,
-    area: Object,
-  },
-  watch: {
-    services: function () {
-      this.$nextTick(() => {
-        this.postOauthCode();
-      });
-    },
-  },
-  components: {},
-  methods: {
-    getParamName() {
-      if (this.area[this.type + "Id"] == -1 || this.services[0] == null) return;
-      let service = this.services.find(
-        (service) => service.id == this.area[this.type + "ServiceId"]
-      );
-      let paramName = service[this.type + "s"].find(
-        (actrea) => actrea.id == this.area[this.type + "Id"]
-      )[this.type + "ParamName"];
-      return paramName;
-    },
-    async postOauthCode() {
-      try {
-        const code = this.$route.query.code;
+    data() {
+        return {
 
-        if (code == null || code == undefined) return;
-        let serviceIndex = -1;
-        var servicesLength = await Object.keys(this.services).length;
-        for (let i = 0; i < servicesLength; i++) {
-          if (this.services[i].id == this.area[this.type + "ServiceId"])
-            serviceIndex = i;
-        }
-        if (serviceIndex == -1) return;
-        let serviceName = this.services[serviceIndex].name;
-        await this.$axios.post(
-          "/oauth/" +
-            (serviceName === "Youtube" ? "google" : serviceName.toLowerCase()),
-          {
-            code: code,
-          }
-        );
-      } catch (e) {
-        console.log(e);
-      }
+        };
     },
-  },
+    props: {
+        type: String, /** Type between 'action' or 'reaction' */
+        services: Array, /** Array that contains the About.JSON file */
+        area: Object, /** Object that contains the area creation fields */
+    },
+    watch: {
+        /**
+         * This services watcher call the function when the services Array is not empty.
+         */
+        services: function () {
+            this.$nextTick(() => this.postOAuthCode());
+        },
+    },
+    methods: {
+        /**
+         * It's a function that returns the name of the parameter of the action or reaction.
+         * @data {Object} area
+         * @data {Array} services
+         * @data {String} type
+         * @return {String} - Return the actual selected service name.
+         */
+        getParamName(): String {
+            if (this.area[this.type + "Id"] == -1 || this.services[0] == null) return;
+            let service: Object = this.services.find((service) => service.id == this.area[this.type + "ServiceId"]);
+            let paramName: String = service[this.type + "s"].find((actrea) => actrea.id == this.area[this.type + "Id"])[this.type + "ParamName"];
+            return paramName;
+        },
+        /**
+         * It's a function that post the oauth code to the server.
+         * @data {Object} area
+         * @data {Array} services
+         * @data {String} type
+         * @async
+         */
+        async postOAuthCode(): Promise<any> {
+            const code: String = this.$route.query.code;
+            if (code == null || code == undefined) return;
+            let serviceIndex = -1;
+            var servicesLength = await Object.keys(this.services).length;
+            for (let i = 0; i < servicesLength; i++) {
+                if (this.services[i].id == this.area[this.type + "ServiceId"])
+                    serviceIndex = i;
+                }
+            if (serviceIndex == -1) return;
+            let serviceName = this.services[serviceIndex].name;
+            await this.$axios.post(
+                "/oauth/" +
+                    (serviceName === "Youtube" ? "google" : serviceName.toLowerCase()),
+                {
+                    code: code,
+                }
+            );
+        },
+    }
 });
 </script>
 

@@ -1,6 +1,7 @@
 package com.example.area.fragment.area
 
 import android.content.Intent
+import android.hardware.Camera.Area
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,8 +33,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
         val sessionManager = SessionManager(context as AreaActivity)
+        val ipPortUrl = (sessionManager.fetchAuthToken("url") ?: return null).dropLast(1).drop(7)
 
         getAndDisplayUserInfo(view)
+        view.findViewById<MaterialTextView>(R.id.profile_current_ip_text_value).text = ipPortUrl
         view.findViewById<Button>(R.id.backButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
@@ -46,6 +49,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     MainActivity::class.java
                 )
             )
+        }
+        view.findViewById<Button>(R.id.profile_change_ip_port_button).setOnClickListener {
+            (context as AreaActivity).changeFragment(ChangeIpPortFragment(), "change_ip_port")
         }
         return view
     }

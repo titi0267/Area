@@ -38,4 +38,7 @@
     <string name="profile_user_first_name">First name:</string>
     <string name="profile_user_last_name">Last name:</string>
     <string name="profile_user_email">Email:</string>
+    <string name="profile_current_ip">Current IP/Port:</string>
+    <string name="profile_change_ip_port_button">Change IP/Port</string>
+    <string name="profile_edit_ip_port_confirmation">Edit</string>
 </resources>

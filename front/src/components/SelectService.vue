@@ -15,7 +15,7 @@
             @click="
               $emit(type + 'ServiceId', service.id),
                 $emit('save'),
-                getOauthUrl()
+                getOAuthUrl()
             "
           >
             {{ service.name }}
@@ -44,23 +44,32 @@ import _ from "lodash";
 export default vue.extend({
   data() {
     return {
-      filterInput: "",
-      oauthURL: "",
+      filterInput: "", /** It's a filter input used for search a service */
+      oauthURL: "", /** This variable contains the oAuth URL of the right service */
     };
   },
   props: {
-    type: String,
-    services: Array,
-    area: Object,
+    type: String, /** Type between 'action' or 'reaction' */
+    services: Array, /** Array that contains the About.JSON file */
+    area: Object, /** Object that contains the area creation fields */
   },
-  components: {},
-  watch: {},
-  computed: {},
   methods: {
+    /**
+     * It's a function that waits for 400ms before executing the the input function.
+     * @param {String} input - Text input
+     * @data {String} filterInput
+     */
     debounceInput: _.debounce(function (input) {
       this.filterInput = input;
     }, 400),
-    async getOauthUrl() {
+    /**
+     * An async function that gets the oauth url for the service selected.
+     * @data {Object} area
+     * @data {Array} services
+     * @data {String} type
+     * @async
+     */
+    async getOAuthUrl(): Promise<any> {
       try {
         let serviceIndex = -1;
         var servicesLength = await Object.keys(this.services).length;

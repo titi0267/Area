@@ -7,6 +7,7 @@ import fastifyCors from "@fastify/cors";
 import ENV from "./env";
 import { UserInfos } from "./types/global.types";
 import areaLoop from "./area/loop.area";
+import { checkIsMusicLiked } from "./area/spotify/spotify.actions";
 
 const prisma = new PrismaClient();
 const server = fastify();

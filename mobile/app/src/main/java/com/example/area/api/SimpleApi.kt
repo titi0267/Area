@@ -16,6 +16,9 @@ interface SimpleApi {
     @POST("users/login")
     suspend fun login(@Body post: LoginFields): Response<Token>
 
+    @GET("users/me")
+    suspend fun getUserInfo(@Header("Authorization") auth: String) : Response<UserInfo>
+
     @GET("users/areas")
     suspend fun getUserAreaList(@Header("Authorization") auth: String): Response<List<ActionReaction>>
 
@@ -30,4 +33,5 @@ interface SimpleApi {
 
     @POST("/oauth/{service}")
     suspend fun postServiceCode(@Header("Authorization") auth: String, @Path("service") service: String, @Body post: OAuthCode) : Response<Unit>
+
 }

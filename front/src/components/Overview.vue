@@ -14,15 +14,9 @@ export default vue.extend({
         return {
         }
     },
-    mounted() {
-    },
     props: {
         area: Object,
     },
-    components: {
-    },
-    methods: {
-    }
 })
 </script>
 

@@ -15,6 +15,9 @@
     "sourceMap": true,
     "baseUrl": ".",
     "resolveJsonModule": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
     "types": ["webpack-env", "node"],
     "paths": {
       "@/*": ["src/*"]

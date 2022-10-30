@@ -15,11 +15,18 @@
     "sourceMap": true,
     "baseUrl": ".",
     "resolveJsonModule": true,
+<<<<<<< HEAD
     "types": [
       "webpack-env",
       "node",
       "jest"
     ],
+=======
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "types": ["webpack-env", "node"],
+>>>>>>> b367a84a093ff29d397df5f941c027dbd63e5a5a
     "paths": {
       "@/*": [
         "src/*"

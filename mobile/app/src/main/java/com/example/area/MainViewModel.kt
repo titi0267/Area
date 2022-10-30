@@ -16,6 +16,9 @@ import retrofit2.Response
 
 class MainViewModel(private val repository: Repository):ViewModel() {
 
+    val emptyResponse: MutableLiveData<Response<Unit>> = MutableLiveData()
+    val userInfoResponse: MutableLiveData<Response<UserInfo>> = MutableLiveData()
+    val linkResponse: MutableLiveData<Response<String>> = MutableLiveData()
     val userResponse: MutableLiveData<Response<Token>> = MutableLiveData()
     val aboutResponse: MutableLiveData<Response<About>> = MutableLiveData()
     val userResponse2: MutableLiveData<Response<List<ActionReaction>>> = MutableLiveData()
@@ -31,6 +34,12 @@ class MainViewModel(private val repository: Repository):ViewModel() {
         viewModelScope.launch {
             val response = repository.login(loginFields)
             userResponse.value = response
+        }
+    }
+    fun getUserInfo(auth: String) {
+        viewModelScope.launch {
+            val response = repository.getUserInfo(auth)
+            userInfoResponse.value = response
         }
     }
     fun getUserAreaList(auth: String) {
@@ -49,7 +58,18 @@ class MainViewModel(private val repository: Repository):ViewModel() {
         viewModelScope.launch {
             val response = repository.getAboutJson()
             aboutResponse.value = response
-            joinAll()
+        }
+    }
+    fun getServiceLink(service: String) {
+        viewModelScope.launch {
+            val response = repository.getServiceLink(service)
+            linkResponse.value = response
+        }
+    }
+    fun postServiceCode(auth: String, service: String, code: OAuthCode) {
+        viewModelScope.launch {
+            val response = repository.postServiceCode(auth, service, code)
+            emptyResponse.value = response
         }
     }
 }

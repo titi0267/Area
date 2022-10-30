@@ -2,6 +2,7 @@
     <string name="app_name">AREA</string>
     <string name="description_profile_button">This is the profile button that redirects you to the profile page.</string>
     <string name="back_button">Back</string>
+    <string name="next_button">Next</string>
 
     <string name="register_request">Register</string>
     <string name="login_request">Login</string>
@@ -11,6 +12,10 @@
     <string name="register_password_hint">Password</string>
     <string name="register_ip_field_hint">IP</string>
     <string name="register_port_field_hint">Port</string>
+    <string name="register_email_helper_text">E.g.: maxwell.frantz@epitech.eu</string>
+    <string name="register_port_helper_text">0–65535</string>
+    <string name="register_ip_helper_text">E.g.: 127.0.0.1</string>
+    <string name="register_password_helper_text">8 characters minimum</string>
 
     <string name="profile_logout_button">Logout</string>
     <string name="area_list_button">Area List</string>
@@ -20,6 +25,7 @@
     <string name="reaction_service_title">Then ...</string>
     <string name="left_logo_desc">Left logo of a listView item</string>
     <string name="right_logo_desc">Right logo of a listView item</string>
+    <string name="service_item_logo_desc">Logo of a listView item</string>
     <!-- Test start -->
     <string name="test1">Hello</string>
     <string name="test2">World</string>
@@ -27,4 +33,9 @@
     <string name="not_logged_in_login_button_text">Log in</string>
     <string name="not_logged_in_register_button_text">Register</string>
     <string name="area_list_fetch_button">Refresh</string>
+    <string name="action_parameter">Action Parameter</string>
+    <string name="reaction_parameter">Reaction Parameter</string>
+    <string name="profile_current_ip">Current IP/Port:</string>
+    <string name="profile_change_ip_port_button">Change IP/Port</string>
+    <string name="profile_edit_ip_port_confirmation">Edit</string>
 </resources>

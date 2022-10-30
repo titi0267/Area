@@ -23,8 +23,13 @@ export default vue.extend({
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
+    height: 100vh;
 }
 
+@font-face {
+    font-family: "Hitmo Regular";
+    src: url("@/assets/fonts/HITMO-REGULAR.ttf");
+}
 @font-face {
     font-family: "Bebas Regular";
     src: url("@/assets/fonts/BEBASNEUE-REGULAR.ttf");

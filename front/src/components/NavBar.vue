@@ -103,7 +103,9 @@ $navbar-height: 75px;
     height: $navbar-height;
     width: 100%;
     border-bottom: 1px solid rgb(202, 202, 202);
-    position: static;
+    position: fixed;
+    background-color: white;
+    z-index: 10;
     .logo {
         position: relative;
         :deep(img) {

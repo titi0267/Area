@@ -30,7 +30,6 @@
             @previous="area.state--"
             :area="area"
         />
-        <p> {{ area }} </p>
     </div>
 </template>
 
@@ -102,5 +101,7 @@ export default vue.extend({
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-top: 95px;
+    height: 100%;
 }
 </style>

@@ -23,4 +23,7 @@ export default vue.extend({
 </script>
 
 <style lang="scss" scoped>
+#Services {
+    padding-top: 95px;
+}
 </style>

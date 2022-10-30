@@ -10,6 +10,11 @@ export interface Service {
   reactions: Reaction[];
 }
 
+export interface DiscordInfos {
+  guildId: string;
+  discordToken: string;
+}
+
 interface Action {
   id: number;
   actionName: string;

@@ -21,6 +21,9 @@ const ENV = {
   githubRedirectUrlMobile: process.env.GITHUB_REDIRECT_URL_MOBILE as string,
   host: (process.env.HOST as string) || "0.0.0.0",
   discordBotToken: process.env.DISCORD_BOT_TOKEN as string,
+  discordClientId: process.env.DISCORD_CLIENT_ID as string,
+  discordClientSecret: process.env.DISCORD_CLIENT_SECRET as string,
+  discordRedirectUrl: process.env.DISCORD_REDIRECT_URL as string,
 };
 
 export default ENV;

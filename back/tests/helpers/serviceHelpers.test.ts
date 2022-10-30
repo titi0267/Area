@@ -166,3 +166,28 @@ describe("Test getGoogleOauthClient", () => {
     });
   });
 });
+
+describe("Test getGithubClient", () => {
+  describe("Test valid cases", () => {
+    test("Test to get a valid oauth client", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      await TokenService.setGithubToken(users[0].id, "test");
+
+      const oauthClient = await ServiceHelper.getGithubClient(users[0].id);
+
+      expect(oauthClient).not.toBeNull();
+
+      await UserService.removeUserById(users[0].id);
+    });
+
+    describe("Test Error cases", () => {
+      test("Test to get a valid oauth client with invalid user", async () => {
+        const oauthClient = await ServiceHelper.getGithubClient(12);
+
+        expect(oauthClient).toBeNull();
+      });
+    });
+  });
+});

@@ -21,11 +21,12 @@
 
 <script lang="ts">
 import vue from 'vue';
+import { Login } from '../types/index'
 
 export default vue.extend({
     data() {
         return {
-            login: {
+            login: { /** It's a variable that contains the login form. */
                 email: {
                     value: "",
                     error: "",
@@ -36,13 +37,18 @@ export default vue.extend({
                     error: "",
                     valide: false
                 }
-            },
-            validate: false,
-            timeout: false,
+            } as Login,
+            validate: false, /** If this variable is true all the fields form are valides. */
+            timeout: false, /** This variable is used to block the time of the button animation */
         }
     },
     methods: {
-        valideForm() {
+        /**
+         * It's a function that check if the entire form is valide or not.
+         * @data {Object} login
+         * @data {Boolean} validate
+         */
+        valideForm(): void {
             if (this.login.email.valide == true &&
             this.login.password.valide == true) {
                 this.$refs.loginButton.style.left = "50px";
@@ -50,7 +56,11 @@ export default vue.extend({
             } else
                 this.validate = false;
         },
-        moveButton() {
+        /**
+         * It's a function that move the button to the left or to the right when the form is not valid.
+         * @data {Boolean} timeout
+         */
+        moveButton(): void {
             let button = this.$refs.loginButton as HTMLElement;
             button.style.transitionProperty = "left";
             button.style.transitionDuration = "0.3s";
@@ -64,7 +74,12 @@ export default vue.extend({
                 this.timeout = false;
             }, 290)
         },
-        checkEmail(input) {
+        /**
+         * It's a function that check if the email is valide or not.
+         * @param {String} input - Text input
+         * @data {Object} login
+         */
+        checkEmail(input: String): void {
             const email_regex = (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
             if (input == "") {
                 this.login.email.error = "Cannot be empty";
@@ -78,7 +93,11 @@ export default vue.extend({
             }
             this.valideForm();
         },
-        checkPassword() {
+        /**
+         * It's a function that check if the password is empty or not.
+         * @data {Object} login
+         */
+        checkPassword(): void {
             if (this.login.password.value == "") {
                 this.login.password.error = "Password cannot be empty"
                 this.login.password.valide = false;
@@ -88,7 +107,12 @@ export default vue.extend({
             }
             this.valideForm();
         },
-        async sendLogin() {
+        /**
+         * It's a function that send the login form to the server.
+         * @data {Object} login
+         * @async
+         */
+        async sendLogin(): Promise<any> {
             try {
                 let {data: resp} = await this.$axios.post('/users/login', {
                     'email': this.login.email.value,

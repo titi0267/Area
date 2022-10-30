@@ -7,6 +7,7 @@ import fastifyCors from "@fastify/cors";
 import ENV from "./env";
 import { UserInfos } from "./types/global.types";
 import areaLoop from "./area/loop.area";
+import { checkIsMusicLiked } from "./area/spotify/spotify.actions";
 
 const prisma = new PrismaClient();
 const server = fastify();
@@ -41,7 +42,7 @@ const main = async () => {
 
 setInterval(async () => {
   await areaLoop();
-}, 1 * 60 * 1000);
+}, 0.5 * 60 * 1000);
 
 main()
   .catch(e => {

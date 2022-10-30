@@ -1,37 +1,37 @@
 <template>
-    <div id="Area">
-        <SelectService
-            v-if="area.state == 0 || area.state == 2"
-            :services="services"
-            :area="area"
-            @actionServiceId="area.actionServiceId = $event"
-            @reactionServiceId="area.reactionServiceId = $event"
-            @next="area.state++"
-            @save="saveAreaLocalStorage"
-            @previous="area.state--"
-            :type="$route.path.split('/')[2]"
-        />
-        <SelectArea
-            v-else-if="area.state == 1 || area.state == 3"
-            :services="services"
-            :area="area"
-            @actionId="area.actionId = $event"
-            @actionParam="area.actionParam = $event"
-            @reactionId="area.reactionId = $event"
-            @reactionParam="area.reactionParam = $event"
-            @next="area.state++"
-            @previous="area.state--"
-            @save="saveAreaLocalStorage"
-            :type="$route.path.split('/')[2]"
-        />
-        <Overview
-            v-else
-            @create="sendServices"
-            @previous="area.state--"
-            :area="area"
-        />
-        <p> {{ area }} </p>
-    </div>
+  <div id="Area">
+    <SelectService
+      v-if="area.state == 0 || area.state == 2"
+      :services="services"
+      :area="area"
+      @actionServiceId="area.actionServiceId = $event"
+      @reactionServiceId="area.reactionServiceId = $event"
+      @next="area.state++"
+      @save="saveAreaLocalStorage"
+      @previous="area.state--"
+      :type="$route.path.split('/')[2]"
+    />
+    <SelectArea
+      v-else-if="area.state == 1 || area.state == 3"
+      :services="services"
+      :area="area"
+      @actionId="area.actionId = $event"
+      @actionParam="area.actionParam = $event"
+      @reactionId="area.reactionId = $event"
+      @reactionParam="area.reactionParam = $event"
+      @next="area.state++"
+      @previous="area.state--"
+      @save="saveAreaLocalStorage"
+      :type="$route.path.split('/')[2]"
+    />
+    <Overview
+      v-else
+      @create="sendServices"
+      @previous="area.state--"
+      :area="area"
+    />
+    <p>{{ area }}</p>
+  </div>
 </template>
 
 <script lang="ts">
@@ -121,8 +121,8 @@ export default vue.extend({
 
 <style scoped lang="scss">
 #Area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

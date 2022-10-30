@@ -20,7 +20,7 @@
         <b-button @click="$emit('previous'), $emit('save'), $router.push(area.state == -1 ? '/home' : '/create/action')">
             Previous
         </b-button>
-        <b-button @click="$emit('next'), $emit('save')">
+        <b-button @click="$emit('next'), $emit('save')" :disabled="oauthURL == ''">
             <a :href="oauthURL">Next</a>
         </b-button>
     </div>
@@ -49,11 +49,15 @@ export default vue.extend({
     }, 400),
     async getOauthUrl() {
       let serviceName = this.services.find((service) => service.id == this.area[this.type + "ServiceId"]).name;
-      const { data: url } = await this.$axios.get(
-        "/oauth/" + (serviceName == "Youtube" ? "google" : serviceName.toLowerCase()) +
-          "/link/front"
-      );
-      this.oauthURL = url;
+      try {
+        const { data: url } = await this.$axios.get(
+          "/oauth/" + (serviceName == "Youtube" ? "google" : serviceName.toLowerCase()) +
+            "/link/front"
+        );
+        this.oauthURL = url;
+      } catch {
+        this.oauthURL = '';
+      }
     },
   },
 });
@@ -109,6 +113,7 @@ export default vue.extend({
             justify-content: space-between;
             cursor: pointer;
             padding: 5px;
+            filter: brightness(0.5)
             p {
                 font-size: 20px;
                 font-family: Hitmo Regular;
@@ -116,6 +121,7 @@ export default vue.extend({
             }
             &.selected:not(p) {
                 outline: 2px solid black;
+                filter: brightness(1)
             }
         }
     }

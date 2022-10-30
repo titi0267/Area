@@ -3,8 +3,13 @@
     <h2>Select your {{ type }} type</h2>
     <div>
       <div v-for="service in services" :key="service.name">
+        <div class="selected-service" v-if="area[type + 'ServiceId'] == service.id">
+            <b-image :src="service.imageUrl"></b-image>
+            <p> {{ service.name }} </p>
+        </div>
         <div class="areas" v-if="service.id == area[type + 'ServiceId']">
           <div class="area"
+            :style=" { 'background' : `linear-gradient(to top left, ${service.backgroundColor}, ${service.backgroundColor})` }"
             :class="{ selected: actrea.id == area[type + 'Id'] }"
             v-for="actrea in service[type + 's']"
             :key="actrea.name"
@@ -46,7 +51,6 @@ export default vue.extend({
       });
     },
   },
-  components: {},
   methods: {
     getParamName() {
       if (this.area[this.type + "Id"] == -1 || this.services[0] == null) return;
@@ -83,6 +87,9 @@ export default vue.extend({
 
 <style scoped lang="scss">
 #SelectArea {
+    .selected-service {
+
+    }
     h2 {
         font-family: 'Courier New', Courier, monospace;
     }
@@ -112,21 +119,22 @@ export default vue.extend({
         position: relative;
         justify-content: center;
         .area {
-            height: 150px;
-            width: 150px;
+            height: 200px;
+            width: 200px;
             border-radius: 10px;
             margin: 5px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             cursor: pointer;
-            padding: 5px;
-            border: 1px solid black;
+            padding: 10px;
             p {
+                overflow-wrap: break-word;
                 font-size: 20px;
                 font-family: Hitmo Regular;
                 text-transform: uppercase;
                 white-space: normal;
+                text-align: start;
             }
             &.selected:not(p) {
                 outline: 2px solid black;

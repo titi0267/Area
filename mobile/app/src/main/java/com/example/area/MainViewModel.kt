@@ -10,6 +10,7 @@ import com.example.area.model.Token
 import com.example.area.model.about.About
 import com.example.area.model.*
 import com.example.area.repository.Repository
+import kotlinx.coroutines.job
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import retrofit2.Response

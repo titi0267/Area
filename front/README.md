@@ -36,23 +36,23 @@ It manages all the pages and interactive elements linked to this project.
 | **VUE_APP_PORT** | Front-end server PORT | `number` | *8081* |
 
 ## Compilation
-Two methods for compile the frontend
+Two methods to compile the frontend
 - npm run build (`production`)
-- npm run serve (`developpement`)
+- npm run serve (`developement`)
 
 ## Folders, Components & Files
 
 ### /Views
 - **Login.vue** : Login page
 - **Register.vue** : Register page
-- **Home.vue** : Home page of the user. He can view all of his action and reaction
-- **Area.vue** : Creation of action and reaction page
-- **NotFound.vue** : If a page does not exist, the user is redirect on this page
+- **Home.vue** : Home page of the user. A place where every actions and reactions are listed
+- **Area.vue** : Actions and reactions creation page
+- **NotFound.vue** : If a page does not exist, the user is redirected on this page
 
 ### /Components
 - **SelectServices.vue** : Selection management of the services
-- **SelectArea.vue** : Selection management of the action and reaction
-- **Overview.vue** : Final view when an new action - reaction is created
+- **SelectArea.vue** : Selection management of the actions and reactions
+- **Overview.vue** : Final view when a new action - reaction is created
 
 ### /Public
 - index.html: Injected Vuejs page
@@ -66,7 +66,7 @@ Two methods for compile the frontend
 # General information
 
 ## LocalStorage
-The localStorage is user for save some users data.
+The localStorage is a place where some user data are saved.
 Here is a list of data saved
 | Name | Description | Type |
 |:----|:------------|:-----|
@@ -80,7 +80,7 @@ The unit tests allow you to test each Vue file from the project.
 # Frameworks
 
 ## Axios
-Axios is an HTTP client based on promises. He is able to make requests to an `API`.
+Axios is an HTTP client based on promises. It is able to make requests to an `API`.
 The code just below is the configuration file of axios. This file principally contains the back-end URL requests from the .env file. The object `header` is sent to each request and allow the server to control the validity of the request.
 The `Authorization` header allows to verify if the user is connected with a valid token. If this token is not valid, the user is automatically redirected to the login page.
 
@@ -100,8 +100,8 @@ const axios_instance = axios.create({
 ```
 
 ## VueX
-VueX is the state manager of the project. He allow to `stock variables` and to get it from any component of the project.
-The code just below is the state store architecture. He contains four objects : State, Getters, Mutations and Actions.
+VueX is the state manager of the project. It allows the stocking of some variables and a way to get them back from any component of the project.
+The code just below is the state store architecture. It contains four objects : State, Getters, Mutations and Actions.
 
 Filepath : `front/src/store/index.ts`
 ```ts
@@ -131,8 +131,8 @@ export default new Vuex.Store({
 ## Vue Router
 Vue Router allows the front-end routes management. Each route is assigned to a component.
 The example above, is taken from the code and shows you a route with the name `register`, with path `/register` and imported above the code, the component `Register`.
-The last element called `meta` is an object that contains divers information for each route.
-In that case, the object `meta` serves to know if the route is protected with an authentification.
+The last element called `meta` is an object that contains diverse information for each route.
+In that case, the `meta` object serves to know if the route is protected with an authentification.
 
 Filepath : `front/src/router/index.ts`
 ```ts
@@ -151,7 +151,7 @@ const router = new VueRouter({
 ```
 Each route is `protected` with a user login verification system.
 While recovering the token in the localStorage of the user and in the store (VueX), a request is sent to the API.
-If this request is validated with the user token, so the access to the route will be granted.
+If this request is validated with the user token, then the access to the route will be granted.
 Otherwise, the user will be redirected to the login page.
 The code bellow allows to make the necessary redirection if the token is false or non-existent.
 
@@ -181,9 +181,9 @@ router.beforeEach(async (to, from, next) => {
 ```
 ## Vue-I18n
 Vue I18n is used for the language management on the user interface.
-Two choices open to him, French or English.
-Just below is the VueI18n declaration, it allows to define the default language who is now English.
-The object message contains all of the imported languages.
+Two choices are available, French or English.
+Just below is the VueI18n declaration, it allows to define the default language which is in this example English.
+The object message contains every imported languages.
 
 Filepath : `front/src/lang/i18n.ts`
 ```ts
@@ -199,7 +199,7 @@ export default new VueI18n({
     }
 });
 ```
-The languages are imported as a `.JSON` file, each language has her own file.
+The languages are imported as a `.JSON` file, each language has its own file.
 The file below contains the english words.
 
 Filepath : `front/src/lang/fr.json`

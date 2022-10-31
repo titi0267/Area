@@ -256,7 +256,7 @@ describe("Test edit area", () => {
       const areaBefore = await AreaService.createArea(
         1,
         1,
-        "test",
+        "https://www.youtube.com/c/VilebrequinAuto",
         2,
         1,
         "test",
@@ -267,14 +267,18 @@ describe("Test edit area", () => {
         users[0].id,
         areaBefore.id,
         false,
-        "lol",
+        "https://www.youtube.com/c/aMOODIEsqueezie",
         "lol",
       );
 
       expect(areaBefore.enabled).toBeTruthy();
       expect(areaAfter.enabled).toBeFalsy();
-      expect(areaBefore.actionParam).toBe("test");
-      expect(areaAfter.actionParam).toBe("lol");
+      expect(areaBefore.actionParam).toBe(
+        "https://www.youtube.com/c/VilebrequinAuto",
+      );
+      expect(areaAfter.actionParam).toBe(
+        "https://www.youtube.com/c/aMOODIEsqueezie",
+      );
       expect(areaBefore.reactionParam).toBe("test");
       expect(areaAfter.reactionParam).toBe("lol");
 
@@ -289,7 +293,7 @@ describe("Test edit area", () => {
       const areaBefore = await AreaService.createArea(
         1,
         1,
-        "test1",
+        "https://www.youtube.com/c/VilebrequinAuto",
         2,
         1,
         "test2",
@@ -306,8 +310,12 @@ describe("Test edit area", () => {
 
       expect(areaBefore.enabled).toBeTruthy();
       expect(areaAfter.enabled).toBeTruthy();
-      expect(areaBefore.actionParam).toBe("test1");
-      expect(areaAfter.actionParam).toBe("test1");
+      expect(areaBefore.actionParam).toBe(
+        "https://www.youtube.com/c/VilebrequinAuto",
+      );
+      expect(areaAfter.actionParam).toBe(
+        "https://www.youtube.com/c/VilebrequinAuto",
+      );
       expect(areaBefore.reactionParam).toBe("test2");
       expect(areaAfter.reactionParam).toBe("test2");
 
@@ -333,7 +341,7 @@ describe("Test edit area", () => {
       const area = await AreaService.createArea(
         1,
         1,
-        "test",
+        "https://www.youtube.com/c/VilebrequinAuto",
         2,
         1,
         "test",

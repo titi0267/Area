@@ -31,7 +31,7 @@ export const SERVICES: Service[] = [
       {
         id: 3,
         actionName: "New Liked Video",
-        actionParamName: "None",
+        actionParamName: "",
         fct: YoutubeActions.checkNewVideoLiked,
         availableInjectParams: ["channel", "title"],
       },
@@ -57,7 +57,7 @@ export const SERVICES: Service[] = [
     imageUrl: "https://www.iconsdb.com/icons/preview/white/twitter-xxl.png",
     backgroundColor: "#1DA1F2",
     actions: [],
-    oauthName: "none",
+    oauthName: null,
     reactions: [
       {
         id: 1,
@@ -72,7 +72,7 @@ export const SERVICES: Service[] = [
     serviceName: "Discord",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/discord-2-xxl.png",
     backgroundColor: "#5865F2",
-    oauthName: "none",
+    oauthName: null,
     actions: [],
     reactions: [
       {

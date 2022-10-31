@@ -21,6 +21,40 @@ describe("Test get all area service", () => {
   });
 });
 
+describe("Test get all enabled area service", () => {
+  describe("Test working cases", () => {
+    test("Get all area", async () => {
+      await UserService.createUser("Ludo", "Str", "tim@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      await AreaService.createArea(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
+      const areasBefore = await AreaService.getEnabledAreas();
+      await AreaService.editArea(
+        users[0].id,
+        areasBefore[0].id,
+        false,
+        null,
+        null,
+      );
+      const areasAfter = await AreaService.getEnabledAreas();
+
+      expect(areasBefore.length).toBe(1);
+      expect(areasAfter.length).toBe(0);
+
+      await AreaService.removeAreaById(areasBefore[0].id);
+      await UserService.removeUserById(users[0].id);
+    });
+  });
+});
+
 describe("Test post area service", () => {
   describe("Test working cases", () => {
     test("Create one valid area", async () => {

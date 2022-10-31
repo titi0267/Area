@@ -1,6 +1,9 @@
+import { createOAuthUserAuth } from "@octokit/auth-oauth-user";
 import { OAuth2Client } from "google-auth-library";
 import { google } from "googleapis";
 import httpStatus from "http-status";
+import { Octokit } from "octokit";
+import SpotifyWebApi from "spotify-web-api-node";
 import { SERVICES } from "../constants/serviceList";
 import ENV from "../env";
 import ClientError from "../error";
@@ -124,6 +127,43 @@ const getGoogleOauthClient = async (
   return oAuth2Client;
 };
 
+const getGithubClient = async (userId: number) => {
+  const token = await TokenService.getGithubToken(userId);
+
+  if (!token) return null;
+
+  const octokit = new Octokit({
+    authStrategy: createOAuthUserAuth,
+    auth: {
+      clientId: ENV.githubClientId,
+      clientSecret: ENV.githubClientSecret,
+      token,
+      clientType: "oauth-app",
+    },
+  });
+
+  return octokit;
+};
+
+const getSpotifyClient = async (userId: number) => {
+  const token = await TokenService.getSpotifyToken(userId);
+
+  if (!token) return null;
+
+  const spotifyApi = new SpotifyWebApi({
+    clientId: ENV.spotifyClientId,
+    clientSecret: ENV.spotifyClientSecret,
+  });
+
+  spotifyApi.setRefreshToken(token);
+
+  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
+
+  spotifyApi.setAccessToken(accessToken);
+
+  return spotifyApi;
+};
+
 export {
   rejectInvalidArea,
   getActionFct,
@@ -132,4 +172,6 @@ export {
   getYoutubeChannelName,
   injectParamInReaction,
   getGoogleOauthClient,
+  getGithubClient,
+  getSpotifyClient,
 };

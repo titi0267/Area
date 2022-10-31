@@ -10,7 +10,6 @@ class SessionManager(context: Context) {
     fun saveAuthToken(prefName: String, token: String) {
         val editor = prefs.edit()
         editor.putString(prefName, token)
-        editor.apply()
     }
 
     fun fetchAuthToken(prefName: String): String? {
@@ -20,6 +19,13 @@ class SessionManager(context: Context) {
     fun removeAuthToken(prefName: String) {
         val editor = prefs.edit()
         editor.remove(prefName)
+        editor.apply()
+    }
+
+    fun replaceAuthToken(prefName: String, token: String) {
+        val editor = prefs.edit()
+        editor.remove(prefName)
+        editor.putString(prefName, token)
         editor.apply()
     }
 }

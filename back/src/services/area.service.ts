@@ -119,6 +119,46 @@ const updateAreaValues = async (
   return area;
 };
 
+const editArea = async (
+  userId: number,
+  areaId: number,
+  enabled: boolean | null,
+  actionParam: string | null,
+  reactionParam: string | null,
+): Promise<Area> => {
+  const doesUserExist = await prisma.user.findUnique({ where: { id: userId } });
+  const doesAreaExist = await prisma.area.findUnique({ where: { id: areaId } });
+
+  if (!doesUserExist || !doesAreaExist) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "userId or areaId does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  if (doesAreaExist.userId !== userId) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "can't edit other peoples area",
+      level: "warm",
+      status: httpStatus.UNAUTHORIZED,
+    });
+  }
+
+  const area = await prisma.area.update({
+    where: { id: areaId },
+    data: {
+      enabled: enabled !== null ? enabled : undefined,
+      actionParam: actionParam !== null ? actionParam : undefined,
+      reactionParam: reactionParam !== null ? reactionParam : undefined,
+    },
+  });
+
+  return area;
+};
+
 export default {
   createArea,
   getAllArea,
@@ -126,4 +166,5 @@ export default {
   getAreasByUserId,
   getEnabledAreas,
   updateAreaValues,
+  editArea,
 };

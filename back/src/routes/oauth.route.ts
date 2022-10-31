@@ -4,17 +4,20 @@ import { OAuthApp } from "@octokit/oauth-app";
 import { google } from "googleapis";
 import SpotifyWebApi from "spotify-web-api-node";
 import httpStatus from "http-status";
+import DiscordOauthClient from "discord-oauth2";
 
 import { FastifyPluginDoneFunction } from "../types/global.types";
 import {
   googleOauthQueryValidator,
   spotifyOauthQueryValidator,
   githubOauthQueryValidator,
+  discordOauthQueryValidator,
 } from "../schema/oauth.schema";
 import {
   GoogleOauthBody,
   SpotifyOauthBody,
   GithubOauthBody,
+  DiscordOauthBody,
 } from "../types/body/oauthRequestBody.types";
 import * as SecurityHelper from "../helpers/security.helper";
 import * as ErrorHelper from "../helpers/error.helpers";
@@ -32,6 +35,10 @@ type SpotifyOauthRequest = FastifyRequest<{
 
 type GithubOauthRequest = FastifyRequest<{
   Body: GithubOauthBody;
+}>;
+
+type DiscordOauthRequest = FastifyRequest<{
+  Body: DiscordOauthBody;
 }>;
 
 export default (
@@ -87,6 +94,47 @@ export default (
       res.status(httpStatus.OK).send(tokenTable);
     },
   );
+
+  instance.post(
+    "/discord",
+    { onRequest: [authentificationMiddleware()] },
+    async (req: DiscordOauthRequest, res: FastifyReply) => {
+      if (!discordOauthQueryValidator(req.body)) ErrorHelper.throwBodyError();
+
+      const userInfos = SecurityHelper.getUserInfos(req);
+
+      const oauth = new DiscordOauthClient();
+
+      try {
+        const getTokenRes = await oauth.tokenRequest({
+          clientId: ENV.discordClientId,
+          clientSecret: ENV.discordClientSecret,
+          code: req.body.code,
+          grantType: "authorization_code",
+          redirectUri: ENV.discordRedirectUrl,
+          scope: [
+            "identify",
+            "email",
+            "guilds",
+            "connections",
+            "bot",
+            "guilds.join",
+          ].join(" "),
+        });
+
+        const tokenTable = await TokenService.setDiscordInfos(
+          userInfos.id,
+          getTokenRes.refresh_token,
+          req.body.guild_id,
+        );
+
+        res.status(httpStatus.OK).send(tokenTable);
+      } catch (e) {
+        return res.send(e);
+      }
+    },
+  );
+
   instance.get(
     "/spotify/link/front",
     (req: FastifyRequest, res: FastifyReply) => {
@@ -104,6 +152,10 @@ export default (
           "playlist-read-private",
           "user-read-currently-playing",
           "user-read-playback-state",
+          "user-library-modify",
+          "playlist-modify-private",
+          "playlist-modify-public",
+          "user-library-read",
         ].join(" "),
       };
 
@@ -112,6 +164,30 @@ export default (
       res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
     },
   );
+
+  instance.get("/discord/link/", (req: FastifyRequest, res: FastifyReply) => {
+    const rootUrl = "https://discord.com/api/oauth2/authorize";
+
+    const option = {
+      client_id: ENV.discordClientId,
+      response_type: "code",
+      permissions: "8",
+      redirect_uri: ENV.discordRedirectUrl,
+      scope: [
+        "identify",
+        "email",
+        "guilds",
+        "connections",
+        "bot",
+        "guilds.join",
+      ].join(" "),
+    };
+
+    const qs = new URLSearchParams(option);
+
+    res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+  });
+
   instance.get(
     "/spotify/link/mobile",
     (req: FastifyRequest, res: FastifyReply) => {
@@ -203,6 +279,9 @@ export default (
       });
 
       const tokens = (await spotifyApi.authorizationCodeGrant(code)).body;
+
+      spotifyApi.setAccessToken(tokens.access_token);
+      spotifyApi.setRefreshToken(tokens.refresh_token);
 
       const tokenTable = await TokenService.setSpotifyToken(
         userInfos.id,

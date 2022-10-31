@@ -85,7 +85,11 @@ export default vue.extend({
          * @async
          */
         async getUserInfos(): Promise<any> {
-            let {data: user} = await this.$axios.get('/users/me')
+            let {data: user} = await this.$axios.get('/users/me', {
+                headers: {
+                    Authorization: this.$store.getters.userToken || "noToken",
+                }
+            })
             this.user = user
         }
     }

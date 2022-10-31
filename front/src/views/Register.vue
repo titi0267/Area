@@ -193,6 +193,10 @@ export default vue.extend({
                     'lastName': this.register.lastName.value,
                     'email': this.register.email.value,
                     'password': this.register.password.value,
+                }, {
+                    headers: {
+                        Authorization: this.$store.getters.userToken || "noToken",
+                    }
                 })
                 localStorage.setItem('usr-token', resp.token);
                 this.$store.commit('updateToken', resp.token);

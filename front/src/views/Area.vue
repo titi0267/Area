@@ -99,6 +99,11 @@ export default vue.extend({
                     reactionServiceId: this.area.reactionServiceId,
                     reactionId: this.area.reactionId,
                     reactionParam: this.area.reactionParam,
+                },
+                {
+                    headers: {
+                        Authorization: this.$store.getters.userToken || "noToken",
+                    }
                 });
                 this.$router.push('/home')
                 this.notification('Your actions - reaction has been created', 'is-success');

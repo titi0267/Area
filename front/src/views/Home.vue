@@ -61,7 +61,11 @@ export default vue.extend({
          */
         async getUserAreas(): Promise<void> {
             try {
-                let { data: resp } = await this.$axios.get('/users/areas')
+                let { data: resp } = await this.$axios.get('/users/areas', {
+                    headers: {
+                        Authorization: this.$store.getters.userToken || "noToken",
+                    }
+                })
                 this.areas = resp;
             } catch (err) {
                 console.log(err);

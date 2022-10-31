@@ -92,6 +92,12 @@ const getAreasByUserId = async (id: number): Promise<Area[]> => {
   return areas;
 };
 
+const getEnabledAreas = async (): Promise<Area[]> => {
+  const areas = await prisma.area.findMany({ where: { enabled: true } });
+
+  return areas;
+};
+
 const updateAreaValues = async (
   id: number,
   updateValue: string | null,
@@ -192,6 +198,7 @@ export default {
   getAllArea,
   removeAreaById,
   getAreasByUserId,
+  getEnabledAreas,
   updateAreaValues,
   editArea,
 };

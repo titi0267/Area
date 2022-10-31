@@ -58,7 +58,8 @@ export default vue.extend({
     }, 400),
     async getOAuthUrl(): Promise<any> {
       try {
-        let serviceName = this.services.find(service => service.id == this.area[this.type + "ServiceId"]).name;
+        let serviceName = this.services.find(service => service.id == this.area[this.type + "ServiceId"]).oauthName;
+        if (serviceName == null) return;
         const { data: url } = await this.$axios.get(
           "/oauth/" + serviceName + "/link/front"
         );

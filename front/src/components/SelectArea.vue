@@ -103,6 +103,7 @@ export default vue.extend({
         }
         if (serviceIndex == -1) return;
         let serviceName = this.services[serviceIndex].oauthName;
+        if (serviceName == null) return;
         await this.$axios.post("/oauth/" + serviceName, {
           code: code,
         });

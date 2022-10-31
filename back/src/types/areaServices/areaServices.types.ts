@@ -20,6 +20,7 @@ interface Action {
   actionName: string;
   actionParamName: string;
   availableInjectParams: string[];
+  paramFormat: RegExp | null;
   fct: (area: Area) => Promise<string | null>;
 }
 
@@ -27,6 +28,7 @@ interface Reaction {
   id: number;
   reactionName: string;
   reactionParamName: string;
+  paramFormat: RegExp | null;
   fct: (reactionParam: string, userId: number) => void;
 }
 
@@ -35,6 +37,7 @@ export type ServiceName =
   | "Twitter"
   | "Discord"
   | "Spotify"
-  | "Github";
+  | "Github"
+  | "Gmail";
 
 export type OauthService = "google" | "spotify" | "github";

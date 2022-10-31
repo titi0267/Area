@@ -1,8 +1,8 @@
 package com.example.area.model
 
 data class AreaInfo(
-    val actionService: Int,
+    val actionService: String,
     val actionStr: String,
-    val reactionService: Int,
+    val reactionService: String,
     val reactionStr: String
 )

@@ -29,6 +29,36 @@ class AboutClass(val about: About) {
         return service.id
     }
 
+    fun getServiceBackgroundColor(id: Int): String? {
+        val service = getServiceById(id) ?: return null
+        return service.backgroundColor
+    }
+
+    fun getServiceBackgroundColor(name: String): String? {
+        val service = getServiceByName(name) ?: return null
+        return service.backgroundColor
+    }
+
+    fun getServiceImageURL(id: Int): String? {
+        val service = getServiceById(id) ?: return null
+        return service.imageUrl
+    }
+
+    fun getServiceImageURL(name: String): String? {
+        val service = getServiceByName(name) ?: return null
+        return service.imageUrl
+    }
+
+    fun getServiceOAuthName(id: Int): String? {
+        val service = getServiceById(id) ?: return null
+        return service.oauthName
+    }
+
+    fun getServiceOAuthName(name: String): String? {
+        val service = getServiceByName(name) ?: return null
+        return service.oauthName
+    }
+
     private fun getServiceActionById(serviceId: Int, id: Int): Action? {
         val service = getServiceById(serviceId) ?: return null
         for (action in service.actions) {
@@ -127,6 +157,26 @@ class AboutClass(val about: About) {
     fun getServiceActionParamNameById(serviceName: String, name: String): String? {
         val action = getServiceActionByName(serviceName, name) ?: return null
         return (action.actionParamName)
+    }
+
+    fun getServiceActionAvailableInjectParamsById(serviceId: Int, id: Int): List<String>? {
+        val action = getServiceActionById(serviceId, id) ?: return null
+        return (action.availableInjectParams)
+    }
+
+    fun getServiceActionAvailableInjectParamsById(serviceName: String, id: Int): List<String>? {
+        val action = getServiceActionById(serviceName, id) ?: return null
+        return (action.availableInjectParams)
+    }
+
+    fun getServiceActionAvailableInjectParamsByName(serviceId: Int, name: String): List<String>? {
+        val action = getServiceActionByName(serviceId, name) ?: return null
+        return (action.availableInjectParams)
+    }
+
+    fun getServiceActionAvailableInjectParamsByName(serviceName: String, name: String): List<String>? {
+        val action = getServiceActionByName(serviceName, name) ?: return null
+        return (action.availableInjectParams)
     }
 
     private fun getServiceReactionById(serviceId: Int, id: Int): Reaction? {
@@ -248,6 +298,15 @@ class AboutClass(val about: About) {
             ret.add(service.name)
         }
         return ret
+    }
+
+    fun getServiceOAuthNameList(): List<String> {
+        val ret = mutableListOf<String>()
+        for (service in about.server.services) {
+            if (service.oauthName != "none")
+                ret.add(service.oauthName)
+        }
+        return (ret)
     }
 
     fun getServiceActionNameList(serviceId: Int): List<String> {

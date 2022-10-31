@@ -7,7 +7,6 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import com.example.area.R
 import com.example.area.fragment.area.MainFragment
-import com.example.area.fragment.area.NewRequestTestFragment
 
 class AreaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

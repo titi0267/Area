@@ -80,6 +80,7 @@ export default vue.extend({
         }
         if (serviceIndex == -1) return;
         let serviceName = this.services[serviceIndex].oauthName;
+        if (serviceName == null) return;
         const { data: url } = await this.$axios.get(
           "/oauth/" + serviceName + "/link/front"
         );

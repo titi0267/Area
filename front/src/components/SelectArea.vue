@@ -80,6 +80,7 @@ export default vue.extend({
     async postOAuthCode(): Promise<any> {
       try {
         const code: String = this.$route.query.code;
+        console.log(this.$route);
         if (code == null || code == undefined) return;
         let serviceIndex = -1;
         var servicesLength = await Object.keys(this.services).length;
@@ -89,6 +90,7 @@ export default vue.extend({
         }
         if (serviceIndex == -1) return;
         let serviceName = this.services[serviceIndex].oauthName;
+        if (serviceName == null) return;
         await this.$axios.post("/oauth/" + serviceName, {
           code: code,
         });

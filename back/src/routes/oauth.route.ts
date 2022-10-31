@@ -232,7 +232,7 @@ export default (
           "https://www.googleapis.com/auth/youtube",
           "https://www.googleapis.com/auth/youtube.upload",
           "https://www.googleapis.com/auth/gmail.modify",
-          " https://www.googleapis.com/auth/gmail.compose",
+          "https://www.googleapis.com/auth/gmail.compose",
         ].join(" "),
       };
       const qs = new URLSearchParams(options);

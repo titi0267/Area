@@ -18,8 +18,10 @@ const createArea = async (
   ServiceHelper.rejectInvalidArea(
     actionServiceId,
     actionId,
+    actionParam,
     reactionServiceId,
     reactionId,
+    reactionParam,
   );
 
   const doesUserExist = await prisma.user.findUnique({

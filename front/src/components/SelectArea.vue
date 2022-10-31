@@ -80,7 +80,6 @@ export default vue.extend({
     async postOAuthCode(): Promise<any> {
       try {
         const code: String = this.$route.query.code;
-        console.log(this.$route);
         if (code == null || code == undefined) return;
         let serviceIndex = -1;
         var servicesLength = await Object.keys(this.services).length;

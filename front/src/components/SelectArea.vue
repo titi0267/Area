@@ -146,7 +146,7 @@ export default vue.extend({
         async postOAuthCode(): Promise<any> {
             const code: String = this.$route.query.code;
             if (code == null || code == undefined) return;
-            let serviceName = this.services.find(service => service.id == this.area[this.type + "ServiceId"]).name;
+            let serviceName = this.services.find(service => service.id == this.area[this.type + "ServiceId"]).oauthName;
             await this.$axios.post("/oauth/" + serviceName, {
                 code: code,
             });

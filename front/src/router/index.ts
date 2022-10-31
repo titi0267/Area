@@ -10,6 +10,7 @@ import Home from "../views/Home.vue";
 import Area from "../views/Area.vue";
 import Profile from "../views/Profile.vue";
 import Services from "../views/Services.vue";
+import Edit from "../views/Edit.vue"
 
 Vue.use(VueRouter);
 
@@ -36,11 +37,6 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
-            path: '/create',
-            redirect: '/create/action',
-            meta: { requiresAuth: true }
-        },
-        {
             path: '/create/action',
             name: 'create-action',
             component: Area,
@@ -56,6 +52,12 @@ const router = new VueRouter({
             path: '/create/overview',
             name: 'create-overview',
             component: Area,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/edit/:id',
+            name: 'edit',
+            component: Edit,
             meta: { requiresAuth: true }
         },
         {

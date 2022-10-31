@@ -3,7 +3,7 @@
         <b-image class="logo" :src="require('@/assets/area_logo.png')"/>
         <div class="links">
             <a @click="$router.push('/home')">Home</a>
-            <a @click="$router.push('/create'), removeLocalStorageItem()">Create</a>
+            <a @click="createRedirect()">Create</a>
         </div>
         <div class="profile">
             <b-dropdown
@@ -60,8 +60,11 @@ export default vue.extend({
         }
     },
     methods: {
-        removeLocalStorageItem(): void {
+        createRedirect(): void {
             localStorage.removeItem('area');
+            if (this.$route.path == '/create/action')
+                this.$router.push('home')
+            this.$router.push('/create/action');
         },
         checkRoute(): void {
             if (this.$route.name == 'profile')

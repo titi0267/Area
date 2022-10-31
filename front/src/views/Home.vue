@@ -11,7 +11,7 @@
                 <p> {{ getService(area, 'action').actions.find(action => action.id == area.actionId).name }} </p>
             </div>
             <div class="edit">
-                <p>Edit</p>
+                <b-icon icon="pen"></b-icon>
             </div>
             <div class="reaction" v-if="getService(area, 'reaction')">
                 <p> {{ getService(area, 'reaction').reactions.find(reaction => reaction.id == area.reactionId).name }} </p>
@@ -126,10 +126,14 @@ export default vue.extend({
             align-items: center;
             text-transform: uppercase;
             color: white;
-            p {
-                padding: 5px;
+            :deep(span) {
+                padding: 16px;
                 background-color: rgb(44, 44, 53);
                 cursor: pointer;
+                svg {
+                    width: 19px;
+                    height: 19px;
+                }
             }
         }
     }

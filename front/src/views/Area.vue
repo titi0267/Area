@@ -101,9 +101,9 @@ export default vue.extend({
                     reactionParam: this.area.reactionParam,
                 });
                 this.$router.push('/home')
-                this.toast('Your actions - reaction has been created', 'is-success');
+                this.notification('Your actions - reaction has been created', 'is-success');
             } catch (err) {
-                this.toast(err.response.data.message, 'is-danger');
+                this.notification(err.response.data.message, 'is-danger');
             }
         },
         /**

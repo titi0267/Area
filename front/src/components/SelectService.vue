@@ -43,6 +43,9 @@ export default vue.extend({
     services: Array,
     area: Object,
   },
+  mounted() {
+    this.$nextTick(() => this.getOAuthUrl());
+  },
   watch: {
     services: function () {
         this.$nextTick(() => this.getOAuthUrl());

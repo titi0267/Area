@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from './axiosInstance'
-import { Toasts } from './mixins'
+import { Notifications } from './mixins'
 
 import i18n from './lang/i18n'
 import Buefy from 'buefy'
@@ -34,7 +34,8 @@ Vue.use(Buefy, {
 });
 
 Vue.prototype.$axios = axios;
-Vue.mixin(Toasts)
+
+Vue.mixin(Notifications);
 
 new Vue({
     i18n,

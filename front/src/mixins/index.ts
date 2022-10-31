@@ -1,1 +1,1 @@
-export { Toasts } from './toast.mixin'
+export { Notifications } from './notifications.mixin'

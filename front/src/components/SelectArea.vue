@@ -23,7 +23,20 @@
         <b-button @click="$emit('previous'), $emit('save')">
             Previous
         </b-button>
-        <b-input class="param-input" @input="$emit(type + 'Param', $event)" :placeholder="getParamName()"></b-input>
+        <!-- <b-input class="param-input" @input="$emit(type + 'Param', $event)" :placeholder="getParamName()"></b-input> -->
+        <b-field v-if="area[type + 'Id'] != -1">
+            <b-autocomplete
+                class="param-input"
+                ref="autocomplete"
+                :data="searchInjectParams()"
+                :placeholder="getParamName()"
+                keep-first
+                open-on-focus
+                @select="option => selected = option"
+                >
+                <template #empty>No results for {{name}}</template>
+            </b-autocomplete>
+        </b-field>
         <b-button @click="$emit('next'), $emit('save'), $router.push(type == 'action' ? 'reaction' : 'overview')">
             Next
         </b-button>
@@ -37,7 +50,7 @@ import vue from "vue";
 export default vue.extend({
     data() {
         return {
-
+            name: ""
         };
     },
     props: {
@@ -54,6 +67,13 @@ export default vue.extend({
         },
     },
     methods: {
+        searchInjectParams() {
+            let service = this.services.find(service => service.id == this.area[this.type + 'ServiceId']);
+            let area: Object;
+            if (service != undefined)
+                area = service[this.type + 's'].find(actrea => actrea.id == this.area[this.type + 'Id']).availableInjectParams;
+            return area;
+        },
         /**
          * It's a function that returns the name of the parameter of the action or reaction.
          * @data {Object} area
@@ -105,7 +125,8 @@ export default vue.extend({
 <style scoped lang="scss">
 #SelectArea {
     .selected-service {
-
+        display: flex;
+        justify-content: center;
     }
     h2 {
         font-family: 'Courier New', Courier, monospace;

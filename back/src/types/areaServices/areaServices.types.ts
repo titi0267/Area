@@ -5,7 +5,7 @@ export interface Service {
   serviceName: ServiceName;
   imageUrl: string;
   backgroundColor: string;
-  oauthName: OauthService;
+  oauthName: OauthService | null;
   actions: Action[];
   reactions: Reaction[];
 }
@@ -40,4 +40,4 @@ export type ServiceName =
   | "Github"
   | "Gmail";
 
-export type OauthService = "google" | "spotify" | "github" | "none";
+export type OauthService = "google" | "spotify" | "github";

@@ -37,6 +37,7 @@ export type ServiceName =
   | "Twitter"
   | "Discord"
   | "Spotify"
-  | "Github";
+  | "Github"
+  | "Gmail";
 
 export type OauthService = "google" | "spotify" | "github" | "none";

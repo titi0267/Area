@@ -5,6 +5,7 @@ import * as TwitterReaction from "../area/twitter/twitter.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
 import * as SpotifyAction from "../area/spotify/spotify.actions";
 import * as GithubAction from "../area/github/github.action";
+import * as GmailAction from "../area/gmail/gmail.action";
 import { FORMAT } from "./paramFormat";
 
 export const SERVICES: Service[] = [
@@ -131,6 +132,24 @@ export const SERVICES: Service[] = [
         paramFormat: null,
         fct: GithubAction.checkNewFollowingUser,
         availableInjectParams: ["lastFollowingUserName"],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 6,
+    serviceName: "Gmail",
+    backgroundColor: "FF0000",
+    imageUrl: "https://www.iconsdb.com/icons/preview/white/gmail-login-xxl.png",
+    oauthName: "google",
+    actions: [
+      {
+        id: 1,
+        actionName: "New mail from",
+        actionParamName: "Sender email",
+        fct: GmailAction.newMailFrom,
+        paramFormat: FORMAT.email,
+        availableInjectParams: ["content", "subject"],
       },
     ],
     reactions: [],

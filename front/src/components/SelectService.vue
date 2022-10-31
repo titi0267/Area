@@ -44,14 +44,15 @@ import _ from "lodash";
 export default vue.extend({
   data() {
     return {
-      filterInput: "", /** It's a filter input used for search a service */
-      oauthURL: "", /** This variable contains the oAuth URL of the right service */
+      filterInput: "" /** It's a filter input used for search a service */,
+      oauthURL:
+        "" /** This variable contains the oAuth URL of the right service */,
     };
   },
   props: {
-    type: String, /** Type between 'action' or 'reaction' */
-    services: Array, /** Array that contains the About.JSON file */
-    area: Object, /** Object that contains the area creation fields */
+    type: String /** Type between 'action' or 'reaction' */,
+    services: Array /** Array that contains the About.JSON file */,
+    area: Object /** Object that contains the area creation fields */,
   },
   methods: {
     /**
@@ -78,12 +79,9 @@ export default vue.extend({
             serviceIndex = i;
         }
         if (serviceIndex == -1) return;
-        let serviceName = this.services[serviceIndex].name;
-        console.log(serviceName);
+        let serviceName = this.services[serviceIndex].oauthName;
         const { data: url } = await this.$axios.get(
-          "/oauth/" +
-            (serviceName == "Youtube" ? "google" : serviceName.toLowerCase()) +
-            "/link/front"
+          "/oauth/" + serviceName + "/link/front"
         );
         this.oauthURL = url;
       } catch (e) {

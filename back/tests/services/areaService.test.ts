@@ -317,3 +317,41 @@ describe("Test edit area", () => {
     });
   });
 });
+
+describe("Test delete User area", () => {
+  describe("Test working cases", () => {
+    test("Delete one area", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      const area = await AreaService.createArea(
+        1,
+        1,
+        "test",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
+
+      const deletedArea = await AreaService.removeUserArea(
+        users[0].id,
+        area.id,
+      );
+
+      expect(area.id).toBe(deletedArea.id);
+
+      await UserService.removeUserById(users[0].id);
+    });
+  });
+
+  describe("Test invalid cases", () => {
+    test("Delete area with invalid userId", async () => {
+      try {
+        await AreaService.removeUserArea(45, 1);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
+  });
+});

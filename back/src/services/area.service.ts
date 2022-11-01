@@ -75,6 +75,36 @@ const removeAreaById = async (id: string | number): Promise<Area> => {
   return area;
 };
 
+const removeUserArea = async (
+  userId: number,
+  areaId: number,
+): Promise<Area> => {
+  const doesUserExist = await prisma.user.findUnique({ where: { id: userId } });
+  const doesAreaExist = await prisma.area.findUnique({ where: { id: areaId } });
+
+  if (!doesUserExist || !doesAreaExist) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "userId or areaId does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  if (doesAreaExist.userId !== userId) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "can't edit other peoples area",
+      level: "warm",
+      status: httpStatus.UNAUTHORIZED,
+    });
+  }
+
+  return await prisma.area.delete({
+    where: { id: areaId },
+  });
+};
+
 const getAreasByUserId = async (id: number): Promise<Area[]> => {
   const doesUserExist = await prisma.user.findUnique({ where: { id } });
 
@@ -160,6 +190,7 @@ export default {
   getAllArea,
   removeAreaById,
   getAreasByUserId,
+  removeUserArea,
   updateAreaValues,
   editArea,
 };

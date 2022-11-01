@@ -4,12 +4,17 @@ import { FastifyPluginOptions } from "fastify/types/plugin";
 import { FastifyPluginDoneFunction } from "../types/global.types";
 import { AreaService } from "../services";
 import httpStatus from "http-status";
-import { AreaBody, EditAreaBody } from "../types/body/areaRequestBody.types";
+import {
+  AreaBody,
+  EditAreaBody,
+  DeleteAreaBody,
+} from "../types/body/areaRequestBody.types";
 import * as SecurityHelper from "../helpers/security.helper";
 import authentificationMiddleware from "../middlewares/authentification.middleware";
 import {
   areaBodyValidator,
   editAreaBodyValidator,
+  deleteAreaBodyValidator,
 } from "../schema/area.schema";
 import { throwBodyError } from "../helpers/error.helpers";
 
@@ -19,6 +24,10 @@ type AreaRequest = FastifyRequest<{
 
 type EditAreaRequest = FastifyRequest<{
   Body: EditAreaBody;
+}>;
+
+type DeleteAreaRequest = FastifyRequest<{
+  Body: DeleteAreaBody;
 }>;
 
 export default (
@@ -65,6 +74,22 @@ export default (
         req.body.enabled,
         req.body.actionParam,
         req.body.reactionParam,
+      );
+
+      res.status(httpStatus.OK).send(area);
+    },
+  );
+
+  instance.delete(
+    "/",
+    { onRequest: [authentificationMiddleware()] },
+    async (req: DeleteAreaRequest, res: FastifyReply) => {
+      const userInfos = SecurityHelper.getUserInfos(req);
+      if (!deleteAreaBodyValidator(req.body)) throwBodyError();
+
+      const area = await AreaService.removeUserArea(
+        userInfos.id,
+        req.body.areaId,
       );
 
       res.status(httpStatus.OK).send(area);

@@ -1,5 +1,9 @@
 import Ajv, { JSONSchemaType } from "ajv";
-import { AreaBody, EditAreaBody } from "../types/body/areaRequestBody.types";
+import {
+  AreaBody,
+  DeleteAreaBody,
+  EditAreaBody,
+} from "../types/body/areaRequestBody.types";
 
 const ajv = new Ajv();
 
@@ -36,8 +40,18 @@ const editAreaBodySchema: JSONSchemaType<EditAreaBody> = {
   additionalProperties: false,
 };
 
+const deleteAreaBodySchema: JSONSchemaType<DeleteAreaBody> = {
+  type: "object",
+  properties: {
+    areaId: { type: "number" },
+  },
+  required: ["areaId"],
+};
+
 const areaBodyValidator = ajv.compile(areaBodySchema);
 
 const editAreaBodyValidator = ajv.compile(editAreaBodySchema);
 
-export { areaBodyValidator, editAreaBodyValidator };
+const deleteAreaBodyValidator = ajv.compile(deleteAreaBodySchema);
+
+export { areaBodyValidator, editAreaBodyValidator, deleteAreaBodyValidator };

@@ -13,3 +13,7 @@ export interface EditAreaBody {
   actionParam: string | null;
   reactionParam: string | null;
 }
+
+export interface DeleteAreaBody {
+  areaId: number;
+}

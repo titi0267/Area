@@ -43,11 +43,7 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceInfo
         val serviceList = ServiceDatasource()
 
         recycler.layoutManager = LinearLayoutManager(context as AreaActivity)
-        recycler.setHasFixedSize(true)
-        recycler.adapter = ServiceItemAdapter(
-            context as AreaActivity,
-            serviceList.loadServiceInfo()
-        ) { position -> onItemClick(position, serviceList.loadServiceInfo()[position].name) }
+        updateRecycler(recycler, serviceList)
         view.findViewById<Button>(R.id.backFromReactionServiceCreationButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
@@ -65,15 +61,19 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceInfo
                 for (elem in abt!!.server.services) {
                     serviceList.addService(elem.id, elem.name, elem.imageUrl)
                 }
-                recycler.setHasFixedSize(true)
-                recycler.adapter = ServiceItemAdapter(
-                    context as AreaActivity,
-                    serviceList.loadServiceInfo()
-                ) { position -> onItemClick(position, serviceList.loadServiceInfo()[position].name) }
+                updateRecycler(recycler, serviceList)
             }
         }
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         return view
+    }
+
+    private fun updateRecycler(recycler: RecyclerView, serviceList: ServiceDatasource) {
+        recycler.setHasFixedSize(true)
+        recycler.adapter = ServiceItemAdapter(
+            context as AreaActivity,
+            serviceList.loadServiceInfo()
+        ) { position -> onItemClick(position, serviceList.loadServiceInfo()[position].name) }
     }
 
     private fun onItemClick(position: Int, toPrint: String) {

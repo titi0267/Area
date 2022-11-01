@@ -1,6 +1,6 @@
 package com.example.area.model
 
-data class TokensTable(
+data class  TokensTable(
     val id: Int,
     val userId: Int,
     val twitterToken: String,

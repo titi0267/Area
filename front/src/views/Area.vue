@@ -1,37 +1,39 @@
 <template>
-  <div id="Area">
-    <SelectService
-      v-if="area.state == 0 || area.state == 2"
-      :services="services"
-      :area="area"
-      @actionServiceId="area.actionServiceId = $event"
-      @reactionServiceId="area.reactionServiceId = $event"
-      @next="area.state++"
-      @save="saveAreaLocalStorage"
-      @previous="area.state--"
-      :type="$route.path.split('/')[2]"
-    />
-    <SelectArea
-      v-else-if="area.state == 1 || area.state == 3"
-      :services="services"
-      :area="area"
-      @actionId="area.actionId = $event"
-      @actionParam="area.actionParam = $event"
-      @reactionId="area.reactionId = $event"
-      @reactionParam="area.reactionParam = $event"
-      @next="area.state++"
-      @previous="area.state--"
-      @save="saveAreaLocalStorage"
-      :type="$route.path.split('/')[2]"
-    />
-    <Overview
-      v-else
-      @create="sendServices"
-      @previous="area.state--"
-      :area="area"
-    />
-    <p>{{ area }}</p>
-  </div>
+    <div id="Area">
+        <SelectService
+            v-if="area.state == 0 || area.state == 2"
+            :services="services"
+            :area="area"
+            @actionServiceId="area.actionServiceId = $event"
+            @reactionServiceId="area.reactionServiceId = $event"
+            @next="area.state++"
+            @save="saveAreaLocalStorage"
+            @previous="area.state--"
+            @loading="loading = true"
+            :type="$route.path.split('/')[2]"
+        />
+        <SelectArea
+            v-else-if="area.state == 1 || area.state == 3"
+            :services="services"
+            :area="area"
+            @actionId="area.actionId = $event"
+            @actionParam="area.actionParam = $event"
+            @reactionId="area.reactionId = $event"
+            @reactionParam="area.reactionParam = $event"
+            @next="area.state++"
+            @previous="area.state--"
+            @save="saveAreaLocalStorage"
+            @loading="loading = false"
+            :type="$route.path.split('/')[2]"
+        />
+        <Overview
+            v-else
+            @create="sendServices"
+            @previous="area.state--"
+            :area="area"
+        />
+        <b-loading :is-full-page="true" v-model="loading"/>
+    </div>
 </template>
 
 <script lang="ts">
@@ -53,7 +55,8 @@ export default vue.extend({
                 reactionServiceId: -1, /** The reaction service ID of the selected service. */
                 reactionId: -1, /** The ID of the selected reaction. */
                 reactionParam: "", /** The parameter linked to the selected reaction */
-            } as Area
+            } as Area,
+            loading: false, /** When the page is loading this variable is set to true */
         }
     },
     mounted() {
@@ -96,10 +99,16 @@ export default vue.extend({
                     reactionServiceId: this.area.reactionServiceId,
                     reactionId: this.area.reactionId,
                     reactionParam: this.area.reactionParam,
+                },
+                {
+                    headers: {
+                        Authorization: this.$store.getters.userToken || "noToken",
+                    }
                 });
                 this.$router.push('/home')
+                this.notification('Your actions - reaction has been created', 'is-success');
             } catch (err) {
-                console.log(err);
+                this.notification(err.response.data.message, 'is-danger');
             }
         },
         /**
@@ -121,8 +130,10 @@ export default vue.extend({
 
 <style scoped lang="scss">
 #Area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 95px;
+    height: 100%;
 }
 </style>

@@ -1,17 +1,22 @@
 <template>
-    <div id="home">
-        <h3>Home</h3>
-        <router-link to="/create/action">
-            <b-button style="is-primary" @click="removeLocalStorageItem">Create</b-button>
-        </router-link>
-        <div v-for="area in areas" :key="area.actionServiceId.toString() + area.actionParam + area.reactionId.toString() + area.actionId.toString()" class="area-list">
+    <div id="Home">
+        <div class="no-area" v-if="!areas.length">
+            <p>You currently have no action - reaction</p>
+        </div>
+        <div v-else class="area-list" v-for="area in areas" :key="area.actionServiceId.toString() + area.actionParam + area.reactionId.toString() + area.actionId.toString()"
+            :style="{ 'background' : `linear-gradient(to right, ${getService(area, 'action') ? getService(area, 'action').backgroundColor : ''}, ${getService(area, 'reaction') ? getService(area, 'reaction').backgroundColor : ''})` }">
             <div class="action" v-if="getService(area, 'action')">
+                <b-image :src="getService(area, 'action').imageUrl"></b-image>
                 <p> {{ getService(area, 'action').name }} </p>
                 <p> {{ getService(area, 'action').actions.find(action => action.id == area.actionId).name }} </p>
             </div>
+            <div class="edit">
+                <p>Edit</p>
+            </div>
             <div class="reaction" v-if="getService(area, 'reaction')">
-                <p> {{ getService(area, 'reaction').name }} </p>
                 <p> {{ getService(area, 'reaction').reactions.find(reaction => reaction.id == area.reactionId).name }} </p>
+                <p> {{ getService(area, 'reaction').name }} </p>
+                <b-image :src="getService(area, 'reaction').imageUrl"></b-image>
             </div>
         </div>
     </div>
@@ -56,7 +61,11 @@ export default vue.extend({
          */
         async getUserAreas(): Promise<void> {
             try {
-                let { data: resp } = await this.$axios.get('/users/areas')
+                let { data: resp } = await this.$axios.get('/users/areas', {
+                    headers: {
+                        Authorization: this.$store.getters.userToken || "noToken",
+                    }
+                })
                 this.areas = resp;
             } catch (err) {
                 console.log(err);
@@ -80,9 +89,49 @@ export default vue.extend({
 </script>
 
 <style scoped lang="scss">
-.area-list {
-    border: 1px solid black;
-    display: flex;
-    justify-content: space-around;
+#Home {
+    padding: 20px;
+    padding-top: 95px;
+    font-family: 'Courier New', Courier, monospace;
+    .no-area {
+        margin-top: 15px;
+    }
+    .area-list {
+        border-radius: 10px;
+        height: 60px;
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+        .action,
+        .reaction {
+            width: 50%;
+            display: flex;
+            align-items: center;
+            :deep(figure) {
+                margin: 10px;
+                max-height: 50px;
+                height: 50px;
+                width: auto;
+            }
+            p {
+                color: white;
+                margin: 15px;
+            }
+        }
+        .reaction {
+            justify-content: flex-end;
+        }
+        .edit {
+            display: flex;
+            align-items: center;
+            text-transform: uppercase;
+            color: white;
+            p {
+                padding: 5px;
+                background-color: rgb(44, 44, 53);
+                cursor: pointer;
+            }
+        }
+    }
 }
 </style>

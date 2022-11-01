@@ -1,13 +1,15 @@
 <template>
     <div id="register">
-        <h3>Register</h3>
-        <section>
-            <b-field label="First Name" label-position="on-border" :type="register.firstName.error != '' ? 'is-danger' : ''" :message="register.firstName.error">
-                <b-input v-model="register.firstName.value" type="firstname" @input="checkNameInput($event, 'firstName')"></b-input>
-            </b-field>
-            <b-field label="Last Name" label-position="on-border" :type="register.lastName.error != '' ? 'is-danger' : ''" :message="register.lastName.error">
-                <b-input v-model="register.lastName.value" type="lastname" @input="checkNameInput($event, 'lastName')"></b-input>
-            </b-field>
+        <section class="registerForm">
+            <h3>Create your account</h3>
+            <div class="names">
+                <b-field label="First Name" label-position="on-border" :type="register.firstName.error != '' ? 'is-danger' : ''" :message="register.firstName.error">
+                    <b-input v-model="register.firstName.value" type="firstname" @input="checkNameInput($event, 'firstName')"></b-input>
+                </b-field>
+                <b-field label="Last Name" label-position="on-border" :type="register.lastName.error != '' ? 'is-danger' : ''" :message="register.lastName.error">
+                    <b-input v-model="register.lastName.value" type="lastname" @input="checkNameInput($event, 'lastName')"></b-input>
+                </b-field>
+            </div>
             <b-field label="E-mail" label-position="on-border" :type="register.email.error != '' ? 'is-danger' : ''" :message="register.email.error">
                 <b-input type="email" v-model="register.email.value" @input="checkEmail($event)"></b-input>
             </b-field>
@@ -22,10 +24,11 @@
                     <b-button @click="validate == true ? sendRegister() : ''" :type="validate == true ? 'is-success is-light' : 'is-danger is-light'">Register</b-button>
                 </div>
             </div>
-            <br/>
-            <router-link to="/login">
-                <a>Already an account ? Login</a>
-            </router-link>
+            <div class="login">
+                <router-link to="/login">
+                    <a>Already an account ? Login</a>
+                </router-link>
+            </div>
         </section>
     </div>
 </template>
@@ -190,14 +193,16 @@ export default vue.extend({
                     'lastName': this.register.lastName.value,
                     'email': this.register.email.value,
                     'password': this.register.password.value,
+                }, {
+                    headers: {
+                        Authorization: this.$store.getters.userToken || "noToken",
+                    }
                 })
                 localStorage.setItem('usr-token', resp.token);
                 this.$store.commit('updateToken', resp.token);
                 this.$router.push('/home');
             } catch (err) {
-                if (err && err.reponse && err.response.data.statusCode == 400)
-                    console.log("E-mail already taken...");
-                console.log(err);
+                this.notification(err.response.data.message, 'is-danger');
             }
         }
     }
@@ -206,6 +211,38 @@ export default vue.extend({
 
 <style scoped lang="scss">
 #register {
+    display: flex;
+    .registerForm {
+        background-color: white;
+        min-width: 400px;
+        width: 450px;
+        height: fit-content;
+        position: absolute;
+        box-shadow: 0 0 30px 1px black;
+        border-radius: 20px;
+        padding: 20px 25px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        h3 {
+            font-size: 40px;
+            margin-bottom: 25px;
+            font-family: Bebas Regular;
+        }
+        .names {
+            display: flex;
+            justify-content: space-between;
+            :deep(.field) {
+                width: 48%;
+            }
+        }
+        :deep(.field) {
+            margin-bottom: 20px;
+        }
+        .login {
+            margin-top: 15px;
+        }
+    }
     .buttonContent {
         transform: translate(calc(50% - 100px), 0%);
         position: relative;

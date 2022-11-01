@@ -1,21 +1,24 @@
 <template>
     <div id="login">
-        <h3>Login</h3>
-        <b-field label="E-mail" label-position="on-border" :type="login.email.error != '' ? 'is-danger' : ''" :message="login.email.error">
-            <b-input type="email" @input="checkEmail($event)" v-model="login.email.value"></b-input>
-        </b-field>
-        <b-field label="Password" label-position="on-border" :type="login.password.error != '' ? 'is-danger' : ''" :message="login.password.error">
-            <b-input type="password" @input="checkPassword()" password-reveal v-model="login.password.value"></b-input>
-        </b-field>
-        <div class="buttonContent">
-            <div ref="loginButton" class="loginButton" @mouseover="validate == false ? moveButton() : ''">
-                <b-button @click="validate == true ? sendLogin() : ''" :type="validate == true ? 'is-success is-light' : 'is-danger is-light'">Login</b-button>
+        <section class="loginForm">
+            <h3>Login</h3>
+            <b-field label="E-mail" label-position="on-border" :type="login.email.error != '' ? 'is-danger' : ''" :message="login.email.error">
+                <b-input type="email" @input="checkEmail($event)" v-model="login.email.value"></b-input>
+            </b-field>
+            <b-field label="Password" label-position="on-border" :type="login.password.error != '' ? 'is-danger' : ''" :message="login.password.error">
+                <b-input type="password" @input="checkPassword()" password-reveal v-model="login.password.value"></b-input>
+            </b-field>
+            <div class="buttonContent">
+                <div ref="loginButton" class="loginButton" @mouseover="validate == false ? moveButton() : ''">
+                    <b-button @click="validate == true ? sendLogin() : ''" :type="validate == true ? 'is-success is-light' : 'is-danger is-light'">Login</b-button>
+                </div>
             </div>
-        </div>
-        <br/>
-        <router-link to="/register">
-            <a>Not account ? Register</a>
-        </router-link>
+            <div class="register">
+                <router-link to="/register">
+                    <a>No account ? Register</a>
+                </router-link>
+            </div>
+        </section>
     </div>
 </template>
 
@@ -122,7 +125,7 @@ export default vue.extend({
                 this.$store.commit('updateToken', resp.token);
                 this.$router.push('/home');
             } catch (err) {
-                console.log(err);
+                this.notification(err.response.data.message, 'is-danger');
             }
         }
     }
@@ -131,6 +134,30 @@ export default vue.extend({
 
 <style scoped lang="scss">
 #login {
+    .loginForm {
+        background-color: white;
+        min-width: 400px;
+        width: 450px;
+        height: fit-content;
+        position: absolute;
+        box-shadow: 0 0 30px 1px black;
+        border-radius: 20px;
+        padding: 20px 25px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        h3 {
+            font-size: 40px;
+            margin-bottom: 25px;
+            font-family: Bebas Regular;
+        }
+        :deep(.field) {
+            margin-bottom: 20px;
+        }
+        .register {
+            margin-top: 15px;
+        }
+    }
     .buttonContent {
         transform: translate(calc(50% - 85px), 0%);
         position: relative;

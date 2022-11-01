@@ -6,3 +6,10 @@ export interface AreaBody {
   reactionId: number;
   reactionParam: string;
 }
+
+export interface EditAreaBody {
+  areaId: number;
+  enabled: boolean | null;
+  actionParam: string | null;
+  reactionParam: string | null;
+}

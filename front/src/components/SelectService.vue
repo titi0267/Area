@@ -1,39 +1,29 @@
 <template>
   <div id="SelectService">
-    <h2>Sélectionnez le service de votre {{ type }}</h2>
+    <h2>Select your {{ type }} service name</h2>
     <div>
-      <b-input @input="debounceInput"></b-input>
+      <b-input class="search-input" @input="debounceInput" placeholder="Enter your service here"></b-input>
       <div class="services">
         <div v-for="service in services" :key="service.name">
-          <div
-            class="service"
+          <div class="service"
+            :style="{ 'background-color': service.backgroundColor }"
             :class="{ selected: service.id == area[type + 'ServiceId'] }"
-            v-if="
-              service[type + 's'].length != 0 &&
-              service.name.toLowerCase().includes(filterInput.toLowerCase())
-            "
-            @click="
-              $emit(type + 'ServiceId', service.id),
-                $emit('save'),
-                getOAuthUrl()
-            "
-          >
-            {{ service.name }}
+            v-if="service[type + 's'].length != 0 && service.name.toLowerCase().includes(filterInput.toLowerCase())"
+            @click="$emit(type + 'ServiceId', service.id), $emit('save'), getOAuthUrl()">
+                <b-image :src="service.imageUrl"></b-image>
+                <p> {{ service.name }} </p>
           </div>
         </div>
       </div>
     </div>
-    <b-button
-      @click="
-        $emit('previous'),
-          $emit('save'),
-          $router.push(area.state == -1 ? '/home' : '/create/action')
-      "
-      >Précédent</b-button
-    >
-    <b-button @click="$emit('next'), $emit('save')">
-      <a :href="oauthURL">Suivant</a></b-button
-    >
+    <div class="buttons">
+        <b-button @click="$emit('previous'), $emit('save'), $router.push(area.state == -1 ? '/home' : '/create/action')">
+          Previous
+        </b-button>
+        <b-button @click="$emit('next'), $emit('save'), $emit('loading'), redirectOAuth()" :disabled="oauthURL == ''">
+          Next
+        </b-button>
+    </div>
   </div>
 </template>
 
@@ -44,9 +34,17 @@ import _ from "lodash";
 export default vue.extend({
   data() {
     return {
-      filterInput: "", /** It's a filter input used for search a service */
-      oauthURL: "", /** This variable contains the oAuth URL of the right service */
+      filterInput: "" /** It's a filter input used for search a service */,
+      oauthURL: "" /** This variable contains the oAuth URL of the right service */,
     };
+  },
+  mounted() {
+    this.$nextTick(() => this.getOAuthUrl());
+  },
+  watch: {
+    services: function(): void {
+        this.$nextTick(() => this.getOAuthUrl());
+    },
   },
   props: {
     type: String, /** Type between 'action' or 'reaction' */
@@ -59,7 +57,7 @@ export default vue.extend({
      * @param {String} input - Text input
      * @data {String} filterInput
      */
-    debounceInput: _.debounce(function (input) {
+    debounceInput: _.debounce(function (input: string): void {
       this.filterInput = input;
     }, 400),
     /**
@@ -71,43 +69,88 @@ export default vue.extend({
      */
     async getOAuthUrl(): Promise<any> {
       try {
-        let serviceIndex = -1;
-        var servicesLength = await Object.keys(this.services).length;
-        for (let i = 0; i < servicesLength; i++) {
-          if (this.services[i].id == this.area[this.type + "ServiceId"])
-            serviceIndex = i;
-        }
-        if (serviceIndex == -1) return;
-        let serviceName = this.services[serviceIndex].name;
-        console.log(serviceName);
-        const { data: url } = await this.$axios.get(
-          "/oauth/" +
-            (serviceName == "Youtube" ? "google" : serviceName.toLowerCase()) +
-            "/link/front"
-        );
+        let serviceName = this.services.find(service => service.id == this.area[this.type + "ServiceId"]).oauthName;
+        if (serviceName == null) return;
+        const { data: url } = await this.$axios.get("/oauth/" + serviceName + "/link/front", {
+            headers: {
+                Authorization: this.$store.getters.userToken || "noToken",
+            }
+        });
         this.oauthURL = url;
-      } catch (e) {
-        console.log(e);
+      } catch {
+        this.oauthURL = '';
       }
     },
+    /**
+     * It's a function that redirects the user to the oAuth URL of the service selected.
+     * @data {String} oauthURL
+     */
+    redirectOAuth(): void {
+      window.location.href = this.oauthURL;
+    }
   },
 });
 </script>
 
-<style lang="scss">
-.services {
-  display: flex;
-}
-
-.service {
-  border: 1px solid black;
-  height: 150px;
-  width: 150px;
-  border-radius: 10px;
-  cursor: pointer;
-  &.selected {
-    border: 3px solid black;
-    background-color: green;
-  }
+<style scoped lang="scss">
+#SelectService {
+    padding: 20px;
+    padding-top: 0px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .search-input {
+        display: flex;
+        justify-content: center;
+        :deep(input) {
+            width: 400px;
+            margin: 10px;
+        }
+    }
+    h2 {
+        font-family: 'Courier New', Courier, monospace;
+    }
+    .buttons {
+        display: flex;
+        position: absolute;
+        padding: 0px 30px;
+        left: 0;
+        width: 100%;
+        bottom: 20px;
+        justify-content: space-between;
+        :deep(button) {
+            width: 100px;
+            span, a {
+                color: hsl(0deg, 0%, 21%);
+            }
+        }
+    }
+    .services {
+        margin: 10px;
+        margin: 10px;
+        display: flex;
+        height: 100%;
+        position: relative;
+        justify-content: center;
+        .service {
+            height: 150px;
+            width: 150px;
+            border-radius: 10px;
+            margin: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 5px;
+            p {
+                font-size: 20px;
+                font-family: Hitmo Regular;
+                text-transform: uppercase;
+            }
+            &.selected:not(p) {
+                outline: 2px solid black;
+            }
+        }
+    }
 }
 </style>

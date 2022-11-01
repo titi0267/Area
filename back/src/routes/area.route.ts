@@ -4,14 +4,21 @@ import { FastifyPluginOptions } from "fastify/types/plugin";
 import { FastifyPluginDoneFunction } from "../types/global.types";
 import { AreaService } from "../services";
 import httpStatus from "http-status";
-import { AreaBody } from "../types/body/areaRequestBody.types";
+import { AreaBody, EditAreaBody } from "../types/body/areaRequestBody.types";
 import * as SecurityHelper from "../helpers/security.helper";
 import authentificationMiddleware from "../middlewares/authentification.middleware";
-import { areaBodyValidator } from "../schema/area.schema";
+import {
+  areaBodyValidator,
+  editAreaBodyValidator,
+} from "../schema/area.schema";
 import { throwBodyError } from "../helpers/error.helpers";
 
 type AreaRequest = FastifyRequest<{
   Body: AreaBody;
+}>;
+
+type EditAreaRequest = FastifyRequest<{
+  Body: EditAreaBody;
 }>;
 
 export default (
@@ -44,6 +51,25 @@ export default (
 
     res.status(httpStatus.OK).send(areas);
   });
+
+  instance.put(
+    "/",
+    { onRequest: [authentificationMiddleware()] },
+    async (req: EditAreaRequest, res: FastifyReply) => {
+      const userInfos = SecurityHelper.getUserInfos(req);
+      if (!editAreaBodyValidator(req.body)) throwBodyError();
+
+      const area = await AreaService.editArea(
+        userInfos.id,
+        req.body.areaId,
+        req.body.enabled,
+        req.body.actionParam,
+        req.body.reactionParam,
+      );
+
+      res.status(httpStatus.OK).send(area);
+    },
+  );
 
   done();
 };

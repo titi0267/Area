@@ -2,9 +2,6 @@ package com.example.area.fragment.area
 
 import android.app.Activity
 import android.content.Intent
-import android.content.Intent.ACTION_VIEW
-import android.hardware.Camera.Area
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,23 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.activity.MainActivity
 import com.example.area.activity.OAuthConnectionActivity
-import com.example.area.activity.UserConnectionActivity
-import com.example.area.adapter.ItemAdapter
 import com.example.area.model.OAuthCode
+import com.example.area.model.UserInfo
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
+import com.google.android.material.textview.MaterialTextView
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -41,6 +35,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
         val sessionManager = SessionManager(context as AreaActivity)
+        val ipPortUrl = (sessionManager.fetchAuthToken("url") ?: return null).dropLast(1).drop(7)
+        val url = sessionManager.fetchAuthToken("url") ?: return view
+        val rep = Repository(url)
+        val viewModelFactory = MainViewModelFactory(rep)
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+
+        getAndDisplayUserInfo(view)
+        view.findViewById<MaterialTextView>(R.id.profile_current_ip_text_value).text = ipPortUrl
         view.findViewById<Button>(R.id.backButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
@@ -52,17 +55,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             sessionManager.removeAuthToken("url");
             startActivity(Intent(context, MainActivity::class.java))
         }
+        view.findViewById<Button>(R.id.profile_change_ip_port_button).setOnClickListener {
+            (context as AreaActivity).changeFragment(ChangeIpPortFragment(), "change_ip_port")
+        }
         return view
     }
 
-    private fun getOAuthLinkRequest(service: String)
-    {
+    private fun getOAuthLinkRequest(service: String) {
         val sessionManager = SessionManager(context as AreaActivity)
-        val url = sessionManager.fetchAuthToken("url") ?: return
-        val rep = Repository(url)
-        val viewModelFactory = MainViewModelFactory(rep)
 
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         viewModel.getServiceLink(service)
         viewModel.linkResponse.observe(viewLifecycleOwner, Observer { response ->
             if (response.isSuccessful) {
@@ -79,15 +80,26 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         })
     }
 
+    private fun getAndDisplayUserInfo(view: View) {
+        val sessionManager = SessionManager(context as AreaActivity)
+        val userToken = sessionManager.fetchAuthToken("user_token") ?: return
+
+        viewModel.getUserInfo(userToken)
+        viewModel.userInfoResponse.observe(viewLifecycleOwner, Observer { response ->
+            if (response.isSuccessful) {
+                val userInfo: UserInfo = response.body()!!
+                view.findViewById<MaterialTextView>(R.id.profile_user_first_name_value).text = userInfo.firstName
+                view.findViewById<MaterialTextView>(R.id.profile_user_last_name_value).text = userInfo.lastName
+                view.findViewById<MaterialTextView>(R.id.profile_user_email_value).text = userInfo.email
+            }
+        })
+    }
+
     private fun postServiceCode(service: String, code: OAuthCode)
     {
         val sessionManager = SessionManager(context as AreaActivity)
-        val url = sessionManager.fetchAuthToken("url") ?: return
         val token = sessionManager.fetchAuthToken("user_token") ?: return
-        val rep = Repository(url)
-        val viewModelFactory = MainViewModelFactory(rep)
 
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         viewModel.postServiceCode(token, service, code)
         viewModel.emptyResponse.observe(viewLifecycleOwner, Observer { response ->
             Log.d("Response", response.code().toString())
@@ -96,5 +108,4 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         })
     }
-
 }

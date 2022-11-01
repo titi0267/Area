@@ -22,4 +22,11 @@ class SessionManager(context: Context) {
         editor.remove(prefName)
         editor.apply()
     }
+
+    fun replaceAuthToken(prefName: String, token: String) {
+        val editor = prefs.edit()
+        editor.remove(prefName)
+        editor.putString(prefName, token)
+        editor.apply()
+    }
 }

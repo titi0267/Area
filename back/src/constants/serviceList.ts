@@ -5,6 +5,8 @@ import * as TwitterReaction from "../area/twitter/twitter.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
 import * as SpotifyAction from "../area/spotify/spotify.actions";
 import * as GithubAction from "../area/github/github.action";
+import * as GmailAction from "../area/gmail/gmail.action";
+import { FORMAT } from "./paramFormat";
 
 export const SERVICES: Service[] = [
   {
@@ -17,21 +19,24 @@ export const SERVICES: Service[] = [
       {
         id: 1,
         actionName: "NewVideoUploaded",
-        actionParamName: "Channel Name",
+        actionParamName: "Channel link",
         fct: YoutubeActions.checkUploadedVideo,
+        paramFormat: FORMAT.youtubeChannelUrl,
         availableInjectParams: ["name", "channelName"],
       },
       {
         id: 2,
         actionName: "NewLikeOnAVideo",
-        actionParamName: "Video Id",
+        actionParamName: "Video link",
         fct: YoutubeActions.checkVideoLike,
+        paramFormat: FORMAT.youtubeVideoUrl,
         availableInjectParams: ["like", "viewCount"],
       },
       {
         id: 3,
         actionName: "New Liked Video",
-        actionParamName: "None",
+        actionParamName: "",
+        paramFormat: null,
         fct: YoutubeActions.checkNewVideoLiked,
         availableInjectParams: ["channel", "title"],
       },
@@ -41,12 +46,14 @@ export const SERVICES: Service[] = [
         id: 1,
         reactionName: "Like a video",
         reactionParamName: "Video to like",
+        paramFormat: null,
         fct: YoutubeReactions.likeVideo,
       },
       {
         id: 2,
         reactionName: "Dislike a video",
         reactionParamName: "Video to dislike",
+        paramFormat: null,
         fct: YoutubeReactions.dislikeVideo,
       },
     ],
@@ -57,12 +64,13 @@ export const SERVICES: Service[] = [
     imageUrl: "https://www.iconsdb.com/icons/preview/white/twitter-xxl.png",
     backgroundColor: "#1DA1F2",
     actions: [],
-    oauthName: "none",
+    oauthName: null,
     reactions: [
       {
         id: 1,
         reactionName: "PostTweet",
         reactionParamName: "Text to write before",
+        paramFormat: null,
         fct: TwitterReaction.postNewTweet,
       },
     ],
@@ -72,13 +80,14 @@ export const SERVICES: Service[] = [
     serviceName: "Discord",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/discord-2-xxl.png",
     backgroundColor: "#5865F2",
-    oauthName: "none",
+    oauthName: null,
     actions: [],
     reactions: [
       {
         id: 1,
         reactionName: "Send a message to général",
         reactionParamName: "Message to write",
+        paramFormat: null,
         fct: DiscordReaction.sendMessageToServer,
       },
     ],
@@ -88,13 +97,14 @@ export const SERVICES: Service[] = [
     serviceName: "Spotify",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/spotify-xxl.png",
     backgroundColor: "#1DB954",
-    oauthName: "none",
+    oauthName: "spotify",
     actions: [
       {
         id: 1,
         actionName: "Skip to next song",
         actionParamName: "Skip song",
         fct: SpotifyAction.checkMusicSkip,
+        paramFormat: null,
         availableInjectParams: ["songName"],
       },
       {
@@ -102,6 +112,7 @@ export const SERVICES: Service[] = [
         actionName: "Get liked track",
         actionParamName: "Liked track",
         fct: SpotifyAction.checkIsMusicLiked,
+        paramFormat: null,
         availableInjectParams: ["songName", "artists"],
       },
     ],
@@ -118,8 +129,27 @@ export const SERVICES: Service[] = [
         id: 1,
         actionName: "New follower",
         actionParamName: "",
+        paramFormat: null,
         fct: GithubAction.checkNewFollowingUser,
         availableInjectParams: ["lastFollowingUserName"],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 6,
+    serviceName: "Gmail",
+    backgroundColor: "FF0000",
+    imageUrl: "https://www.iconsdb.com/icons/preview/white/gmail-login-xxl.png",
+    oauthName: "google",
+    actions: [
+      {
+        id: 1,
+        actionName: "New mail from",
+        actionParamName: "Sender email",
+        fct: GmailAction.newMailFrom,
+        paramFormat: FORMAT.email,
+        availableInjectParams: ["content", "subject"],
       },
     ],
     reactions: [],

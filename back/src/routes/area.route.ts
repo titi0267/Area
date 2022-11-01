@@ -10,8 +10,10 @@ import authentificationMiddleware from "../middlewares/authentification.middlewa
 import {
   areaBodyValidator,
   editAreaBodyValidator,
+  getUserAreaByIdParamValidator,
 } from "../schema/area.schema";
 import { throwBodyError } from "../helpers/error.helpers";
+import { IdParam } from "../types/areaServices/areaServices.types";
 
 type AreaRequest = FastifyRequest<{
   Body: AreaBody;
@@ -19,6 +21,10 @@ type AreaRequest = FastifyRequest<{
 
 type EditAreaRequest = FastifyRequest<{
   Body: EditAreaBody;
+}>;
+
+type GetUserAreaById = FastifyRequest<{
+  Params: IdParam;
 }>;
 
 export default (
@@ -51,6 +57,21 @@ export default (
 
     res.status(httpStatus.OK).send(areas);
   });
+
+  instance.get(
+    "/:id",
+    { onRequest: [authentificationMiddleware()] },
+    async (req: GetUserAreaById, res: FastifyReply) => {
+      const userInfos = SecurityHelper.getUserInfos(req);
+      if (!getUserAreaByIdParamValidator(req.params)) throwBodyError();
+
+      const area = await AreaService.getUserAreaById(
+        userInfos.id,
+        req.params.id,
+      );
+      res.status(httpStatus.OK).send(area);
+    },
+  );
 
   instance.put(
     "/",

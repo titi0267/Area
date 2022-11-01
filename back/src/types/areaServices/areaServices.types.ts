@@ -15,6 +15,10 @@ export interface DiscordInfos {
   discordToken: string;
 }
 
+export interface IdParam {
+  id: number;
+}
+
 interface Action {
   id: number;
   actionName: string;

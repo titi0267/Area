@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "docker": "sleep 20 && prisma migrate deploy && node dist/src/index.js",
+    "docker": "sleep 20 && prisma db push && node dist/src/index.js",
     "start": "ts-node src/index.ts",
     "start:local": "tsc-watch --onSuccess \"node dist/index.js\"",
     "build": "rimraf ./build && tsc",

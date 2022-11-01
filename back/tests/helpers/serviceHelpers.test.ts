@@ -120,6 +120,16 @@ describe("Test injectParamInReaction", () => {
       expect(str).toBe("I'm 12 !");
     });
 
+    test("Test inject multiple valid fields", () => {
+      const test = { age: 12, name: "ludo" };
+      const str = ServiceHelper.injectParamInReaction<typeof test>(
+        "I'm %age% et mon nom est %name% !",
+        test,
+      );
+
+      expect(str).toBe("I'm 12 et mon nom est ludo !");
+    });
+
     test("Test inject empty object field", () => {
       const test = {};
       const str = ServiceHelper.injectParamInReaction<typeof test>(

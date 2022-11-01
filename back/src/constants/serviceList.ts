@@ -1,7 +1,6 @@
 import { Service } from "../types/areaServices/areaServices.types";
 import * as YoutubeActions from "../area/youtube/youtube.action";
 import * as YoutubeReactions from "../area/youtube/youtube.reaction";
-import * as TwitterReaction from "../area/twitter/twitter.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
 import * as SpotifyAction from "../area/spotify/spotify.actions";
 import * as GithubAction from "../area/github/github.action";
@@ -60,23 +59,6 @@ export const SERVICES: Service[] = [
   },
   {
     id: 2,
-    serviceName: "Twitter",
-    imageUrl: "https://www.iconsdb.com/icons/preview/white/twitter-xxl.png",
-    backgroundColor: "#1DA1F2",
-    actions: [],
-    oauthName: null,
-    reactions: [
-      {
-        id: 1,
-        reactionName: "PostTweet",
-        reactionParamName: "Text to write before",
-        paramFormat: null,
-        fct: TwitterReaction.postNewTweet,
-      },
-    ],
-  },
-  {
-    id: 3,
     serviceName: "Discord",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/discord-2-xxl.png",
     backgroundColor: "#5865F2",
@@ -93,7 +75,7 @@ export const SERVICES: Service[] = [
     ],
   },
   {
-    id: 4,
+    id: 3,
     serviceName: "Spotify",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/spotify-xxl.png",
     backgroundColor: "#1DB954",
@@ -119,7 +101,7 @@ export const SERVICES: Service[] = [
     reactions: [],
   },
   {
-    id: 5,
+    id: 4,
     serviceName: "Github",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/github-9-xxl.png",
     backgroundColor: "#000000",
@@ -137,7 +119,7 @@ export const SERVICES: Service[] = [
     reactions: [],
   },
   {
-    id: 6,
+    id: 5,
     serviceName: "Gmail",
     backgroundColor: "FF0000",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/gmail-login-xxl.png",

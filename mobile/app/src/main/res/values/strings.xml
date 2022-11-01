@@ -41,4 +41,6 @@
     <string name="profile_current_ip">Current IP/Port:</string>
     <string name="profile_change_ip_port_button">Change IP/Port</string>
     <string name="profile_edit_ip_port_confirmation">Edit</string>
+    <string name="delete_area">Delete</string>
+    <string name="enable_area">Enable</string>
 </resources>

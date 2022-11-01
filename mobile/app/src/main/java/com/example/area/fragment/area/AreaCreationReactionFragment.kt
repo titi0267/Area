@@ -90,6 +90,7 @@ class AreaCreationReactionFragment(private val actionService: ServiceInfo, priva
                                 ).show()
                                 (context as AreaActivity).changeFragment(AreaListFragment(), "area_list")
                             }
+                            Log.d("Response", response.toString())
                         }
                     } else {
                         Toast.makeText(context as AreaActivity, "Please enter an reaction parameter", Toast.LENGTH_SHORT).show()

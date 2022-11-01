@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.area.MainViewModelFactory
@@ -45,6 +47,10 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
                 view.findViewById<TextView>(R.id.reactionNameInItem).text = abt!!.server.services[item.reactionServiceId-1].reactions[item.reactionId-1].name
                 view.findViewById<TextView>(R.id.reactionParamInItem).text = item.reactionParam
             }
+        }
+        view.findViewById<Switch>(R.id.enableItemListSwitch).setOnCheckedChangeListener { _, isChecked ->
+            val message = if (isChecked) "Switch1:ON" else "Switch1:OFF"
+            Toast.makeText(context as AreaActivity, message, Toast.LENGTH_SHORT).show()
         }
 
         return view

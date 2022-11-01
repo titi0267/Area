@@ -96,6 +96,50 @@ const getReactionFct = (reactionServiceId: number, reactionId: number) => {
   return reaction?.fct || null;
 };
 
+const checkActionFormat = (
+  actionServiceId: number,
+  actionId: number,
+  param: string,
+): boolean => {
+  const doesActionServiceExist = SERVICES.find(
+    service => service.id === actionServiceId,
+  );
+
+  const doesActionExist = doesActionServiceExist?.actions.find(
+    action => action.id === actionId,
+  );
+
+  if (!doesActionServiceExist || !doesActionExist) return false;
+
+  if (!doesActionExist.paramFormat) return true;
+
+  if (!param.match(doesActionExist.paramFormat)) return false;
+
+  return true;
+};
+
+const checkReactionFormat = (
+  reactionServiceId: number,
+  reactionId: number,
+  param: string,
+): boolean => {
+  const doesReactionServiceExist = SERVICES.find(
+    service => service.id === reactionServiceId,
+  );
+
+  const doesReactionExist = doesReactionServiceExist?.reactions.find(
+    reaction => reaction.id === reactionId,
+  );
+
+  if (!doesReactionServiceExist || !doesReactionExist) return false;
+
+  if (!doesReactionExist.paramFormat) return true;
+
+  if (!param.match(doesReactionExist.paramFormat)) return false;
+
+  return true;
+};
+
 const getYoutubeVideoId = (url: string) => {
   let regex = /(\w+:\/+[\w+.]+\/)(watch\?v=)(\w+)/;
 
@@ -192,6 +236,8 @@ const getSpotifyClient = async (userId: number) => {
 
 export {
   rejectInvalidArea,
+  checkActionFormat,
+  checkReactionFormat,
   getActionFct,
   getReactionFct,
   getYoutubeVideoId,

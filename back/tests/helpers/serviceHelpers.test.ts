@@ -127,8 +127,6 @@ describe("Test injectParamInReaction", () => {
         test,
       );
 
-      console.log(str);
-
       expect(str).toBe("I'm 12 et mon nom est ludo !");
     });
 

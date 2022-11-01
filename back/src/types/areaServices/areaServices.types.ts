@@ -5,7 +5,7 @@ export interface Service {
   serviceName: ServiceName;
   imageUrl: string;
   backgroundColor: string;
-  oauthName: OauthService;
+  oauthName: OauthService | null;
   actions: Action[];
   reactions: Reaction[];
 }
@@ -20,6 +20,8 @@ interface Action {
   actionName: string;
   actionParamName: string;
   availableInjectParams: string[];
+  paramFormat: RegExp | null;
+  description: string;
   fct: (area: Area) => Promise<string | null>;
 }
 
@@ -27,6 +29,8 @@ interface Reaction {
   id: number;
   reactionName: string;
   reactionParamName: string;
+  paramFormat: RegExp | null;
+  description: string;
   fct: (reactionParam: string, userId: number) => void;
 }
 
@@ -35,6 +39,7 @@ export type ServiceName =
   | "Twitter"
   | "Discord"
   | "Spotify"
-  | "Github";
+  | "Github"
+  | "Gmail";
 
-export type OauthService = "google" | "spotify" | "github" | "none";
+export type OauthService = "google" | "spotify" | "github";

@@ -1,8 +1,5 @@
 <template>
-    <div id="Overview">
-        {{ area }}
-        <b-button @click="$emit('previous'), $router.push('/create/reaction')">Précédent</b-button>
-        <b-button @click="$emit('create')">Créer</b-button>
+    <div id="Profile">
     </div>
 </template>
 
@@ -14,11 +11,19 @@ export default vue.extend({
         return {
         }
     },
-    props: {
-        area: Object,
+    mounted() {
     },
+    props: {
+    },
+    components: {
+    },
+    methods: {
+    }
 })
 </script>
 
 <style lang="scss" scoped>
+#Profile {
+    padding-top: 95px;
+}
 </style>

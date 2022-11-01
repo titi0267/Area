@@ -1,10 +1,11 @@
 import { Service } from "../types/areaServices/areaServices.types";
 import * as YoutubeActions from "../area/youtube/youtube.action";
 import * as YoutubeReactions from "../area/youtube/youtube.reaction";
-import * as TwitterReaction from "../area/twitter/twitter.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
 import * as SpotifyAction from "../area/spotify/spotify.actions";
 import * as GithubAction from "../area/github/github.action";
+import * as GmailAction from "../area/gmail/gmail.action";
+import { FORMAT } from "./paramFormat";
 
 export const SERVICES: Service[] = [
   {
@@ -16,23 +17,29 @@ export const SERVICES: Service[] = [
     actions: [
       {
         id: 1,
-        actionName: "NewVideoUploaded",
-        actionParamName: "Channel Name",
+        actionName: "New Video Uploaded",
+        actionParamName: "Channel link",
         fct: YoutubeActions.checkUploadedVideo,
+        paramFormat: FORMAT.youtubeChannelUrl,
+        description: "A new video has been upload on a channel",
         availableInjectParams: ["name", "channelName"],
       },
       {
         id: 2,
-        actionName: "NewLikeOnAVideo",
-        actionParamName: "Video Id",
+        actionName: "New like on a video",
+        actionParamName: "Video link",
         fct: YoutubeActions.checkVideoLike,
+        paramFormat: FORMAT.youtubeVideoUrl,
+        description: "A new person has liked a specific video",
         availableInjectParams: ["like", "viewCount"],
       },
       {
         id: 3,
         actionName: "New Liked Video",
-        actionParamName: "None",
+        actionParamName: "",
+        paramFormat: null,
         fct: YoutubeActions.checkNewVideoLiked,
+        description: "You liked a new video",
         availableInjectParams: ["channel", "title"],
       },
     ],
@@ -41,66 +48,61 @@ export const SERVICES: Service[] = [
         id: 1,
         reactionName: "Like a video",
         reactionParamName: "Video to like",
+        paramFormat: null,
+        description: "Your account will like a specific video",
         fct: YoutubeReactions.likeVideo,
       },
       {
         id: 2,
         reactionName: "Dislike a video",
         reactionParamName: "Video to dislike",
+        paramFormat: null,
+        description: "Your account will dislike a specific video",
         fct: YoutubeReactions.dislikeVideo,
       },
     ],
   },
   {
     id: 2,
-    serviceName: "Twitter",
-    imageUrl: "https://www.iconsdb.com/icons/preview/white/twitter-xxl.png",
-    backgroundColor: "#1DA1F2",
-    actions: [],
-    oauthName: "none",
-    reactions: [
-      {
-        id: 1,
-        reactionName: "PostTweet",
-        reactionParamName: "Text to write before",
-        fct: TwitterReaction.postNewTweet,
-      },
-    ],
-  },
-  {
-    id: 3,
     serviceName: "Discord",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/discord-2-xxl.png",
     backgroundColor: "#5865F2",
-    oauthName: "none",
+    oauthName: null,
     actions: [],
     reactions: [
       {
         id: 1,
-        reactionName: "Send a message to général",
+        reactionName: "Send a message",
         reactionParamName: "Message to write",
+        paramFormat: null,
+        description:
+          "The discord bot send a message to the first server text channel",
         fct: DiscordReaction.sendMessageToServer,
       },
     ],
   },
   {
-    id: 4,
+    id: 3,
     serviceName: "Spotify",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/spotify-xxl.png",
     backgroundColor: "#1DB954",
-    oauthName: "none",
+    oauthName: "spotify",
     actions: [
       {
         id: 1,
         actionName: "Skip to next song",
         actionParamName: "Skip song",
+        paramFormat: null,
+        description: "You skipped a song",
         fct: SpotifyAction.checkMusicSkip,
         availableInjectParams: ["songName"],
       },
       {
         id: 2,
-        actionName: "Get liked track",
+        actionName: "New liked song",
         actionParamName: "Liked track",
+        paramFormat: null,
+        description: "You liked a new song",
         fct: SpotifyAction.checkIsMusicLiked,
         availableInjectParams: ["songName", "artists"],
       },
@@ -108,7 +110,7 @@ export const SERVICES: Service[] = [
     reactions: [],
   },
   {
-    id: 5,
+    id: 4,
     serviceName: "Github",
     imageUrl: "https://www.iconsdb.com/icons/preview/white/github-9-xxl.png",
     backgroundColor: "#000000",
@@ -118,8 +120,29 @@ export const SERVICES: Service[] = [
         id: 1,
         actionName: "New follower",
         actionParamName: "",
+        paramFormat: null,
+        description: "You have a new follower",
         fct: GithubAction.checkNewFollowingUser,
         availableInjectParams: ["lastFollowingUserName"],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 5,
+    serviceName: "Gmail",
+    backgroundColor: "FF0000",
+    imageUrl: "https://www.iconsdb.com/icons/preview/white/gmail-login-xxl.png",
+    oauthName: "google",
+    actions: [
+      {
+        id: 1,
+        actionName: "New mail from",
+        actionParamName: "Sender email",
+        paramFormat: FORMAT.email,
+        description: "You've got a new mail from an address",
+        fct: GmailAction.newMailFrom,
+        availableInjectParams: ["content", "subject"],
       },
     ],
     reactions: [],

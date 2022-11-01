@@ -12,8 +12,10 @@ import { TokenService } from "../services";
 const rejectInvalidArea = (
   actionServiceId: number,
   actionId: number,
+  actionParam: string,
   reactionServiceId: number,
   reactionId: number,
+  reactionParam: string,
 ) => {
   const doesActionServiceExist = SERVICES.find(
     service => service.id === actionServiceId,
@@ -30,6 +32,30 @@ const rejectInvalidArea = (
   const doesReactionExist = doesReactionServiceExist?.reactions.find(
     reaction => reaction.id === reactionId,
   );
+
+  if (
+    doesActionExist?.paramFormat &&
+    !actionParam.match(doesActionExist.paramFormat)
+  ) {
+    throw new ClientError({
+      name: "Invalid Param",
+      message: "Action param does not match the require format",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  if (
+    doesReactionExist?.paramFormat &&
+    !reactionParam.match(doesReactionExist.paramFormat)
+  ) {
+    throw new ClientError({
+      name: "Invalid Param",
+      message: "Reaction param does not match the require format",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
 
   if (
     !doesActionExist ||
@@ -70,6 +96,50 @@ const getReactionFct = (reactionServiceId: number, reactionId: number) => {
   return reaction?.fct || null;
 };
 
+const checkActionFormat = (
+  actionServiceId: number,
+  actionId: number,
+  param: string,
+): boolean => {
+  const doesActionServiceExist = SERVICES.find(
+    service => service.id === actionServiceId,
+  );
+
+  const doesActionExist = doesActionServiceExist?.actions.find(
+    action => action.id === actionId,
+  );
+
+  if (!doesActionServiceExist || !doesActionExist) return false;
+
+  if (!doesActionExist.paramFormat) return true;
+
+  if (!param.match(doesActionExist.paramFormat)) return false;
+
+  return true;
+};
+
+const checkReactionFormat = (
+  reactionServiceId: number,
+  reactionId: number,
+  param: string,
+): boolean => {
+  const doesReactionServiceExist = SERVICES.find(
+    service => service.id === reactionServiceId,
+  );
+
+  const doesReactionExist = doesReactionServiceExist?.reactions.find(
+    reaction => reaction.id === reactionId,
+  );
+
+  if (!doesReactionServiceExist || !doesReactionExist) return false;
+
+  if (!doesReactionExist.paramFormat) return true;
+
+  if (!param.match(doesReactionExist.paramFormat)) return false;
+
+  return true;
+};
+
 const getYoutubeVideoId = (url: string) => {
   let regex = /(\w+:\/+[\w+.]+\/)(watch\?v=)(\w+)/;
 
@@ -94,19 +164,22 @@ const injectParamInReaction = <T extends Object>(
   reactionParam: string,
   param: T,
 ): string => {
-  const matchParamRegex = /(%(\w+)%)/;
-  const replaceRegex = /(%\w+%)/;
+  const matchParamRegex = /(%(\w+)%)/g;
 
-  const matches = reactionParam.match(matchParamRegex);
+  const matches = reactionParam.matchAll(matchParamRegex);
 
-  if (!matches || !matches[2]) return reactionParam;
-  const key = matches[2];
+  for (const match of matches) {
+    if (!match || !match[2]) continue;
 
-  if (!param.hasOwnProperty(key)) return reactionParam;
+    const key = match[2];
 
-  const value = String(param[key as keyof T]);
+    if (!param.hasOwnProperty(key)) continue;
+    const value = String(param[key as keyof T]);
 
-  return reactionParam.replace(replaceRegex, value);
+    reactionParam = reactionParam.replace("%" + key + "%", value);
+  }
+
+  return reactionParam;
 };
 
 const getGoogleOauthClient = async (
@@ -170,6 +243,8 @@ const getSpotifyPlaylistId = (playlistId: string) => {
 
 export {
   rejectInvalidArea,
+  checkActionFormat,
+  checkReactionFormat,
   getActionFct,
   getReactionFct,
   getYoutubeVideoId,

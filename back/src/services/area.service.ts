@@ -149,6 +149,38 @@ const editArea = async (
     });
   }
 
+  if (
+    actionParam !== null &&
+    !ServiceHelper.checkActionFormat(
+      doesAreaExist.actionServiceId,
+      doesAreaExist.actionId,
+      actionParam,
+    )
+  ) {
+    throw new ClientError({
+      name: "Invalid Param",
+      message: "Action param does not match the require format",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  if (
+    reactionParam !== null &&
+    !ServiceHelper.checkReactionFormat(
+      doesAreaExist.reactionServiceId,
+      doesAreaExist.reactionId,
+      reactionParam,
+    )
+  ) {
+    throw new ClientError({
+      name: "Invalid Param",
+      message: "Reaction param does not match the require format",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
   const area = await prisma.area.update({
     where: { id: areaId },
     data: {

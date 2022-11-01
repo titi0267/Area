@@ -120,19 +120,22 @@ const injectParamInReaction = <T extends Object>(
   reactionParam: string,
   param: T,
 ): string => {
-  const matchParamRegex = /(%(\w+)%)/;
-  const replaceRegex = /(%\w+%)/;
+  const matchParamRegex = /(%(\w+)%)/g;
 
-  const matches = reactionParam.match(matchParamRegex);
+  const matches = reactionParam.matchAll(matchParamRegex);
 
-  if (!matches || !matches[2]) return reactionParam;
-  const key = matches[2];
+  for (const match of matches) {
+    if (!match || !match[2]) continue;
 
-  if (!param.hasOwnProperty(key)) return reactionParam;
+    const key = match[2];
 
-  const value = String(param[key as keyof T]);
+    if (!param.hasOwnProperty(key)) continue;
+    const value = String(param[key as keyof T]);
 
-  return reactionParam.replace(replaceRegex, value);
+    reactionParam = reactionParam.replace("%" + key + "%", value);
+  }
+
+  return reactionParam;
 };
 
 const getGoogleOauthClient = async (

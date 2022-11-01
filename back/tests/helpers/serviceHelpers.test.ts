@@ -191,3 +191,23 @@ describe("Test getGithubClient", () => {
     });
   });
 });
+
+describe("Test action Format", () => {
+  describe("Test valid cases", () => {
+    test("Test with a valid action format", async () => {
+      const isWellFormated = ServiceHelper.checkActionFormat(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+      );
+
+      expect(isWellFormated).toBe(true);
+    });
+
+    test("Test with a valid action format", async () => {
+      const isWellFormated = ServiceHelper.checkActionFormat(1, 1, "test");
+
+      expect(isWellFormated).toBe(false);
+    });
+  });
+});

@@ -357,5 +357,28 @@ describe("Test edit area", () => {
         await UserService.removeUserById(users[1].id);
       }
     });
+
+    test("Edit area with valid ids but actionParam has bad format", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      const area = await AreaService.createArea(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
+
+      try {
+        await AreaService.editArea(users[0].id, area.id, null, "lol", null);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+        await AreaService.removeAreaById(area.id);
+        await UserService.removeUserById(users[0].id);
+      }
+    });
   });
 });

@@ -21,6 +21,7 @@ interface Action {
   actionParamName: string;
   availableInjectParams: string[];
   paramFormat: RegExp | null;
+  description: string;
   fct: (area: Area) => Promise<string | null>;
 }
 
@@ -29,6 +30,7 @@ interface Reaction {
   reactionName: string;
   reactionParamName: string;
   paramFormat: RegExp | null;
+  description: string;
   fct: (reactionParam: string, userId: number) => void;
 }
 

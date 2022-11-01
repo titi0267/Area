@@ -10,6 +10,7 @@ class SessionManager(context: Context) {
     fun saveAuthToken(prefName: String, token: String) {
         val editor = prefs.edit()
         editor.putString(prefName, token)
+        editor.apply()
     }
 
     fun fetchAuthToken(prefName: String): String? {

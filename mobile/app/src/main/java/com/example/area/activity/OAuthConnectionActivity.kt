@@ -26,7 +26,12 @@ class OAuthConnectionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sessionManager = SessionManager(this)
         val link = intent.getStringExtra("link") ?: return
+        val service = intent.getStringExtra("service") ?: return
+
+        sessionManager.saveAuthToken("service", service)
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
         finish()
     }
@@ -39,7 +44,26 @@ class OAuthConnectionActivity : AppCompatActivity() {
         if (!uri.toString().startsWith("http://localhost"))
             return
         val code = uri.getQueryParameter("code") ?: return
-        sessionManager.saveAuthToken("code", code)
-        finish()
+        val service = sessionManager.fetchAuthToken("service") ?: return
+        sessionManager.removeAuthToken("service")
+        postServiceCode(service, OAuthCode(code))
+    }
+
+    private fun postServiceCode(service: String, code: OAuthCode)
+    {
+        val sessionManager = SessionManager(this)
+        val token = sessionManager.fetchAuthToken("user_token") ?: return
+        val url = sessionManager.fetchAuthToken("url") ?: return
+        val rep = Repository(url)
+        val viewModelFactory = MainViewModelFactory(rep)
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        viewModel.postServiceCode(token, service, code)
+        viewModel.emptyResponse.observe(this, Observer { response ->
+            if (response.isSuccessful) {
+                Toast.makeText(this, "Code successfully added", Toast.LENGTH_SHORT).show()
+            }
+            finish()
+        })
     }
 }

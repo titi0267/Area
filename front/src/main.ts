@@ -3,10 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from './axiosInstance'
+import { Notifications } from './mixins'
 
 import i18n from './lang/i18n'
 import Buefy from 'buefy'
-import "../public/assets/buefy.scss"
+import "@/assets/buefy.scss"
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -27,12 +28,14 @@ Vue.use(Buefy, {
                 'is-medium': '2x',
                 'is-large': '3x'
             },
+            iconPrefix: "",
         },
     },
-    css: true,
 });
 
 Vue.prototype.$axios = axios;
+
+Vue.mixin(Notifications);
 
 new Vue({
     i18n,

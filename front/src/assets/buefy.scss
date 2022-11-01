@@ -13,6 +13,10 @@ $twitter-invert: findColorInvert($twitter);
 $custom-colors: null !default;
 $custom-shades: null !default;
 
+// Icons size
+$icon-svg-height: 27px;
+$icon-svg-width: 27px;
+
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: mergeColorMaps(
     (

@@ -41,7 +41,7 @@ describe("Test getActionFct", () => {
 describe("Test getReactionFct", () => {
   describe("Test valid cases", () => {
     test("Test if valid return a fct", () => {
-      const reaction = ServiceHelper.getReactionFct(3, 1);
+      const reaction = ServiceHelper.getReactionFct(2, 1);
 
       expect(typeof reaction).toBe("function");
     });

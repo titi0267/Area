@@ -1,9 +1,5 @@
 import Ajv, { JSONSchemaType } from "ajv";
-import {
-  AreaBody,
-  DeleteAreaBody,
-  EditAreaBody,
-} from "../types/body/areaRequestBody.types";
+import { AreaBody, EditAreaBody } from "../types/body/areaRequestBody.types";
 import { IdParam } from "../types/areaServices/areaServices.types";
 
 const ajv = new Ajv();
@@ -41,12 +37,12 @@ const editAreaBodySchema: JSONSchemaType<EditAreaBody> = {
   additionalProperties: false,
 };
 
-const deleteAreaBodySchema: JSONSchemaType<DeleteAreaBody> = {
+const deleteAreaParamSchema: JSONSchemaType<IdParam> = {
   type: "object",
   properties: {
-    areaId: { type: "number" },
+    id: { type: "number" },
   },
-  required: ["areaId"],
+  required: ["id"],
 };
 
 const getUserAreaByIdParamSchema: JSONSchemaType<IdParam> = {
@@ -62,7 +58,7 @@ const areaBodyValidator = ajv.compile(areaBodySchema);
 
 const editAreaBodyValidator = ajv.compile(editAreaBodySchema);
 
-const deleteAreaBodyValidator = ajv.compile(deleteAreaBodySchema);
+const deleteAreaParamValidator = ajv.compile(deleteAreaParamSchema);
 
 const getUserAreaByIdParamValidator = ajv.compile(getUserAreaByIdParamSchema);
 
@@ -70,5 +66,5 @@ export {
   areaBodyValidator,
   editAreaBodyValidator,
   getUserAreaByIdParamValidator,
-  deleteAreaBodyValidator,
+  deleteAreaParamValidator,
 };

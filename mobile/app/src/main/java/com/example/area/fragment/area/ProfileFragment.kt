@@ -1,6 +1,5 @@
 package com.example.area.fragment.area
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +16,6 @@ import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.activity.MainActivity
 import com.example.area.activity.OAuthConnectionActivity
-import com.example.area.model.OAuthCode
 import com.example.area.model.UserInfo
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
@@ -47,7 +44,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             (context as AreaActivity).onBackPressed()
         }
         view.findViewById<Button>(R.id.oauth_github_button).setOnClickListener {
-            getOAuthLinkRequest("spotify")
+            getOAuthLinkRequest("spotify", sessionManager)
         }
         view.findViewById<Button>(R.id.profileLogoutButton).setOnClickListener {
             sessionManager.removeAuthToken("user_token");
@@ -60,8 +57,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         return view
     }
 
-    private fun getOAuthLinkRequest(service: String) {
-        viewModel.getServiceLink(service)
+    private fun getOAuthLinkRequest(service: String, sessionManager: SessionManager) {
+        viewModel.getServiceLink(sessionManager.fetchAuthToken("user_token")!!, service)
         viewModel.linkResponse.observe(viewLifecycleOwner, Observer { response ->
             if (response.isSuccessful) {
                 val oAuthLink = response.body()!!.toString()

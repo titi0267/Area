@@ -31,7 +31,7 @@ export default (
                   id: action.id,
                   name: action.actionName,
                   actionParamName: action.actionParamName,
-                  description: "",
+                  description: action.description,
                   availableInjectParams: action.availableInjectParams,
                 };
               }),
@@ -40,7 +40,7 @@ export default (
                   id: reaction.id,
                   name: reaction.reactionName,
                   reactionParamName: reaction.reactionParamName,
-                  description: "",
+                  description: reaction.description,
                 };
               }),
             };

@@ -357,6 +357,109 @@ describe("Test edit area", () => {
         await UserService.removeUserById(users[1].id);
       }
     });
+
+    test("Edit area with valid ids but actionParam has bad format", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      const area = await AreaService.createArea(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
+
+      try {
+        await AreaService.editArea(users[0].id, area.id, null, "lol", null);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+        await AreaService.removeAreaById(area.id);
+        await UserService.removeUserById(users[0].id);
+      }
+    });
+  });
+});
+
+describe("Test get user area by id", () => {
+  describe("Test working cases", () => {
+    test("Get one valid area", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      const area = await AreaService.createArea(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
+
+      const areaNext = await AreaService.getUserAreaById(users[0].id, area.id);
+
+      expect(area.actionParam).toBe(
+        "https://www.youtube.com/c/VilebrequinAuto",
+      );
+      expect(areaNext.actionParam).toBe(
+        "https://www.youtube.com/c/VilebrequinAuto",
+      );
+      expect(area.reactionParam).toBe("test");
+      expect(areaNext.reactionParam).toBe("test");
+
+      await AreaService.removeAreaById(area.id);
+      await UserService.removeUserById(users[0].id);
+    });
+  });
+
+  describe("Test invalid cases", () => {
+    test("Edit area with invalid userId", async () => {
+      try {
+        await AreaService.getUserAreaById(45, 45);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
+
+    test("Edit area with invalid areaId", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      try {
+        await AreaService.getUserAreaById(users[0].id, 45);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+        await UserService.removeUserById(users[0].id);
+      }
+    });
+
+    test("Get area with valid ids but area didn't belong to user", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      await UserService.createUser("Ludo", "Str", "test@gmail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      const area = await AreaService.createArea(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
+
+      try {
+        await AreaService.getUserAreaById(users[1].id, area.id);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.UNAUTHORIZED);
+        await AreaService.removeAreaById(area.id);
+        await UserService.removeUserById(users[0].id);
+        await UserService.removeUserById(users[1].id);
+      }
+    });
   });
 });
 

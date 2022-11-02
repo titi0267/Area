@@ -4,61 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/request_button"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/login_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login_request"
-        app:layout_constraintTop_toBottomOf="@id/login_password_field_layout"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/login_title"
+        android:textSize="34sp"
+        app:fontFamily="@font/bebas_neue"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/login_ip_field_layout"
-        android:layout_width="160dp"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/login_or"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/register_ip_field_hint"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        app:helperTextEnabled="true"
-        app:helperText="@string/register_ip_helper_text"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/login_email_field_layout"
-        app:layout_constraintStart_toStartOf="@id/login_email_field_layout"
-        app:errorEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/login_ip_field_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:digits="0123456789."
-            android:inputType="numberDecimal" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/login_port_field_layout"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/register_port_field_hint"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:paddingStart="16dp"
-        app:helperTextEnabled="true"
-        app:helperText="@string/register_port_helper_text"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/login_email_field_layout"
-        app:layout_constraintStart_toEndOf="@id/login_ip_field_layout"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/login_port_field_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:digits="0123456789"
-            android:inputType="numberDecimal" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_marginTop="16dp"
+        android:text="@string/login_or"
+        android:textSize="12sp"
+        app:fontFamily="@font/avenir_lt_std_55_roman"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/request_button" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_email_field_layout"
@@ -66,12 +33,13 @@
         android:layout_height="wrap_content"
         android:hint="@string/register_email_field_hint"
         android:paddingBottom="16dp"
-        app:helperTextEnabled="true"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:helperText="@string/register_email_helper_text"
-        app:layout_constraintTop_toBottomOf="@id/login_port_field_layout"
+        app:helperTextEnabled="true"
         app:layout_constraintBottom_toTopOf="@id/login_password_field_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_title">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/login_email_field_edit_text"
@@ -86,13 +54,14 @@
         android:layout_height="wrap_content"
         android:hint="@string/register_password_hint"
         android:paddingBottom="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:endIconMode="password_toggle"
+        app:errorEnabled="true"
         app:helperTextEnabled="true"
-        app:layout_constraintTop_toBottomOf="@id/login_password_field_layout"
         app:layout_constraintBottom_toTopOf="@id/request_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:errorEnabled="true">
+        app:layout_constraintTop_toBottomOf="@id/login_password_field_layout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/login_password_field_edit_text"
@@ -100,5 +69,45 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/request_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_request"
+        android:textSize="18sp"
+        android:fontFamily="@font/avenir_lt_std_55_roman"
+        style="@style/Widget.Material3.Button.TextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_password_field_layout" />
+
+    <Button
+        android:id="@+id/login_with_google_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_with_google"
+        android:textSize="18sp"
+        android:fontFamily="@font/avenir_lt_std_55_roman"
+        android:layout_marginTop="16dp"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
+        app:icon="@drawable/white_google_logo"
+        app:iconPadding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_or" />
+
+    <Button
+        android:id="@+id/login_redirect_to_register_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_redirect_to_register"
+        android:textSize="11sp"
+        android:fontFamily="@font/avenir_lt_std_55_roman"
+        android:layout_marginTop="32dp"
+        style="@style/Widget.Material3.Button.TextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_with_google_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

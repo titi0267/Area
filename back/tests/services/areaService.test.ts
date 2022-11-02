@@ -462,3 +462,78 @@ describe("Test get user area by id", () => {
     });
   });
 });
+
+describe("Test delete User area", () => {
+  describe("Test working cases", () => {
+    test("Delete one area", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      const area = await AreaService.createArea(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
+
+      const deletedArea = await AreaService.removeUserArea(
+        users[0].id,
+        area.id,
+      );
+
+      expect(area.id).toBe(deletedArea.id);
+
+      await UserService.removeUserById(users[0].id);
+    });
+  });
+
+  describe("Test invalid cases", () => {
+    test("Delete area with invalid userId", async () => {
+      try {
+        await AreaService.removeUserArea(45, 1);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
+
+    test("Delete area with invalid areaId", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      try {
+        await AreaService.removeUserArea(users[0].id, 1);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+        await UserService.removeUserById(users[0].id);
+      }
+    });
+
+    test("Remove area with valid ids but area didn't belong to user", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      await UserService.createUser("Ludo", "Str", "test@gmail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      const area = await AreaService.createArea(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+        2,
+        1,
+        "test",
+        users[0].id,
+      );
+
+      try {
+        await AreaService.removeUserArea(users[1].id, area.id);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.UNAUTHORIZED);
+        await AreaService.removeAreaById(area.id);
+        await UserService.removeUserById(users[0].id);
+        await UserService.removeUserById(users[1].id);
+      }
+    });
+  });
+});

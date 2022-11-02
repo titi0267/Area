@@ -10,6 +10,7 @@ import authentificationMiddleware from "../middlewares/authentification.middlewa
 import {
   areaBodyValidator,
   editAreaBodyValidator,
+  deleteAreaParamValidator,
   getUserAreaByIdParamValidator,
 } from "../schema/area.schema";
 import { throwBodyError } from "../helpers/error.helpers";
@@ -21,6 +22,10 @@ type AreaRequest = FastifyRequest<{
 
 type EditAreaRequest = FastifyRequest<{
   Body: EditAreaBody;
+}>;
+
+type DeleteAreaRequest = FastifyRequest<{
+  Params: IdParam;
 }>;
 
 type GetUserAreaById = FastifyRequest<{
@@ -86,6 +91,22 @@ export default (
         req.body.enabled,
         req.body.actionParam,
         req.body.reactionParam,
+      );
+
+      res.status(httpStatus.OK).send(area);
+    },
+  );
+
+  instance.delete(
+    "/:id",
+    { onRequest: [authentificationMiddleware()] },
+    async (req: DeleteAreaRequest, res: FastifyReply) => {
+      const userInfos = SecurityHelper.getUserInfos(req);
+      if (!deleteAreaParamValidator(req.params)) throwBodyError();
+
+      const area = await AreaService.removeUserArea(
+        userInfos.id,
+        req.params.id,
       );
 
       res.status(httpStatus.OK).send(area);

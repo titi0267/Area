@@ -58,15 +58,4 @@ const checkIsMusicLiked = async (area: Area): Promise<string | null> => {
   return null;
 };
 
-const addTrackToPlaylist = async (area: Area): Promise<string | null> => {
-  const spotifyApi = await ServiceHelper.getSpotifyClient(area.userId);
-
-  if (!spotifyApi) return null;
-  const playlistId = ServiceHelper.getSpotifyPlaylistId(area.actionParam);
-
-  if (playlistId == null) return null;
-
-  const addToPlaylist = await spotifyApi.addTracksToPlaylist(playlistId, );
-};
-
 export { checkMusicSkip, checkIsMusicLiked };

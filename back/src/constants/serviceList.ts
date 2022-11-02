@@ -3,6 +3,7 @@ import * as YoutubeActions from "../area/youtube/youtube.action";
 import * as YoutubeReactions from "../area/youtube/youtube.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
 import * as SpotifyAction from "../area/spotify/spotify.actions";
+import * as SpotifyReaction from "../area/spotify/spotify.reactions";
 import * as GithubAction from "../area/github/github.action";
 import * as GmailAction from "../area/gmail/gmail.action";
 import { FORMAT } from "./paramFormat";
@@ -107,7 +108,17 @@ export const SERVICES: Service[] = [
         availableInjectParams: ["songName", "artists"],
       },
     ],
-    reactions: [],
+    reactions: [
+      {
+        id: 1,
+        reactionName: "Add a song to Area playlist",
+        reactionParamName: "Add a track to your Area playlist",
+        paramFormat: null,
+        description:
+          "You'll have a new song added into a playlist called Area (created if it doesn't exist)",
+        fct: SpotifyReaction.addTrackToPlaylist,
+      },
+    ],
   },
   {
     id: 4,

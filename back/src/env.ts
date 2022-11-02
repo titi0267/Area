@@ -6,6 +6,7 @@ const ENV = {
   port: (process.env.PORT as string) || "8080",
   secret: process.env.SECRET as string,
   clientPort: (process.env.CLIENT_PORT as string) || "8081",
+  clientUrl: (process.env.CLIENT_URL as string) || "localhost",
   googleApiKey: process.env.YOUTUBE_API_TOKEN as string,
   googleClientId: process.env.GOOGLE_CLIENT_ID as string,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET as string,

@@ -87,6 +87,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 view.findViewById<MaterialTextView>(R.id.profile_user_last_name_value).text = userInfo.lastName
                 view.findViewById<MaterialTextView>(R.id.profile_user_email_value).text = userInfo.email
             }
+            Log.d("Shit", response.toString())
         })
     }
 }

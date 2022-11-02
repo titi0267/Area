@@ -10,21 +10,25 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.data.Datasource
 import com.example.area.model.ActionReaction
 import com.example.area.model.AreaInfo
+import com.example.area.model.EnableDisable
 import com.example.area.model.about.About
 import com.example.area.repository.Repository
 import com.example.area.utils.AboutJsonCreator
 import com.example.area.utils.SessionManager
 import org.w3c.dom.Text
+import androidx.lifecycle.Observer
 
 class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout.fragment_area_list_item) {
 
     private var abt: About? = null
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +37,8 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
         val about = AboutJsonCreator()
+        val sessionManager = SessionManager(context as AreaActivity)
+        lateinit var enable: EnableDisable
 
         view.findViewById<Button>(R.id.backFromAreaListItemButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
@@ -50,6 +56,13 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         }
         view.findViewById<Switch>(R.id.enableItemListSwitch).setOnCheckedChangeListener { _, isChecked ->
             val message = if (isChecked) "Switch1:ON" else "Switch1:OFF"
+            enable = EnableDisable(item.id, isChecked)
+            viewModel.putEnableDisable(sessionManager.fetchAuthToken("user_token")!!, enable)
+            viewModel.enableResponse.observe(context as AreaActivity, Observer { response ->
+                if (response.isSuccessful) {
+                    Toast.makeText(context as AreaActivity, (if (isChecked) "Enabled" else "Disabled"), Toast.LENGTH_SHORT).show()
+                }
+            })
             Toast.makeText(context as AreaActivity, message, Toast.LENGTH_SHORT).show()
         }
 

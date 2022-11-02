@@ -34,4 +34,6 @@ interface SimpleApi {
     @POST("/oauth/{service}")
     suspend fun postServiceCode(@Header("Authorization") auth: String, @Path("service") service: String, @Body post: OAuthCode) : Response<Unit>
 
+    @PUT("/areas")
+    suspend fun putEnableDisable(@Header("Authorization") auth: String, @Body put: EnableDisable): Response<ActionReaction>
 }

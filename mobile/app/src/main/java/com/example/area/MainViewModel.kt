@@ -23,6 +23,7 @@ class MainViewModel(private val repository: Repository):ViewModel() {
     val userResponse: MutableLiveData<Response<Token>> = MutableLiveData()
     val aboutResponse: MutableLiveData<Response<About>> = MutableLiveData()
     val userResponse2: MutableLiveData<Response<List<ActionReaction>>> = MutableLiveData()
+    val enableResponse: MutableLiveData<Response<ActionReaction>> = MutableLiveData()
 
     // Back calls
     fun register(registerFields: RegisterFields) {
@@ -71,6 +72,12 @@ class MainViewModel(private val repository: Repository):ViewModel() {
         viewModelScope.launch {
             val response = repository.postServiceCode(auth, service, code)
             emptyResponse.value = response
+        }
+    }
+    fun putEnableDisable(auth: String, enable: EnableDisable) {
+        viewModelScope.launch {
+            val response = repository.putEnableDisable(auth, enable)
+            enableResponse.value = response
         }
     }
 }

@@ -72,7 +72,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         viewModel.login(loginForm)
         // Receive login response
         viewModel.userResponse.observe(viewLifecycleOwner, Observer { response ->
-            Log.d("Response", response.code().toString())
             if (response.isSuccessful) {
                 token = response.body()?.token
                 token?.let {

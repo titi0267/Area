@@ -91,7 +91,7 @@ export default vue.extend({
 <style scoped lang="scss">
 #Home {
     padding: 20px;
-    padding-top: 95px;
+    padding-top: 110px;
     font-family: 'Courier New', Courier, monospace;
     .no-area {
         margin-top: 15px;

@@ -28,20 +28,20 @@ const addTrackToPlaylist = async (
       public: true,
     });
 
-    const trackToadd = await spotifyApi.searchTracks("Tu veux mon zizi");
+    const trackToAdd = await spotifyApi.searchTracks("Tu veux mon zizi");
 
-    if (trackToadd.body.tracks?.items[0].id == undefined) return;
+    if (trackToAdd.body.tracks?.items[0].id == undefined) return;
 
     await spotifyApi.addTracksToPlaylist(newPlaylistId.body.id, [
-      trackToadd.body.tracks?.items[0].uri,
+      trackToAdd.body.tracks?.items[0].uri,
     ]);
   } else {
-    const trackToadd = await spotifyApi.searchTracks("Tu veux mon zizi");
+    const trackToAdd = await spotifyApi.searchTracks("Tu veux mon zizi");
 
-    if (trackToadd.body.tracks?.items[0].id == undefined) return;
+    if (trackToAdd.body.tracks?.items[0].id == undefined) return;
 
     await spotifyApi.addTracksToPlaylist(areaPlaylistId, [
-      trackToadd.body.tracks?.items[0].uri,
+      trackToAdd.body.tracks?.items[0].uri,
     ]);
   }
 };
@@ -63,4 +63,21 @@ const updateVolume = async (
   });
 };
 
-export { addTrackToPlaylist, updateVolume };
+const startMusic = async (
+  reactionParam: string,
+  userId: number,
+): Promise<void> => {
+  const spotifyApi = await ServiceHelper.getSpotifyClient(userId);
+
+  if (!spotifyApi) return;
+
+  const trackToPlay = await spotifyApi.searchAlbums("Tu veux mon zizi");
+
+  console.log(trackToPlay.body);
+  if (trackToPlay.body.albums == undefined) return;
+  const start = await spotifyApi.play({
+    context_uri: trackToPlay.body.albums.items[0].uri,
+  });
+};
+
+export { addTrackToPlaylist, updateVolume, startMusic };

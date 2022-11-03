@@ -127,6 +127,14 @@ export const SERVICES: Service[] = [
         description: "Change the volume of your device",
         fct: SpotifyReaction.updateVolume,
       },
+      {
+        id: 3,
+        reactionName: "Start a music",
+        reactionParamName: "Start the music",
+        paramFormat: null,
+        description: "Starts playing the music",
+        fct: SpotifyReaction.startMusic,
+      },
     ],
   },
   {

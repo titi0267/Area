@@ -47,7 +47,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             getOAuthLinkRequest("spotify", sessionManager)
         }
         view.findViewById<Button>(R.id.profileLogoutButton).setOnClickListener {
-            sessionManager.removeAuthToken("user_token");
             sessionManager.removeAuthToken("url");
             startActivity(Intent(context, MainActivity::class.java))
         }

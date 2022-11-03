@@ -41,5 +41,13 @@
     <string name="profile_current_ip">Current IP/Port:</string>
     <string name="profile_change_ip_port_button">Change IP/Port</string>
     <string name="profile_edit_ip_port_confirmation">Edit</string>
+    <string name="login_title">Login</string>
+    <string name="login_or">or</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="login_redirect_to_register">No account? Register</string>
+    <string name="connectivity_title">Connect your API</string>
+    <string name="connectivity_test_connection">Test your connection</string>
+    <string name="connectivity_apply">Apply</string>
+    <string name="not_logged_in_change_ip_port_text">Change IP/Port</string>
     <string name="spinner_desc">Injected action parameters</string>
 </resources>

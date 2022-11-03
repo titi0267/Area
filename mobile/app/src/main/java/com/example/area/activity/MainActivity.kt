@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Redirect to the good activity (if the user is connected or not)
-        if (sessionManager.fetchAuthToken("user_token") == null) {
+        if (sessionManager.fetchAuthToken("url") == null || sessionManager.fetchAuthToken("user_token") == null) {
             startActivity(
                 Intent(
                     applicationContext,

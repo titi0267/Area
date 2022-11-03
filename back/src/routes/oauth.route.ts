@@ -147,15 +147,15 @@ export default (
           "user-read-private",
           "user-read-email",
           "user-modify-playback-state",
+          "user-read-playback-state",
           "user-read-playback-position",
           "user-read-recently-played",
           "playlist-read-private",
           "user-read-currently-playing",
-          "user-read-playback-state",
           "user-library-modify",
+          "user-library-read",
           "playlist-modify-private",
           "playlist-modify-public",
-          "user-library-read",
         ].join(" "),
       };
 

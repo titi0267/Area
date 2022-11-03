@@ -112,11 +112,20 @@ export const SERVICES: Service[] = [
       {
         id: 1,
         reactionName: "Add a song to Area playlist",
-        reactionParamName: "Add a track to your Area playlist",
+        reactionParamName:
+          "Name of the track you that you want to add in Area playlist",
         paramFormat: null,
         description:
           "You'll have a new song added into a playlist called Area (created if it doesn't exist)",
         fct: SpotifyReaction.addTrackToPlaylist,
+      },
+      {
+        id: 2,
+        reactionName: "Update your volume",
+        reactionParamName: "The volume that you want to set to your music",
+        paramFormat: null,
+        description: "Change the volume of your device",
+        fct: SpotifyReaction.updateVolume,
       },
     ],
   },

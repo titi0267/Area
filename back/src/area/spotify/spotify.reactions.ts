@@ -46,4 +46,21 @@ const addTrackToPlaylist = async (
   }
 };
 
-export { addTrackToPlaylist };
+const updateVolume = async (
+  reactionParam: string,
+  userId: number,
+): Promise<void> => {
+  const spotifyApi = await ServiceHelper.getSpotifyClient(userId);
+
+  if (!spotifyApi) return;
+  const device = await spotifyApi.getMyDevices();
+  device.body.devices.forEach(element => {
+    if (element.is_active == true) {
+      if (element.type != "Smartphone" && element.id != null) {
+        spotifyApi.setVolume(100, { device_id: element.id });
+      }
+    }
+  });
+};
+
+export { addTrackToPlaylist, updateVolume };

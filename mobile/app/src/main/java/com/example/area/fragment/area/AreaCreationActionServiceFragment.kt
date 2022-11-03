@@ -61,7 +61,8 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
             if (abt != null) {
                 serviceList.clear()
                 for (elem in abt!!.server.services) {
-                    serviceList.addService(elem.id, elem.name, elem.imageUrl)
+                    if (elem.actions.isNotEmpty())
+                        serviceList.addService(elem.id, elem.name, elem.imageUrl)
                 }
                 recycler.setHasFixedSize(true)
                 recycler.adapter = ServiceItemAdapter(

@@ -63,7 +63,8 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceInfo
             if (abt != null) {
                 serviceList.clear()
                 for (elem in abt!!.server.services) {
-                    serviceList.addService(elem.id, elem.name, elem.imageUrl)
+                    if (elem.reactions.isNotEmpty())
+                        serviceList.addService(elem.id, elem.name, elem.imageUrl)
                 }
                 recycler.setHasFixedSize(true)
                 recycler.adapter = ServiceItemAdapter(

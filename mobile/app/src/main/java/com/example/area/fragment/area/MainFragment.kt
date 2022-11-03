@@ -21,6 +21,7 @@ class MainFragment : Fragment(R.layout.fragment_area_main) {
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
 
+        Log.d("Help", "Help")
         view.findViewById<FloatingActionButton>(R.id.profileButton).setOnClickListener {
             (context as AreaActivity).changeFragment(ProfileFragment(), "profile")
         }

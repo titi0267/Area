@@ -36,6 +36,11 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         val button = view.findViewById<Button>(R.id.request_button)
 
         registerFocusListener(view)
+        view.findViewById<Button>(R.id.register_redirect_to_login_button).setOnClickListener {
+            if ((context as UserConnectionActivity).loading)
+                return@setOnClickListener
+            (context as UserConnectionActivity).changeFragment(LoginFragment(), "login")
+        }
         button.setOnClickListener {
             if ((context as UserConnectionActivity).loading)
                 return@setOnClickListener
@@ -54,9 +59,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             catch (e: IllegalArgumentException) {
                 Toast.makeText(context as UserConnectionActivity, "Error: " + e.message, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            }
-            view.findViewById<Button>(R.id.register_redirect_to_login_button).setOnClickListener {
-                (context as UserConnectionActivity).changeFragment(RegisterFragment(), "register")
             }
             registerRequest(url, registerForm)
         }

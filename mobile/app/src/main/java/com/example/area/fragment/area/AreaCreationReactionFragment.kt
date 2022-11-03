@@ -8,10 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,6 +53,11 @@ class AreaCreationReactionFragment(private val actionService: ServiceInfo, priva
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerViewReaction)
         val actionReactionList = ActionReactionDatasource()
         var temp: ActionReactionInfo?
+
+        lateinit var injectedParams: ArrayAdapter<String>
+        lateinit var abtCls: AboutClass
+        val injectSpinner = view.findViewById<Spinner>(R.id.injectActionParamsSpinner)
+        var last = 0
 
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build())
         val connection = URL(reactionService.imageUrl).openConnection()
@@ -100,12 +103,36 @@ class AreaCreationReactionFragment(private val actionService: ServiceInfo, priva
         about.getAboutJson(context as AreaActivity, this, this) {
             abt = about.liveDataResponse.value
             if (abt != null) {
+                abtCls = AboutClass(abt!!)
                 actionReactionList.clear()
                 for (elem in abt!!.server.services[reactionService.id-1].reactions) {
                     temp = actionReactionInfoTranslator(null, elem)
                     if (temp != null) {
                         actionReactionList.addService(temp!!.id, temp!!.name, temp!!.paramName, temp!!.description)
                     }
+                }
+                injectedParams = ArrayAdapter(context as AreaActivity, android.R.layout.simple_spinner_item, abtCls.getServiceActionAvailableInjectParamsById(actionService.id, action.id)!!)
+                injectedParams.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                injectSpinner.isClickable = true
+                injectSpinner.adapter = injectedParams
+                injectSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                        if (p2 == last) {
+                            injectSpinner.setSelection(0)
+                            if (last != 0) {
+                                if (p0 != null) {
+                                    view.findViewById<TextInputEditText>(R.id.reactionParamText).text?.append("%${p0.selectedItem}%")
+                                }
+                                last = p2
+                            }
+                        } else {
+                            if (p0 != null) {
+                                view.findViewById<TextInputEditText>(R.id.reactionParamText).text?.append("%${p0.selectedItem}%")
+                            }
+                            last = p2
+                        }
+                    }
+                    override fun onNothingSelected(p0: AdapterView<*>?) {}
                 }
                 updateRecycler(recycler, actionReactionList)
             }

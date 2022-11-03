@@ -27,8 +27,8 @@ class Repository(private val URL_INPUT : String) {
     suspend fun getAboutJson() : Response<About> {
         return RetrofitInstance(URL_INPUT).api.getAboutJson()
     }
-    suspend fun getServiceLink(service: String) : Response<String>{
-        return RetrofitInstance(URL_INPUT).api.getServiceLink(service)
+    suspend fun getServiceLink(auth: String, service: String) : Response<String>{
+        return RetrofitInstance(URL_INPUT).api.getServiceLink(auth, service)
     }
     suspend fun postServiceCode(auth: String, service: String, code: OAuthCode) : Response<Unit> {
         return RetrofitInstance(URL_INPUT).api.postServiceCode(auth, service, code)

@@ -21,17 +21,18 @@ const addTrackToPlaylist = async (
   })?.id;
 
   if (!areaPlaylistId) {
-    areaPlaylistId = await spotifyApi.createPlaylist("Area", {
+    const newPlaylistId = await spotifyApi.createPlaylist("Area", {
       description: "This is the area playlist",
       collaborative: false,
       public: true,
     });
+    areaPlaylistId = newPlaylistId.body.id;
   }
   const trackToAdd = await spotifyApi.searchTracks(reactionParam);
 
   if (trackToAdd.body.tracks?.items[0].id == undefined) return;
 
-  await spotifyApi.addTracksToPlaylist(areaPlaylistId.body.id, [
+  await spotifyApi.addTracksToPlaylist(areaPlaylistId, [
     trackToAdd.body.tracks?.items[0].uri,
   ]);
 };

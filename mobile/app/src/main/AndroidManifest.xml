@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".AREAApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,6 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AREA"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.OAuthConnectionActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="localhost"
+                    android:pathPattern="/create/action"
+                    android:scheme="http"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".activity.AreaActivity" />
         <activity android:name=".activity.UserConnectionActivity" />
         <activity

@@ -2,6 +2,7 @@ package com.example.area.fragment.user
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,8 +33,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
 
         loginFocusListener(view)
+        view.findViewById<Button>(R.id.login_redirect_to_register_button).setOnClickListener {
+            (context as UserConnectionActivity).changeFragment(RegisterFragment(), "login")
+        }
+        view.findViewById<Button>(R.id.login_with_google_button).setOnClickListener {
+            (context as UserConnectionActivity).changeFragment(GoogleOAuthFragment(), "google_oauth_login")
+        }
         view.findViewById<Button>(R.id.request_button).setOnClickListener {
-            lateinit var url: String
             // Store email and password
             val loginForm = LoginFields(
                 view.findViewById<EditText>(R.id.login_email_field_edit_text).text.toString(),
@@ -41,25 +47,23 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             )
             // Login error handling
             try {
-                url = urlParser(
-                    view.findViewById<EditText>(R.id.login_ip_field_edit_text).text.toString(),
-                    view.findViewById<EditText>(R.id.login_port_field_edit_text).text.toString()
-                )
                 checkLoginField(loginForm)
             }
             catch (e: IllegalArgumentException) {
                 Toast.makeText(context as UserConnectionActivity, "Error: " + e.message, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            loginRequest(url, loginForm)
+            loginRequest(loginForm)
         }
         return view
     }
 
-    private fun loginRequest(url: String, loginForm: LoginFields)
+    private fun loginRequest(loginForm: LoginFields)
     {
+
         var token: String?
         val sessionManager = SessionManager(context as UserConnectionActivity)
+        val url = sessionManager.fetchAuthToken("url") ?: return
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
 
@@ -72,7 +76,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 token = response.body()?.token
                 token?.let {
                     sessionManager.saveAuthToken("user_token", token!!)
-                    sessionManager.saveAuthToken("url", url)
                 }
                 Toast.makeText(context as UserConnectionActivity, "Successfully logged in!", Toast.LENGTH_SHORT).show()
                 startActivity(
@@ -87,8 +90,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun loginFocusListener(view: View)
     {
-        textFieldsFocusListener(view, R.id.login_ip_field_edit_text, R.id.login_ip_field_layout, ::checkIp)
-        textFieldsFocusListener(view, R.id.login_port_field_edit_text, R.id.login_port_field_layout, ::checkPort)
         textFieldsFocusListener(view, R.id.login_email_field_edit_text, R.id.login_email_field_layout, ::checkEmail)
         textFieldsFocusListener(view, R.id.login_password_field_edit_text, R.id.login_password_field_layout, ::checkPasswordLogin)
     }

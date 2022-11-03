@@ -54,6 +54,34 @@ const getAllArea = async (): Promise<Area[]> => {
   return await prisma.area.findMany();
 };
 
+const getUserAreaById = async (
+  userId: number,
+  areaId: number,
+): Promise<Area> => {
+  const doesUserExist = await prisma.user.findUnique({ where: { id: userId } });
+  const area = await prisma.area.findUnique({ where: { id: areaId } });
+
+  if (!doesUserExist || !area) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "userId or areaId does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  if (area.userId !== userId) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "can't edit other peoples area",
+      level: "warm",
+      status: httpStatus.UNAUTHORIZED,
+    });
+  }
+
+  return area;
+};
+
 const removeAreaById = async (id: string | number): Promise<Area> => {
   const formatedId = typeof id === "string" ? parseInt(id) : id;
 
@@ -75,6 +103,36 @@ const removeAreaById = async (id: string | number): Promise<Area> => {
   return area;
 };
 
+const removeUserArea = async (
+  userId: number,
+  areaId: number,
+): Promise<Area> => {
+  const doesUserExist = await prisma.user.findUnique({ where: { id: userId } });
+  const doesAreaExist = await prisma.area.findUnique({ where: { id: areaId } });
+
+  if (!doesUserExist || !doesAreaExist) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "userId or areaId does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  if (doesAreaExist.userId !== userId) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "can't edit other peoples area",
+      level: "warm",
+      status: httpStatus.UNAUTHORIZED,
+    });
+  }
+
+  return await prisma.area.delete({
+    where: { id: areaId },
+  });
+};
+
 const getAreasByUserId = async (id: number): Promise<Area[]> => {
   const doesUserExist = await prisma.user.findUnique({ where: { id } });
 
@@ -88,6 +146,12 @@ const getAreasByUserId = async (id: number): Promise<Area[]> => {
   }
 
   const areas = await prisma.area.findMany({ where: { userId: id } });
+
+  return areas;
+};
+
+const getEnabledAreas = async (): Promise<Area[]> => {
+  const areas = await prisma.area.findMany({ where: { enabled: true } });
 
   return areas;
 };
@@ -143,6 +207,38 @@ const editArea = async (
     });
   }
 
+  if (
+    actionParam !== null &&
+    !ServiceHelper.checkActionFormat(
+      doesAreaExist.actionServiceId,
+      doesAreaExist.actionId,
+      actionParam,
+    )
+  ) {
+    throw new ClientError({
+      name: "Invalid Param",
+      message: "Action param does not match the require format",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  if (
+    reactionParam !== null &&
+    !ServiceHelper.checkReactionFormat(
+      doesAreaExist.reactionServiceId,
+      doesAreaExist.reactionId,
+      reactionParam,
+    )
+  ) {
+    throw new ClientError({
+      name: "Invalid Param",
+      message: "Reaction param does not match the require format",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
   const area = await prisma.area.update({
     where: { id: areaId },
     data: {
@@ -158,8 +254,11 @@ const editArea = async (
 export default {
   createArea,
   getAllArea,
+  getUserAreaById,
   removeAreaById,
   getAreasByUserId,
+  removeUserArea,
+  getEnabledAreas,
   updateAreaValues,
   editArea,
 };

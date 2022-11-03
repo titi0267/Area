@@ -4,6 +4,7 @@ node_modules
 about.json
 .env
 docker.env
+coverage/
 
 # local env files
 .env.local

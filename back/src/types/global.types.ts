@@ -33,6 +33,10 @@ export interface DecodedToken {
   expTime: Date;
 }
 
+export interface ImageParam {
+  image: string;
+}
+
 export interface UserWithTokens extends User {
   tokensTable: TokensTable | null;
 }

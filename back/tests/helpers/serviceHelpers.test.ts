@@ -41,7 +41,7 @@ describe("Test getActionFct", () => {
 describe("Test getReactionFct", () => {
   describe("Test valid cases", () => {
     test("Test if valid return a fct", () => {
-      const reaction = ServiceHelper.getReactionFct(3, 1);
+      const reaction = ServiceHelper.getReactionFct(2, 1);
 
       expect(typeof reaction).toBe("function");
     });
@@ -120,6 +120,16 @@ describe("Test injectParamInReaction", () => {
       expect(str).toBe("I'm 12 !");
     });
 
+    test("Test inject multiple valid fields", () => {
+      const test = { age: 12, name: "ludo" };
+      const str = ServiceHelper.injectParamInReaction<typeof test>(
+        "I'm %age% et mon nom est %name% !",
+        test,
+      );
+
+      expect(str).toBe("I'm 12 et mon nom est ludo !");
+    });
+
     test("Test inject empty object field", () => {
       const test = {};
       const str = ServiceHelper.injectParamInReaction<typeof test>(
@@ -188,6 +198,26 @@ describe("Test getGithubClient", () => {
 
         expect(oauthClient).toBeNull();
       });
+    });
+  });
+});
+
+describe("Test action Format", () => {
+  describe("Test valid cases", () => {
+    test("Test with a valid action format", async () => {
+      const isWellFormated = ServiceHelper.checkActionFormat(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+      );
+
+      expect(isWellFormated).toBe(true);
+    });
+
+    test("Test with a valid action format", async () => {
+      const isWellFormated = ServiceHelper.checkActionFormat(1, 1, "test");
+
+      expect(isWellFormated).toBe(false);
     });
   });
 });

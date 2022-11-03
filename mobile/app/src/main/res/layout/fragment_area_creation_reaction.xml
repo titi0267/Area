@@ -23,12 +23,13 @@
         android:layout_width="350sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
+        android:layout_marginBottom="20dp"
         android:hint="@string/reaction_parameter"
         android:minHeight="48dp"
         android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        app:layout_constraintBottom_toTopOf="@+id/areaRealCreationButton" />
 
     <Button
         android:id="@+id/backFromReactionCreationButton"
@@ -46,7 +47,7 @@
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="350dp"
-        android:layout_height="400dp"
+        android:layout_height="350dp"
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,5 +78,19 @@
         app:layout_constraintStart_toEndOf="@+id/selectedReactionServiceLogoShow"
         app:layout_constraintTop_toBottomOf="@+id/backFromReactionCreationButton"
         tools:text="serviceName" />
+
+    <Spinner
+        android:id="@+id/injectActionParamsSpinner"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:clickable="true"
+        android:contentDescription="@string/spinner_desc"
+        android:minHeight="48dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintBottom_toTopOf="@+id/reactionParamText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:focusable="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

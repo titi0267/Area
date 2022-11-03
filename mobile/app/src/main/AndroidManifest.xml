@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
                     android:host="localhost"
-                    android:pathPattern="/create/action"
+                    android:pathPattern="/create"
                     android:scheme="http"/>
             </intent-filter>
         </activity>

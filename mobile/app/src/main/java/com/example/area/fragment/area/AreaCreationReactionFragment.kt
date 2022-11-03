@@ -82,6 +82,8 @@ class AreaCreationReactionFragment(private val actionService: ServiceInfo, priva
                             AREAFields(actionService.id, action.id, action.paramName, reactionService.id, reactionSelectedIndex+1, textHint.toString())
                         )
                         viewModel.userResponse.observe(viewLifecycleOwner) { response ->
+                            if (response == null)
+                                return@observe
                             if (response.isSuccessful) {
                                 Toast.makeText(
                                     context as AreaActivity,

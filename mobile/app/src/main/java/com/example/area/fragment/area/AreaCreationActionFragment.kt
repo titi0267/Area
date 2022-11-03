@@ -25,6 +25,7 @@ import com.example.area.data.ActionReactionDatasource
 import com.example.area.model.ActionReactionInfo
 import com.example.area.model.ServiceInfo
 import com.example.area.model.about.About
+import com.example.area.model.about.AboutClass
 import com.example.area.repository.Repository
 import com.example.area.utils.AboutJsonCreator
 import com.example.area.utils.SessionManager
@@ -60,11 +61,7 @@ class AreaCreationActionFragment(private val actionService: ServiceInfo) : Fragm
         view.findViewById<ImageView>(R.id.selectedActionServiceLogoShow).setImageDrawable(BitmapDrawable(bitmap))
         view.findViewById<TextView>(R.id.selectedActionServiceTextShow).text = actionService.name
         recycler.layoutManager = LinearLayoutManager(context as AreaActivity)
-        recycler.setHasFixedSize(true)
-        recycler.adapter = ActionReactionItemAdapter(
-            context as AreaActivity,
-            actionReactionList.loadActionReactionInfo()
-        ) { position -> onItemClick(position, actionReactionList.loadActionReactionInfo()[position].name) }
+        updateRecycler(recycler, actionReactionList)
 
         view.findViewById<Button>(R.id.backFromActionCreationButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
@@ -95,16 +92,20 @@ class AreaCreationActionFragment(private val actionService: ServiceInfo) : Fragm
                         actionReactionList.addService(temp!!.id, temp!!.name, temp!!.paramName, temp!!.description)
                     }
                 }
-                recycler.setHasFixedSize(true)
-                recycler.adapter = ActionReactionItemAdapter(
-                    context as AreaActivity,
-                    actionReactionList.loadActionReactionInfo()
-                ) { position -> onItemClick(position, actionReactionList.loadActionReactionInfo()[position].name) }
+                updateRecycler(recycler, actionReactionList)
             }
         }
 
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         return view
+    }
+
+    private fun updateRecycler(recycler: RecyclerView, actionReactionList: ActionReactionDatasource) {
+        recycler.setHasFixedSize(true)
+        recycler.adapter = ActionReactionItemAdapter(
+            context as AreaActivity,
+            actionReactionList.loadActionReactionInfo()
+        ) { position -> onItemClick(position, actionReactionList.loadActionReactionInfo()[position].name) }
     }
 
     private fun onItemClick(position: Int, toPrint: String) {

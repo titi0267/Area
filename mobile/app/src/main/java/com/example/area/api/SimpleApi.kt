@@ -28,8 +28,8 @@ interface SimpleApi {
     @GET("about.json")
     suspend fun getAboutJson(): Response<About>
 
-    @GET("/oauth/{service}/link/mobile")
-    suspend fun getServiceLink(@Path("service") service: String) : Response<String>
+    @GET("/oauth/{service}/link/front")
+    suspend fun getServiceLink(@Header("Authorization") auth: String, @Path("service") service: String) : Response<String>
 
     @POST("/oauth/{service}")
     suspend fun postServiceCode(@Header("Authorization") auth: String, @Path("service") service: String, @Body post: OAuthCode) : Response<Unit>

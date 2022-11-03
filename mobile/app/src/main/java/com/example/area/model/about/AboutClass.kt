@@ -1,6 +1,11 @@
 package com.example.area.model.about
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import java.net.URL
+
 class AboutClass(val about: About) {
+
     private fun getServiceById(id: Int): Service? {
         for (service in about.server.services) {
             if (service.id == id) {
@@ -305,6 +310,18 @@ class AboutClass(val about: About) {
         for (service in about.server.services) {
             if (service.oauthName != "none")
                 ret.add(service.oauthName)
+        }
+        return (ret)
+    }
+
+    private fun getBitmapByLink(link: String) : Bitmap {
+        return (BitmapFactory.decodeStream(URL(link).openConnection().getInputStream()))
+    }
+
+    suspend fun getBitmapList(): List<Bitmap> {
+        val ret = mutableListOf<Bitmap>()
+        for (service in about.server.services) {
+            ret.add(getBitmapByLink(service.imageUrl))
         }
         return (ret)
     }

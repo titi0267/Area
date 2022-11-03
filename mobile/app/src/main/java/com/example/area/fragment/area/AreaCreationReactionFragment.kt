@@ -21,11 +21,14 @@ import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.adapter.ActionReactionItemAdapter
+import com.example.area.adapter.ServiceItemAdapter
 import com.example.area.data.ActionReactionDatasource
+import com.example.area.data.ServiceDatasource
 import com.example.area.model.AREAFields
 import com.example.area.model.ActionReactionInfo
 import com.example.area.model.ServiceInfo
 import com.example.area.model.about.About
+import com.example.area.model.about.AboutClass
 import com.example.area.repository.Repository
 import com.example.area.utils.AboutJsonCreator
 import com.example.area.utils.SessionManager
@@ -63,12 +66,7 @@ class AreaCreationReactionFragment(private val actionService: ServiceInfo, priva
         )
         view.findViewById<TextView>(R.id.selectedReactionServiceTextShow).text = reactionService.name
         recycler.layoutManager = LinearLayoutManager(context as AreaActivity)
-        recycler.setHasFixedSize(true)
-        recycler.adapter = ActionReactionItemAdapter(
-            context as AreaActivity,
-            actionReactionList.loadActionReactionInfo()
-        ) { position -> onItemClick(position, actionReactionList.loadActionReactionInfo()[position].name) }
-
+        updateRecycler(recycler, actionReactionList)
         view.findViewById<Button>(R.id.backFromReactionCreationButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
@@ -99,7 +97,6 @@ class AreaCreationReactionFragment(private val actionService: ServiceInfo, priva
                 Toast.makeText(context as AreaActivity, "Please select an reaction", Toast.LENGTH_SHORT).show()
             }
         }
-
         about.getAboutJson(context as AreaActivity, this, this) {
             abt = about.liveDataResponse.value
             if (abt != null) {
@@ -110,16 +107,19 @@ class AreaCreationReactionFragment(private val actionService: ServiceInfo, priva
                         actionReactionList.addService(temp!!.id, temp!!.name, temp!!.paramName, temp!!.description)
                     }
                 }
-                recycler.setHasFixedSize(true)
-                recycler.adapter = ActionReactionItemAdapter(
-                    context as AreaActivity,
-                    actionReactionList.loadActionReactionInfo()
-                ) { position -> onItemClick(position, actionReactionList.loadActionReactionInfo()[position].name) }
+                updateRecycler(recycler, actionReactionList)
             }
         }
-
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         return view
+    }
+
+    private fun updateRecycler(recycler: RecyclerView, actionReactionList: ActionReactionDatasource) {
+        recycler.setHasFixedSize(true)
+        recycler.adapter = ActionReactionItemAdapter(
+            context as AreaActivity,
+            actionReactionList.loadActionReactionInfo()
+        ) { position -> onItemClick(position, actionReactionList.loadActionReactionInfo()[position].name) }
     }
 
     private fun onItemClick(position: Int, toPrint: String) {

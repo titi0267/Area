@@ -39,11 +39,7 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
         val viewModelFactory = MainViewModelFactory(rep)
         val about = AboutJsonCreator()
 
-        recycler.adapter = ItemAdapter(
-            context as AreaActivity,
-            myDataSet.loadAreaInfo()
-        ) { position -> onItemClick(position, null) }
-        recycler.setHasFixedSize(true)
+        updateRecycler(recycler, myDataSet, null)
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         viewModel.getUserAreaList(sessionManager.fetchAuthToken("user_token")!!)
         about.getAboutJson(context as AreaActivity, this, this) {
@@ -61,11 +57,7 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
                                 abt!!.server.services[item.reactionServiceId-1].reactions[item.reactionId-1].name
                             )
                         }
-                        recycler.adapter = ItemAdapter(
-                            context as AreaActivity,
-                            myDataSet.loadAreaInfo()
-                        ) { position -> onItemClick(position, jsonArray[position]) }
-                        recycler.setHasFixedSize(true)
+                        updateRecycler(recycler, myDataSet, jsonArray)
                     }
                 })
             }
@@ -94,17 +86,21 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
                                     abt!!.server.services[item.reactionServiceId-1].reactions[item.reactionId-1].name
                                 )
                             }
-                            recycler.adapter = ItemAdapter(
-                                context as AreaActivity,
-                                myDataSet.loadAreaInfo()
-                            ) { position -> onItemClick(position, jsonArray[position])}
-                            recycler.setHasFixedSize(true)
+                            updateRecycler(recycler, myDataSet, jsonArray)
                         }
                     })
                 }
             }
         }
         return view
+    }
+
+    private fun updateRecycler(recycler: RecyclerView, myDataSet: Datasource, jsonArray: List<ActionReaction>?) {
+        recycler.setHasFixedSize(true)
+        recycler.adapter = ItemAdapter(
+            context as AreaActivity,
+            myDataSet.loadAreaInfo()
+        ) { position -> onItemClick(position, jsonArray?.get(position))}
     }
 
     private fun onItemClick(position: Int, item: ActionReaction?) {

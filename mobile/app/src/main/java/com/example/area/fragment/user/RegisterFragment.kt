@@ -2,6 +2,7 @@ package com.example.area.fragment.user
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.example.area.repository.Repository
 import com.example.area.utils.*
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import retrofit2.Response
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
@@ -44,7 +46,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         button.setOnClickListener {
             if ((context as UserConnectionActivity).loading)
                 return@setOnClickListener
-            lateinit var url: String
             //Store register fields
             val registerForm = RegisterFields(
                 view.findViewById<EditText>(R.id.register_first_name_field_edit_text).text.toString(),
@@ -60,28 +61,25 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 Toast.makeText(context as UserConnectionActivity, "Error: " + e.message, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            registerRequest(url, registerForm)
+            registerRequest(registerForm)
         }
 
         return view
     }
 
-    private fun registerRequest(url: String, registerForm: RegisterFields) {
+    private fun registerRequest(registerForm: RegisterFields) {
         var token: String?
+        val sessionManager = SessionManager(context as UserConnectionActivity)
+        val url = sessionManager.fetchAuthToken("url") ?: return
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
-        val sessionManager = SessionManager(context as UserConnectionActivity)
-
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        viewModel.register(registerForm, context as UserConnectionActivity)
-        viewModel.userResponse.observe(viewLifecycleOwner, Observer { response ->
+        val observer = Observer<Response<Token>?> { response ->
             if (response == null)
                 return@Observer
             if (response.isSuccessful) {
                 token = response.body()?.token
                 token?.let {
                     sessionManager.saveAuthToken("user_token", token!!)
-                    sessionManager.saveAuthToken("url", url)
                 }
                 Toast.makeText(
                     context as UserConnectionActivity,
@@ -96,7 +94,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     )
                 )
             }
-        })
+            else {
+                Toast.makeText(context as UserConnectionActivity, "Email already taken!", Toast.LENGTH_SHORT).show()
+            }
+        }
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        viewModel.register(registerForm, context as UserConnectionActivity, observer)
+        viewModel.userResponse.observe(viewLifecycleOwner, observer)
     }
 
     private fun registerFocusListener(view: View)

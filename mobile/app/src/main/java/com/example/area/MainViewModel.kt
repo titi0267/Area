@@ -33,7 +33,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
     // Back calls
 
-    fun register(registerFields: RegisterFields, context: Context) {
+    fun register(registerFields: RegisterFields, context: Context, observer: Observer<Response<Token>?>) {
         viewModelScope.launch {
             (context as UserConnectionActivity).loading = true
             userResponse.value = null
@@ -53,6 +53,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             }
             finally {
                 (context as UserConnectionActivity).loading = false
+                userResponse.removeObserver(observer)
             }
         }
     }

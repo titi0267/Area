@@ -122,7 +122,7 @@ export const SERVICES: Service[] = [
       {
         id: 2,
         reactionName: "Update your volume",
-        reactionParamName: "The volume that you want to set to your music",
+        reactionParamName: "Number to set volume to",
         paramFormat: null,
         description: "Change the volume of your device",
         fct: SpotifyReaction.updateVolume,
@@ -130,10 +130,18 @@ export const SERVICES: Service[] = [
       {
         id: 3,
         reactionName: "Start a music",
-        reactionParamName: "Start the music",
+        reactionParamName: "Name of the music to play",
         paramFormat: null,
         description: "Starts playing the music",
         fct: SpotifyReaction.startMusic,
+      },
+      {
+        id: 4,
+        reactionName: "Put music into queue",
+        reactionParamName: "Name of the music to put into queue",
+        paramFormat: null,
+        description: "Puts music into queue",
+        fct: SpotifyReaction.addMusicToQueue,
       },
     ],
   },

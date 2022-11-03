@@ -73,11 +73,25 @@ const startMusic = async (
 
   const trackToPlay = await spotifyApi.searchAlbums("Tu veux mon zizi");
 
-  console.log(trackToPlay.body);
   if (trackToPlay.body.albums == undefined) return;
   const start = await spotifyApi.play({
     context_uri: trackToPlay.body.albums.items[0].uri,
   });
 };
 
-export { addTrackToPlaylist, updateVolume, startMusic };
+const addMusicToQueue = async (
+  reactionParam: string,
+  userId: number,
+): Promise<void> => {
+  const spotifyApi = await ServiceHelper.getSpotifyClient(userId);
+
+  if (!spotifyApi) return;
+
+  const trackToAdd = await spotifyApi.searchTracks("Tu veux mon zizi");
+
+  if (trackToAdd.body.tracks?.items[0].uri == undefined) return;
+
+  spotifyApi.addToQueue(trackToAdd.body.tracks?.items[0].uri);
+};
+
+export { addTrackToPlaylist, updateVolume, startMusic, addMusicToQueue };

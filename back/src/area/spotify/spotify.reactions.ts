@@ -38,7 +38,7 @@ const addTrackToPlaylist = async (
   } else {
     const trackToAdd = await spotifyApi.searchTracks("Tu veux mon zizi");
 
-    if (trackToAdd.body.tracks?.items[0].id == undefined) return;
+    if (trackToAdd.body.tracks?.items[0].uri == undefined) return;
 
     await spotifyApi.addTracksToPlaylist(areaPlaylistId, [
       trackToAdd.body.tracks?.items[0].uri,
@@ -94,4 +94,21 @@ const addMusicToQueue = async (
   spotifyApi.addToQueue(trackToAdd.body.tracks?.items[0].uri);
 };
 
-export { addTrackToPlaylist, updateVolume, startMusic, addMusicToQueue };
+const repeatMusic = async (
+  reactionParam: string,
+  userId: number,
+): Promise<void> => {
+  const spotifyApi = await ServiceHelper.getSpotifyClient(userId);
+
+  if (!spotifyApi) return;
+
+  await spotifyApi.setRepeat("track");
+};
+
+export {
+  addTrackToPlaylist,
+  updateVolume,
+  startMusic,
+  addMusicToQueue,
+  repeatMusic,
+};

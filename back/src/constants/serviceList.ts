@@ -143,6 +143,14 @@ export const SERVICES: Service[] = [
         description: "Puts music into queue",
         fct: SpotifyReaction.addMusicToQueue,
       },
+      {
+        id: 5,
+        reactionName: "Loop on music",
+        reactionParamName: "",
+        paramFormat: null,
+        description: "Loop on your current track",
+        fct: SpotifyReaction.repeatMusic,
+      },
     ],
   },
   {

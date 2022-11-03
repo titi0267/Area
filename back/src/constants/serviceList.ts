@@ -14,7 +14,7 @@ export const SERVICES: Service[] = [
     id: 1,
     serviceName: "Youtube",
     oauthName: "google",
-    imageUrl: `http://${ENV.host}:${ENV.port}/assets/youtube.png`,
+    imageUrl: "/assets/youtube.png",
     backgroundColor: "#FF0000",
     actions: [
       {
@@ -67,7 +67,7 @@ export const SERVICES: Service[] = [
   {
     id: 2,
     serviceName: "Discord",
-    imageUrl: `http://${ENV.host}:${ENV.port}/assets/discord.png`,
+    imageUrl: "assets/discord.png",
     backgroundColor: "#5865F2",
     oauthName: null,
     actions: [],
@@ -86,7 +86,7 @@ export const SERVICES: Service[] = [
   {
     id: 3,
     serviceName: "Spotify",
-    imageUrl: `http://${ENV.host}:${ENV.port}/assets/spotify.png`,
+    imageUrl: "assets/spotify.png",
     backgroundColor: "#1DB954",
     oauthName: "spotify",
     actions: [
@@ -157,7 +157,7 @@ export const SERVICES: Service[] = [
   {
     id: 4,
     serviceName: "Github",
-    imageUrl: `http://${ENV.host}:${ENV.port}/assets/github.png`,
+    imageUrl: "assets/github.png",
     backgroundColor: "#000000",
     oauthName: "github",
     actions: [
@@ -177,7 +177,7 @@ export const SERVICES: Service[] = [
     id: 5,
     serviceName: "Gmail",
     backgroundColor: "FF0000",
-    imageUrl: `http://${ENV.host}:${ENV.port}/assets/gmail.png`,
+    imageUrl: "assets/gmail.png",
     oauthName: "google",
     actions: [
       {

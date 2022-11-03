@@ -16,11 +16,11 @@ const addTrackToPlaylist = async (
   const myPlaylists = await spotifyApi.getUserPlaylists();
   let areaPlaylistId = null;
 
-  myPlaylists.body.items.find(elem => {
-    if (elem.name === "Area") areaPlaylistId = elem.id;
-  });
+  areaPlaylistId = myPlaylists.body.items.find(elem => {
+    elem.name === "Area";
+  })?.id;
 
-  if (areaPlaylistId == null) {
+  if (!areaPlaylistId) {
     areaPlaylistId = await spotifyApi.createPlaylist("Area", {
       description: "This is the area playlist",
       collaborative: false,

@@ -15,8 +15,10 @@ import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.adapter.ServiceItemAdapter
+import com.example.area.data.ActionReactionDatasource
 import com.example.area.data.ServiceDatasource
 import com.example.area.model.about.About
+import com.example.area.model.about.AboutClass
 import com.example.area.repository.Repository
 import com.example.area.utils.AboutJsonCreator
 import com.example.area.utils.SessionManager
@@ -41,11 +43,7 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
         val serviceList = ServiceDatasource()
 
         recycler.layoutManager = LinearLayoutManager(context as AreaActivity)
-        recycler.setHasFixedSize(true)
-        recycler.adapter = ServiceItemAdapter(
-            context as AreaActivity,
-            serviceList.loadServiceInfo()
-        ) { position -> onItemClick(position, serviceList.loadServiceInfo()[position].name) }
+        updateRecycler(recycler, serviceList)
         view.findViewById<Button>(R.id.backFromActionServiceCreationButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
@@ -64,15 +62,19 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
                     if (elem.actions.isNotEmpty())
                         serviceList.addService(elem.id, elem.name, elem.imageUrl)
                 }
-                recycler.setHasFixedSize(true)
-                recycler.adapter = ServiceItemAdapter(
-                    context as AreaActivity,
-                    serviceList.loadServiceInfo()
-                ) { position -> onItemClick(position, serviceList.loadServiceInfo()[position].name) }
+                updateRecycler(recycler, serviceList)
             }
         }
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         return view
+    }
+
+    private fun updateRecycler(recycler: RecyclerView, serviceList: ServiceDatasource) {
+        recycler.setHasFixedSize(true)
+        recycler.adapter = ServiceItemAdapter(
+            context as AreaActivity,
+            serviceList.loadServiceInfo()
+        ) { position -> onItemClick(position, serviceList.loadServiceInfo()[position].name) }
     }
 
     private fun onItemClick(position: Int, toPrint: String) {

@@ -109,10 +109,10 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             aboutResponse.value = response
         }
     }
-
-    fun getServiceLink(service: String) {
+    
+    fun getServiceLink(auth: String, service: String) {
         viewModelScope.launch {
-            val response = repository.getServiceLink(service)
+            val response = repository.getServiceLink(auth, service)
             linkResponse.value = response
         }
     }

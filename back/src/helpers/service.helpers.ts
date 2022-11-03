@@ -237,6 +237,10 @@ const getSpotifyClient = async (userId: number) => {
   return spotifyApi;
 };
 
+const getSpotifyPlaylistId = (playlistId: string) => {
+  return playlistId;
+};
+
 export {
   rejectInvalidArea,
   checkActionFormat,
@@ -249,4 +253,5 @@ export {
   getGoogleOauthClient,
   getGithubClient,
   getSpotifyClient,
+  getSpotifyPlaylistId,
 };

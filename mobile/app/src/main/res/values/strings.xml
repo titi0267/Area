@@ -49,4 +49,5 @@
     <string name="connectivity_test_connection">Test your connection</string>
     <string name="connectivity_apply">Apply</string>
     <string name="not_logged_in_change_ip_port_text">Change IP/Port</string>
+    <string name="spinner_desc">Injected action parameters</string>
 </resources>

@@ -15,12 +15,17 @@ export interface DiscordInfos {
   discordToken: string;
 }
 
+export interface IdParam {
+  id: number;
+}
+
 interface Action {
   id: number;
   actionName: string;
   actionParamName: string;
   availableInjectParams: string[];
   paramFormat: RegExp | null;
+  description: string;
   fct: (area: Area) => Promise<string | null>;
 }
 
@@ -29,6 +34,7 @@ interface Reaction {
   reactionName: string;
   reactionParamName: string;
   paramFormat: RegExp | null;
+  description: string;
   fct: (reactionParam: string, userId: number) => void;
 }
 

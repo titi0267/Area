@@ -86,6 +86,7 @@
         android:layout_marginBottom="25dp"
         android:minHeight="48dp"
         android:text="@string/enable_area"
+        android:checked="true"
         app:layout_constraintBottom_toTopOf="@+id/deleteItemListButton"
         app:layout_constraintStart_toStartOf="parent" />
 

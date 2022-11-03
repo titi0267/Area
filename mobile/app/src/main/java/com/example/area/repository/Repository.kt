@@ -36,4 +36,7 @@ class Repository(private val URL_INPUT : String) {
     suspend fun putEnableDisable(auth: String, enable: EnableDisable) : Response<ActionReaction> {
         return RetrofitInstance(URL_INPUT).api.putEnableDisable(auth, enable)
     }
+    suspend fun deleteArea(auth: String, areaId: Int) : Response<ActionReaction> {
+        return RetrofitInstance(URL_INPUT).api.deleteArea(auth, areaId)
+    }
 }

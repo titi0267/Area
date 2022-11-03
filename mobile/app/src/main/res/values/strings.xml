@@ -49,4 +49,7 @@
     <string name="connectivity_test_connection">Test your connection</string>
     <string name="connectivity_apply">Apply</string>
     <string name="not_logged_in_change_ip_port_text">Change IP/Port</string>
+    <string name="register_title">Create your account</string>
+    <string name="register_redirect_to_login">Already an account? Login</string>
+    <string name="register_confirm_password_hint">Confirm password</string>
 </resources>

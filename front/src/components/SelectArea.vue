@@ -104,13 +104,27 @@ export default vue.extend({
          * @async
          */
         async postOAuthCode(): Promise<any> {
+            console.log("Post ")
             const code: String = this.$route.query.code;
+            console.log(code)
             if (code == null || code == undefined) return;
             let serviceName = this.services.find(service => service.id == this.area[this.type + "ServiceId"]).oauthName;
             if (serviceName == null) return;
-            await this.$axios.post("/oauth/" + serviceName, {
-                code: code,
-            }, {
+            let oauthParam = {}
+            console.log("Name = " + serviceName)
+            if (serviceName == "discord") {
+                oauthParam = {
+                    code: code,
+                    guild_id: this.$route.query.guild_id,
+                    permissions: this.$route.query.permissions
+                }
+            } else {
+                oauthParam = {
+                    code: code
+                }
+            }
+            console.log("QUERY = " + this.$route.query.guild_id)
+            await this.$axios.post("/oauth/" + serviceName, oauthParam, {
                 headers: {
                     Authorization: this.$store.getters.userToken || "noToken",
                 }

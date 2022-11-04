@@ -112,7 +112,7 @@ $navbar-height: 75px;
     z-index: 10;
     margin: 10px;
     width: -webkit-fill-available;
-    box-shadow: 0 0 15px 1px black;
+    box-shadow: 0 0 15px 1px #00000099;
     border-radius: 20px;
     .logo {
         margin-left: 20px;
@@ -147,6 +147,9 @@ $navbar-height: 75px;
         display: flex;
         justify-content: flex-end;
         >:deep(div) {
+            .icon {
+                color: rgb(25 25 66 / 81%);
+            }
             margin-right: 23px;
             svg {
                 width: 34px;
@@ -166,10 +169,4 @@ $navbar-height: 75px;
 }
 
 
-</style>
-
-<style lang="scss">
-:deep(.dropdown) {
-    top: 20px;
-}
 </style>

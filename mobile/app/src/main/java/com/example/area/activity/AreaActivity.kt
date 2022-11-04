@@ -21,6 +21,7 @@ class AreaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAbout()
+        setUserInfo()
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
@@ -59,6 +60,22 @@ class AreaActivity : AppCompatActivity() {
                 val about = response.body()!!
                 (application as AREAApplication).setAboutClass(about)
                 (application as AREAApplication).setAboutBitmapList()
+            }
+        })
+    }
+
+    private fun setUserInfo() {
+        val sessionManager = SessionManager(this)
+        val url = sessionManager.fetchAuthToken("url") ?: return
+        val token = sessionManager.fetchAuthToken("user_token") ?: return
+        val rep = Repository(url)
+        val viewModelFactory = MainViewModelFactory(rep)
+        val viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+
+        viewModel.getUserInfo(token)
+        viewModel.userInfoResponse.observe(this, Observer { response ->
+            if (response.isSuccessful) {
+                (application as AREAApplication).setUserInfoInApp(response.body()!!)
             }
         })
     }

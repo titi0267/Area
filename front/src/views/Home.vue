@@ -19,7 +19,7 @@
                 <b-image :src="getService(area, 'reaction').imageUrl"></b-image>
             </div>
             <div v-show="isEditing[area.id]">
-                <EditArea/>
+                <EditArea :id="area.id" @deleted="refreshAreaTable"/>
             </div>
         </div>
     </div>
@@ -46,6 +46,10 @@ export default vue.extend({
         EditArea
     },
     methods: {
+        refreshAreaTable() : void {
+            this.$forceUpdate();
+            console.log("J'ai delete un truc " + this.areas[0].id)
+        },
         setEdit(id: number): void {
             this.isEditing[id] == true ? this.$set(this.isEditing, id, false) : this.$set(this.isEditing, id, true);
         },

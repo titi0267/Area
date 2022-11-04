@@ -1,7 +1,9 @@
 package com.example.area.model
 
-data class ServiceInfo (
+import android.graphics.Bitmap
+
+data class ServiceListElement (
     val id: Int,
     val name: String,
-    val imageUrl: String
+    val imageBitmap: Bitmap
 )

@@ -23,7 +23,7 @@ import * as SecurityHelper from "../helpers/security.helper";
 import * as ErrorHelper from "../helpers/error.helpers";
 import ENV from "../env";
 import authentificationMiddleware from "../middlewares/authentification.middleware";
-import { TokenService } from "../services";
+import { TokenService, UserService } from "../services";
 
 type GoogleOauthRequest = FastifyRequest<{
   Body: GoogleOauthBody;
@@ -72,6 +72,38 @@ export default (
       res.status(httpStatus.OK).send(tokenTable);
     },
   );
+
+  instance.post(
+    "/google/register",
+    async (req: GoogleOauthRequest, res: FastifyReply) => {
+      const code = req.body.code;
+
+      const oauthClient = new google.auth.OAuth2(
+        ENV.googleClientId,
+        ENV.googleClientSecret,
+        ENV.googleRedirectUrl,
+      );
+
+      const tokens = (await oauthClient.getToken(code)).tokens;
+
+      oauthClient.setCredentials({ access_token: tokens.access_token });
+
+      const userinfos = (
+        await google.oauth2({ version: "v2", auth: oauthClient }).userinfo.get()
+      ).data;
+
+      const token = await UserService.connectOauthUser(
+        userinfos.given_name || null,
+        userinfos.family_name || null,
+        userinfos.email || null,
+        userinfos.id || null,
+        tokens.refresh_token || null,
+      );
+
+      res.status(httpStatus.OK).send(token);
+    },
+  );
+
   instance.post(
     "/github",
     { onRequest: [authentificationMiddleware()] },
@@ -147,15 +179,15 @@ export default (
           "user-read-private",
           "user-read-email",
           "user-modify-playback-state",
+          "user-read-playback-state",
           "user-read-playback-position",
           "user-read-recently-played",
           "playlist-read-private",
           "user-read-currently-playing",
-          "user-read-playback-state",
           "user-library-modify",
+          "user-library-read",
           "playlist-modify-private",
           "playlist-modify-public",
-          "user-library-read",
         ].join(" "),
       };
 

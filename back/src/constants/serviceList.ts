@@ -3,6 +3,7 @@ import * as YoutubeActions from "../area/youtube/youtube.action";
 import * as YoutubeReactions from "../area/youtube/youtube.reaction";
 import * as DiscordReaction from "../area/discord/discord.reaction";
 import * as SpotifyAction from "../area/spotify/spotify.actions";
+import * as SpotifyReaction from "../area/spotify/spotify.reactions";
 import * as GithubAction from "../area/github/github.action";
 import * as GmailAction from "../area/gmail/gmail.action";
 import { FORMAT } from "./paramFormat";
@@ -12,7 +13,7 @@ export const SERVICES: Service[] = [
     id: 1,
     serviceName: "Youtube",
     oauthName: "google",
-    imageUrl: "https://www.iconsdb.com/icons/preview/white/youtube-6-xxl.png",
+    imageUrl: "assets/youtube.png",
     backgroundColor: "#FF0000",
     actions: [
       {
@@ -65,7 +66,7 @@ export const SERVICES: Service[] = [
   {
     id: 2,
     serviceName: "Discord",
-    imageUrl: "https://www.iconsdb.com/icons/preview/white/discord-2-xxl.png",
+    imageUrl: "assets/discord.png",
     backgroundColor: "#5865F2",
     oauthName: null,
     actions: [],
@@ -84,7 +85,7 @@ export const SERVICES: Service[] = [
   {
     id: 3,
     serviceName: "Spotify",
-    imageUrl: "https://www.iconsdb.com/icons/preview/white/spotify-xxl.png",
+    imageUrl: "assets/spotify.png",
     backgroundColor: "#1DB954",
     oauthName: "spotify",
     actions: [
@@ -107,12 +108,55 @@ export const SERVICES: Service[] = [
         availableInjectParams: ["songName", "artists"],
       },
     ],
-    reactions: [],
+    reactions: [
+      {
+        id: 1,
+        reactionName: "Add a song to Area playlist",
+        reactionParamName:
+          "Name of the track you that you want to add in Area playlist",
+        paramFormat: null,
+        description:
+          "You'll have a new song added into a playlist called Area (created if it doesn't exist)",
+        fct: SpotifyReaction.addTrackToPlaylist,
+      },
+      {
+        id: 2,
+        reactionName: "Update your volume",
+        reactionParamName: "Number to set volume to",
+        paramFormat: null,
+        description: "Change the volume of your device",
+        fct: SpotifyReaction.updateVolume,
+      },
+      {
+        id: 3,
+        reactionName: "Start a music",
+        reactionParamName: "Name of the music to play",
+        paramFormat: null,
+        description: "Starts playing the music",
+        fct: SpotifyReaction.startMusic,
+      },
+      {
+        id: 4,
+        reactionName: "Put music into queue",
+        reactionParamName: "Name of the music to put into queue",
+        paramFormat: null,
+        description: "Puts music into queue",
+        fct: SpotifyReaction.addMusicToQueue,
+      },
+      {
+        id: 5,
+        reactionName: "Loop on music",
+        reactionParamName: "",
+        paramFormat: null,
+        description: "Loop on your current track",
+        fct: SpotifyReaction.repeatMusic,
+      },
+    ],
   },
   {
     id: 4,
     serviceName: "Github",
-    imageUrl: "https://www.iconsdb.com/icons/preview/white/github-9-xxl.png",
+    imageUrl: "assets/github.png",
     backgroundColor: "#000000",
     oauthName: "github",
     actions: [
@@ -132,7 +176,7 @@ export const SERVICES: Service[] = [
     id: 5,
     serviceName: "Gmail",
     backgroundColor: "FF0000",
-    imageUrl: "https://www.iconsdb.com/icons/preview/white/gmail-login-xxl.png",
+    imageUrl: "assets/gmail.png",
     oauthName: "google",
     actions: [
       {

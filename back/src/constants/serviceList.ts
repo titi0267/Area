@@ -14,7 +14,7 @@ export const SERVICES: Service[] = [
     id: 1,
     serviceName: "Youtube",
     oauthName: "google",
-    imageUrl: "/assets/youtube.png",
+    imageUrl: "assets/youtube.png",
     backgroundColor: "#FF0000",
     actions: [
       {

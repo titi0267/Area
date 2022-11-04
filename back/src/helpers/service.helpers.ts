@@ -239,13 +239,7 @@ const getSpotifyClient = async (userId: number) => {
     clientSecret: ENV.spotifyClientSecret,
   });
 
-  spotifyApi.setRefreshToken(token);
-
-  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
-
-  spotifyApi.setAccessToken(accessToken);
-
-  return spotifyApi;
+  return { client: spotifyApi, token };
 };
 
 export {

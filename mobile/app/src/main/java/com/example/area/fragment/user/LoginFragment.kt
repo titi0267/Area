@@ -38,7 +38,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         view.findViewById<Button>(R.id.login_redirect_to_register_button).setOnClickListener {
             if ((context as UserConnectionActivity).loading)
                 return@setOnClickListener
-            (context as UserConnectionActivity).changeFragment(RegisterFragment(), "login")
+            (context as UserConnectionActivity).changeFragment(RegisterFragment(), "register")
         }
         view.findViewById<Button>(R.id.login_with_google_button).setOnClickListener {
             if ((context as UserConnectionActivity).loading)

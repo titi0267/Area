@@ -2,13 +2,13 @@
 /** Area interface */
 
 export interface Area {
-    state: Number,
-    actionServiceId: Number,
-    actionId: Number,
-    actionParam: String,
-    reactionServiceId: Number,
-    reactionId: Number,
-    reactionParam: String,
+    state: number,
+    actionServiceId: number,
+    actionId: number,
+    actionParam: string,
+    reactionServiceId: number,
+    reactionId: number,
+    reactionParam: string,
 }
 
 /** About.json interface */
@@ -44,15 +44,15 @@ export type ServiceName =
 /** Area interface */
 
 export interface Areas {
-    id: Number;
-    userId: Number;
-    actionServiceId: Number;
-    actionId: Number;
-    actionParam: String;
-    lastActionFetch: String;
-    reactionServiceId: Number;
-    reactionId: Number;
-    reactionParam: String;
+    id: number;
+    userId: number;
+    actionServiceId: number;
+    actionId: number;
+    actionParam: string;
+    lastActionFetch: string;
+    reactionServiceId: number;
+    reactionId: number;
+    reactionParam: string;
 }
 
 /** Authentification interfaces */
@@ -71,7 +71,7 @@ export interface Register {
 }
 
 interface Field {
-    value: String;
-    error: String;
+    value: string;
+    error: string;
     valide: Boolean;
 }

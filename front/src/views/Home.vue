@@ -11,12 +11,15 @@
                 <p> {{ getService(area, 'action').actions.find(action => action.id == area.actionId).name }} </p>
             </div>
             <div class="edit">
-                <p>Edit</p>
+                <b-button @click="setEdit(area.id)">Edit</b-button>
             </div>
             <div class="reaction" v-if="getService(area, 'reaction')">
                 <p> {{ getService(area, 'reaction').reactions.find(reaction => reaction.id == area.reactionId).name }} </p>
                 <p> {{ getService(area, 'reaction').name }} </p>
                 <b-image :src="getService(area, 'reaction').imageUrl"></b-image>
+            </div>
+            <div v-show="isEditing[area.id]">
+                <EditArea/>
             </div>
         </div>
     </div>
@@ -25,19 +28,31 @@
 <script lang="ts">
 import vue from 'vue';
 import { Areas, Service } from '../types/index'
+import EditArea from '../components/EditArea.vue'
 
 export default vue.extend({
     data() {
         return {
             areas: [] as Areas[], /** An array that will be filled with the actions and reactions of the users */
             services: [] as Service[], /** An array that will be filled with the about.json from the server. */
+            isEditing: [] as Boolean[]
         }
     },
     mounted() {
         this.getUserAreas();
         this.getAbout();
     },
+    components: {
+        EditArea
+    },
     methods: {
+        setEdit(id: number): void {
+            this.isEditing[id] == true ? this.$set(this.isEditing, id, false) : this.$set(this.isEditing, id, true);
+        },
+        getEdit(id: number) {
+            console.log(this.isEditing[id])
+            return this.isEditing[id]
+        },
         /**
          * It removes the localStorage item called 'area'
          */

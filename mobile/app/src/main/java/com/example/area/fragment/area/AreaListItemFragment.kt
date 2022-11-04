@@ -7,18 +7,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
-import com.example.area.data.Datasource
 import com.example.area.model.ActionReaction
-import com.example.area.model.AreaInfo
 import com.example.area.model.about.About
-import com.example.area.repository.Repository
 import com.example.area.utils.AboutJsonCreator
-import com.example.area.utils.SessionManager
-import org.w3c.dom.Text
 
 class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout.fragment_area_list_item) {
 

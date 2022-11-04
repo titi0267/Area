@@ -29,7 +29,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     val linkResponse: MutableLiveData<Response<String>> = MutableLiveData()
     val userResponse: MutableLiveData<Response<Token>?> = MutableLiveData()
     val aboutResponse: MutableLiveData<Response<About>> = MutableLiveData()
-    val userResponse2: MutableLiveData<Response<List<ActionReaction>>> = MutableLiveData()
+    val listAREAResponse: MutableLiveData<Response<List<ActionReaction>>> = MutableLiveData()
 
     // Back calls
 
@@ -93,7 +93,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun getUserAreaList(auth: String) {
         viewModelScope.launch {
             val response = repository.getUserAreaList(auth)
-            userResponse2.value = response
+            listAREAResponse.value = response
         }
     }
 

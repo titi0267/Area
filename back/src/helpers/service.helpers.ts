@@ -180,8 +180,6 @@ const injectParamInReaction = <T extends Object>(
   const matches = reactionParam.matchAll(matchParamRegex);
 
   for (const match of matches) {
-    if (!match || !match[2]) continue;
-
     const key = match[2];
 
     if (!param.hasOwnProperty(key)) continue;

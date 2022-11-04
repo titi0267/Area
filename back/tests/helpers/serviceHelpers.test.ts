@@ -258,7 +258,19 @@ describe("Test action Format", () => {
       expect(isWellFormated).toBe(true);
     });
 
-    test("Test with a valid action format", async () => {
+    test("Test with a valid action with no require format", async () => {
+      const isWellFormated = ServiceHelper.checkActionFormat(1, 3, "");
+
+      expect(isWellFormated).toBe(true);
+    });
+
+    test("Test with a invalid action", async () => {
+      const isWellFormated = ServiceHelper.checkActionFormat(40, 40, "test");
+
+      expect(isWellFormated).toBe(false);
+    });
+
+    test("Test with a invalid action format", async () => {
       const isWellFormated = ServiceHelper.checkActionFormat(1, 1, "test");
 
       expect(isWellFormated).toBe(false);
@@ -278,7 +290,13 @@ describe("Test reaction Format", () => {
       expect(isWellFormated).toBe(true);
     });
 
-    test("Test with a valid reaction format", async () => {
+    test("Test with a invalid reaction", async () => {
+      const isWellFormated = ServiceHelper.checkReactionFormat(40, 90, "test");
+
+      expect(isWellFormated).toBe(false);
+    });
+
+    test("Test with a invalid reaction format", async () => {
       const isWellFormated = ServiceHelper.checkReactionFormat(4, 1, "test");
 
       expect(isWellFormated).toBe(false);

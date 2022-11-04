@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.area.R
 import com.example.area.model.ServiceInfo
 import java.net.URL
+import java.util.*
+import kotlin.collections.ArrayList
 
-class ServiceItemAdapter(private val context: Context, private val dataset: List<ServiceInfo>, private val onItemClick: (position: Int) -> Unit) : RecyclerView.Adapter<ServiceItemAdapter.ServiceViewHolder>() {
+class ServiceItemAdapter(private val context: Context, private var dataset: List<ServiceInfo>, private val onItemClick: (position: Int) -> Unit) : RecyclerView.Adapter<ServiceItemAdapter.ServiceViewHolder>() {
     private var selectedItem = 0
 
     class ServiceViewHolder(private val view: View, private val onItemClick: (position: Int) -> Unit): RecyclerView.ViewHolder(view) {
@@ -40,6 +42,17 @@ class ServiceItemAdapter(private val context: Context, private val dataset: List
         selectedItem++
 
         return ServiceViewHolder(adapterLayout, onItemClick)
+    }
+
+    fun filter(toSearch: String?) {
+        val filterList: MutableList<ServiceInfo> = ArrayList()
+        if (toSearch != null && toSearch.isNotEmpty()) {
+            for (item in dataset) {
+                if (item.name.lowercase(Locale.ROOT).contains(toSearch))
+                    filterList += item
+            }
+            dataset = filterList
+        }
     }
 
     override fun onBindViewHolder(holder: ServiceViewHolder, position: Int) {

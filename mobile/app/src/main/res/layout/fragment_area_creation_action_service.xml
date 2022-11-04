@@ -31,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
-
     <Button
         android:id="@+id/nextFromActionServiceCreation"
         android:layout_width="wrap_content"
@@ -45,7 +44,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <SearchView
+    <android.widget.SearchView
         android:id="@+id/searchActionService"
         android:layout_width="300dp"
         android:layout_height="23dp"

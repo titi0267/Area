@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +28,7 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceInfo
     private lateinit var viewModel: MainViewModel
     private var abt: About? = null
     private var serviceSelectedIndex: Int = -1
+    private lateinit var serviceAdapter: ServiceItemAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +65,17 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceInfo
                         serviceList.addService(elem.id, elem.name, elem.imageUrl)
                 }
                 updateRecycler(recycler, serviceList)
+                view.findViewById<SearchView>(R.id.searchReactionService).setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener{
+                    override fun onQueryTextSubmit(toSearch: String?): Boolean {
+                        return false
+                    }
+
+                    override fun onQueryTextChange(toSearch: String?): Boolean {
+                        serviceAdapter.filter(toSearch)
+                        return false
+                    }
+
+                })
             }
         }
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
@@ -70,11 +83,12 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceInfo
     }
 
     private fun updateRecycler(recycler: RecyclerView, serviceList: ServiceDatasource) {
-        recycler.setHasFixedSize(true)
-        recycler.adapter = ServiceItemAdapter(
+        serviceAdapter = ServiceItemAdapter(
             context as AreaActivity,
             serviceList.loadServiceInfo()
         ) { position -> onItemClick(position, serviceList.loadServiceInfo()[position].name) }
+        recycler.setHasFixedSize(true)
+        recycler.adapter = serviceAdapter
     }
 
     private fun onItemClick(position: Int, toPrint: String) {

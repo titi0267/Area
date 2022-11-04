@@ -318,10 +318,10 @@ class AboutClass(val about: About) {
         return (BitmapFactory.decodeStream(URL(link).openConnection().getInputStream()))
     }
 
-    suspend fun getBitmapList(): List<Bitmap> {
+    fun getBitmapList(url: String): List<Bitmap> {
         val ret = mutableListOf<Bitmap>()
         for (service in about.server.services) {
-            ret.add(getBitmapByLink(service.imageUrl))
+            ret.add(getBitmapByLink(url + service.imageUrl))
         }
         return (ret)
     }

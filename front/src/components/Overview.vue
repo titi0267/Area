@@ -1,8 +1,38 @@
 <template>
     <div id="Overview">
-        {{ area }}
-        <b-button @click="$emit('previous'), $router.push('/create/reaction')">Précédent</b-button>
-        <b-button @click="$emit('create')">Créer</b-button>
+        <h2 class="overview-title">Overview of your action - reaction creation</h2>
+        <div class="if" v-if="action.actions">
+            <h2>IF</h2>
+            <div class="action" :style="{ 'background-color' : action.backgroundColor }">
+                <p>Action</p>
+                <b-image :src="action.imageUrl"></b-image>
+                <span style="margin: auto;">
+                    <h1> {{ action.actions.name }} </h1>
+                    <h2> {{ action.actions.description }} </h2>
+                </span>
+                <span style="width: 85%;">
+                    <h3> {{ action.actions.actionParamName }} </h3>
+                    <b-input v-if="action.actions.actionParamName" disabled :value="area.actionParam" />
+                </span>
+            </div>
+        </div>
+        <div class="then" v-if="reaction.reactions">
+            <h2>THEN</h2>
+            <div class="reaction" :style="{ 'background-color' : reaction.backgroundColor }">
+                <p>Reaction</p>
+                <b-image :src="reaction.imageUrl"></b-image>
+                <span style="margin: auto;">
+                    <h1> {{ reaction.reactions.name }} </h1>
+                    <h2> {{ reaction.reactions.description }} </h2>
+                </span>
+                <span style="width: 85%;">
+                    <h3> {{ reaction.reactions.reactionParamName }} </h3>
+                    <b-input v-if="reaction.reactions.reactionParamName" disabled :value="area.reactionParam" />
+                </span>
+            </div>
+        </div>
+        <b-button @click="$emit('create')" type="is-success is-light">Create</b-button>
+        <!--  <b-button @click="$emit('previous'), $router.push('/create/reaction')">Précédent</b-button>  -->
     </div>
 </template>
 
@@ -12,13 +42,93 @@ import vue from 'vue';
 export default vue.extend({
     data() {
         return {
+            action: {},
+            reaction: {}
         }
+    },
+    mounted() {
+        this.$nextTick(() => {
+            this.getArea('action');
+            this.getArea('reaction');
+        })
     },
     props: {
         area: Object,
+        services: Array,
     },
+    methods: {
+        getArea(type: string) {
+            let area = this.services.find(service => service.id == this.area[type + 'ServiceId']);
+            if (area) {
+                this[type] = area;
+                this[type][type + 's'] = area[type + 's'].find(actrea => actrea.id == this.area[type + 'Id'])
+            }
+        }
+    }
 })
 </script>
 
 <style lang="scss" scoped>
+#Overview {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    .overview-title {
+        position: absolute;
+        top: 120px;
+        font-family: 'Courier New', Courier, monospace;
+    }
+    .if,
+    .then {
+        font-size: 25px;
+        margin-bottom: 150px;
+    }
+    .action,
+    .reaction {
+        margin-bottom: 40px;
+        border-radius: 20px;
+        width: 450px;
+        height: 325px;
+        padding: 10px;
+        color: white;
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+        h1 {
+            text-transform: uppercase;
+            font-family: Hitmo Regular;
+        }
+        h2 {
+            font-family: Hitmo Regular;
+            font-size: 18px;
+        }
+        h3 {
+            font-family: "Avenir Roman";
+            font-size: 20px;
+            text-align: start;
+        }
+        :deep(figure) {
+            img {
+                width: auto;
+                height: 65px;
+                margin: 10px auto;
+            }
+        }
+        p {
+            font-size: 20px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    }
+    :deep(button) {
+        position: absolute;
+        bottom: 150px;
+        height: 60px;
+        width: 140px;
+        border-radius: 10px;
+        font-size: 20px;
+    }
+}
 </style>

@@ -2,7 +2,7 @@
   <div id="SelectService">
     <h2>Select your {{ type }} service name</h2>
     <div>
-      <b-input class="search-input" @input="debounceInput" placeholder="Enter your service here"></b-input>
+      <b-input class="search-input" @input="filterInput = $event" placeholder="Search your service here"></b-input>
       <div class="services">
         <div v-for="service in services" :key="service.name">
           <div class="service"
@@ -10,8 +10,8 @@
             :class="{ selected: service.id == area[type + 'ServiceId'] }"
             v-if="service[type + 's'].length != 0 && service.name.toLowerCase().includes(filterInput.toLowerCase())"
             @click="$emit(type + 'ServiceId', service.id), $emit('save'), getOAuthUrl()">
-                <b-image :src="service.imageUrl"></b-image>
                 <p> {{ service.name }} </p>
+                <b-image :src="service.imageUrl"></b-image>
           </div>
         </div>
       </div>
@@ -29,7 +29,6 @@
 
 <script scoped lang="ts">
 import vue from "vue";
-import _ from "lodash";
 
 export default vue.extend({
   data() {
@@ -52,14 +51,6 @@ export default vue.extend({
     area: Object, /** Object that contains the area creation fields */
   },
   methods: {
-    /**
-     * It's a function that waits for 400ms before executing the the input function.
-     * @param {String} input - Text input
-     * @data {String} filterInput
-     */
-    debounceInput: _.debounce(function (input: string): void {
-      this.filterInput = input;
-    }, 400),
     /**
      * An async function that gets the oauth url for the service selected.
      * @data {Object} area
@@ -93,6 +84,8 @@ export default vue.extend({
 </script>
 
 <style scoped lang="scss">
+$service-size: 175px;
+
 #SelectService {
     padding: 20px;
     padding-top: 0px;
@@ -102,12 +95,14 @@ export default vue.extend({
     .search-input {
         display: flex;
         justify-content: center;
+        margin-bottom: 10px;
         :deep(input) {
             width: 400px;
             margin: 10px;
         }
     }
     h2 {
+        margin: 20px 0px 10px;
         font-family: 'Courier New', Courier, monospace;
     }
     .buttons {
@@ -132,20 +127,32 @@ export default vue.extend({
         height: 100%;
         position: relative;
         justify-content: center;
+        flex-wrap: wrap;
         .service {
-            height: 150px;
-            width: 150px;
+            height: $service-size;
+            width: $service-size;
             border-radius: 10px;
-            margin: 5px;
+            margin: 10px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             cursor: pointer;
-            padding: 5px;
+            padding: 15px;
             p {
                 font-size: 20px;
                 font-family: Hitmo Regular;
                 text-transform: uppercase;
+                color: white;
+            }
+            :deep(figure) {
+                height: 85px;
+                width: auto;
+                margin: auto;
+                margin-top: 20px;
+                img {
+                    height: 85px;
+                    width: auto;
+                }
             }
             &.selected:not(p) {
                 outline: 2px solid black;

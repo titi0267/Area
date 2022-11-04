@@ -1,29 +1,26 @@
 <template>
   <div id="SelectArea">
-    <h2>Select your {{ type }} type</h2>
-    <div>
-      <div v-for="service in services" :key="service.name">
-        <div class="selected-service" v-if="area[type + 'ServiceId'] == service.id">
+    <div v-for="service in services" :key="service.name">
+        <div class="selected-service" v-if="area[type + 'ServiceId'] == service.id" :style="{ 'background-color': service.backgroundColor }">
+            <h2>Select your {{ type }} type</h2>
             <b-image :src="service.imageUrl"></b-image>
-            <p> {{ service.name }} </p>
         </div>
         <div class="areas" v-if="service.id == area[type + 'ServiceId']">
-          <div class="area"
-            :style=" { 'background' : `linear-gradient(to top left, ${service.backgroundColor}, ${service.backgroundColor})` }"
-            :class="{ selected: actrea.id == area[type + 'Id'] }"
-            v-for="actrea in service[type + 's']"
-            :key="actrea.name"
-            @click="$emit(type + 'Id', actrea.id), $emit('save')">
-                <p> {{ actrea.name }} </p>
-          </div>
+            <div class="area"
+                :style=" { 'background' : `linear-gradient(to top left, ${service.backgroundColor}, ${service.backgroundColor})` }"
+                :class="{ selected: actrea.id == area[type + 'Id'] }"
+                v-for="actrea in service[type + 's']"
+                :key="actrea.name"
+                @click="$emit(type + 'Id', actrea.id), $emit('save')">
+                    <p class="title"> {{ actrea.name }} </p>
+                    <p class="description"> {{ actrea.description }} </p>
+            </div>
         </div>
-      </div>
     </div>
     <div class="buttons">
         <b-button @click="$emit('previous'), $emit('save')">
             Previous
         </b-button>
-        <!-- <b-input class="param-input" @input="$emit(type + 'Param', $event)" :placeholder="getParamName()"></b-input> -->
         <b-field v-if="area[type + 'Id'] != -1">
             <b-autocomplete
                 class="param-input"
@@ -33,7 +30,7 @@
                 keep-first
                 open-on-focus
                 @select="option => selected = option"
-                >
+            >
                 <template #empty>No results for {{name}}</template>
             </b-autocomplete>
         </b-field>
@@ -123,12 +120,27 @@ export default vue.extend({
 
 <style scoped lang="scss">
 #SelectArea {
+    width: 100%;
     .selected-service {
         display: flex;
         justify-content: center;
-    }
-    h2 {
-        font-family: 'Courier New', Courier, monospace;
+        flex-direction: column;
+        border-radius: 20px;
+        width: 75%;
+        align-items: center;
+        padding: 15px;
+        margin: auto;
+        margin-top: 20px;
+        :deep(figure) {
+            img {
+                height: 90px;
+            }
+        }
+        h2 {
+            margin-bottom: 10px;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+        }
     }
     .buttons {
         display: flex;
@@ -155,21 +167,26 @@ export default vue.extend({
         height: 100%;
         position: relative;
         justify-content: center;
+        flex-wrap: wrap;
         .area {
             height: 200px;
             width: 200px;
             border-radius: 10px;
-            margin: 5px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
+            margin: 10px;
             padding: 10px;
+            cursor: pointer;
+            .title {
+                margin-bottom: 10px;
+                text-transform: uppercase;
+            }
+            .description {
+                font-size: 17px;
+            }
             p {
+                color: white;
                 overflow-wrap: break-word;
                 font-size: 20px;
                 font-family: Hitmo Regular;
-                text-transform: uppercase;
                 white-space: normal;
                 text-align: start;
             }

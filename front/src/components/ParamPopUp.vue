@@ -1,26 +1,20 @@
 <template>
-    <div id="notFound">
-        <h1>NotFound</h1>
+    <div id="ParamPopUp">
     </div>
 </template>
 
-<script lang="ts">
+<script scoped lang="ts">
 import vue from 'vue';
 
 export default vue.extend({
     data() {
         return {
-
         }
     },
-    methods: {
-
-    }
+    props: {
+    },
 })
 </script>
 
-<style scoped lang="scss">
-#notFound {
-    padding-top: 100px;
-}
+<style lang="scss" scoped>
 </style>

@@ -28,9 +28,10 @@
         />
         <Overview
             v-else
+            :area="area"
+            :services="services"
             @create="sendServices"
             @previous="area.state--"
-            :area="area"
         />
         <b-loading :is-full-page="true" v-model="loading"/>
     </div>

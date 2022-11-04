@@ -6,6 +6,7 @@ import { AreaService } from "../services";
 import httpStatus from "http-status";
 import { AreaBody, EditAreaBody } from "../types/body/areaRequestBody.types";
 import * as SecurityHelper from "../helpers/security.helper";
+import * as ErrorHelper from "../helpers/error.helpers";
 import authentificationMiddleware from "../middlewares/authentification.middleware";
 import {
   areaBodyValidator,
@@ -13,7 +14,6 @@ import {
   deleteAreaParamValidator,
   getUserAreaByIdParamValidator,
 } from "../schema/area.schema";
-import { throwBodyError } from "../helpers/error.helpers";
 import { IdParam } from "../types/areaServices/areaServices.types";
 
 type AreaRequest = FastifyRequest<{
@@ -42,7 +42,7 @@ export default (
     { onRequest: [authentificationMiddleware()] },
     async (req: AreaRequest, res: FastifyReply) => {
       const userInfos = SecurityHelper.getUserInfos(req);
-      if (!areaBodyValidator(req.body)) throwBodyError();
+      if (!areaBodyValidator(req.body)) ErrorHelper.throwBodyError();
 
       const areas = await AreaService.createArea(
         req.body.actionServiceId,
@@ -68,12 +68,12 @@ export default (
     { onRequest: [authentificationMiddleware()] },
     async (req: GetUserAreaById, res: FastifyReply) => {
       const userInfos = SecurityHelper.getUserInfos(req);
-      if (!getUserAreaByIdParamValidator(req.params)) throwBodyError();
+      if (!getUserAreaByIdParamValidator(req.params))
+        ErrorHelper.throwBodyError();
 
-      const area = await AreaService.getUserAreaById(
-        userInfos.id,
-        req.params.id,
-      );
+      const areaId = ErrorHelper.verifyIdParamIsNumber(req.params.id);
+
+      const area = await AreaService.getUserAreaById(userInfos.id, areaId);
       res.status(httpStatus.OK).send(area);
     },
   );
@@ -83,7 +83,7 @@ export default (
     { onRequest: [authentificationMiddleware()] },
     async (req: EditAreaRequest, res: FastifyReply) => {
       const userInfos = SecurityHelper.getUserInfos(req);
-      if (!editAreaBodyValidator(req.body)) throwBodyError();
+      if (!editAreaBodyValidator(req.body)) ErrorHelper.throwBodyError();
 
       const area = await AreaService.editArea(
         userInfos.id,
@@ -102,12 +102,11 @@ export default (
     { onRequest: [authentificationMiddleware()] },
     async (req: DeleteAreaRequest, res: FastifyReply) => {
       const userInfos = SecurityHelper.getUserInfos(req);
-      if (!deleteAreaParamValidator(req.params)) throwBodyError();
+      if (!deleteAreaParamValidator(req.params)) ErrorHelper.throwBodyError();
 
-      const area = await AreaService.removeUserArea(
-        userInfos.id,
-        req.params.id,
-      );
+      const areaId = ErrorHelper.verifyIdParamIsNumber(req.params.id);
+
+      const area = await AreaService.removeUserArea(userInfos.id, areaId);
 
       res.status(httpStatus.OK).send(area);
     },

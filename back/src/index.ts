@@ -7,7 +7,6 @@ import fastifyCors from "@fastify/cors";
 import ENV from "./env";
 import { UserInfos } from "./types/global.types";
 import areaLoop from "./area/loop.area";
-import { createGithubIssue } from "./area/github/github.reaction";
 
 const prisma = new PrismaClient();
 const server = fastify();
@@ -41,8 +40,8 @@ const main = async () => {
 };
 
 setInterval(async () => {
-  createGithubIssue("", 1162);
-}, 0.1 * 60 * 1000);
+  await areaLoop();
+}, 0.5 * 60 * 1000);
 
 main()
   .catch(e => {

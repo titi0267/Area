@@ -10,6 +10,7 @@ import Home from "../views/Home.vue";
 import Area from "../views/Area.vue";
 import Profile from "../views/Profile.vue";
 import Services from "../views/Services.vue";
+import Create from "../views/Create.vue"
 
 Vue.use(VueRouter);
 
@@ -37,7 +38,8 @@ const router = new VueRouter({
         },
         {
             path: '/create',
-            redirect: '/create/action',
+            name: 'create',
+            component: Create,
             meta: { requiresAuth: true }
         },
         {

@@ -40,15 +40,16 @@ const editAreaBodySchema: JSONSchemaType<EditAreaBody> = {
 const deleteAreaParamSchema: JSONSchemaType<IdParam> = {
   type: "object",
   properties: {
-    id: { type: "number" },
+    id: { type: "string" },
   },
   required: ["id"],
+  additionalProperties: false,
 };
 
 const getUserAreaByIdParamSchema: JSONSchemaType<IdParam> = {
   type: "object",
   properties: {
-    id: { type: "number" },
+    id: { type: "string" },
   },
   required: ["id"],
   additionalProperties: false,

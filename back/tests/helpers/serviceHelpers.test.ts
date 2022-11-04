@@ -83,7 +83,7 @@ describe("Test getYoutubeChannelName", () => {
   describe("Test valid cases", () => {
     test("Test if return channel name", () => {
       const channelName = ServiceHelper.getYoutubeChannelName(
-        "https://www.youtube.com/user/Floowmecofficiel",
+        "https://www.youtube.com/c/Floowmecofficiel",
       );
 
       expect(channelName).toBe("Floowmecofficiel");
@@ -93,6 +93,23 @@ describe("Test getYoutubeChannelName", () => {
       const channelName = ServiceHelper.getYoutubeChannelName(
         "https://prettier.io/docs/en/ignore.html",
       );
+      expect(channelName).toBeNull();
+    });
+  });
+});
+
+describe("Test getGithubIssueParams", () => {
+  describe("Test valid cases", () => {
+    test("Test if return return issue params", () => {
+      const channelName = ServiceHelper.getGithubIssueParams(
+        "ludovic-str/test/lol",
+      );
+
+      expect(channelName?.owner).toBe("ludovic-str");
+    });
+
+    test("Test with missing text", () => {
+      const channelName = ServiceHelper.getGithubIssueParams("ludovic-str/");
       expect(channelName).toBeNull();
     });
   });

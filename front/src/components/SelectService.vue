@@ -55,10 +55,8 @@ export default vue.extend({
   data() {
     return {
       filterInput: "" /** It's a filter input used for search a service */,
-      oauthURL:
-        "" /** This variable contains the oAuth URL of the right service */,
-      generateOauthURL:
-        false /** Set to true if no token are assigned to the selected service */,
+      oauthURL: "" /** This variable contains the oAuth URL of the right service */,
+      generateOauthURL: false /** Set to true if no token are assigned to the selected service */,
     };
   },
   mounted() {
@@ -94,26 +92,27 @@ export default vue.extend({
      * @async
      */
     async getTokenTable(): Promise<void> {
-      try {
-        const { data: user } = await this.$axios.get("/users/me", {
-          headers: {
-            Authorization: this.$store.getters.userToken || "noToken",
-          },
-        });
-        let serviceName = this.services.find(
-          (service) => service.id == this.area[this.type + "ServiceId"]
-        ).oauthName;
-        if (serviceName == null) return;
-        if (user.tokensTable[serviceName.toLowerCase() + "Token"] != null) {
-          this.oauthURL = "";
-          this.generateOauthURL = false;
-          return;
-        }
-        this.generateOauthURL = true;
-      } catch {}
+      const { data: user } = await this.$axios.get("/users/me", {
+        headers: {
+          Authorization: this.$store.getters.userToken || "noToken",
+        },
+      });
+      let serviceName = this.services.find(
+        (service) => service.id == this.area[this.type + "ServiceId"]
+      ).oauthName;
+      if (serviceName == null) return;
+      if (user.tokensTable[serviceName.toLowerCase() + "Token"] != null) {
+        this.oauthURL = "";
+        this.generateOauthURL = false;
+        return;
+      }
+      this.generateOauthURL = true;
     },
     async getOAuthUrl(): Promise<void> {
       try {
+        if (this.generateOauthURL == false)
+          return;
+        this.$emit('loading');
         let serviceName = this.services.find(
           (service) => service.id == this.area[this.type + "ServiceId"]
         ).oauthName;

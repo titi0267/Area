@@ -63,7 +63,7 @@ export default vue.extend({
          * This services watcher call the function when the services Array is not empty.
          */
         services: function(): void {
-        this.$nextTick(() => this.postOAuthCode());
+            this.$nextTick(() => this.postOAuthCode());
         },
     },
     methods: {

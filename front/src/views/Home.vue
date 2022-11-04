@@ -19,7 +19,7 @@
                 <b-image :src="getService(area, 'reaction').imageUrl"></b-image>
             </div>
             <div v-show="isEditing[area.id]">
-                <EditArea :id="area.id" @deleted="refreshAreaTable"/>
+                <EditArea :id="area.id" @deleted="refreshAreaTable(area.id)"/>
             </div>
         </div>
     </div>
@@ -46,16 +46,13 @@ export default vue.extend({
         EditArea
     },
     methods: {
-        refreshAreaTable() : void {
-            this.$forceUpdate();
-            console.log("J'ai delete un truc " + this.areas[0].id)
+        refreshAreaTable(id: number) : void {
+            const areaIndex = this.areas.findIndex(area => area.id == id)
+
+            this.areas.splice(areaIndex, 1);
         },
         setEdit(id: number): void {
             this.isEditing[id] == true ? this.$set(this.isEditing, id, false) : this.$set(this.isEditing, id, true);
-        },
-        getEdit(id: number) {
-            console.log(this.isEditing[id])
-            return this.isEditing[id]
         },
         /**
          * It removes the localStorage item called 'area'

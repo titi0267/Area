@@ -32,7 +32,7 @@ export default vue.extend({
                 }
             })
             this.refreshArea = true;
-            this.$emit('deleted', this.id)
+            this.$emit('deleted')
         },
     }
 });

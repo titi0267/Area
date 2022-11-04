@@ -5,12 +5,15 @@ const createGithubIssue = async (reactionParam: string, userId: number) => {
 
   if (!githubClient) return;
 
-  const repo = await githubClient.rest.repos.get({
-    owner: "ludovic-str",
-    repo: "test",
-  });
+  const issueParam = ServiceHelper.getGithubIssueParams(reactionParam);
 
-  console.log(repo);
+  if (!issueParam) return;
+
+  await githubClient.rest.issues.create({
+    owner: issueParam.owner,
+    repo: issueParam.repo,
+    title: issueParam.title,
+  });
 };
 
 export { createGithubIssue };

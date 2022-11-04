@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import com.example.area.model.about.About
 import com.example.area.model.about.AboutClass
+import com.example.area.utils.SessionManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -16,9 +17,11 @@ class AREAApplication : Application() {
     }
 
     fun setAboutBitmapList() {
+        val sessionManager = SessionManager(this)
+        val url = sessionManager.fetchAuthToken("url") ?: return
         GlobalScope.launch {
             if (aboutClass != null)
-                aboutBitmapList = aboutClass!!.getBitmapList()
+                aboutBitmapList = aboutClass!!.getBitmapList(url)
         }
     }
 

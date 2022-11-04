@@ -12,7 +12,6 @@ import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.model.ActionReaction
 import com.example.area.model.about.About
-import com.example.area.utils.AboutJsonCreator
 
 class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout.fragment_area_list_item) {
 

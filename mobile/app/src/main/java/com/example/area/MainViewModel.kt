@@ -115,15 +115,15 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 aboutResponse.value = response
             }
             catch(e: SocketTimeoutException) {
-                Toast.makeText(context as UserConnectionActivity, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                Toast.makeText(context as AreaActivity, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
                 userResponse.value = null
             }
             catch(e: ConnectException) {
-                Toast.makeText(context as UserConnectionActivity, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context as AreaActivity, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
                 aboutResponse.value = null
             }
             finally {
-                (context as UserConnectionActivity).loading = false
+                (context as AreaActivity).loading = false
                 aboutResponse.removeObserver(observer)
             }
         }

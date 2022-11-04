@@ -13,6 +13,7 @@ import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.fragment.area.MainFragment
+import com.example.area.model.UserInfo
 import com.example.area.model.about.About
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
@@ -77,12 +78,14 @@ class AreaActivity : AppCompatActivity() {
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
         val viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-
-        viewModel.getUserInfo(token)
-        viewModel.userInfoResponse.observe(this, Observer { response ->
+        val observer: Observer<Response<UserInfo>?> = Observer { response ->
+            if (response == null)
+                return@Observer
             if (response.isSuccessful) {
                 (application as AREAApplication).setUserInfoInApp(response.body()!!)
             }
-        })
+        }
+        viewModel.getUserInfo(token, this, observer)
+        viewModel.userInfoResponse.observe(this, observer)
     }
 }

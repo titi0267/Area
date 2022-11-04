@@ -17,6 +17,7 @@ import com.example.area.R
 import com.example.area.activity.MainActivity
 import com.example.area.activity.UserConnectionActivity
 import com.example.area.model.RegisterFields
+import com.example.area.model.Token
 import com.example.area.repository.Repository
 import com.example.area.utils.*
 
@@ -34,6 +35,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
         registerFocusListener(view)
         button.setOnClickListener {
+            if ((context as UserConnectionActivity).loading)
+                return@setOnClickListener
             lateinit var url: String
             //Store register fields
             val registerForm = RegisterFields(
@@ -67,8 +70,10 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         val sessionManager = SessionManager(context as UserConnectionActivity)
 
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        viewModel.register(registerForm)
+        viewModel.register(registerForm, context as UserConnectionActivity)
         viewModel.userResponse.observe(viewLifecycleOwner, Observer { response ->
+            if (response == null)
+                return@Observer
             if (response.isSuccessful) {
                 token = response.body()?.token
                 token?.let {

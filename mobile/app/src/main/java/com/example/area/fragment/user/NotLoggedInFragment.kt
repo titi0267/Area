@@ -21,13 +21,19 @@ class NotLoggedInFragment : Fragment(R.layout.fragment_not_logged_in) {
         val sessionManager = SessionManager(context as UserConnectionActivity)
 
         view.findViewById<Button>(R.id.not_logged_in_change_ip_port_button).setOnClickListener {
+            if ((context as UserConnectionActivity).loading)
+                return@setOnClickListener
             sessionManager.removeAuthToken("url")
             (context as UserConnectionActivity).changeFragment(ConnectivityFragment(), "connectivity")
         }
         view.findViewById<Button>(R.id.not_logged_in_login_button).setOnClickListener {
+            if ((context as UserConnectionActivity).loading)
+                return@setOnClickListener
             (context as UserConnectionActivity).changeFragment(LoginFragment(), "login")
         }
         view.findViewById<Button>(R.id.not_logged_in_register_button).setOnClickListener {
+            if ((context as UserConnectionActivity).loading)
+                return@setOnClickListener
             (context as UserConnectionActivity).changeFragment(RegisterFragment(), "register")
         }
         return view

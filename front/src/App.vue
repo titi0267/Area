@@ -36,6 +36,6 @@ export default vue.extend({
 }
 @font-face {
     font-family: "Avenir Roman";
-    src: url("@/assets/fonts/AVENIRLTSTD-ROMAN.ttf");
+    src: url("@/assets/fonts/AVENIRLTSTD-ROMAN.OTF");
 }
 </style>

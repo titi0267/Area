@@ -142,12 +142,16 @@ $navbar-height: 75px;
 
     }
     .profile {right: -12px;
-    position: relative;
+        position: relative;
         width: 206.53px;
         display: flex;
         justify-content: flex-end;
         >:deep(div) {
-            margin-right: 15px;
+            margin-right: 23px;
+            svg {
+                width: 34px;
+                height: 34px;
+            }
         }
     }
 }
@@ -159,5 +163,13 @@ $navbar-height: 75px;
     span {
         margin-right: 15px;
     }
+}
+
+
+</style>
+
+<style lang="scss">
+:deep(.dropdown) {
+    top: 20px;
 }
 </style>

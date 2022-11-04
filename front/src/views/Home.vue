@@ -102,16 +102,21 @@ export default vue.extend({
         display: flex;
         justify-content: space-around;
         margin-bottom: 20px;
+        padding: 10px;
         .action,
         .reaction {
             width: 50%;
             display: flex;
             align-items: center;
             :deep(figure) {
+                height: 100%;
+                width: auto;
                 margin: 10px;
                 max-height: 50px;
-                height: 50px;
                 width: auto;
+                img {
+                    height: 100%;
+                }
             }
             p {
                 color: white;
@@ -125,10 +130,11 @@ export default vue.extend({
             display: flex;
             align-items: center;
             text-transform: uppercase;
-            color: white;
             :deep(span) {
-                padding: 16px;
-                background-color: rgb(44, 44, 53);
+                padding: 20px;
+                box-shadow: 0 0 15px 1px #000000a1;
+                background-color: white;
+                border-radius: 50%;
                 cursor: pointer;
                 svg {
                     width: 19px;

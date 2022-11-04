@@ -7,7 +7,6 @@ import * as SpotifyReaction from "../area/spotify/spotify.reactions";
 import * as GithubAction from "../area/github/github.action";
 import * as GmailAction from "../area/gmail/gmail.action";
 import { FORMAT } from "./paramFormat";
-import ENV from "../env";
 
 export const SERVICES: Service[] = [
   {

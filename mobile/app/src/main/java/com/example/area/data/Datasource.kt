@@ -1,18 +1,20 @@
 package com.example.area.data
 
-import com.example.area.R
-import com.example.area.model.AreaInfo
+import android.graphics.Bitmap
+import com.example.area.model.AreaListElement
 
 class Datasource {
-    private var areaList:MutableList<AreaInfo> = ArrayList()
-    fun addArea(actionUrl: String, reactionUrl: String, action: String, reaction: String) {
-        areaList += (AreaInfo(actionUrl, action, reactionUrl, reaction))
+    private var areaList: MutableList<AreaListElement> = mutableListOf<AreaListElement>()
+
+    fun addArea(actionServiceBitmap: Bitmap, reactionServiceBitmap: Bitmap, actionName: String, reactionName: String) {
+        areaList += (AreaListElement(actionServiceBitmap, reactionServiceBitmap, actionName, reactionName))
     }
 
     fun clear() {
         areaList.clear()
     }
-    fun loadAreaInfo(): MutableList<AreaInfo> {
+
+    fun getAreaInfo(): MutableList<AreaListElement> {
         return areaList
     }
 }

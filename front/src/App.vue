@@ -38,4 +38,8 @@ export default vue.extend({
     font-family: "Avenir Roman";
     src: url("@/assets/fonts/AVENIRLTSTD-ROMAN.OTF");
 }
+@font-face {
+    font-family: "Century Gothic Regular";
+    src: url("@/assets/fonts/CENTURYGOTHIC-REGULAR.TTF");
+}
 </style>

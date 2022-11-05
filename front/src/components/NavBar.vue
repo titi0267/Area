@@ -128,7 +128,6 @@ $navbar-height: 75px;
             margin-right: 15px;
         }
         a {
-            font-family: Avenir;
             font-size: 25px;
             color: #e5e4e4;
             text-transform: uppercase;

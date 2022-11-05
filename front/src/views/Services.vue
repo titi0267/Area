@@ -1,6 +1,6 @@
 <template>
     <div id="Services" v-if="user.tokensTable && services">
-        <div class="service" v-for="service of services" :key="service.name + service.backgroundColor">
+        <div class="service" v-for="service of services" :key="service.name + service.backgroundColor" :style="{ 'background-color' : service.backgroundColor }">
             <div class="left">
                 <b-image :src="$store.state.serveurURL + service.imageUrl"></b-image>
                 <p>{{ service.name }}</p>
@@ -24,7 +24,8 @@ export default vue.extend({
     },
     mounted() {
         this.getAbout();
-        this.getUserInfos()
+        this.getUserInfos();
+        localStorage.removeItem('area');
     },
     methods: {
         /**
@@ -56,16 +57,34 @@ export default vue.extend({
 <style lang="scss" scoped>
 #Services {
     padding: 20px;
-    padding-top: 95px;
+    padding-top: 110px;
     .service {
         display: flex;
         margin-bottom: 10px;
         align-items: center;
         justify-content: space-between;
-        border: 1px solid black;
+        height: 55px;
+        border-radius: 15px;
+        padding: 10px;
+        :deep(.button) {
+            width: 90px;
+            height: 40px;
+            box-shadow: 0 0 15px 1px rgb(0 0 0 / 33%);
+        }
         .left {
             display: flex;
             align-items: center;
+            p {
+                font-family: "Avenir Roman";
+                color: white;
+                font-size: 20px;
+            }
+            :deep(figure) {
+                margin-right: 15px;
+                img {
+                    height: 45px;
+                }
+            }
         }
     }
 }

@@ -58,7 +58,6 @@ export default vue.extend({
     },
     mounted() {
         this.checkAlreadyOAuth();
-        console.log("test")
     },
     watch: {
         /**

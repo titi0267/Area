@@ -70,7 +70,7 @@ export const SERVICES: Service[] = [
     serviceName: "Discord",
     imageUrl: "assets/discord.png",
     backgroundColor: "#5865F2",
-    oauthName: null,
+    oauthName: "discord",
     actions: [],
     reactions: [
       {

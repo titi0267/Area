@@ -17,7 +17,6 @@ import com.example.area.activity.AreaActivity
 import com.example.area.model.ActionReaction
 import com.example.area.model.EnableDisable
 import com.example.area.model.about.About
-import com.example.area.utils.AboutJsonCreator
 import com.example.area.utils.SessionManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider

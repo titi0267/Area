@@ -34,7 +34,7 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
         val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return view
         val servicesImages = ((context as AreaActivity).application as AREAApplication).aboutBitmapList ?: return view
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerViewActionService)
-        val serviceList = ServiceDatasource()
+        var serviceList = ServiceDatasource()
 
         recycler.layoutManager = LinearLayoutManager(context as AreaActivity)
         serviceList.clear()
@@ -53,10 +53,18 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
         view.findViewById<SearchView>(R.id.searchActionService).setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(toSearch: String?): Boolean {
                 serviceAdapter.filter(toSearch, feelEntireList(aboutClass, servicesImages))
+                serviceList.clear()
+                for (elem in serviceAdapter.getDataset())
+                    serviceList.addService(elem)
+                updateRecycler(recycler, serviceList)
                 return false
             }
             override fun onQueryTextChange(toSearch: String?): Boolean {
                 serviceAdapter.filter(toSearch, feelEntireList(aboutClass, servicesImages))
+                serviceList.clear()
+                for (elem in serviceAdapter.getDataset())
+                    serviceList.addService(elem)
+                updateRecycler(recycler, serviceList)
                 return false
             }
         })
@@ -65,7 +73,7 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
     }
 
     private fun updateRecycler(recycler: RecyclerView, serviceList: ServiceDatasource) {
-         serviceAdapter = ServiceItemAdapter(
+        serviceAdapter = ServiceItemAdapter(
             context as AreaActivity,
             serviceList.loadServiceInfo()
         ) { position -> onItemClick(position, serviceList.loadServiceInfo()[position].name) }
@@ -84,7 +92,6 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
             if (elem.actions.isNotEmpty())
                 list += ServiceListElement(elem.id, elem.name, servicesImages[elem.id - 1])
         }
-        Log.d("Entire List", list.toString())
         return list
     }
 }

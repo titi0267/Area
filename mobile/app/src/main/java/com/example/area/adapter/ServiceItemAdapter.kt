@@ -9,10 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.area.R
-import com.example.area.activity.AreaActivity
 import com.example.area.model.ServiceListElement
 import java.util.*
 import kotlin.collections.ArrayList
@@ -44,22 +42,20 @@ class ServiceItemAdapter(private val context: Context, private var dataset: List
         val filterList: MutableList<ServiceListElement> = ArrayList()
         if (toSearch != null && toSearch.isNotEmpty()) {
             for (item in entireList) {
-                if (item.name.lowercase(Locale.ROOT).contains(toSearch.lowercase(Locale.ROOT))) {
-                    Log.d("Searched field", toSearch.lowercase(Locale.ROOT))
-                    Log.d("Choosed Item", item.name.lowercase(Locale.ROOT))
+                if (item.name.lowercase(Locale.ROOT).contains(toSearch.lowercase(Locale.ROOT)))
                     filterList += item
-                }
             }
             dataset = filterList
         } else if (toSearch != null && toSearch.isEmpty()) {
             dataset = entireList
         }
-        Log.d("ListToPrint", dataset.toString())
         notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: ServiceViewHolder, position: Int) {
     }
+
+    fun getDataset() = dataset
 
     override fun getItemCount() = dataset.size
 }

@@ -11,6 +11,9 @@ import com.example.area.fragment.user.NotLoggedInFragment
 import com.example.area.utils.SessionManager
 
 class UserConnectionActivity : AppCompatActivity() {
+
+    var loading: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sessionManager = SessionManager(this)
@@ -46,6 +49,8 @@ class UserConnectionActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        if (loading)
+            return
         val sessionManager = SessionManager(this)
         val fragment = supportFragmentManager.findFragmentByTag("not_logged_in")
         if ((fragment != null && fragment.isVisible) || (sessionManager.fetchAuthToken("url") == null))

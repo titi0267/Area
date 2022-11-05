@@ -62,8 +62,7 @@ export default vue.extend({
     methods: {
         createRedirect(): void {
             localStorage.removeItem('area');
-            if (this.$route.path == '/create/action')
-                this.$router.push('home')
+            this.$router.push('/tmp')
             this.$router.push('/create/action');
         },
         checkRoute(): void {

@@ -18,8 +18,10 @@ import com.example.area.R
 import com.example.area.activity.MainActivity
 import com.example.area.activity.UserConnectionActivity
 import com.example.area.model.LoginFields
+import com.example.area.model.Token
 import com.example.area.repository.Repository
 import com.example.area.utils.*
+import retrofit2.Response
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
@@ -34,12 +36,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         loginFocusListener(view)
         view.findViewById<Button>(R.id.login_redirect_to_register_button).setOnClickListener {
-            (context as UserConnectionActivity).changeFragment(RegisterFragment(), "login")
+            if ((context as UserConnectionActivity).loading)
+                return@setOnClickListener
+            (context as UserConnectionActivity).changeFragment(RegisterFragment(), "register")
         }
         view.findViewById<Button>(R.id.login_with_google_button).setOnClickListener {
+            if ((context as UserConnectionActivity).loading)
+                return@setOnClickListener
             (context as UserConnectionActivity).changeFragment(GoogleOAuthFragment(), "google_oauth_login")
         }
         view.findViewById<Button>(R.id.request_button).setOnClickListener {
+            if ((context as UserConnectionActivity).loading)
+                return@setOnClickListener
             // Store email and password
             val loginForm = LoginFields(
                 view.findViewById<EditText>(R.id.login_email_field_edit_text).text.toString(),
@@ -60,24 +68,24 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun loginRequest(loginForm: LoginFields)
     {
-
         var token: String?
         val sessionManager = SessionManager(context as UserConnectionActivity)
         val url = sessionManager.fetchAuthToken("url") ?: return
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
-
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        // Login post request
-        viewModel.login(loginForm)
-        // Receive login response
-        viewModel.userResponse.observe(viewLifecycleOwner, Observer { response ->
+        val observer = Observer<Response<Token>?> { response ->
+            if (response == null)
+                return@Observer
             if (response.isSuccessful) {
                 token = response.body()?.token
                 token?.let {
                     sessionManager.saveAuthToken("user_token", token!!)
                 }
-                Toast.makeText(context as UserConnectionActivity, "Successfully logged in!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context as UserConnectionActivity,
+                    "Successfully logged in!",
+                    Toast.LENGTH_SHORT
+                ).show()
                 startActivity(
                     Intent(
                         context,
@@ -85,7 +93,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     )
                 )
             }
-        })
+        }
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        // Login post request
+        viewModel.login(loginForm, context as UserConnectionActivity, observer)
+        // Receive login response
+        viewModel.userResponse.observe(viewLifecycleOwner, observer)
     }
 
     private fun loginFocusListener(view: View)

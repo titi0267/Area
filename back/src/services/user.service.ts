@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import ClientError from "../error";
 import { Token, UserWithTokens } from "../types/global.types";
 import ENV from "../env";
+import { TokenService } from ".";
 
 const prisma = new PrismaClient();
 
@@ -67,6 +68,50 @@ const createUser = async (
     { id: user.id, email, role: user.role, expTime: exp },
     ENV.secret,
   );
+
+  return { token };
+};
+
+const connectOauthUser = async (
+  firstName: string | null,
+  lastName: string | null,
+  email: string | null,
+  id: string | null,
+  googleToken: string | null,
+): Promise<Token> => {
+  if (!firstName || !lastName || !email || !id || !googleToken) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "Invalid google account",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  const userWithSameMail = await prisma.user.findFirst({ where: { email } });
+
+  if (userWithSameMail !== null) return await loginUser(email, id);
+
+  const hashedPassword = await bcrypt.hash(id, 10);
+
+  const user = await prisma.user.create({
+    data: {
+      email,
+      firstName,
+      lastName,
+      password: hashedPassword,
+      tokensTable: { create: {} },
+    },
+  });
+
+  const exp = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
+
+  const token = jwt.sign(
+    { id: user.id, email, role: user.role, expTime: exp },
+    ENV.secret,
+  );
+
+  await TokenService.setGoogleToken(user.id, googleToken);
 
   return { token };
 };
@@ -149,6 +194,7 @@ const removeUserByEmail = async (email: string): Promise<User> => {
 
 export default {
   getAllUsers,
+  connectOauthUser,
   createUser,
   removeUserById,
   removeUserByEmail,

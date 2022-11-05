@@ -98,6 +98,22 @@ describe("Test getYoutubeChannelName", () => {
   });
 });
 
+describe("Test getGithubPullRequestParams", () => {
+  describe("Test valid cases", () => {
+    test("Test if return owner name", () => {
+      const pullRequestParam =
+        ServiceHelper.getGithubPullRequestParams("ludovic-str/test");
+
+      expect(pullRequestParam?.owner).toBe("ludovic-str");
+    });
+
+    test("Test with random string", () => {
+      const pullRequestParam = ServiceHelper.getGithubPullRequestParams("test");
+      expect(pullRequestParam).toBeNull();
+    });
+  });
+});
+
 describe("Test getGithubIssueParams", () => {
   describe("Test valid cases", () => {
     test("Test if return return issue params", () => {

@@ -187,7 +187,7 @@ export const SERVICES: Service[] = [
   {
     id: 5,
     serviceName: "Gmail",
-    backgroundColor: "FF0000",
+    backgroundColor: "#DE5145",
     imageUrl: "assets/gmail.png",
     oauthName: "google",
     actions: [

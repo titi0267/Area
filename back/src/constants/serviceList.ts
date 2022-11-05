@@ -208,7 +208,7 @@ export const SERVICES: Service[] = [
     serviceName: "Weather",
     backgroundColor: "#00BFFF",
     imageUrl: "assets/weather.png",
-    oauthName: null,
+    oauthName: "none",
     actions: [
       {
         id: 1,

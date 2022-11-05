@@ -71,6 +71,7 @@ export default vue.extend({
           this.$emit('save');
           return;
         }
+        if (serviceOauthName == "none") return;
         this.$emit('loading');
         const { data: url } = await this.$axios.get("/oauth/" + serviceOauthName + "/link", {
           headers: {

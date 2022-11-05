@@ -7,6 +7,7 @@ import * as SpotifyReaction from "../area/spotify/spotify.reactions";
 import * as GithubAction from "../area/github/github.action";
 import * as GithubReaction from "../area/github/github.reaction";
 import * as GmailAction from "../area/gmail/gmail.action";
+import * as WeatherAction from "../area/weather/weather.action";
 import { FORMAT } from "./paramFormat";
 
 export const SERVICES: Service[] = [
@@ -198,6 +199,25 @@ export const SERVICES: Service[] = [
         description: "You've got a new mail from an address",
         fct: GmailAction.newMailFrom,
         availableInjectParams: ["content", "subject"],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 6,
+    serviceName: "Weather",
+    backgroundColor: "#00BFFF",
+    imageUrl: "assets/weather.png",
+    oauthName: null,
+    actions: [
+      {
+        id: 1,
+        actionName: "Weather is clear",
+        actionParamName: "City name",
+        paramFormat: null,
+        description: "The weather became clear in your city",
+        fct: WeatherAction.weatherBecameClear,
+        availableInjectParams: ["temperature", "clouds"],
       },
     ],
     reactions: [],

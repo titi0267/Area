@@ -333,6 +333,7 @@ export default (
       const options = {
         redirect_uri: ENV.githubRedirectUrl,
         client_id: ENV.githubClientId,
+        scope: ["repo"].join(" "),
       };
       const qs = new URLSearchParams(options);
 

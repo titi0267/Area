@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.area.activity.AreaActivity
 import com.example.area.activity.UserConnectionActivity
 import com.example.area.model.AREAFields
 import com.example.area.model.LoginFields
@@ -28,7 +29,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     val userInfoResponse: MutableLiveData<Response<UserInfo>> = MutableLiveData()
     val linkResponse: MutableLiveData<Response<String>> = MutableLiveData()
     val userResponse: MutableLiveData<Response<Token>?> = MutableLiveData()
-    val aboutResponse: MutableLiveData<Response<About>> = MutableLiveData()
+    val aboutResponse: MutableLiveData<Response<About>?> = MutableLiveData()
     val listAREAResponse: MutableLiveData<Response<List<ActionReaction>>> = MutableLiveData()
     val enableResponse: MutableLiveData<Response<ActionReaction>> = MutableLiveData()
     val deleteAreaResponse: MutableLiveData<Response<ActionReaction>> = MutableLiveData()
@@ -106,10 +107,27 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun getAboutJson() {
+    fun getAboutJson(context: Context, observer: Observer<Response<About>?>) {
         viewModelScope.launch {
-            val response = repository.getAboutJson()
-            aboutResponse.value = response
+            (context as AreaActivity).loading = true
+            aboutResponse.value = null
+            try {
+                val response = repository.getAboutJson()
+                (context as AreaActivity).loading = false
+                aboutResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context as AreaActivity, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                userResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context as AreaActivity, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                aboutResponse.value = null
+            }
+            finally {
+                (context as AreaActivity).loading = false
+                aboutResponse.removeObserver(observer)
+            }
         }
     }
     

@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
+import com.example.area.AREAApplication
 import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.model.ActionReaction
@@ -35,28 +36,23 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         savedInstanceState: Bundle?
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
-        val about = AboutJsonCreator()
         val sessionManager = SessionManager(context as AreaActivity)
         val token = sessionManager.fetchAuthToken("user_token") ?: return view
         val url = sessionManager.fetchAuthToken("url") ?: return view
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
+        val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return view
 
         viewModel = ViewModelProvider(context as AreaActivity, viewModelFactory)[MainViewModel::class.java]
         view.findViewById<Button>(R.id.backFromAreaListItemButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
-        about.getAboutJson(context as AreaActivity, this, this) {
-            abt = about.liveDataResponse.value
-            if (abt != null) {
-                view.findViewById<TextView>(R.id.actionServiceTextInItem).text = abt!!.server.services[item.actionServiceId-1].name
-                view.findViewById<TextView>(R.id.actionNameInItem).text = abt!!.server.services[item.actionServiceId-1].actions[item.actionId-1].name
-                view.findViewById<TextView>(R.id.actionParamInItem).text = item.actionParam
-                view.findViewById<TextView>(R.id.reactionServiceTextInItem).text = abt!!.server.services[item.reactionServiceId-1].name
-                view.findViewById<TextView>(R.id.reactionNameInItem).text = abt!!.server.services[item.reactionServiceId-1].reactions[item.reactionId-1].name
-                view.findViewById<TextView>(R.id.reactionParamInItem).text = item.reactionParam
-            }
-        }
+        view.findViewById<TextView>(R.id.actionServiceTextInItem).text = aboutClass.getServiceNameById(item.actionServiceId)
+        view.findViewById<TextView>(R.id.actionNameInItem).text = aboutClass.getServiceActionNameById(item.actionServiceId, item.actionId)
+        view.findViewById<TextView>(R.id.actionParamInItem).text = item.actionParam
+        view.findViewById<TextView>(R.id.reactionServiceTextInItem).text = aboutClass.getServiceNameById(item.reactionServiceId)
+        view.findViewById<TextView>(R.id.reactionNameInItem).text = aboutClass.getServiceReactionNameById(item.reactionServiceId, item.reactionId)
+        view.findViewById<TextView>(R.id.reactionParamInItem).text = item.reactionParam
         view.findViewById<Switch>(R.id.enableItemListSwitch).setOnCheckedChangeListener { _, isChecked ->
             onEnableDisableSwitch(isChecked, token)
         }

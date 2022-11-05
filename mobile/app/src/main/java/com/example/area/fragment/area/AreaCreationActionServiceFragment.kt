@@ -18,6 +18,8 @@ import com.example.area.adapter.ServiceItemAdapter
 import com.example.area.data.ServiceDatasource
 import com.example.area.model.ServiceListElement
 import com.example.area.model.about.AboutClass
+import com.example.area.repository.Repository
+import com.example.area.utils.SessionManager
 
 class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creation_action_service) {
     private var serviceSelectedIndex: Int = -1

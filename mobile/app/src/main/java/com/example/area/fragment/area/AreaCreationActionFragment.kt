@@ -18,6 +18,11 @@ import com.example.area.activity.AreaActivity
 import com.example.area.adapter.ActionReactionItemAdapter
 import com.example.area.data.ActionReactionDatasource
 import com.example.area.model.ServiceListElement
+import com.example.area.model.about.About
+import com.example.area.model.about.AboutClass
+import com.example.area.repository.Repository
+import com.example.area.utils.SessionManager
+import com.example.area.utils.actionReactionInfoTranslator
 import com.google.android.material.textfield.TextInputEditText
 
 class AreaCreationActionFragment(private val actionService: ServiceListElement) : Fragment(R.layout.fragment_area_creation_action) {

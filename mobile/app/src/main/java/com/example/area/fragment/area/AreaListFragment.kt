@@ -1,6 +1,7 @@
 package com.example.area.fragment.area
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.example.area.data.Datasource
 import com.example.area.model.ActionReaction
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
+import retrofit2.Response
 
 class AreaListFragment : Fragment(R.layout.fragment_area_list) {
 
@@ -55,10 +57,9 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
         val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return
         val servicesImages = ((context as AreaActivity).application as AREAApplication).aboutBitmapList ?: return
         val myDataSet = Datasource()
-
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        viewModel.getUserAreaList(token)
-        viewModel.listAREAResponse.observe(viewLifecycleOwner, Observer { response ->
+        val observer: Observer<Response<List<ActionReaction>>?> = Observer { response ->
+            if (response == null)
+                return@Observer
             if (response.isSuccessful) {
                 val jsonArray: List<ActionReaction> = response.body()!!
                 myDataSet.clear()
@@ -72,7 +73,11 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
                 }
                 updateRecycler(recycler, myDataSet, jsonArray)
             }
-        })
+        }
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        viewModel.getUserAreaList(token, context as AreaActivity, observer)
+        viewModel.listAREAResponse.observe(viewLifecycleOwner, observer)
     }
 
     private fun updateRecycler(recycler: RecyclerView, myDataSet: Datasource, jsonArray: List<ActionReaction>?) {

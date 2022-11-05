@@ -56,7 +56,7 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceList
             }
 
             override fun onQueryTextChange(toSearch: String?): Boolean {
-                serviceAdapter.filter(toSearch)
+                //serviceAdapter.filter(toSearch)
                 return false
             }
 

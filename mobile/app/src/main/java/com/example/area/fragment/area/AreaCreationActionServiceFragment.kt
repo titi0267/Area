@@ -1,6 +1,8 @@
 package com.example.area.fragment.area
 
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,15 +10,15 @@ import android.widget.Button
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.area.AREAApplication
-import com.example.area.MainViewModel
 import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.adapter.ServiceItemAdapter
 import com.example.area.data.ServiceDatasource
+import com.example.area.model.ServiceListElement
+import com.example.area.model.about.AboutClass
 
 class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creation_action_service) {
     private var serviceSelectedIndex: Int = -1
@@ -36,10 +38,8 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
 
         recycler.layoutManager = LinearLayoutManager(context as AreaActivity)
         serviceList.clear()
-        for (elem in aboutClass.getServiceList()) {
-            if (elem.actions.isNotEmpty())
-                serviceList.addService(elem.id, elem.name, servicesImages[elem.id - 1])
-        }
+        for (elem in feelEntireList(aboutClass, servicesImages))
+            serviceList.addService(elem)
         view.findViewById<Button>(R.id.backFromActionServiceCreationButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
@@ -52,10 +52,11 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
         }
         view.findViewById<SearchView>(R.id.searchActionService).setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(toSearch: String?): Boolean {
+                serviceAdapter.filter(toSearch, feelEntireList(aboutClass, servicesImages))
                 return false
             }
             override fun onQueryTextChange(toSearch: String?): Boolean {
-                serviceAdapter.filter(toSearch)
+                serviceAdapter.filter(toSearch, feelEntireList(aboutClass, servicesImages))
                 return false
             }
         })
@@ -75,5 +76,15 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
     private fun onItemClick(position: Int, toPrint: String) {
         serviceSelectedIndex = position
         Toast.makeText(context as AreaActivity, "$toPrint selected", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun feelEntireList(aboutClass: AboutClass, servicesImages: List<Bitmap>): List<ServiceListElement> {
+        val list = mutableListOf<ServiceListElement>()
+        for (elem in aboutClass.getServiceList()) {
+            if (elem.actions.isNotEmpty())
+                list += ServiceListElement(elem.id, elem.name, servicesImages[elem.id - 1])
+        }
+        Log.d("Entire List", list.toString())
+        return list
     }
 }

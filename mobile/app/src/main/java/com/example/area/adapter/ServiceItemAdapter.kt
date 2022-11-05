@@ -3,13 +3,16 @@ package com.example.area.adapter
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.os.StrictMode
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.area.R
+import com.example.area.activity.AreaActivity
 import com.example.area.model.ServiceListElement
 import java.util.*
 import kotlin.collections.ArrayList
@@ -37,15 +40,22 @@ class ServiceItemAdapter(private val context: Context, private var dataset: List
         return ServiceViewHolder(adapterLayout, onItemClick)
     }
 
-    fun filter(toSearch: String?) {
+    fun filter(toSearch: String?, entireList: List<ServiceListElement>) {
         val filterList: MutableList<ServiceListElement> = ArrayList()
         if (toSearch != null && toSearch.isNotEmpty()) {
-            for (item in dataset) {
-                if (item.name.lowercase(Locale.ROOT).contains(toSearch))
+            for (item in entireList) {
+                if (item.name.lowercase(Locale.ROOT).contains(toSearch.lowercase(Locale.ROOT))) {
+                    Log.d("Searched field", toSearch.lowercase(Locale.ROOT))
+                    Log.d("Choosed Item", item.name.lowercase(Locale.ROOT))
                     filterList += item
+                }
             }
             dataset = filterList
+        } else if (toSearch != null && toSearch.isEmpty()) {
+            dataset = entireList
         }
+        Log.d("ListToPrint", dataset.toString())
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: ServiceViewHolder, position: Int) {

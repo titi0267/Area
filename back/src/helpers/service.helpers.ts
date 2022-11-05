@@ -4,6 +4,7 @@ import { google } from "googleapis";
 import httpStatus from "http-status";
 import { Octokit } from "octokit";
 import SpotifyWebApi from "spotify-web-api-node";
+import { FORMAT } from "../constants/paramFormat";
 import { SERVICES } from "../constants/serviceList";
 import ENV from "../env";
 import ClientError from "../error";
@@ -141,7 +142,7 @@ const checkReactionFormat = (
 };
 
 const getYoutubeVideoId = (url: string) => {
-  let regex = /(\w+:\/+[\w+.]+\/)(watch\?v=)(\w+)/;
+  let regex = FORMAT.youtubeVideoUrl;
 
   const matches = url.match(regex);
 
@@ -151,13 +152,23 @@ const getYoutubeVideoId = (url: string) => {
 };
 
 const getYoutubeChannelName = (url: string) => {
-  let regex = /https:\/+www.youtube.com\/user\/(\w+)/;
+  let regex = FORMAT.youtubeChannelUrl;
 
   const matches = url.match(regex);
 
   if (!matches || !matches[1]) return null;
 
   return matches[1];
+};
+
+const getGithubIssueParams = (reactionParam: string) => {
+  let regex = FORMAT.githubIssueFormat;
+
+  const matches = reactionParam.match(regex);
+
+  if (!matches || matches.length < 4) return null;
+
+  return { owner: matches[1], repo: matches[2], title: matches[3] };
 };
 
 const injectParamInReaction = <T extends Object>(
@@ -237,10 +248,6 @@ const getSpotifyClient = async (userId: number) => {
   return spotifyApi;
 };
 
-const getSpotifyPlaylistId = (playlistId: string) => {
-  return playlistId;
-};
-
 export {
   rejectInvalidArea,
   checkActionFormat,
@@ -253,5 +260,5 @@ export {
   getGoogleOauthClient,
   getGithubClient,
   getSpotifyClient,
-  getSpotifyPlaylistId,
+  getGithubIssueParams,
 };

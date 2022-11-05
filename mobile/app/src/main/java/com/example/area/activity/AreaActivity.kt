@@ -13,14 +13,20 @@ import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.fragment.area.MainFragment
+import com.example.area.model.UserInfo
+import com.example.area.model.about.About
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
+import retrofit2.Response
 
 class AreaActivity : AppCompatActivity() {
+
+    var loading: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setAbout()
+        setUserInfo()
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
@@ -52,14 +58,34 @@ class AreaActivity : AppCompatActivity() {
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
         val viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-
-        viewModel.getAboutJson()
-        viewModel.aboutResponse.observe(this, Observer { response ->
+        val observer: Observer<Response<About>?> =  Observer { response ->
+            if (response == null)
+                return@Observer
             if (response.isSuccessful) {
                 val about = response.body()!!
                 (application as AREAApplication).setAboutClass(about)
                 (application as AREAApplication).setAboutBitmapList()
             }
-        })
+        }
+        viewModel.getAboutJson(this, observer)
+        viewModel.aboutResponse.observe(this, observer)
+    }
+
+    private fun setUserInfo() {
+        val sessionManager = SessionManager(this)
+        val url = sessionManager.fetchAuthToken("url") ?: return
+        val token = sessionManager.fetchAuthToken("user_token") ?: return
+        val rep = Repository(url)
+        val viewModelFactory = MainViewModelFactory(rep)
+        val viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        val observer: Observer<Response<UserInfo>?> = Observer { response ->
+            if (response == null)
+                return@Observer
+            if (response.isSuccessful) {
+                (application as AREAApplication).setUserInfoInApp(response.body()!!)
+            }
+        }
+        viewModel.getUserInfo(token, this, observer)
+        viewModel.userInfoResponse.observe(this, observer)
     }
 }

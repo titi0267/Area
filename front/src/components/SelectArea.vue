@@ -34,7 +34,7 @@
                 open-on-focus
                 @select="option => selected = option"
                 >
-                <template #empty>No results for {{name}}</template>
+                <template #empty>No results for {{injectedParam}}</template>
             </b-autocomplete>
         </b-field>
         <b-button @click="$emit('next'), $emit('save'), $router.push(type == 'action' ? 'reaction' : 'overview')">
@@ -50,20 +50,24 @@ import vue from "vue";
 export default vue.extend({
     data() {
         return {
-            name: "",
+            injectedParam: "", /** Current injected param name */
         };
     },
     props: {
         type: String /** Type between 'action' or 'reaction' */,
         services: Array /** Array that contains the About.JSON file */,
         area: Object /** Object that contains the area creation fields */,
+        tokensTable: Object, /** Object that contains all oauth tokens of the user */
+    },
+    mounted() {
+        this.checkAlreadyOAuth();
     },
     watch: {
         /**
-         * This services watcher call the function when the services Array is not empty.
+         * It's a function that is call when the tokensTable is fill or when the component is load.
          */
-        services: function(): void {
-        this.$nextTick(() => this.postOAuthCode());
+        'tokensTable': function(): void {
+            this.postOAuthCode();
         },
     },
     methods: {
@@ -97,24 +101,59 @@ export default vue.extend({
             return paramName;
         },
         /**
-         * It's a function that post the oauth code to the server.
+         * It's a function that check if the user is already authenticated with the oAuth.
+         * @data {Array} services
+         * @data {Object} area
+         * @data {Object} tokensTable
+         */
+        checkAlreadyOAuth(): void {
+            this.$nextTick((): void => {
+                let serviceOauthName: string = this.services.find(service => service.id == this.area[this.type + "ServiceId"]);
+                if (serviceOauthName == null) return;
+                if (this.tokensTable[serviceOauthName['oauthName'] + 'Token'] != null) {
+                    this.$emit("loading");
+                    return;
+                }
+            })
+        },
+        /**
+         * It's a function that check if the user is authenticated and post the oauth code to the server.
          * @data {Object} area
          * @data {Array} services
          * @data {String} type
+         * @data {Object} tokensTable
          * @async
          */
-        async postOAuthCode(): Promise<any> {
-            const code: String = this.$route.query.code;
-            if (code == null || code == undefined) return;
-            let serviceName = this.services.find(service => service.id == this.area[this.type + "ServiceId"]).oauthName;
-            if (serviceName == null) return;
-            await this.$axios.post("/oauth/" + serviceName, {
-                code: code,
-            }, {
-                headers: {
-                    Authorization: this.$store.getters.userToken || "noToken",
+        postOAuthCode(): void {
+            this.$nextTick(async(): Promise<void> => {
+                let serviceOauthName: string = this.services.find(service => service.id == this.area[this.type + "ServiceId"])['oauthName'];
+                if (this.tokensTable[serviceOauthName + 'Token'] != null) {
+                    this.$emit("loading");
+                    return;
                 }
-            });
+                const code: String = this.$route.query.code;
+                if (code == null || code == undefined && this.tokensTable[serviceOauthName + 'Token'] == null) {
+                    this.$emit('previous');
+                    this.$emit('save');
+                    this.$emit('loading');
+                    this.notification("Your authentification has failed", 'is-danger');
+                    return;
+                }
+                try {
+                    let {data: tokens} = await this.$axios.post("/oauth/" + serviceOauthName, {
+                        code: code,
+                    }, {
+                        headers: {
+                            Authorization: this.$store.getters.userToken || "noToken",
+                        }
+                    });
+                    this.$set(this.tokensTable, serviceOauthName + 'Token', tokens[serviceOauthName + 'Token']);
+                } catch {
+                    this.$emit('previous');
+                    this.$emit('save');
+                    this.notification("Your authentification has failed", 'is-danger');
+                }
+            })
             this.$emit("loading");
         },
     }

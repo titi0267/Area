@@ -5,6 +5,7 @@ import * as DiscordReaction from "../area/discord/discord.reaction";
 import * as SpotifyAction from "../area/spotify/spotify.actions";
 import * as SpotifyReaction from "../area/spotify/spotify.reactions";
 import * as GithubAction from "../area/github/github.action";
+import * as GithubReaction from "../area/github/github.reaction";
 import * as GmailAction from "../area/gmail/gmail.action";
 import { FORMAT } from "./paramFormat";
 
@@ -170,7 +171,17 @@ export const SERVICES: Service[] = [
         availableInjectParams: ["lastFollowingUserName"],
       },
     ],
-    reactions: [],
+    reactions: [
+      {
+        id: 1,
+        reactionName: "Create an issue",
+        reactionParamName: "Issue infos (format: /owner/repo/issueTitle)",
+        paramFormat: FORMAT.githubIssueFormat,
+        fct: GithubReaction.createGithubIssue,
+        description:
+          "Create an issue on a public repository or a private repository on which you belong",
+      },
+    ],
   },
   {
     id: 5,

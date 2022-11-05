@@ -26,7 +26,7 @@ import java.net.SocketTimeoutException
 class MainViewModel(private val repository: Repository) : ViewModel() {
 
     val emptyResponse: MutableLiveData<Response<Unit>> = MutableLiveData()
-    val userInfoResponse: MutableLiveData<Response<UserInfo>> = MutableLiveData()
+    val userInfoResponse: MutableLiveData<Response<UserInfo>?> = MutableLiveData()
     val linkResponse: MutableLiveData<Response<String>> = MutableLiveData()
     val userResponse: MutableLiveData<Response<Token>?> = MutableLiveData()
     val aboutResponse: MutableLiveData<Response<About>?> = MutableLiveData()
@@ -84,10 +84,27 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun getUserInfo(auth: String) {
+    fun getUserInfo(auth: String, context: Context, observer: Observer<Response<UserInfo>?>) {
         viewModelScope.launch {
-            val response = repository.getUserInfo(auth)
-            userInfoResponse.value = response
+            (context as AreaActivity).loading = true
+            userInfoResponse.value = null
+            try {
+                val response = repository.getUserInfo(auth)
+                (context as AreaActivity).loading = false
+                userInfoResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context as AreaActivity, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                userInfoResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context as AreaActivity, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                userInfoResponse.value = null
+            }
+            finally {
+                (context as AreaActivity).loading = false
+                userInfoResponse.removeObserver(observer)
+            }
         }
     }
 

@@ -4,6 +4,7 @@
             v-if="area.state == 0 || area.state == 2"
             :services="services"
             :area="area"
+            :tokensTable="tokensTable"
             @actionServiceId="area.actionServiceId = $event"
             @reactionServiceId="area.reactionServiceId = $event"
             @next="area.state++"
@@ -16,6 +17,7 @@
             v-else-if="area.state == 1 || area.state == 3"
             :services="services"
             :area="area"
+            :tokensTable="tokensTable"
             @actionId="area.actionId = $event"
             @actionParam="area.actionParam = $event"
             @reactionId="area.reactionId = $event"
@@ -38,7 +40,7 @@
 
 <script lang="ts">
 import vue from 'vue';
-import { Area, Service } from '../types/index'
+import { Area, Service, Token } from '../types/index'
 import SelectArea from '../components/SelectArea.vue'
 import SelectService from '../components/SelectService.vue'
 import Overview from '../components/Overview.vue'
@@ -56,12 +58,14 @@ export default vue.extend({
                 reactionId: -1, /** The ID of the selected reaction. */
                 reactionParam: "", /** The parameter linked to the selected reaction */
             } as Area,
+            tokensTable: {} as Token, /** All oauth token of a user */
             loading: false, /** When the page is loading this variable is set to true */
         }
     },
     mounted() {
         this.getAbout();
         this.getLocalStorage();
+        this.getTokenTable();
     },
     components: {
         SelectService, /** Component used for the services selection */
@@ -69,6 +73,19 @@ export default vue.extend({
         Overview, /** Component used for view the current action -reaction creation */
     },
     methods: {
+        /**
+         * A function that gets the token table from the server.
+         * @data {Object} tokensTable
+         * @async
+         */
+        async getTokenTable(): Promise<void> {
+            const { data: user } = await this.$axios.get("/users/me", {
+                headers: {
+                    Authorization: this.$store.getters.userToken || "noToken",
+                },
+            });
+            this.tokensTable = user.tokensTable;
+        },
         /**
          * It gets the area from the localStorage.
          * @data {Object} area

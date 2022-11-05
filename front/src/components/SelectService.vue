@@ -17,13 +17,7 @@
               service[type + 's'].length != 0 &&
               service.name.toLowerCase().includes(filterInput.toLowerCase())
             "
-            @click="
-              $emit(type + 'ServiceId', service.id),
-                $emit('save'),
-                getOAuthUrl(),
-                getTokenTable()
-            "
-          >
+            @click="$emit(type + 'ServiceId', service.id), $emit('next'), $emit('save'), getOAuthUrl()">
             <b-image :src="service.imageUrl"></b-image>
             <p>{{ service.name }}</p>
           </div>
@@ -35,12 +29,11 @@
         @click="
           $emit('previous'),
             $emit('save'),
-            $router.push(area.state == -1 ? '/home' : '/create/action')
-        "
+            $router.push(area.state == -1 ? '/home' : '/create/action')"
       >
         Previous
       </b-button>
-      <b-button @click="$emit('next'), $emit('save'), redirectOAuth()">
+      <b-button @click="$emit('save')">
         Next
       </b-button>
     </div>
@@ -56,24 +49,13 @@ export default vue.extend({
     return {
       filterInput: "" /** It's a filter input used for search a service */,
       oauthURL: "" /** This variable contains the oAuth URL of the right service */,
-      generateOauthURL: false /** Set to true if no token are assigned to the selected service */,
     };
-  },
-  mounted() {
-    this.$nextTick(() => this.getTokenTable());
-    if (this.generateOauthURL == true) this.$nextTick(() => this.getOAuthUrl());
-  },
-  watch: {
-    services: function (): void {
-      this.$nextTick(() => this.getTokenTable());
-      if (this.generateOauthURL == true)
-        this.$nextTick(() => this.getOAuthUrl());
-    },
   },
   props: {
     type: String /** Type between 'action' or 'reaction' */,
     services: Array /** Array that contains the About.JSON file */,
     area: Object /** Object that contains the area creation fields */,
+    tokensTable: Object, /** Object that contains all oauth tokens of the user */
   },
   methods: {
     /**
@@ -88,55 +70,49 @@ export default vue.extend({
      * An async function that gets the oauth url for the service selected.
      * @data {Object} area
      * @data {Array} services
+     * @data {Object} tokensTable
      * @data {String} type
+     * @data {String} oauthURL
      * @async
      */
-    async getTokenTable(): Promise<void> {
-      const { data: user } = await this.$axios.get("/users/me", {
-        headers: {
-          Authorization: this.$store.getters.userToken || "noToken",
-        },
-      });
-      let serviceName = this.services.find(
-        (service) => service.id == this.area[this.type + "ServiceId"]
-      ).oauthName;
-      if (serviceName == null) return;
-      if (user.tokensTable[serviceName.toLowerCase() + "Token"] != null) {
-        this.oauthURL = "";
-        this.generateOauthURL = false;
-        return;
-      }
-      this.generateOauthURL = true;
-    },
     async getOAuthUrl(): Promise<void> {
       try {
-        if (this.generateOauthURL == false)
-          return;
-        this.$emit('loading');
-        let serviceName = this.services.find(
+        let serviceOauthName = this.services.find(
           (service) => service.id == this.area[this.type + "ServiceId"]
-        ).oauthName;
-
-        if (serviceName == null) return;
-        const { data: url } = await this.$axios.get(
-          "/oauth/" + serviceName + "/link/front",
-          {
+        )['oauthName'];
+        if (serviceOauthName == null) {
+          this.notification('A problem occured, please select another ' + this.type, 'is-danger');
+          this.$emit('previous');
+          this.$emit('save');
+          return;
+        }
+        this.$emit('loading');
+        const { data: url } = await this.$axios.get("/oauth/" + serviceOauthName + "/link/front", {
             headers: {
-              Authorization: this.$store.getters.userToken || "noToken",
+                Authorization: this.$store.getters.userToken || "noToken",
             },
-          }
-        );
+        });
         this.oauthURL = url;
+        this.redirectOAuth();
       } catch {
         this.oauthURL = "";
       }
     },
     /**
      * It's a function that redirects the user to the oAuth URL of the service selected.
+     * @data {String} type
+     * @data {Array} services
+     * @data {String} type
+     * @data {Object} tokensTable
      * @data {String} oauthURL
      */
     redirectOAuth(): void {
-      window.location.href = this.oauthURL;
+        let serviceOauthName = this.services.find(
+            (service) => service.id == this.area[this.type + "ServiceId"]
+        )['oauthName'];
+        if (this.tokensTable[serviceOauthName + 'Token'] == null) {
+            window.location.href = this.oauthURL;
+        }
     },
   },
 });

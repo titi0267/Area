@@ -297,6 +297,20 @@ class AboutClass(val about: About) {
         return (name)
     }
 
+    fun getActionListFromServiceId(serviceId: Int) : List<Action>? {
+        val service = getServiceById(serviceId) ?: return null
+        return (service.actions)
+    }
+
+    fun getReactionListFromServiceId(serviceId: Int) : List<Reaction>? {
+        val service = getServiceById(serviceId) ?: return null
+        return (service.reactions)
+    }
+
+    fun getServiceList(): List<Service> {
+        return (about.server.services)
+    }
+
     fun getServiceNameList(): List<String> {
         val ret = mutableListOf<String>()
         for (service in about.server.services) {
@@ -318,10 +332,10 @@ class AboutClass(val about: About) {
         return (BitmapFactory.decodeStream(URL(link).openConnection().getInputStream()))
     }
 
-    suspend fun getBitmapList(): List<Bitmap> {
+    fun getBitmapList(url: String): List<Bitmap> {
         val ret = mutableListOf<Bitmap>()
         for (service in about.server.services) {
-            ret.add(getBitmapByLink(service.imageUrl))
+            ret.add(getBitmapByLink(url + service.imageUrl))
         }
         return (ret)
     }

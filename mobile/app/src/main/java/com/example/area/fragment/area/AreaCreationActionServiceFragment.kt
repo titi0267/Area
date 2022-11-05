@@ -16,10 +16,8 @@ import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.adapter.ServiceItemAdapter
-import com.example.area.data.ActionReactionDatasource
 import com.example.area.data.ServiceDatasource
 import com.example.area.model.about.About
-import com.example.area.model.about.AboutClass
 import com.example.area.repository.Repository
 import com.example.area.utils.AboutJsonCreator
 import com.example.area.utils.SessionManager

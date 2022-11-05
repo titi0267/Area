@@ -29,6 +29,54 @@ export default vue.extend({
     },
     methods: {
         /**
+         * An async function that gets the oauth url for the service selected.
+         * @data {Object} area
+         * @data {Array} services
+         * @data {Object} tokensTable
+         * @data {String} type
+         * @data {String} oauthURL
+         * @async
+         */
+        async getOAuthUrl(): Promise<void> {
+        try {
+            let serviceOauthName = this.services.find(
+            (service) => service.id == this.area[this.type + "ServiceId"]
+            )['oauthName'];
+            if (serviceOauthName == null) {
+                this.notification('A problem occured, please select another ' + this.type, 'is-danger');
+                this.$emit('previous');
+                this.$emit('save');
+                return;
+            }
+            this.$emit('loading');
+            const { data: url } = await this.$axios.get("/oauth/" + serviceOauthName + "/link/front", {
+            headers: {
+                Authorization: this.$store.getters.userToken || "noToken",
+                },
+            });
+            this.oauthURL = url;
+            this.redirectOAuth();
+        } catch {
+            this.oauthURL = "";
+        }
+        },
+        /**
+         * It's a function that redirects the user to the oAuth URL of the service selected.
+         * @data {String} type
+         * @data {Array} services
+         * @data {String} type
+         * @data {Object} tokensTable
+         * @data {String} oauthURL
+         */
+        redirectOAuth(): void {
+            let serviceOauthName = this.services.find(
+                (service) => service.id == this.area[this.type + "ServiceId"]
+            )['oauthName'];
+            if (this.tokensTable[serviceOauthName + 'Token'] == null) {
+                window.location.href = this.oauthURL;
+            }
+        },
+        /**
          * That function is used to get the infos of the user.
          * @data {Array} user
          * @async

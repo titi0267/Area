@@ -1,30 +1,27 @@
 <template>
   <div id="SelectArea">
-    <h2>Select your {{ type }} type</h2>
-    <div>
-      <div v-for="service in services" :key="service.name">
-        <div class="selected-service" v-if="area[type + 'ServiceId'] == service.id">
-            <b-image :src="service.imageUrl"></b-image>
-            <p> {{ service.name }} </p>
+    <div v-for="service in services" :key="service.name">
+        <div class="selected-service" v-if="area[type + 'ServiceId'] == service.id" :style="{ 'background-color': service.backgroundColor }">
+            <h2>Select your {{ type }} type</h2>
+            <b-image :src="$store.state.serveurURL + service.imageUrl"></b-image>
         </div>
         <div class="areas" v-if="service.id == area[type + 'ServiceId']">
-          <div class="area"
-            :style=" { 'background' : `linear-gradient(to top left, ${service.backgroundColor}, ${service.backgroundColor})` }"
-            :class="{ selected: actrea.id == area[type + 'Id'] }"
-            v-for="actrea in service[type + 's']"
-            :key="actrea.name"
-            @click="$emit(type + 'Id', actrea.id), $emit('save')">
-                <p> {{ actrea.name }} </p>
-          </div>
+            <div class="area"
+                :style=" { 'background' : `linear-gradient(to top left, ${service.backgroundColor}, ${service.backgroundColor})` }"
+                :class="{ selected: actrea.id == area[type + 'Id'] }"
+                v-for="actrea in service[type + 's']"
+                :key="actrea.name"
+                @click="$emit(type + 'Id', actrea.id), $emit('save')">
+                    <p class="title"> {{ actrea.name }} </p>
+                    <p class="description"> {{ actrea.description }} </p>
+            </div>
         </div>
-      </div>
     </div>
     <div class="buttons">
         <b-button @click="$emit('previous'), $emit('save')">
             Previous
         </b-button>
-        <!-- <b-input class="param-input" @input="$emit(type + 'Param', $event)" :placeholder="getParamName()"></b-input> -->
-        <b-field v-if="area[type + 'Id'] != -1">
+        <!-- <b-field v-if="area[type + 'Id'] != -1">
             <b-autocomplete
                 class="param-input"
                 ref="autocomplete"
@@ -34,9 +31,9 @@
                 open-on-focus
                 @select="option => selected = option"
                 >
-                <template #empty>No results for {{name}}</template>
+                <template #empty>No results for {{injectedParam}}</template>
             </b-autocomplete>
-        </b-field>
+        </b-field> -->
         <b-button @click="$emit('next'), $emit('save'), $router.push(type == 'action' ? 'reaction' : 'overview')">
             Next
         </b-button>
@@ -50,20 +47,25 @@ import vue from "vue";
 export default vue.extend({
     data() {
         return {
-            name: "",
+            injectedParam: "", /** Current injected param name */
         };
     },
     props: {
         type: String /** Type between 'action' or 'reaction' */,
         services: Array /** Array that contains the About.JSON file */,
         area: Object /** Object that contains the area creation fields */,
+        tokensTable: Object, /** Object that contains all oauth tokens of the user */
+    },
+    mounted() {
+        this.checkAlreadyOAuth();
+        console.log("test")
     },
     watch: {
         /**
-         * This services watcher call the function when the services Array is not empty.
+         * It's a function that is call when the tokensTable is fill or when the component is load.
          */
-        services: function(): void {
-        this.$nextTick(() => this.postOAuthCode());
+        'tokensTable': function(): void {
+            this.postOAuthCode();
         },
     },
     methods: {
@@ -97,24 +99,59 @@ export default vue.extend({
             return paramName;
         },
         /**
-         * It's a function that post the oauth code to the server.
+         * It's a function that check if the user is already authenticated with the oAuth.
+         * @data {Array} services
+         * @data {Object} area
+         * @data {Object} tokensTable
+         */
+        checkAlreadyOAuth(): void {
+            this.$nextTick((): void => {
+                let serviceOauthName: string = this.services.find(service => service.id == this.area[this.type + "ServiceId"]);
+                if (serviceOauthName == null) return;
+                if (this.tokensTable[serviceOauthName['oauthName'] + 'Token'] != null) {
+                    this.$emit("loading");
+                    return;
+                }
+            })
+        },
+        /**
+         * It's a function that check if the user is authenticated and post the oauth code to the server.
          * @data {Object} area
          * @data {Array} services
          * @data {String} type
+         * @data {Object} tokensTable
          * @async
          */
-        async postOAuthCode(): Promise<any> {
-            const code: String = this.$route.query.code;
-            if (code == null || code == undefined) return;
-            let serviceName = this.services.find(service => service.id == this.area[this.type + "ServiceId"]).oauthName;
-            if (serviceName == null) return;
-            await this.$axios.post("/oauth/" + serviceName, {
-                code: code,
-            }, {
-                headers: {
-                    Authorization: this.$store.getters.userToken || "noToken",
+        postOAuthCode(): void {
+            this.$nextTick(async(): Promise<void> => {
+                let serviceOauthName: string = this.services.find(service => service.id == this.area[this.type + "ServiceId"])['oauthName'];
+                if (this.tokensTable[serviceOauthName + 'Token'] != null) {
+                    this.$emit("loading");
+                    return;
                 }
-            });
+                const code: String = this.$route.query.code;
+                if (code == null || code == undefined && this.tokensTable[serviceOauthName + 'Token'] == null) {
+                    this.$emit('previous');
+                    this.$emit('save');
+                    this.$emit('loading');
+                    this.notification("Your authentification has failed", 'is-danger');
+                    return;
+                }
+                try {
+                    let {data: tokens} = await this.$axios.post("/oauth/" + serviceOauthName, {
+                        code: code,
+                    }, {
+                        headers: {
+                            Authorization: this.$store.getters.userToken || "noToken",
+                        }
+                    });
+                    this.$set(this.tokensTable, serviceOauthName + 'Token', tokens[serviceOauthName + 'Token']);
+                } catch {
+                    this.$emit('previous');
+                    this.$emit('save');
+                    this.notification("Your authentification has failed", 'is-danger');
+                }
+            })
             this.$emit("loading");
         },
     }
@@ -123,12 +160,27 @@ export default vue.extend({
 
 <style scoped lang="scss">
 #SelectArea {
+    width: 100%;
     .selected-service {
         display: flex;
         justify-content: center;
-    }
-    h2 {
-        font-family: 'Courier New', Courier, monospace;
+        flex-direction: column;
+        border-radius: 20px;
+        width: 75%;
+        align-items: center;
+        padding: 15px;
+        margin: auto;
+        margin-top: 20px;
+        :deep(figure) {
+            img {
+                height: 90px;
+            }
+        }
+        h2 {
+            margin-bottom: 10px;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+        }
     }
     .buttons {
         display: flex;
@@ -155,21 +207,26 @@ export default vue.extend({
         height: 100%;
         position: relative;
         justify-content: center;
+        flex-wrap: wrap;
         .area {
             height: 200px;
             width: 200px;
             border-radius: 10px;
-            margin: 5px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
+            margin: 10px;
             padding: 10px;
+            cursor: pointer;
+            .title {
+                margin-bottom: 10px;
+                text-transform: uppercase;
+            }
+            .description {
+                font-size: 17px;
+            }
             p {
+                color: white;
                 overflow-wrap: break-word;
                 font-size: 20px;
                 font-family: Hitmo Regular;
-                text-transform: uppercase;
                 white-space: normal;
                 text-align: start;
             }

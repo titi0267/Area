@@ -34,4 +34,8 @@ export default vue.extend({
     font-family: "Bebas Regular";
     src: url("@/assets/fonts/BEBASNEUE-REGULAR.ttf");
 }
+@font-face {
+    font-family: "Avenir Roman";
+    src: url("@/assets/fonts/AVENIRLTSTD-ROMAN.OTF");
+}
 </style>

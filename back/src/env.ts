@@ -25,6 +25,7 @@ const ENV = {
   discordClientId: process.env.DISCORD_CLIENT_ID as string,
   discordClientSecret: process.env.DISCORD_CLIENT_SECRET as string,
   discordRedirectUrl: process.env.DISCORD_REDIRECT_URL as string,
+  openWeatherApiKey: process.env.OPEN_WEATHER_API_KEY as string,
 };
 
 export default ENV;

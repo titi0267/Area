@@ -11,12 +11,13 @@ It manages all the pages and interactive elements linked to this project.
 * [General Information](#general-information)
     * [LocalStorage](#localstorage)
     * [Unit tests](#unit-tests)
-* [Frameworks](#frameworks)
+* [Vue project](#vue-project)
     * [Axios](#axios)
     * [VueX](#vuex)
     * [Vue Router](#vue-router)
     * [I18n](#vue-i18n)
     * [Buefy](#buefy)
+    * [Mixins](#mixins)
 
 ## Languages
 [![Languages](https://skillicons.dev/icons?i=vue)](https://v2.vuejs.org/)
@@ -29,6 +30,14 @@ It manages all the pages and interactive elements linked to this project.
 - `npm install` Installation of dependencies.
 
 ## Environnement
+
+The environnement variables are used by the Vue project, they allow to set the sensitive values from an external file called `.end`.
+
+If you run the project with Docker, you can set the environnement variable from at the root project in the `docker.env` file.
+However, if you start the Vue server outside Docker, the environnement file is in `/front/.env`.
+
+You do to fill the `.enf` file with the following values.
+
 | Name | Description | Type | Default Value |
 |:----|:------------|:-----|:------------------|
 <span style="color: #FF5500; text-decoration: underline;">***APP VARIABLES***</span> | | | |
@@ -77,7 +86,7 @@ Here is a list of data saved
 The unit tests allow you to test each Vue file from the project.
 - `npm run test:unit` Command to run the unit tests
 
-# Frameworks
+# Vue project
 
 ## Axios
 Axios is an HTTP client based on promises. It is able to make requests to an `API`.
@@ -245,3 +254,13 @@ Vue.use(Buefy, {
     css: true,
 });
 ```
+
+## Mixins
+Mixins are used to set global functions.
+For example, if you need to call a function in two differents file, you can use a mixin.
+
+To add a new mixin, create a new file in the folder `front/src/mixins/` prtotoyped like this : `yourFileName.mixin.ts`
+Export your mixin file from `front/src/mixins/index.ts`
+
+Next, you can import your new mixin in the Vue project.
+In `front/src/main.ts` add `Vue.mixin(myMixinImport)`

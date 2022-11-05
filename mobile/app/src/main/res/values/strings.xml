@@ -41,6 +41,8 @@
     <string name="profile_current_ip">Current IP/Port:</string>
     <string name="profile_change_ip_port_button">Change IP/Port</string>
     <string name="profile_edit_ip_port_confirmation">Edit</string>
+    <string name="delete_area">Delete</string>
+    <string name="enable_area">Enable</string>
     <string name="login_title">Login</string>
     <string name="login_or">or</string>
     <string name="login_with_google">Login with Google</string>

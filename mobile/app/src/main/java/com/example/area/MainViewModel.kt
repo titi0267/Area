@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.area.activity.AreaActivity
 import com.example.area.activity.UserConnectionActivity
 import com.example.area.model.AREAFields
 import com.example.area.model.LoginFields
@@ -25,11 +26,13 @@ import java.net.SocketTimeoutException
 class MainViewModel(private val repository: Repository) : ViewModel() {
 
     val emptyResponse: MutableLiveData<Response<Unit>> = MutableLiveData()
-    val userInfoResponse: MutableLiveData<Response<UserInfo>> = MutableLiveData()
+    val userInfoResponse: MutableLiveData<Response<UserInfo>?> = MutableLiveData()
     val linkResponse: MutableLiveData<Response<String>> = MutableLiveData()
     val userResponse: MutableLiveData<Response<Token>?> = MutableLiveData()
-    val aboutResponse: MutableLiveData<Response<About>> = MutableLiveData()
-    val listAREAResponse: MutableLiveData<Response<List<ActionReaction>>> = MutableLiveData()
+    val aboutResponse: MutableLiveData<Response<About>?> = MutableLiveData()
+    val listAREAResponse: MutableLiveData<Response<List<ActionReaction>>?> = MutableLiveData()
+    val enableResponse: MutableLiveData<Response<ActionReaction>> = MutableLiveData()
+    val deleteAreaResponse: MutableLiveData<Response<ActionReaction>> = MutableLiveData()
 
     // Back calls
 
@@ -83,17 +86,51 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun getUserInfo(auth: String) {
+    fun getUserInfo(auth: String, context: Context, observer: Observer<Response<UserInfo>?>) {
         viewModelScope.launch {
-            val response = repository.getUserInfo(auth)
-            userInfoResponse.value = response
+            (context as AreaActivity).loading = true
+            userInfoResponse.value = null
+            try {
+                val response = repository.getUserInfo(auth)
+                (context as AreaActivity).loading = false
+                userInfoResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context as AreaActivity, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                userInfoResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context as AreaActivity, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                userInfoResponse.value = null
+            }
+            finally {
+                (context as AreaActivity).loading = false
+                userInfoResponse.removeObserver(observer)
+            }
         }
     }
 
-    fun getUserAreaList(auth: String) {
+    fun getUserAreaList(auth: String, context: Context, observer: Observer<Response<List<ActionReaction>>?>) {
         viewModelScope.launch {
-            val response = repository.getUserAreaList(auth)
-            listAREAResponse.value = response
+            (context as AreaActivity).loading = true
+            listAREAResponse.value = null
+            try {
+                val response = repository.getUserAreaList(auth)
+                context.loading = false
+                listAREAResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                listAREAResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                listAREAResponse.value = null
+            }
+            finally {
+                context.loading = false
+                listAREAResponse.removeObserver(observer)
+            }
         }
     }
 
@@ -104,10 +141,27 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun getAboutJson() {
+    fun getAboutJson(context: Context, observer: Observer<Response<About>?>) {
         viewModelScope.launch {
-            val response = repository.getAboutJson()
-            aboutResponse.value = response
+            (context as AreaActivity).loading = true
+            aboutResponse.value = null
+            try {
+                val response = repository.getAboutJson()
+                (context as AreaActivity).loading = false
+                aboutResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context as AreaActivity, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                userResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context as AreaActivity, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                aboutResponse.value = null
+            }
+            finally {
+                (context as AreaActivity).loading = false
+                aboutResponse.removeObserver(observer)
+            }
         }
     }
     
@@ -122,6 +176,18 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         viewModelScope.launch {
             val response = repository.postServiceCode(auth, service, code)
             emptyResponse.value = response
+        }
+    }
+    fun putEnableDisable(auth: String, enable: EnableDisable) {
+        viewModelScope.launch {
+            val response = repository.putEnableDisable(auth, enable)
+            enableResponse.value = response
+        }
+    }
+    fun deleteArea(auth: String, areaId: Int) {
+        viewModelScope.launch {
+            val response = repository.deleteArea(auth, areaId)
+            deleteAreaResponse.value = response
         }
     }
 }

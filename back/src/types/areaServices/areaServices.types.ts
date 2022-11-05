@@ -16,7 +16,7 @@ export interface DiscordInfos {
 }
 
 export interface IdParam {
-  id: number;
+  id: string;
 }
 
 interface Action {

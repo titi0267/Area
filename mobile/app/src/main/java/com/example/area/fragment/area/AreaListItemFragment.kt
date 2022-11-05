@@ -7,22 +7,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import com.example.area.MainViewModelFactory
+import com.example.area.AREAApplication
 import com.example.area.R
 import com.example.area.activity.AreaActivity
-import com.example.area.data.Datasource
 import com.example.area.model.ActionReaction
-import com.example.area.model.AreaInfo
 import com.example.area.model.about.About
-import com.example.area.repository.Repository
-import com.example.area.utils.AboutJsonCreator
-import com.example.area.utils.SessionManager
-import org.w3c.dom.Text
 
 class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout.fragment_area_list_item) {
-
-    private var abt: About? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,23 +21,17 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         savedInstanceState: Bundle?
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
-        val about = AboutJsonCreator()
+        val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return view
 
         view.findViewById<Button>(R.id.backFromAreaListItemButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
-        about.getAboutJson(context as AreaActivity, this, this) {
-            abt = about.liveDataResponse.value
-            if (abt != null) {
-                view.findViewById<TextView>(R.id.actionServiceTextInItem).text = abt!!.server.services[item.actionServiceId-1].name
-                view.findViewById<TextView>(R.id.actionNameInItem).text = abt!!.server.services[item.actionServiceId-1].actions[item.actionId-1].name
-                view.findViewById<TextView>(R.id.actionParamInItem).text = item.actionParam
-                view.findViewById<TextView>(R.id.reactionServiceTextInItem).text = abt!!.server.services[item.reactionServiceId-1].name
-                view.findViewById<TextView>(R.id.reactionNameInItem).text = abt!!.server.services[item.reactionServiceId-1].reactions[item.reactionId-1].name
-                view.findViewById<TextView>(R.id.reactionParamInItem).text = item.reactionParam
-            }
-        }
-
+        view.findViewById<TextView>(R.id.actionServiceTextInItem).text = aboutClass.getServiceNameById(item.actionServiceId)
+        view.findViewById<TextView>(R.id.actionNameInItem).text = aboutClass.getServiceActionNameById(item.actionServiceId, item.actionId)
+        view.findViewById<TextView>(R.id.actionParamInItem).text = item.actionParam
+        view.findViewById<TextView>(R.id.reactionServiceTextInItem).text = aboutClass.getServiceNameById(item.reactionServiceId)
+        view.findViewById<TextView>(R.id.reactionNameInItem).text = aboutClass.getServiceReactionNameById(item.reactionServiceId, item.reactionId)
+        view.findViewById<TextView>(R.id.reactionParamInItem).text = item.reactionParam
         return view
     }
 }

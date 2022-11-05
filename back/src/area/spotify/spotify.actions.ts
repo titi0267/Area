@@ -1,12 +1,17 @@
 import { Area } from "@prisma/client";
 import { AreaService, TokenService } from "../../services";
-import ENV from "../../env";
 import * as ServiceHelper from "../../helpers/service.helpers";
 
 const checkMusicSkip = async (area: Area): Promise<string | null> => {
-  const spotifyApi = await ServiceHelper.getSpotifyClient(area.userId);
+  const spotifyCredential = await ServiceHelper.getSpotifyClient(area.userId);
 
-  if (!spotifyApi) return null;
+  if (!spotifyCredential) return null;
+
+  const spotifyApi = spotifyCredential.client;
+
+  spotifyApi.setRefreshToken(spotifyCredential.token);
+  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
+  spotifyApi.setAccessToken(accessToken);
 
   const currentSong = (await spotifyApi.getMyCurrentPlayingTrack()).body;
 
@@ -30,9 +35,15 @@ const checkMusicSkip = async (area: Area): Promise<string | null> => {
 };
 
 const checkIsMusicLiked = async (area: Area): Promise<string | null> => {
-  const spotifyApi = await ServiceHelper.getSpotifyClient(area.userId);
+  const spotifyCredential = await ServiceHelper.getSpotifyClient(area.userId);
 
-  if (!spotifyApi) return null;
+  if (!spotifyCredential) return null;
+
+  const spotifyApi = spotifyCredential.client;
+
+  spotifyApi.setRefreshToken(spotifyCredential.token);
+  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
+  spotifyApi.setAccessToken(accessToken);
 
   const likedTracks = (await spotifyApi.getMySavedTracks()).body;
 

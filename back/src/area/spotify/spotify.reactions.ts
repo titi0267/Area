@@ -1,15 +1,18 @@
-import { Area } from "@prisma/client";
-import { AreaService, TokenService } from "../../services";
-import ENV from "../../env";
 import * as ServiceHelper from "../../helpers/service.helpers";
 
 const addTrackToPlaylist = async (
   reactionParam: string,
   userId: number,
 ): Promise<void> => {
-  const spotifyApi = await ServiceHelper.getSpotifyClient(userId);
+  const spotifyCredential = await ServiceHelper.getSpotifyClient(userId);
 
-  if (!spotifyApi) return;
+  if (!spotifyCredential) return;
+
+  const spotifyApi = spotifyCredential.client;
+
+  spotifyApi.setRefreshToken(spotifyCredential.token);
+  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
+  spotifyApi.setAccessToken(accessToken);
 
   if (reactionParam == undefined || null) return;
 
@@ -41,9 +44,15 @@ const updateVolume = async (
   reactionParam: string,
   userId: number,
 ): Promise<void> => {
-  const spotifyApi = await ServiceHelper.getSpotifyClient(userId);
+  const spotifyCredential = await ServiceHelper.getSpotifyClient(userId);
 
-  if (!spotifyApi) return;
+  if (!spotifyCredential) return;
+
+  const spotifyApi = spotifyCredential.client;
+
+  spotifyApi.setRefreshToken(spotifyCredential.token);
+  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
+  spotifyApi.setAccessToken(accessToken);
 
   const device = await spotifyApi.getMyDevices();
 
@@ -60,15 +69,21 @@ const startMusic = async (
   reactionParam: string,
   userId: number,
 ): Promise<void> => {
-  const spotifyApi = await ServiceHelper.getSpotifyClient(userId);
+  const spotifyCredential = await ServiceHelper.getSpotifyClient(userId);
 
-  if (!spotifyApi) return;
-  if (reactionParam == undefined || null) return;
+  if (!spotifyCredential) return;
+
+  const spotifyApi = spotifyCredential.client;
+
+  spotifyApi.setRefreshToken(spotifyCredential.token);
+  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
+  spotifyApi.setAccessToken(accessToken);
 
   const trackToPlay = await spotifyApi.searchAlbums(reactionParam);
 
   if (trackToPlay.body.albums == undefined) return;
-  const start = await spotifyApi.play({
+
+  await spotifyApi.play({
     context_uri: trackToPlay.body.albums.items[0].uri,
   });
 };
@@ -77,10 +92,15 @@ const addMusicToQueue = async (
   reactionParam: string,
   userId: number,
 ): Promise<void> => {
-  const spotifyApi = await ServiceHelper.getSpotifyClient(userId);
+  const spotifyCredential = await ServiceHelper.getSpotifyClient(userId);
 
-  if (!spotifyApi) return;
-  if (reactionParam == undefined || null) return;
+  if (!spotifyCredential) return;
+
+  const spotifyApi = spotifyCredential.client;
+
+  spotifyApi.setRefreshToken(spotifyCredential.token);
+  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
+  spotifyApi.setAccessToken(accessToken);
 
   const trackToAdd = await spotifyApi.searchTracks(reactionParam);
 
@@ -93,9 +113,15 @@ const repeatMusic = async (
   reactionParam: string,
   userId: number,
 ): Promise<void> => {
-  const spotifyApi = await ServiceHelper.getSpotifyClient(userId);
+  const spotifyCredential = await ServiceHelper.getSpotifyClient(userId);
 
-  if (!spotifyApi) return;
+  if (!spotifyCredential) return;
+
+  const spotifyApi = spotifyCredential.client;
+
+  spotifyApi.setRefreshToken(spotifyCredential.token);
+  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
+  spotifyApi.setAccessToken(accessToken);
 
   await spotifyApi.setRepeat("track");
 };

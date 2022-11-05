@@ -1,5 +1,4 @@
 import { google } from "googleapis";
-import MailComposer from "nodemailer/lib/mail-composer";
 
 import * as ServiceHelper from "../../helpers/service.helpers";
 
@@ -13,27 +12,35 @@ const sendEmail = async (
   if (!oAuth2Client || !mailContent) return;
 
   const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
-  const mailComposer = new MailComposer({
-    to: mailContent.to,
-    subject: mailContent.subject,
-    text: mailContent.content,
-  });
 
-  const message = await mailComposer.compile().build();
-  const rawMessage = Buffer.from(message)
+  console.log(mailContent.content);
+  const utf8Subject = `=?utf-8?B?${Buffer.from(mailContent.subject).toString(
+    "base64",
+  )}?=`;
+  const messageParts = [
+    "From: Justin Beckwith <beckwith@google.com>",
+    `To: Justin Beckwith <${mailContent.to}>`,
+    "Content-Type: text/html; charset=utf-8",
+    "MIME-Version: 1.0",
+    `Subject: ${utf8Subject}`,
+    "",
+    mailContent.content,
+    "",
+  ];
+  const message = messageParts.join("\n");
+
+  const encodedMessage = Buffer.from(message)
     .toString("base64")
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=+$/, "");
 
-  const sendedMessage = await gmail.users.messages.send({
+  await gmail.users.messages.send({
     userId: "me",
     requestBody: {
-      raw: rawMessage,
+      raw: encodedMessage,
     },
   });
-
-  console.log(sendedMessage);
 };
 
 export { sendEmail };

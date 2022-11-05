@@ -115,6 +115,23 @@ describe("Test getGithubIssueParams", () => {
   });
 });
 
+describe("Test getMailContentParams", () => {
+  describe("Test valid cases", () => {
+    test("Test if return mail params", () => {
+      const mailContentParam = ServiceHelper.getMailContentParams(
+        "ludovic@gmail.com/test/lol",
+      );
+
+      expect(mailContentParam?.to).toBe("ludovic@gmail.com");
+    });
+
+    test("Test with missing text", () => {
+      const mailContentParam = ServiceHelper.getMailContentParams("ludo");
+      expect(mailContentParam).toBeNull();
+    });
+  });
+});
+
 describe("Test injectParamInReaction", () => {
   describe("Test valid cases", () => {
     test("Test inject valid string field", () => {

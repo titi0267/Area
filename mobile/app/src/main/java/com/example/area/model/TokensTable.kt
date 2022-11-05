@@ -1,6 +1,6 @@
 package com.example.area.model
 
-data class TokensTable(
+/*data class TokensTable(
     val id: Int,
     val userId: Int,
     val discordToken: String,
@@ -9,4 +9,4 @@ data class TokensTable(
     val youtubeToken: String,
     val trelloToken: String,
     val spotifyToken: String
-)
+)*/

@@ -322,7 +322,7 @@ class AboutClass(val about: About) {
     fun getServiceOAuthNameList(): List<String> {
         val ret = mutableListOf<String>()
         for (service in about.server.services) {
-            if (service.oauthName != "none")
+            if (service.oauthName != null)
                 ret.add(service.oauthName)
         }
         return (ret)

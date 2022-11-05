@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.area.AREAApplication
 import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.model.OAuthCode
@@ -61,6 +62,7 @@ class OAuthConnectionActivity : AppCompatActivity() {
         viewModel.postServiceCode(token, service, code)
         viewModel.emptyResponse.observe(this, Observer { response ->
             if (response.isSuccessful) {
+                (this.application as AREAApplication).setTokenInTokenTable(service, code.code)
                 Toast.makeText(this, "Code successfully added", Toast.LENGTH_SHORT).show()
             }
             finish()

@@ -25,7 +25,6 @@ import com.example.area.model.ServiceListElement
 import com.example.area.model.about.About
 import com.example.area.model.about.AboutClass
 import com.example.area.repository.Repository
-import com.example.area.utils.AboutJsonCreator
 import com.example.area.utils.SessionManager
 import com.example.area.utils.actionReactionInfoTranslator
 import com.google.android.material.textfield.TextInputEditText

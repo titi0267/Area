@@ -11,8 +11,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.area.R
 import com.example.area.model.ServiceListElement
+import java.util.*
+import kotlin.collections.ArrayList
 
-class ServiceItemAdapter(private val context: Context, private val dataset: List<ServiceListElement>, private val onItemClick: (position: Int) -> Unit) : RecyclerView.Adapter<ServiceItemAdapter.ServiceViewHolder>() {
+class ServiceItemAdapter(private val context: Context, private var dataset: List<ServiceListElement>, private val onItemClick: (position: Int) -> Unit) : RecyclerView.Adapter<ServiceItemAdapter.ServiceViewHolder>() {
     private var selectedItem = 0
 
     class ServiceViewHolder(private val view: View, private val onItemClick: (position: Int) -> Unit): RecyclerView.ViewHolder(view) {
@@ -35,8 +37,24 @@ class ServiceItemAdapter(private val context: Context, private val dataset: List
         return ServiceViewHolder(adapterLayout, onItemClick)
     }
 
+    fun filter(toSearch: String?, entireList: List<ServiceListElement>) {
+        val filterList: MutableList<ServiceListElement> = ArrayList()
+        if (toSearch != null && toSearch.isNotEmpty()) {
+            for (item in entireList) {
+                if (item.name.lowercase(Locale.ROOT).contains(toSearch.lowercase(Locale.ROOT)))
+                    filterList += item
+            }
+            dataset = filterList
+        } else if (toSearch != null && toSearch.isEmpty()) {
+            dataset = entireList
+        }
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: ServiceViewHolder, position: Int) {
     }
+
+    fun getDataset() = dataset
 
     override fun getItemCount() = dataset.size
 }

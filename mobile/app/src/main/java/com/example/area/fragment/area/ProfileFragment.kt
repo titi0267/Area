@@ -34,18 +34,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
         val sessionManager = SessionManager(context as AreaActivity)
         val ipPortUrl = (sessionManager.fetchAuthToken("url") ?: return null).dropLast(1).drop(7)
-        val url = sessionManager.fetchAuthToken("url") ?: return view
-        val rep = Repository(url)
-        val viewModelFactory = MainViewModelFactory(rep)
 
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         getAndDisplayUserInfo(view)
         view.findViewById<MaterialTextView>(R.id.profile_current_ip_text_value).text = ipPortUrl
         view.findViewById<Button>(R.id.backButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
         view.findViewById<Button>(R.id.oauth_github_button).setOnClickListener {
-            getOAuthLinkRequest("spotify", sessionManager)
+            (context as AreaActivity).changeFragment(OAuthLinkingFragment(), "oauth_linking")
         }
         view.findViewById<Button>(R.id.profileLogoutButton).setOnClickListener {
             sessionManager.removeAuthToken("user_token");
@@ -55,21 +51,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             (context as AreaActivity).changeFragment(ChangeIpPortFragment(), "change_ip_port")
         }
         return view
-    }
-
-    private fun getOAuthLinkRequest(service: String, sessionManager: SessionManager) {
-        viewModel.getServiceLink(sessionManager.fetchAuthToken("user_token")!!, service)
-        viewModel.linkResponse.observe(viewLifecycleOwner, Observer { response ->
-            if (response.isSuccessful) {
-                val oAuthLink = response.body()!!.toString()
-                val bundle = Bundle()
-                val intent = Intent(context as AreaActivity, OAuthConnectionActivity::class.java)
-                bundle.putString("link", oAuthLink)
-                bundle.putString("service", service)
-                intent.putExtras(bundle)
-                startActivity(intent)
-            }
-        })
     }
 
     private fun getAndDisplayUserInfo(view: View) {

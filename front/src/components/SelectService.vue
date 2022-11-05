@@ -72,7 +72,7 @@ export default vue.extend({
           return;
         }
         this.$emit('loading');
-        const { data: url } = await this.$axios.get("/oauth/" + serviceOauthName + "/link/front", {
+        const { data: url } = await this.$axios.get("/oauth/" + serviceOauthName + "/link", {
           headers: {
             Authorization: this.$store.getters.userToken || "noToken",
             },

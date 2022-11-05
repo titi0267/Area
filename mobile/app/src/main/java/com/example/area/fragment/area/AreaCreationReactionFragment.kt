@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,10 +22,12 @@ import com.example.area.data.ActionReactionDatasource
 import com.example.area.model.AREAFields
 import com.example.area.model.ActionReactionInfo
 import com.example.area.model.ServiceListElement
+import com.example.area.model.Token
 import com.example.area.model.about.AboutClass
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
 import com.google.android.material.textfield.TextInputEditText
+import retrofit2.Response
 
 class AreaCreationReactionFragment(private val actionService: ServiceListElement, private val action: ActionReactionInfo, private val reactionService: ServiceListElement) : Fragment(R.layout.fragment_area_creation_reaction) {
     private var reactionSelectedIndex = -1
@@ -89,19 +92,21 @@ class AreaCreationReactionFragment(private val actionService: ServiceListElement
     private fun createAreaRequest(textHint: Editable) {
         val sessionManager = SessionManager(context as AreaActivity)
         val url = sessionManager.fetchAuthToken("url") ?: return
+        val token = sessionManager.fetchAuthToken("user_token") ?: return
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
         val viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-
-        viewModel.areaCreation(sessionManager.fetchAuthToken("user_token")!!, AREAFields(actionService.id, action.id, action.paramName, reactionService.id, reactionSelectedIndex + 1, textHint.toString()))
-        viewModel.userResponse.observe(viewLifecycleOwner) { response ->
+        val observer : Observer<Response<Token>?> = Observer { response ->
             if (response == null)
-                return@observe
+                return@Observer
             if (response.isSuccessful) {
                 Toast.makeText(context as AreaActivity, "Area added successfully!", Toast.LENGTH_SHORT).show()
                 (context as AreaActivity).changeFragment(AreaListFragment(), "area_list")
             }
         }
+
+        viewModel.areaCreation(token, AREAFields(actionService.id, action.id, action.paramName, reactionService.id, reactionSelectedIndex + 1, textHint.toString()), context as AreaActivity, observer)
+        viewModel.userResponse.observe(viewLifecycleOwner, observer)
     }
 
     private fun createSpinner(view: View, aboutClass: AboutClass) {

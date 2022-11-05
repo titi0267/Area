@@ -7,5 +7,5 @@ data class UserInfo (
     val firstName: String,
     val lastName: String,
     val role: String,
-    val tokensTable: TokensTable
+    var tokensTable: Map<String, String?>
 )

@@ -134,10 +134,27 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun areaCreation(auth: String, areaFields: AREAFields) {
+    fun areaCreation(auth: String, areaFields: AREAFields, context: Context, observer: Observer<Response<Token>?>) {
         viewModelScope.launch {
-            val response = repository.areaCreation(auth, areaFields)
-            userResponse.value = response
+            (context as AreaActivity).loading = true
+            userResponse.value = null
+            try {
+                val response = repository.areaCreation(auth, areaFields)
+                context.loading = false
+                userResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                userResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                userResponse.value = null
+            }
+            finally {
+                context.loading = false
+                userResponse.removeObserver(observer)
+            }
         }
     }
 
@@ -152,7 +169,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             }
             catch(e: SocketTimeoutException) {
                 Toast.makeText(context as AreaActivity, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
-                userResponse.value = null
+                aboutResponse.value = null
             }
             catch(e: ConnectException) {
                 Toast.makeText(context as AreaActivity, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()

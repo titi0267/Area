@@ -171,6 +171,16 @@ const getGithubIssueParams = (reactionParam: string) => {
   return { owner: matches[1], repo: matches[2], title: matches[3] };
 };
 
+const getMailContentParams = (reactionParam: string) => {
+  let regex = FORMAT.mailContent;
+
+  const matches = reactionParam.match(regex);
+
+  if (!matches || matches.length < 4) return null;
+
+  return { to: matches[1], subject: matches[2], content: matches[3] };
+};
+
 const injectParamInReaction = <T extends Object>(
   reactionParam: string,
   param: T,
@@ -261,4 +271,5 @@ export {
   getGithubClient,
   getSpotifyClient,
   getGithubIssueParams,
+  getMailContentParams,
 };

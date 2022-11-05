@@ -139,7 +139,6 @@ export default vue.extend({
                     return;
                 }
                 if (serviceOauthName == "discord") {
-                    console.log((typeof this.$route.query.permissions))
                     if ((typeof this.$route.query.permissions) !== "string") return;
                     oauthParam = {
                         code: code,

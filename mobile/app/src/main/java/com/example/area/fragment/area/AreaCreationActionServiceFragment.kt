@@ -2,7 +2,6 @@ package com.example.area.fragment.area
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,12 +33,10 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
         val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return view
         val servicesImages = ((context as AreaActivity).application as AREAApplication).aboutBitmapList ?: return view
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerViewActionService)
-        var serviceList = ServiceDatasource()
+        val serviceList = ServiceDatasource()
 
         recycler.layoutManager = LinearLayoutManager(context as AreaActivity)
-        serviceList.clear()
-        for (elem in feelEntireList(aboutClass, servicesImages))
-            serviceList.addService(elem)
+        feelSearchedList(serviceList, feelEntireList(aboutClass, servicesImages))
         view.findViewById<Button>(R.id.backFromActionServiceCreationButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
@@ -52,24 +49,29 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
         }
         view.findViewById<SearchView>(R.id.searchActionService).setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(toSearch: String?): Boolean {
-                serviceAdapter.filter(toSearch, feelEntireList(aboutClass, servicesImages))
-                serviceList.clear()
-                for (elem in serviceAdapter.getDataset())
-                    serviceList.addService(elem)
-                updateRecycler(recycler, serviceList)
+                onQuery(toSearch, aboutClass, servicesImages, serviceList, recycler)
                 return false
             }
             override fun onQueryTextChange(toSearch: String?): Boolean {
-                serviceAdapter.filter(toSearch, feelEntireList(aboutClass, servicesImages))
-                serviceList.clear()
-                for (elem in serviceAdapter.getDataset())
-                    serviceList.addService(elem)
-                updateRecycler(recycler, serviceList)
+                onQuery(toSearch, aboutClass, servicesImages, serviceList, recycler)
                 return false
             }
         })
         updateRecycler(recycler, serviceList)
         return view
+    }
+
+    private fun onQuery(toSearch: String?, aboutClass: AboutClass, servicesImages: List<Bitmap>, serviceList: ServiceDatasource, recycler: RecyclerView) {
+        serviceAdapter.filter(toSearch, feelEntireList(aboutClass, servicesImages))
+        serviceList.clear()
+        feelSearchedList(serviceList, serviceAdapter.getDataset())
+        updateRecycler(recycler, serviceList)
+    }
+
+    private fun feelSearchedList(serviceList: ServiceDatasource, toFeedList: List<ServiceListElement>) {
+        serviceList.clear()
+        for (elem in toFeedList)
+            serviceList.addService(elem)
     }
 
     private fun updateRecycler(recycler: RecyclerView, serviceList: ServiceDatasource) {

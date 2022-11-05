@@ -190,8 +190,6 @@ const injectParamInReaction = <T extends Object>(
   const matches = reactionParam.matchAll(matchParamRegex);
 
   for (const match of matches) {
-    if (!match || !match[2]) continue;
-
     const key = match[2];
 
     if (!param.hasOwnProperty(key)) continue;
@@ -249,13 +247,7 @@ const getSpotifyClient = async (userId: number) => {
     clientSecret: ENV.spotifyClientSecret,
   });
 
-  spotifyApi.setRefreshToken(token);
-
-  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
-
-  spotifyApi.setAccessToken(accessToken);
-
-  return spotifyApi;
+  return { client: spotifyApi, token };
 };
 
 export {

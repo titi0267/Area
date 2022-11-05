@@ -139,10 +139,12 @@ export default vue.extend({
                     return;
                 }
                 if (serviceOauthName == "discord") {
+                    console.log((typeof this.$route.query.permissions))
+                    if ((typeof this.$route.query.permissions) !== "string") return;
                     oauthParam = {
                         code: code,
-                        guild_id: this.$route.query.guild_id,
-                        permissions: this.$route.query.permissions
+                        permissions: parseInt(this.$route.query.permissions),
+                        guild_id: this.$route.query.guild_id
                     }
                 } else {
                     oauthParam = {

@@ -118,9 +118,25 @@ describe("Test post area service", () => {
       }
     });
 
-    test("Create one area with action param", async () => {
+    test("Create one area with invalid action param", async () => {
       try {
         await AreaService.createArea(1, 1, "lol", 2, 1, "test", -1);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
+
+    test("Create one area with invalid reaction param", async () => {
+      try {
+        await AreaService.createArea(
+          1,
+          1,
+          "https://www.youtube.com/c/VilebrequinAuto",
+          4,
+          1,
+          "test",
+          -1,
+        );
       } catch (e) {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }
@@ -380,6 +396,29 @@ describe("Test edit area", () => {
         await UserService.removeUserById(users[0].id);
       }
     });
+
+    test("Edit area with valid ids but reactionParam has bad format", async () => {
+      await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+
+      const area = await AreaService.createArea(
+        1,
+        1,
+        "https://www.youtube.com/c/VilebrequinAuto",
+        4,
+        1,
+        "ludovic-str/test/test",
+        users[0].id,
+      );
+
+      try {
+        await AreaService.editArea(users[0].id, area.id, null, null, "test");
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+        await AreaService.removeAreaById(area.id);
+        await UserService.removeUserById(users[0].id);
+      }
+    });
   });
 });
 
@@ -416,7 +455,7 @@ describe("Test get user area by id", () => {
   });
 
   describe("Test invalid cases", () => {
-    test("Edit area with invalid userId", async () => {
+    test("Get area with invalid userId", async () => {
       try {
         await AreaService.getUserAreaById(45, 45);
       } catch (e) {
@@ -424,7 +463,7 @@ describe("Test get user area by id", () => {
       }
     });
 
-    test("Edit area with invalid areaId", async () => {
+    test("Get area with invalid areaId", async () => {
       await UserService.createUser("Ludo", "Str", "test@mail.com", "passwd");
       const users = await UserService.getAllUsers();
 

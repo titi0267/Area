@@ -23,14 +23,13 @@
         android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backFromReactionServiceCreationButton">
+        app:layout_constraintTop_toBottomOf="@+id/searchReactionService">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewReactionService"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
-
     <Button
         android:id="@+id/nextFromReactionServiceCreation"
         android:layout_width="wrap_content"
@@ -43,4 +42,14 @@
         app:cornerRadius="100sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <android.widget.SearchView
+        android:id="@+id/searchReactionService"
+        android:layout_width="300dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backFromReactionServiceCreationButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

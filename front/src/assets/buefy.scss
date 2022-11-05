@@ -81,6 +81,14 @@ $link: $primary;
 $link-invert: $primary-invert;
 $link-focus-border: $primary;
 
+// CSS for NavBar dropdown
+.dropdown-menu {
+    top: 95px !important;
+    .dropdown-content {
+        box-shadow: 0 0 15px 1px #00000099;
+    }
+}
+
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";

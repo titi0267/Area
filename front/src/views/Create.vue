@@ -1,6 +1,6 @@
 <template>
     <div id="Create">
-        <b-loading :is-full-page="true" v-model="loading"/>
+        <b-loading :is-full-page="true" :active="true"/>
     </div>
 </template>
 
@@ -27,12 +27,12 @@ export default vue.extend({
         },
         redirect(): void {
             if (this.area == null) {
-                this.notification('An error occured', 'is-danger')
+                this.notification('An error occured, please try again', 'is-danger')
                 this.$router.push('/home')
             } if (this.area.state <= 1) {
-                this.$router.push('create/action')
+                this.$router.push({path: 'create/action', query: this.$route.query})
             } else if (this.area.state <= 3) {
-                this.$router.push('create/reaction')
+                this.$router.push({path: 'create/reaction', query: this.$route.query})
             }
         }
     }

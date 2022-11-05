@@ -10,24 +10,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.area.AREAApplication
-import com.example.area.MainViewModel
-import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.adapter.ActionReactionItemAdapter
 import com.example.area.data.ActionReactionDatasource
-import com.example.area.model.ActionReactionInfo
 import com.example.area.model.ServiceListElement
-import com.example.area.model.about.About
-import com.example.area.model.about.AboutClass
-import com.example.area.repository.Repository
-import com.example.area.utils.AboutJsonCreator
-import com.example.area.utils.SessionManager
-import com.example.area.utils.actionReactionInfoTranslator
 import com.google.android.material.textfield.TextInputEditText
 
 class AreaCreationActionFragment(private val actionService: ServiceListElement) : Fragment(R.layout.fragment_area_creation_action) {

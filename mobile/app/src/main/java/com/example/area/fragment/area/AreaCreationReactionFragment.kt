@@ -76,11 +76,11 @@ class AreaCreationReactionFragment(private val actionService: ServiceListElement
         val textHint = view.findViewById<TextInputEditText>(R.id.reactionParamText).text ?: return
 
         if (reactionSelectedIndex == -1) {
-            Toast.makeText(context as AreaActivity, "Please select an reaction", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context as AreaActivity, "Please select a reaction", Toast.LENGTH_SHORT).show()
             return
         }
         if (textHint.isEmpty()) {
-            Toast.makeText(context as AreaActivity, "Please enter an reaction parameter", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context as AreaActivity, "Please enter a reaction parameter", Toast.LENGTH_SHORT).show()
             return
         }
         createAreaRequest(textHint)

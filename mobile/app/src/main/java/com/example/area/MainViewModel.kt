@@ -31,6 +31,8 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     val userResponse: MutableLiveData<Response<Token>?> = MutableLiveData()
     val aboutResponse: MutableLiveData<Response<About>?> = MutableLiveData()
     val listAREAResponse: MutableLiveData<Response<List<ActionReaction>>> = MutableLiveData()
+    val enableResponse: MutableLiveData<Response<ActionReaction>> = MutableLiveData()
+    val deleteAreaResponse: MutableLiveData<Response<ActionReaction>> = MutableLiveData()
 
     // Back calls
 
@@ -157,6 +159,18 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         viewModelScope.launch {
             val response = repository.postServiceCode(auth, service, code)
             emptyResponse.value = response
+        }
+    }
+    fun putEnableDisable(auth: String, enable: EnableDisable) {
+        viewModelScope.launch {
+            val response = repository.putEnableDisable(auth, enable)
+            enableResponse.value = response
+        }
+    }
+    fun deleteArea(auth: String, areaId: Int) {
+        viewModelScope.launch {
+            val response = repository.deleteArea(auth, areaId)
+            deleteAreaResponse.value = response
         }
     }
 }

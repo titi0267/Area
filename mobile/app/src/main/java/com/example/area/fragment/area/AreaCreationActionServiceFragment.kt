@@ -7,22 +7,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.area.AREAApplication
-import com.example.area.MainViewModel
-import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.adapter.ServiceItemAdapter
-import com.example.area.data.ActionReactionDatasource
 import com.example.area.data.ServiceDatasource
-import com.example.area.model.about.About
-import com.example.area.model.about.AboutClass
-import com.example.area.repository.Repository
-import com.example.area.utils.AboutJsonCreator
-import com.example.area.utils.SessionManager
 
 class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creation_action_service) {
     private var serviceSelectedIndex: Int = -1

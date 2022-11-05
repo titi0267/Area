@@ -2,8 +2,8 @@
     <div id="NavBar">
         <b-image class="logo" :src="require('@/assets/area_logo.png')"/>
         <div class="links">
-            <a @click="$router.push('/home')">Home</a>
-            <a @click="$router.push('/create/action'), removeLocalStorageItem()">Create</a>
+            <a @click="$router.push('/home')" :style="{ 'color' : ($route.path == '/home' ? '#19191a' : '') }">Home</a>
+            <a @click="createRedirect()" :style="{ 'color' : ($route.path.includes('create') ? '#19191a' : '') }">Create</a>
         </div>
         <div class="profile">
             <b-dropdown
@@ -15,7 +15,7 @@
                     <a class="navbarItem"
                         role="button">
                         <div class="userIcon">
-                            <b-icon icon="user"></b-icon>
+                            <b-icon icon="circle-user" size="is-large"></b-icon>
                         </div>
                     </a>
                 </template>
@@ -60,8 +60,10 @@ export default vue.extend({
         }
     },
     methods: {
-        removeLocalStorageItem(): void {
+        createRedirect(): void {
             localStorage.removeItem('area');
+            this.$router.push('/tmp')
+            this.$router.push('/create/action');
         },
         checkRoute(): void {
             if (this.$route.name == 'profile')
@@ -105,43 +107,57 @@ $navbar-height: 75px;
     justify-content: space-between;
     background-color: white;
     height: $navbar-height;
-    width: 100%;
-    border-bottom: 1px solid rgb(202, 202, 202);
     position: fixed;
-    background-color: white;
     z-index: 10;
+    margin: 10px;
+    width: -webkit-fill-available;
+    box-shadow: 0 0 15px 1px #00000099;
+    border-radius: 20px;
     .logo {
+        margin-left: 20px;
         position: relative;
         :deep(img) {
-            height: $navbar-height;
+            height: calc($navbar-height - 10px);
             width: auto;
         }
     }
     .links {
+        position: relative;
+        top: 3px;
         a:first-child {
             margin-right: 15px;
         }
         a {
-            color: white;
-            font-family: Bebas Regular;
-            font-size: 30px;
-            background-color: #37474F;
-            padding: 3px 6px;
+            font-family: Avenir;
+            font-size: 25px;
+            color: #e5e4e4;
+            text-transform: uppercase;
+            font-family: Avenir Roman;
+            height: 32px;
             &:hover {
-                color: #7DCEA0;
+                color: #626263;
             }
         }
 
     }
-    .profile {
+    .profile {right: -12px;
+        position: relative;
         width: 206.53px;
         display: flex;
         justify-content: flex-end;
         >:deep(div) {
-            margin-right: 15px;
+            .icon {
+                color: rgb(25 25 66 / 81%);
+            }
+            margin-right: 23px;
+            svg {
+                width: 34px;
+                height: 34px;
+            }
         }
     }
 }
+
 .dropItem {
     display: flex;
     align-content: center;
@@ -150,4 +166,6 @@ $navbar-height: 75px;
         margin-right: 15px;
     }
 }
+
+
 </style>

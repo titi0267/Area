@@ -29,10 +29,12 @@
             :type="$route.path.split('/')[2]"
         />
         <Overview
-            v-else
-            @create="sendServices"
-            @previous="area.state--"
+            v-else-if="area.state == 4"
             :area="area"
+            :services="services"
+            @create="sendServices"
+            @save="saveAreaLocalStorage"
+            @previous="area.state--"
         />
         <b-loading :is-full-page="true" v-model="loading"/>
     </div>
@@ -122,7 +124,7 @@ export default vue.extend({
                         Authorization: this.$store.getters.userToken || "noToken",
                     }
                 });
-                this.$router.push('/home')
+                this.$router.push('/home');
                 this.notification('Your actions - reaction has been created', 'is-success');
             } catch (err) {
                 this.notification(err.response.data.message, 'is-danger');

@@ -10,9 +10,9 @@
             :style="{ 'background-color': service.backgroundColor }"
             :class="{ selected: service.id == area[type + 'ServiceId'] }"
             v-if="service[type + 's'].length != 0 && service.name.toLowerCase().includes(filterInput.toLowerCase())"
-            @click="$emit(type + 'ServiceId', service.id), $emit('save'), getOAuthUrl()">
+            @click="$emit(type + 'ServiceId', service.id), $emit('next'), $emit('save'), getOAuthUrl()">
                 <p> {{ service.name }} </p>
-                <b-image :src="service.imageUrl"></b-image>
+                <b-image :src="$store.state.serveurURL + service.imageUrl"></b-image>
           </div>
         </div>
       </div>
@@ -41,6 +41,7 @@ export default vue.extend({
     return {
       filterInput: "" /** It's a filter input used for search a service */,
       oauthURL: "" /** This variable contains the oAuth URL of the right service */,
+      picture: "",
     };
   },
   props: {
@@ -72,8 +73,8 @@ export default vue.extend({
         }
         this.$emit('loading');
         const { data: url } = await this.$axios.get("/oauth/" + serviceOauthName + "/link/front", {
-            headers: {
-                Authorization: this.$store.getters.userToken || "noToken",
+          headers: {
+            Authorization: this.$store.getters.userToken || "noToken",
             },
         });
         this.oauthURL = url;
@@ -106,42 +107,9 @@ export default vue.extend({
 $service-size: 175px;
 
 #SelectService {
-  padding: 20px;
-  padding-top: 0px;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  .search-input {
-    display: flex;
-    justify-content: center;
-    :deep(input) {
-      width: 400px;
-      margin: 10px;
-    }
-  }
-  h2 {
-    font-family: "Courier New", Courier, monospace;
-  }
-  .buttons {
-    display: flex;
-    position: absolute;
-    padding: 0px 30px;
-    left: 0;
+    padding: 20px;
+    padding-top: 0px;
     width: 100%;
-    bottom: 20px;
-    justify-content: space-between;
-    :deep(button) {
-      width: 100px;
-      span,
-      a {
-        color: hsl(0deg, 0%, 21%);
-      }
-    }
-  }
-  .services {
-    margin: 10px;
-    margin: 10px;
-    display: flex;
     height: 100%;
     position: relative;
     .search-input {
@@ -211,6 +179,5 @@ $service-size: 175px;
             }
         }
     }
-  }
 }
 </style>

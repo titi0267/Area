@@ -6,7 +6,7 @@
         <div v-else class="area-list" v-for="area in areas" :key="area.actionServiceId.toString() + area.actionParam + area.reactionId.toString() + area.actionId.toString()"
             :style="{ 'background' : `linear-gradient(to right, ${getService(area, 'action') ? getService(area, 'action').backgroundColor : ''}, ${getService(area, 'reaction') ? getService(area, 'reaction').backgroundColor : ''})` }">
             <div class="action" v-if="getService(area, 'action')">
-                <b-image :src="getService(area, 'action').imageUrl"></b-image>
+                <b-image :src="$store.state.serveurURL + getService(area, 'action').imageUrl"></b-image>
                 <p> {{ getService(area, 'action').name }} </p>
                 <p> {{ getService(area, 'action').actions.find(action => action.id == area.actionId).name }} </p>
             </div>
@@ -16,7 +16,7 @@
             <div class="reaction" v-if="getService(area, 'reaction')">
                 <p> {{ getService(area, 'reaction').reactions.find(reaction => reaction.id == area.reactionId).name }} </p>
                 <p> {{ getService(area, 'reaction').name }} </p>
-                <b-image :src="getService(area, 'reaction').imageUrl"></b-image>
+                <b-image :src="$store.state.serveurURL + getService(area, 'reaction').imageUrl"></b-image>
             </div>
         </div>
     </div>

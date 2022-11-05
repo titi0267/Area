@@ -1,11 +1,12 @@
 <template>
     <div id="Overview">
+        <!-- <b-icon class="previous" icon="chevron-right" @click.native="$emit('previous'), $emit('save'), $router.push('/create/reaction')"></b-icon> -->
         <h2 class="overview-title">Overview of your action - reaction creation</h2>
         <div class="if" v-if="action.actions">
             <h2>IF</h2>
             <div class="action" :style="{ 'background-color' : action.backgroundColor }">
                 <p>Action</p>
-                <b-image :src="action.imageUrl"></b-image>
+                <b-image :src="$store.state.serveurURL + action.imageUrl"></b-image>
                 <span style="margin: auto;">
                     <h1> {{ action.actions.name }} </h1>
                     <h2> {{ action.actions.description }} </h2>
@@ -20,7 +21,7 @@
             <h2>THEN</h2>
             <div class="reaction" :style="{ 'background-color' : reaction.backgroundColor }">
                 <p>Reaction</p>
-                <b-image :src="reaction.imageUrl"></b-image>
+                <b-image :src="$store.state.serveurURL + reaction.imageUrl"></b-image>
                 <span style="margin: auto;">
                     <h1> {{ reaction.reactions.name }} </h1>
                     <h2> {{ reaction.reactions.description }} </h2>
@@ -32,7 +33,7 @@
             </div>
         </div>
         <b-button @click="$emit('create')" type="is-success is-light">Create</b-button>
-        <!--  <b-button @click="$emit('previous'), $router.push('/create/reaction')">Précédent</b-button>  -->
+         <!-- <b-button @click="$emit('previous'), $router.push('/create/reaction')">Précédent</b-button> -->
     </div>
 </template>
 
@@ -76,6 +77,13 @@ export default vue.extend({
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+    .previous {
+        position: absolute;
+        transform: rotate(180deg);
+        top: 120px;
+        left: 30px;
+        cursor: pointer;
+    }
     .overview-title {
         position: absolute;
         top: 120px;

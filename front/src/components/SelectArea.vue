@@ -3,7 +3,7 @@
     <div v-for="service in services" :key="service.name">
         <div class="selected-service" v-if="area[type + 'ServiceId'] == service.id" :style="{ 'background-color': service.backgroundColor }">
             <h2>Select your {{ type }} type</h2>
-            <b-image :src="service.imageUrl"></b-image>
+            <b-image :src="$store.state.serveurURL + service.imageUrl"></b-image>
         </div>
         <div class="areas" v-if="service.id == area[type + 'ServiceId']">
             <div class="area"
@@ -21,7 +21,7 @@
         <b-button @click="$emit('previous'), $emit('save')">
             Previous
         </b-button>
-        <b-field v-if="area[type + 'Id'] != -1">
+        <!-- <b-field v-if="area[type + 'Id'] != -1">
             <b-autocomplete
                 class="param-input"
                 ref="autocomplete"
@@ -33,7 +33,7 @@
                 >
                 <template #empty>No results for {{injectedParam}}</template>
             </b-autocomplete>
-        </b-field>
+        </b-field> -->
         <b-button @click="$emit('next'), $emit('save'), $router.push(type == 'action' ? 'reaction' : 'overview')">
             Next
         </b-button>
@@ -58,6 +58,7 @@ export default vue.extend({
     },
     mounted() {
         this.checkAlreadyOAuth();
+        console.log("test")
     },
     watch: {
         /**

@@ -2,7 +2,7 @@
     <div id="Services" v-if="user.tokensTable && services">
         <div class="service" v-for="service of services" :key="service.name + service.backgroundColor">
             <div class="left">
-                <b-image :src="service.imageUrl"></b-image>
+                <b-image :src="$store.state.serveurURL + service.imageUrl"></b-image>
                 <p>{{ service.name }}</p>
             </div>
             <b-button v-if="user.tokensTable[service.oauthName + 'Token'] != null" type="is-danger"> Sign out </b-button>

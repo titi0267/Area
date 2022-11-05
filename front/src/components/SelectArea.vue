@@ -130,6 +130,7 @@ export default vue.extend({
                     return;
                 }
                 const code: String = this.$route.query.code;
+                let oauthParam = {}
                 if (code == null || code == undefined && this.tokensTable[serviceOauthName + 'Token'] == null) {
                     this.$emit('previous');
                     this.$emit('save');
@@ -137,10 +138,20 @@ export default vue.extend({
                     this.notification("Your authentification has failed", 'is-danger');
                     return;
                 }
-                try {
-                    let {data: tokens} = await this.$axios.post("/oauth/" + serviceOauthName, {
+                if (serviceOauthName == "discord") {
+                    if ((typeof this.$route.query.permissions) !== "string") return;
+                    oauthParam = {
                         code: code,
-                    }, {
+                        permissions: parseInt(this.$route.query.permissions),
+                        guild_id: this.$route.query.guild_id
+                    }
+                } else {
+                    oauthParam = {
+                        code: code
+                    }
+                }
+                try {
+                    let {data: tokens} = await this.$axios.post("/oauth/" + serviceOauthName, oauthParam, {
                         headers: {
                             Authorization: this.$store.getters.userToken || "noToken",
                         }

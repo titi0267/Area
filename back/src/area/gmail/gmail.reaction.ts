@@ -13,7 +13,6 @@ const sendEmail = async (
 
   const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
 
-  console.log(mailContent.content);
   const utf8Subject = `=?utf-8?B?${Buffer.from(mailContent.subject).toString(
     "base64",
   )}?=`;

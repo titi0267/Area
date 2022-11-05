@@ -21,7 +21,6 @@ import com.example.area.model.ActionReactionInfo
 import com.example.area.model.ServiceListElement
 import com.example.area.model.about.About
 import com.example.area.repository.Repository
-import com.example.area.utils.AboutJsonCreator
 import com.example.area.utils.SessionManager
 
 class AreaCreationReactionServiceFragment(private val actionService: ServiceListElement, private val action: ActionReactionInfo) : Fragment(R.layout.fragment_area_creation_reaction_service) {

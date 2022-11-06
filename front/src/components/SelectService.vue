@@ -41,7 +41,6 @@ export default vue.extend({
     return {
       filterInput: "" /** It's a filter input used for search a service */,
       oauthURL: "" /** This variable contains the oAuth URL of the right service */,
-      picture: "",
     };
   },
   props: {

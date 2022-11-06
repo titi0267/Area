@@ -76,7 +76,7 @@ interface Field {
     valide: Boolean;
 }
 
-/** Token interface */
+/** User interface */
 
 export interface Token {
     discordToken: string | undefined;

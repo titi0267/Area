@@ -1,13 +1,16 @@
 <template>
     <div id="Services" v-if="user.tokensTable && services">
-        <div class="service" v-for="service of services" :key="service.name + service.backgroundColor" :style="{ 'background-color' : service.backgroundColor }">
-            <div class="left">
-                <b-image :src="$store.state.serveurURL + service.imageUrl"></b-image>
-                <p>{{ service.name }}</p>
+        <div v-for="service of services" :key="service.name + service.backgroundColor">
+            <div class="service" v-if="service.oauthName != null" :style="{ 'background-color' : service.backgroundColor }">
+                <div class="left">
+                    <b-image :src="$store.state.serveurURL + service.imageUrl"></b-image>
+                    <p>{{ service.name }}</p>
+                </div>
+                <b-button v-if="user.tokensTable[service.oauthName + 'Token'] != null" @click="deleteServiceLink(service)" type="is-danger"> Sign out </b-button>
+                <b-button v-else @click="getOAuthUrl(service)" type="is-success"> Sign in </b-button>
             </div>
-            <b-button v-if="user.tokensTable[service.oauthName + 'Token'] != null" type="is-danger"> Sign out </b-button>
-            <b-button v-else type="is-success"> Sign in </b-button>
         </div>
+        <b-loading :is-full-page="true" v-model="loading"/>
     </div>
 </template>
 
@@ -20,14 +23,94 @@ export default vue.extend({
         return {
             services: [] as Service[], /** An array that will be filled with the about.json from the server. */
             user: [],
+            loading: false,
         }
     },
     mounted() {
         this.getAbout();
         this.getUserInfos();
         localStorage.removeItem('area');
+        this.postOauth();
     },
     methods: {
+        deleteServiceLink(service): void {
+            try {
+                let toRemove: Object;
+                if (service.oauthName == 'discord') {
+                    toRemove = {
+                        [service.oauthName + 'Token'] : true,
+                        [service.oauthName + 'GuildId'] : true,
+                    }
+                } else {
+                    toRemove = {
+                        [service.oauthName + 'Token'] : true,
+                    }
+                }
+                let test = this.$axios.put('/tokens/delete', toRemove);
+                console.log(test)
+                this.$set(this.user.tokensTable, service.oauthName + 'Token', null);
+            } catch {
+
+            }
+        },
+        /**
+         * It's a function that check if the user is authenticated and post the oauth code to the server.
+         * @data {Object} area
+         * @data {Array} services
+         * @data {String} type
+         * @data {Object} tokensTable
+         * @async
+         */
+        postOauth(): void {
+            this.loading = true
+            this.$nextTick(async(): Promise<void> => {
+                let serviceOauthName = localStorage.getItem('oauth');
+                if (serviceOauthName == null) {
+                    localStorage.removeItem('oauth');
+                    this.loading = false;
+                    return;
+                }
+                const code: String = this.$route.query.code;
+                let oauthParam: Object;
+                if (code == null || code == undefined) {
+                    localStorage.removeItem('oauth');
+                    this.loading = false;
+                    this.$forceUpdate();
+                    this.notification("Your authentification has failed", 'is-danger');
+                    // this.$router.go()
+                    return;
+                }
+                if (serviceOauthName == "discord") {
+                    if ((typeof this.$route.query.permissions) !== "string") return;
+                    oauthParam = {
+                        code: code,
+                        permissions: parseInt(this.$route.query.permissions),
+                        guild_id: this.$route.query.guild_id
+                    }
+                } else {
+                    oauthParam = {
+                        code: code
+                    }
+                }
+                try {
+                    let {data: tokens} = await this.$axios.post("/oauth/" + serviceOauthName, oauthParam, {
+                        headers: {
+                            Authorization: this.$store.getters.userToken || "noToken",
+                        }
+                    });
+                    this.$set(this.user.tokensTable, serviceOauthName + 'Token', tokens[serviceOauthName + 'Token']);
+                    if (serviceOauthName == "discord") {
+                        this.$set(this.user.tokensTable, serviceOauthName + 'GuildId', tokens[serviceOauthName + 'GuildId']);
+                    }
+                    this.notification("Your authentication to " + serviceOauthName + " was successful", 'is-success');
+                } catch {
+                    this.notification("Your authentification has failed", 'is-danger');
+                }
+                localStorage.removeItem('oauth');
+                this.$router.replace({'query': null});
+                this.loading = false;
+            })
+        },
         /**
          * An async function that gets the oauth url for the service selected.
          * @data {Object} area
@@ -37,44 +120,27 @@ export default vue.extend({
          * @data {String} oauthURL
          * @async
          */
-        async getOAuthUrl(): Promise<void> {
-        try {
-            let serviceOauthName = this.services.find(
-            (service) => service.id == this.area[this.type + "ServiceId"]
-            )['oauthName'];
+        async getOAuthUrl(service): Promise<void> {
+            let serviceOauthName = service.oauthName;
             if (serviceOauthName == null) {
                 this.notification('A problem occured, please select another ' + this.type, 'is-danger');
-                this.$emit('previous');
-                this.$emit('save');
                 return;
             }
-            this.$emit('loading');
-            const { data: url } = await this.$axios.get("/oauth/" + serviceOauthName + "/link/front", {
+            // this.loading = true;
+            const { data: url } = await this.$axios.get("/oauth/" + serviceOauthName + "/link", {
             headers: {
-                Authorization: this.$store.getters.userToken || "noToken",
+                    Authorization: this.$store.getters.userToken || "noToken",
                 },
             });
-            this.oauthURL = url;
-            this.redirectOAuth();
-        } catch {
-            this.oauthURL = "";
-        }
+            localStorage.setItem('oauth', serviceOauthName);
+            this.redirectOAuth(url);
         },
         /**
          * It's a function that redirects the user to the oAuth URL of the service selected.
-         * @data {String} type
-         * @data {Array} services
-         * @data {String} type
-         * @data {Object} tokensTable
-         * @data {String} oauthURL
+         * @param {String} url
          */
-        redirectOAuth(): void {
-            let serviceOauthName = this.services.find(
-                (service) => service.id == this.area[this.type + "ServiceId"]
-            )['oauthName'];
-            if (this.tokensTable[serviceOauthName + 'Token'] == null) {
-                window.location.href = this.oauthURL;
-            }
+        redirectOAuth(url: string): void {
+            window.location.href = url;
         },
         /**
          * That function is used to get the infos of the user.

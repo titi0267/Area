@@ -26,7 +26,7 @@ export default vue.extend({
                 this.area = area;
         },
         redirect(): void {
-            if (this.area == null) {
+            if (JSON.stringify(this.area)== '{}') {
                 this.$router.push({path: 'services', query: this.$route.query})
             } if (this.area.state <= 1) {
                 this.$router.push({path: 'create/action', query: this.$route.query})

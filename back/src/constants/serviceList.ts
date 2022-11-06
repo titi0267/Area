@@ -171,6 +171,24 @@ export const SERVICES: Service[] = [
         fct: GithubAction.checkNewFollowingUser,
         availableInjectParams: ["lastFollowingUserName"],
       },
+      {
+        id: 2,
+        actionName: "New issue",
+        actionParamName: "",
+        paramFormat: null,
+        description: "New issue on one of your repository",
+        fct: GithubAction.newIssue,
+        availableInjectParams: ["title", "repositoryName"],
+      },
+      {
+        id: 3,
+        actionName: "New pull request",
+        actionParamName: "Repository infos (format: /owner/repo)",
+        paramFormat: FORMAT.githubPullRequestFormat,
+        description: "New pull request on one of your repository",
+        fct: GithubAction.newPullRequestOnRepository,
+        availableInjectParams: ["title", "creator", "body"],
+      },
     ],
     reactions: [
       {

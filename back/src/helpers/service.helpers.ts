@@ -171,6 +171,16 @@ const getGithubIssueParams = (reactionParam: string) => {
   return { owner: matches[1], repo: matches[2], title: matches[3] };
 };
 
+const getGithubPullRequestParams = (actionParam: string) => {
+  let regex = FORMAT.githubPullRequestFormat;
+
+  const matches = actionParam.match(regex);
+
+  if (!matches || matches.length < 3) return null;
+
+  return { owner: matches[1], repo: matches[2] };
+};
+
 const injectParamInReaction = <T extends Object>(
   reactionParam: string,
   param: T,
@@ -253,4 +263,5 @@ export {
   getGithubClient,
   getSpotifyClient,
   getGithubIssueParams,
+  getGithubPullRequestParams,
 };

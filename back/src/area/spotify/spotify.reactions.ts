@@ -123,11 +123,7 @@ const repeatMusic = async (
   const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
   spotifyApi.setAccessToken(accessToken);
 
-  try {
-    await spotifyApi.setRepeat("track");
-  } catch (e) {
-    console.log(e);
-  }
+  await spotifyApi.setRepeat("track");
 };
 
 export {

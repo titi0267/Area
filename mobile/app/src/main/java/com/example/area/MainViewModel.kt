@@ -1,7 +1,6 @@
 package com.example.area
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -16,8 +15,6 @@ import com.example.area.model.Token
 import com.example.area.model.about.About
 import com.example.area.model.*
 import com.example.area.repository.Repository
-import kotlinx.coroutines.job
-import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.net.ConnectException
@@ -41,21 +38,21 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             (context as UserConnectionActivity).loading = true
             userResponse.value = null
             try {
-                Toast.makeText(context as UserConnectionActivity, "Loading...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Loading...", Toast.LENGTH_SHORT).show()
                 val response = repository.register(registerFields)
-                (context as UserConnectionActivity).loading = false
+                (context).loading = false
                 userResponse.value = response
             }
             catch(e: SocketTimeoutException) {
-                Toast.makeText(context as UserConnectionActivity, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
                 userResponse.value = null
             }
             catch(e: ConnectException) {
-                Toast.makeText(context as UserConnectionActivity, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
                 userResponse.value = null
             }
             finally {
-                (context as UserConnectionActivity).loading = false
+                (context).loading = false
                 userResponse.removeObserver(observer)
             }
         }
@@ -66,21 +63,21 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             (context as UserConnectionActivity).loading = true
             userResponse.value = null
             try {
-                Toast.makeText(context as UserConnectionActivity, "Loading...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Loading...", Toast.LENGTH_SHORT).show()
                 val response = repository.login(loginFields)
-                (context as UserConnectionActivity).loading = false
+                (context).loading = false
                 userResponse.value = response
             }
             catch(e: SocketTimeoutException) {
-                Toast.makeText(context as UserConnectionActivity, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
                 userResponse.value = null
             }
             catch(e: ConnectException) {
-                Toast.makeText(context as UserConnectionActivity, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
                 userResponse.value = null
             }
             finally {
-                (context as UserConnectionActivity).loading = false
+                (context).loading = false
                 userResponse.removeObserver(observer)
             }
         }
@@ -92,19 +89,19 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             userInfoResponse.value = null
             try {
                 val response = repository.getUserInfo(auth)
-                (context as AreaActivity).loading = false
+                (context).loading = false
                 userInfoResponse.value = response
             }
             catch(e: SocketTimeoutException) {
-                Toast.makeText(context as AreaActivity, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
                 userInfoResponse.value = null
             }
             catch(e: ConnectException) {
-                Toast.makeText(context as AreaActivity, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
                 userInfoResponse.value = null
             }
             finally {
-                (context as AreaActivity).loading = false
+                (context).loading = false
                 userInfoResponse.removeObserver(observer)
             }
         }
@@ -164,19 +161,19 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             aboutResponse.value = null
             try {
                 val response = repository.getAboutJson()
-                (context as AreaActivity).loading = false
+                (context).loading = false
                 aboutResponse.value = response
             }
             catch(e: SocketTimeoutException) {
-                Toast.makeText(context as AreaActivity, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
                 aboutResponse.value = null
             }
             catch(e: ConnectException) {
-                Toast.makeText(context as AreaActivity, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
                 aboutResponse.value = null
             }
             finally {
-                (context as AreaActivity).loading = false
+                (context).loading = false
                 aboutResponse.removeObserver(observer)
             }
         }

@@ -86,8 +86,7 @@ const addTrackToPlaylist = async (area: Area): Promise<string | null> => {
     elem => elem.name == area.actionParam,
   );
   if (playlistItems == undefined) return null;
-  let playlist = playlistItems;
-  const playlistTracks = await spotifyApi.getPlaylistTracks(playlist.id);
+  const playlistTracks = await spotifyApi.getPlaylistTracks(playlistItems.id);
 
   let lastTrack = playlistTracks.body.items[playlistTracks.body.total - 1];
 

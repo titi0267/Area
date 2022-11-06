@@ -8,6 +8,7 @@ import * as GithubAction from "../area/github/github.action";
 import * as GithubReaction from "../area/github/github.reaction";
 import * as GmailAction from "../area/gmail/gmail.action";
 import * as WeatherAction from "../area/weather/weather.action";
+import * as DriveAction from "../area/drive/drive.action";
 import { FORMAT } from "./paramFormat";
 
 export const SERVICES: Service[] = [
@@ -236,6 +237,25 @@ export const SERVICES: Service[] = [
         description: "The weather became clear in your city",
         fct: WeatherAction.weatherBecameClear,
         availableInjectParams: ["temperature", "clouds"],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 7,
+    serviceName: "Drive",
+    backgroundColor: "#FFBA00",
+    imageUrl: "assets/drive.png",
+    oauthName: null,
+    actions: [
+      {
+        id: 1,
+        actionName: "New file in drive",
+        actionParamName: "",
+        paramFormat: null,
+        description: "New file in your drive",
+        fct: DriveAction.newFileInDrive,
+        availableInjectParams: [],
       },
     ],
     reactions: [],

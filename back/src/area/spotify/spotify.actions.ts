@@ -57,16 +57,72 @@ const checkIsMusicLiked = async (area: Area): Promise<string | null> => {
     artists: likedTracks.items[0].track.artists[0].name,
   };
 
-  if (likedTracks.total != parseInt(area.lastActionValue)) {
-    await AreaService.updateAreaValues(area.id, likedTracks.total.toString());
-  }
   if (likedTracks.total > parseInt(area.lastActionValue)) {
+    await AreaService.updateAreaValues(area.id, likedTracks.total.toString());
     return ServiceHelper.injectParamInReaction<typeof params>(
       area.reactionParam,
       params,
     );
   }
+  await AreaService.updateAreaValues(area.id, likedTracks.total.toString());
   return null;
 };
 
-export { checkMusicSkip, checkIsMusicLiked };
+const addTrackToPlaylist = async (area: Area): Promise<string | null> => {
+  const spotifyCredential = await ServiceHelper.getSpotifyClient(area.userId);
+
+  if (!spotifyCredential) return null;
+
+  const spotifyApi = spotifyCredential.client;
+
+  spotifyApi.setRefreshToken(spotifyCredential.token);
+  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
+  spotifyApi.setAccessToken(accessToken);
+
+  const yourPlaylists = await spotifyApi.getUserPlaylists();
+
+  if (yourPlaylists.body.items == undefined) return null;
+  let playlistItems = yourPlaylists.body.items.find(
+    elem => elem.name == area.actionParam,
+  );
+  if (playlistItems == undefined) return null;
+  let playlist = playlistItems;
+  if (playlistItems == null) {
+    const newPlaylist = await spotifyApi.createPlaylist(area.actionParam, {
+      description: "My description",
+      collaborative: false,
+      public: true,
+    });
+    playlist = newPlaylist.body;
+  }
+  const playlistTracks = await spotifyApi.getPlaylistTracks(playlist.id);
+
+  let trackAddedAt = playlistTracks.body.items[0].added_at;
+  playlistTracks.body.items.forEach(elem => {
+    if (elem.added_at >= trackAddedAt) trackAddedAt = elem.added_at;
+  });
+  const lastTrackAdded = playlistTracks.body.items.find(
+    elem => elem.added_at == trackAddedAt,
+  );
+  if (lastTrackAdded == undefined || lastTrackAdded.track == undefined)
+    return null;
+  if (area.lastActionValue == null) {
+    await AreaService.updateAreaValues(area.id, lastTrackAdded.added_at);
+    return null;
+  }
+  const params = {
+    songAdded: lastTrackAdded.track.name,
+    songArtists: lastTrackAdded.track.artists,
+  };
+  if (lastTrackAdded.added_at > area.lastActionValue) {
+    await AreaService.updateAreaValues(area.id, lastTrackAdded.added_at);
+    return ServiceHelper.injectParamInReaction<typeof params>(
+      area.reactionParam,
+      params,
+    );
+  }
+  await AreaService.updateAreaValues(area.id, lastTrackAdded.added_at);
+  return null;
+};
+
+export { checkMusicSkip, checkIsMusicLiked, addTrackToPlaylist };

@@ -109,6 +109,15 @@ export const SERVICES: Service[] = [
         fct: SpotifyAction.checkIsMusicLiked,
         availableInjectParams: ["songName", "artists"],
       },
+      {
+        id: 3,
+        actionName: "New track added to a playlist",
+        actionParamName: "Playlist name to add the track",
+        paramFormat: null,
+        description: "You added a ne song to a specific playlist",
+        fct: SpotifyAction.addTrackToPlaylist,
+        availableInjectParams: ["songAdded", "SongArtists"],
+      },
     ],
     reactions: [
       {

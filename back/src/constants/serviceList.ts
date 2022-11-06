@@ -9,6 +9,7 @@ import * as GithubReaction from "../area/github/github.reaction";
 import * as GmailAction from "../area/gmail/gmail.action";
 import * as WeatherAction from "../area/weather/weather.action";
 import * as DriveAction from "../area/drive/drive.action";
+import * as CalendarAction from "../area/calendar/calendar.action";
 import * as TimeAction from "../area/time/time.action";
 import { FORMAT } from "./paramFormat";
 
@@ -244,6 +245,25 @@ export const SERVICES: Service[] = [
   },
   {
     id: 7,
+    serviceName: "Calendar",
+    backgroundColor: "#0085F7",
+    imageUrl: "assets/calendar.png",
+    oauthName: "google",
+    actions: [
+      {
+        id: 1,
+        actionName: "New Calendar event",
+        actionParamName: "",
+        paramFormat: null,
+        description: "New event on your main calendar",
+        fct: CalendarAction.newCalendarEvent,
+        availableInjectParams: ["summary", "creator"],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 8,
     serviceName: "Time & Date",
     backgroundColor: "#000000",
     imageUrl: "assets/time.png",
@@ -262,7 +282,7 @@ export const SERVICES: Service[] = [
     reactions: [],
   },
   {
-    id: 8,
+    id: 9,
     serviceName: "Drive",
     backgroundColor: "#FFBA00",
     imageUrl: "assets/drive.png",

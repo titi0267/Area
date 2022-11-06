@@ -10,6 +10,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.area.AREAApplication
 import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
@@ -33,18 +34,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
         val sessionManager = SessionManager(context as AreaActivity)
         val ipPortUrl = (sessionManager.fetchAuthToken("url") ?: return null).dropLast(1).drop(7)
-        val url = sessionManager.fetchAuthToken("url") ?: return view
-        val rep = Repository(url)
-        val viewModelFactory = MainViewModelFactory(rep)
 
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         getAndDisplayUserInfo(view)
         view.findViewById<MaterialTextView>(R.id.profile_current_ip_text_value).text = ipPortUrl
         view.findViewById<Button>(R.id.backButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
         view.findViewById<Button>(R.id.oauth_github_button).setOnClickListener {
-            getOAuthLinkRequest("spotify", sessionManager)
+            (context as AreaActivity).changeFragment(OAuthLinkingFragment(), "oauth_linking")
         }
         view.findViewById<Button>(R.id.profileLogoutButton).setOnClickListener {
             sessionManager.removeAuthToken("user_token");
@@ -56,33 +53,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         return view
     }
 
-    private fun getOAuthLinkRequest(service: String, sessionManager: SessionManager) {
-        viewModel.getServiceLink(sessionManager.fetchAuthToken("user_token")!!, service)
-        viewModel.linkResponse.observe(viewLifecycleOwner, Observer { response ->
-            if (response.isSuccessful) {
-                val oAuthLink = response.body()!!.toString()
-                val bundle = Bundle()
-                val intent = Intent(context as AreaActivity, OAuthConnectionActivity::class.java)
-                bundle.putString("link", oAuthLink)
-                bundle.putString("service", service)
-                intent.putExtras(bundle)
-                startActivity(intent)
-            }
-        })
-    }
-
     private fun getAndDisplayUserInfo(view: View) {
-        val sessionManager = SessionManager(context as AreaActivity)
-        val userToken = sessionManager.fetchAuthToken("user_token") ?: return
+        val userInfo = ((context as AreaActivity).application as AREAApplication).userInfo ?: return
 
-        viewModel.getUserInfo(userToken)
-        viewModel.userInfoResponse.observe(viewLifecycleOwner, Observer { response ->
-            if (response.isSuccessful) {
-                val userInfo: UserInfo = response.body()!!
-                view.findViewById<MaterialTextView>(R.id.profile_user_first_name_value).text = userInfo.firstName
-                view.findViewById<MaterialTextView>(R.id.profile_user_last_name_value).text = userInfo.lastName
-                view.findViewById<MaterialTextView>(R.id.profile_user_email_value).text = userInfo.email
-            }
-        })
+        view.findViewById<MaterialTextView>(R.id.profile_user_first_name_value).text = userInfo.firstName
+        view.findViewById<MaterialTextView>(R.id.profile_user_last_name_value).text = userInfo.lastName
+        view.findViewById<MaterialTextView>(R.id.profile_user_email_value).text = userInfo.email
     }
 }

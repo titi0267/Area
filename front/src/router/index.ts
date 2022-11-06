@@ -1,5 +1,5 @@
 import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
+import VueRouter, { Route, RouteConfig } from "vue-router";
 import axios from "../axiosInstance";
 import store from "../store";
 
@@ -10,6 +10,7 @@ import Home from "../views/Home.vue";
 import Area from "../views/Area.vue";
 import Profile from "../views/Profile.vue";
 import Services from "../views/Services.vue";
+import Create from "../views/Create.vue"
 
 Vue.use(VueRouter);
 
@@ -37,7 +38,8 @@ const router = new VueRouter({
         },
         {
             path: '/create',
-            redirect: '/create/action',
+            name: 'create',
+            component: Create,
             meta: { requiresAuth: true }
         },
         {
@@ -84,6 +86,12 @@ const router = new VueRouter({
     ]
 })
 
+/**
+ * A function that is called before each route is loaded to check if the user is correctly unauthenticated.
+ * @constant
+ * @name router
+ * @type {VueRouter}
+ */
 router.beforeEach(async (to, from, next) => {
     let usrToken = localStorage.getItem('usr-token');
     if (usrToken != null)

@@ -6,17 +6,17 @@
         <div v-else class="area-list" v-for="area in areas" :key="area.actionServiceId.toString() + area.actionParam + area.reactionId.toString() + area.actionId.toString()"
             :style="{ 'background' : `linear-gradient(to right, ${getService(area, 'action') ? getService(area, 'action').backgroundColor : ''}, ${getService(area, 'reaction') ? getService(area, 'reaction').backgroundColor : ''})` }">
             <div class="action" v-if="getService(area, 'action')">
-                <b-image :src="getService(area, 'action').imageUrl"></b-image>
+                <b-image :src="$store.state.serveurURL + getService(area, 'action').imageUrl"></b-image>
                 <p> {{ getService(area, 'action').name }} </p>
                 <p> {{ getService(area, 'action').actions.find(action => action.id == area.actionId).name }} </p>
             </div>
             <div class="edit">
-                <b-button @click="setEdit(area.id)">Edit</b-button>
+                <b-icon icon="pen" @click="setEdit(area.id)"></b-icon>
             </div>
             <div class="reaction" v-if="getService(area, 'reaction')">
                 <p> {{ getService(area, 'reaction').reactions.find(reaction => reaction.id == area.reactionId).name }} </p>
                 <p> {{ getService(area, 'reaction').name }} </p>
-                <b-image :src="getService(area, 'reaction').imageUrl"></b-image>
+                <b-image :src="$store.state.serveurURL + getService(area, 'reaction').imageUrl"></b-image>
             </div>
             <div v-show="isEditing[area.id]">
                 <EditArea :id="area.id" @deleted="refreshAreaTable(area.id)"/>
@@ -107,7 +107,7 @@ export default vue.extend({
 <style scoped lang="scss">
 #Home {
     padding: 20px;
-    padding-top: 95px;
+    padding-top: 110px;
     font-family: 'Courier New', Courier, monospace;
     .no-area {
         margin-top: 15px;
@@ -118,16 +118,21 @@ export default vue.extend({
         display: flex;
         justify-content: space-around;
         margin-bottom: 20px;
+        padding: 10px;
         .action,
         .reaction {
             width: 50%;
             display: flex;
             align-items: center;
             :deep(figure) {
+                height: 100%;
+                width: auto;
                 margin: 10px;
                 max-height: 50px;
-                height: 50px;
                 width: auto;
+                img {
+                    height: 100%;
+                }
             }
             p {
                 color: white;
@@ -141,11 +146,16 @@ export default vue.extend({
             display: flex;
             align-items: center;
             text-transform: uppercase;
-            color: white;
-            p {
-                padding: 5px;
-                background-color: rgb(44, 44, 53);
+            :deep(span) {
+                padding: 20px;
+                box-shadow: 0 0 15px 1px #000000a1;
+                background-color: white;
+                border-radius: 50%;
                 cursor: pointer;
+                svg {
+                    width: 19px;
+                    height: 19px;
+                }
             }
         }
     }

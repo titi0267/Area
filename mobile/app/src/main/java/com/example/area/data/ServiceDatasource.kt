@@ -1,16 +1,21 @@
 package com.example.area.data
 
-import com.example.area.model.ServiceInfo
+import android.graphics.Bitmap
+import com.example.area.model.ServiceListElement
 
 class ServiceDatasource {
-    private var serviceList:MutableList<ServiceInfo> = ArrayList()
-    fun addService(id: Int, name: String, imageUrl: String) {
-        serviceList += ServiceInfo(id, name, imageUrl)
+    private var serviceList:MutableList<ServiceListElement> = mutableListOf<ServiceListElement>()
+
+    fun addService(id: Int, name: String, imageBitmap: Bitmap) {
+        serviceList += ServiceListElement(id, name, imageBitmap)
+    }
+    fun addService(serviceListElement: ServiceListElement) {
+        serviceList += serviceListElement
     }
     fun clear() {
         serviceList.clear()
     }
-    fun loadServiceInfo(): MutableList<ServiceInfo> {
+    fun loadServiceInfo(): MutableList<ServiceListElement> {
         return serviceList
     }
 }

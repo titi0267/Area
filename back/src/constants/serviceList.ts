@@ -5,7 +5,9 @@ import * as DiscordReaction from "../area/discord/discord.reaction";
 import * as SpotifyAction from "../area/spotify/spotify.actions";
 import * as SpotifyReaction from "../area/spotify/spotify.reactions";
 import * as GithubAction from "../area/github/github.action";
+import * as GithubReaction from "../area/github/github.reaction";
 import * as GmailAction from "../area/gmail/gmail.action";
+import * as WeatherAction from "../area/weather/weather.action";
 import { FORMAT } from "./paramFormat";
 
 export const SERVICES: Service[] = [
@@ -68,7 +70,7 @@ export const SERVICES: Service[] = [
     serviceName: "Discord",
     imageUrl: "assets/discord.png",
     backgroundColor: "#5865F2",
-    oauthName: null,
+    oauthName: "discord",
     actions: [],
     reactions: [
       {
@@ -169,13 +171,41 @@ export const SERVICES: Service[] = [
         fct: GithubAction.checkNewFollowingUser,
         availableInjectParams: ["lastFollowingUserName"],
       },
+      {
+        id: 2,
+        actionName: "New issue",
+        actionParamName: "",
+        paramFormat: null,
+        description: "New issue on one of your repository",
+        fct: GithubAction.newIssue,
+        availableInjectParams: ["title", "repositoryName"],
+      },
+      {
+        id: 3,
+        actionName: "New pull request",
+        actionParamName: "Repository infos (format: /owner/repo)",
+        paramFormat: FORMAT.githubPullRequestFormat,
+        description: "New pull request on one of your repository",
+        fct: GithubAction.newPullRequestOnRepository,
+        availableInjectParams: ["title", "creator", "body"],
+      },
     ],
-    reactions: [],
+    reactions: [
+      {
+        id: 1,
+        reactionName: "Create an issue",
+        reactionParamName: "Issue infos (format: /owner/repo/issueTitle)",
+        paramFormat: FORMAT.githubIssueFormat,
+        fct: GithubReaction.createGithubIssue,
+        description:
+          "Create an issue on a public repository or a private repository on which you belong",
+      },
+    ],
   },
   {
     id: 5,
     serviceName: "Gmail",
-    backgroundColor: "FF0000",
+    backgroundColor: "#DE5145",
     imageUrl: "assets/gmail.png",
     oauthName: "google",
     actions: [
@@ -187,6 +217,25 @@ export const SERVICES: Service[] = [
         description: "You've got a new mail from an address",
         fct: GmailAction.newMailFrom,
         availableInjectParams: ["content", "subject"],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 6,
+    serviceName: "Weather",
+    backgroundColor: "#00BFFF",
+    imageUrl: "assets/weather.png",
+    oauthName: null,
+    actions: [
+      {
+        id: 1,
+        actionName: "Weather is clear",
+        actionParamName: "City name",
+        paramFormat: null,
+        description: "The weather became clear in your city",
+        fct: WeatherAction.weatherBecameClear,
+        availableInjectParams: ["temperature", "clouds"],
       },
     ],
     reactions: [],

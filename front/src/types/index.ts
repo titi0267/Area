@@ -75,3 +75,17 @@ interface Field {
     error: string;
     valide: Boolean;
 }
+
+/** Token interface */
+
+export interface Token {
+    discordToken: string | undefined;
+    discordGuildId: string | undefined;
+    twitterToken: string | undefined;
+    githubToken: string | undefined;
+    googleToken: string | undefined;
+    trelloToken: string | undefined;
+    spotifyToken: string | undefined;
+    userId: number;
+    id: number;
+}

@@ -181,6 +181,16 @@ const getMailContentParams = (reactionParam: string) => {
   return { to: matches[1], subject: matches[2], content: matches[3] };
 };
 
+const getGithubPullRequestParams = (actionParam: string) => {
+  let regex = FORMAT.githubPullRequestFormat;
+
+  const matches = actionParam.match(regex);
+
+  if (!matches || matches.length < 3) return null;
+
+  return { owner: matches[1], repo: matches[2] };
+};
+
 const injectParamInReaction = <T extends Object>(
   reactionParam: string,
   param: T,
@@ -264,4 +274,5 @@ export {
   getSpotifyClient,
   getGithubIssueParams,
   getMailContentParams,
+  getGithubPullRequestParams,
 };

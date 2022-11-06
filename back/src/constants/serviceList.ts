@@ -9,6 +9,7 @@ import * as GithubReaction from "../area/github/github.reaction";
 import * as GmailAction from "../area/gmail/gmail.action";
 import * as WeatherAction from "../area/weather/weather.action";
 import * as CalendarAction from "../area/calendar/calendar.action";
+import * as TimeAction from "../area/time/time.action";
 import { FORMAT } from "./paramFormat";
 
 export const SERVICES: Service[] = [
@@ -256,6 +257,25 @@ export const SERVICES: Service[] = [
         description: "New event on your main calendar",
         fct: CalendarAction.newCalendarEvent,
         availableInjectParams: ["summary", "creator"],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 8,
+    serviceName: "Time & Date",
+    backgroundColor: "#000000",
+    imageUrl: "assets/time.png",
+    oauthName: null,
+    actions: [
+      {
+        id: 1,
+        actionName: "Every day at",
+        actionParamName: "Time (format: 00:00)",
+        paramFormat: FORMAT.time,
+        description: "Do something everyday at a precise time",
+        fct: TimeAction.everyDayAt,
+        availableInjectParams: [],
       },
     ],
     reactions: [],

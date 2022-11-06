@@ -65,12 +65,7 @@ export default vue.extend({
         let serviceOauthName = this.services.find(
           (service) => service.id == this.area[this.type + "ServiceId"]
         )['oauthName'];
-        if (serviceOauthName == null) {
-          this.notification('A problem occured, please select another ' + this.type, 'is-danger');
-          this.$emit('previous');
-          this.$emit('save');
-          return;
-        }
+        if (serviceOauthName == null) return;
         this.$emit('loading');
         const { data: url } = await this.$axios.get("/oauth/" + serviceOauthName + "/link", {
           headers: {

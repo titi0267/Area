@@ -27,8 +27,7 @@ export default vue.extend({
         },
         redirect(): void {
             if (this.area == null) {
-                this.notification('An error occured, please try again', 'is-danger')
-                this.$router.push('/home')
+                this.$router.push({path: 'services', query: this.$route.query})
             } if (this.area.state <= 1) {
                 this.$router.push({path: 'create/action', query: this.$route.query})
             } else if (this.area.state <= 3) {

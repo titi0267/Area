@@ -36,7 +36,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun register(registerFields: RegisterFields, context: Context, observer: Observer<Response<Token>?>) {
         viewModelScope.launch {
             (context as UserConnectionActivity).loading = true
-            userResponse.value = null
             try {
                 Toast.makeText(context, "Loading...", Toast.LENGTH_SHORT).show()
                 val response = repository.register(registerFields)
@@ -61,7 +60,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun login(loginFields: LoginFields, context: Context, observer: Observer<Response<Token>?>) {
         viewModelScope.launch {
             (context as UserConnectionActivity).loading = true
-            userResponse.value = null
             try {
                 Toast.makeText(context, "Loading...", Toast.LENGTH_SHORT).show()
                 val response = repository.login(loginFields)
@@ -86,7 +84,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun getUserInfo(auth: String, context: Context, observer: Observer<Response<UserInfo>?>) {
         viewModelScope.launch {
             (context as AreaActivity).loading = true
-            userInfoResponse.value = null
             try {
                 val response = repository.getUserInfo(auth)
                 (context).loading = false
@@ -110,7 +107,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun getUserAreaList(auth: String, context: Context, observer: Observer<Response<List<ActionReaction>>?>) {
         viewModelScope.launch {
             (context as AreaActivity).loading = true
-            listAREAResponse.value = null
             try {
                 val response = repository.getUserAreaList(auth)
                 context.loading = false
@@ -134,7 +130,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun areaCreation(auth: String, areaFields: AREAFields, context: Context, observer: Observer<Response<Token>?>) {
         viewModelScope.launch {
             (context as AreaActivity).loading = true
-            userResponse.value = null
             try {
                 val response = repository.areaCreation(auth, areaFields)
                 context.loading = false
@@ -158,7 +153,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     fun getAboutJson(context: Context, observer: Observer<Response<About>?>) {
         viewModelScope.launch {
             (context as AreaActivity).loading = true
-            aboutResponse.value = null
             try {
                 val response = repository.getAboutJson()
                 (context).loading = false

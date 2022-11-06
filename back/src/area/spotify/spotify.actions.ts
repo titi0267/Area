@@ -89,31 +89,25 @@ const addTrackToPlaylist = async (area: Area): Promise<string | null> => {
   let playlist = playlistItems;
   const playlistTracks = await spotifyApi.getPlaylistTracks(playlist.id);
 
-  let trackAddedAt = playlistTracks.body.items[0].added_at;
-  playlistTracks.body.items.forEach(elem => {
-    if (elem.added_at >= trackAddedAt) trackAddedAt = elem.added_at;
-  });
-  const lastTrackAdded = playlistTracks.body.items.find(
-    elem => elem.added_at == trackAddedAt,
-  );
-  if (lastTrackAdded == undefined || lastTrackAdded.track == undefined)
-    return null;
+  let lastTrack = playlistTracks.body.items[playlistTracks.body.total];
+
   if (area.lastActionValue == null) {
-    await AreaService.updateAreaValues(area.id, lastTrackAdded.added_at);
+    await AreaService.updateAreaValues(area.id, lastTrack.added_at);
     return null;
   }
+  if (lastTrack.track == null) return null;
   const params = {
-    songAdded: lastTrackAdded.track.name,
-    songArtists: lastTrackAdded.track.artists,
+    songAdded: lastTrack.track.name,
+    songArtists: lastTrack.track.artists,
   };
-  if (lastTrackAdded.added_at > area.lastActionValue) {
-    await AreaService.updateAreaValues(area.id, lastTrackAdded.added_at);
+  if (lastTrack.added_at > area.lastActionValue) {
+    await AreaService.updateAreaValues(area.id, lastTrack.added_at);
     return ServiceHelper.injectParamInReaction<typeof params>(
       area.reactionParam,
       params,
     );
   }
-  await AreaService.updateAreaValues(area.id, lastTrackAdded.added_at);
+  await AreaService.updateAreaValues(area.id, lastTrack.added_at);
   return null;
 };
 

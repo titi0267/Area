@@ -44,8 +44,8 @@ class OAuthConnectionActivity : AppCompatActivity() {
 
         if (!uri.toString().startsWith("http://localhost"))
             return
-        val code = uri.getQueryParameter("code") ?: return
-        val service = sessionManager.fetchAuthToken("service") ?: return
+        val code = uri.getQueryParameter("code") ?: return setOAuthValue(false)
+        val service = sessionManager.fetchAuthToken("service") ?: return setOAuthValue(false)
         sessionManager.removeAuthToken("service")
         postServiceCode(service, OAuthCode(code))
     }
@@ -53,8 +53,8 @@ class OAuthConnectionActivity : AppCompatActivity() {
     private fun postServiceCode(service: String, code: OAuthCode)
     {
         val sessionManager = SessionManager(this)
-        val token = sessionManager.fetchAuthToken("user_token") ?: return
-        val url = sessionManager.fetchAuthToken("url") ?: return
+        val token = sessionManager.fetchAuthToken("user_token") ?: return setOAuthValue(false)
+        val url = sessionManager.fetchAuthToken("url") ?: return setOAuthValue(false)
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
 
@@ -63,9 +63,16 @@ class OAuthConnectionActivity : AppCompatActivity() {
         viewModel.emptyResponse.observe(this, Observer { response ->
             if (response.isSuccessful) {
                 (this.application as AREAApplication).setTokenInTokenTable(service, code.code)
-                Toast.makeText(this, "Code successfully added", Toast.LENGTH_SHORT).show()
+                setOAuthValue(true)
+            }
+            else {
+                setOAuthValue(false)
             }
             finish()
         })
+    }
+
+    private fun setOAuthValue(boolean: Boolean) {
+        (this.application as AREAApplication).successOauth = boolean;
     }
 }

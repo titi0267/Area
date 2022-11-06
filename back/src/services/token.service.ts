@@ -188,6 +188,44 @@ const getSpotifyToken = async (userId: number): Promise<string | null> => {
   return tokensTable?.spotifyToken || null;
 };
 
+const removeUserToken = async (
+  userId: number,
+  discordGuild: boolean | undefined,
+  discordToken: boolean | undefined,
+  googleToken: boolean | undefined,
+  spotifyToken: boolean | undefined,
+  githubToken: boolean | undefined,
+): Promise<TokensTable> => {
+  const tokensTableExist = await prisma.tokensTable.findUnique({
+    where: { userId },
+  });
+
+  if (!tokensTableExist) {
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "UserId does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  const tokenTable = await prisma.tokensTable.update({
+    where: { userId },
+    data: {
+      discordGuildId:
+        discordGuild === true ? null : tokensTableExist.discordGuildId,
+      discordToken:
+        discordToken === true ? null : tokensTableExist.discordToken,
+      githubToken: githubToken === true ? null : tokensTableExist.githubToken,
+      googleToken: googleToken === true ? null : tokensTableExist.googleToken,
+      spotifyToken:
+        spotifyToken === true ? null : tokensTableExist.spotifyToken,
+    },
+  });
+
+  return tokenTable;
+};
+
 export default {
   setGithubToken,
   setGoogleToken,
@@ -197,4 +235,5 @@ export default {
   getGoogleToken,
   getSpotifyToken,
   getDiscordInfos,
+  removeUserToken,
 };

@@ -37,9 +37,8 @@ const discordOauthQuerySchema: JSONSchemaType<DiscordOauthBody> = {
   properties: {
     code: { type: "string" },
     guild_id: { type: "string" },
-    permissions: { type: "number" },
   },
-  required: ["code", "guild_id", "permissions"],
+  required: ["code", "guild_id"],
 };
 
 const googleOauthQueryValidator = ajv.compile(googleOauthQuerySchema);

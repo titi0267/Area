@@ -27,7 +27,7 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
     private var abt: About? = null
     private lateinit var viewModel: MainViewModel
     private lateinit var enable: EnableDisable
-    private var enabledStatus = 0
+    private var enabledStatus: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +53,7 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         view.findViewById<TextView>(R.id.reactionNameInItem).text = aboutClass.getServiceReactionNameById(item.reactionServiceId, item.reactionId)
         view.findViewById<TextView>(R.id.reactionParamInItem).text = item.reactionParam
         view.findViewById<Switch>(R.id.enableItemListSwitch).setOnCheckedChangeListener { _, isChecked ->
-            onEnableDisableSwitch(isChecked, token)
+            onEnableDisableSwitch(isChecked, token, view)
         }
         view.findViewById<Button>(R.id.deleteItemListButton).setOnClickListener {
             onDeleteButton(token)
@@ -61,16 +61,18 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         return view
     }
 
-    private fun onEnableDisableSwitch(isChecked: Boolean, token: String?) {
+    private fun onEnableDisableSwitch(isChecked: Boolean, token: String?, view:View) {
         enable = EnableDisable(item.id, isChecked)
         if (token == null)
             return
-        enabledStatus=0
         viewModel.putEnableDisable(token, enable)
         viewModel.enableResponse.observe(context as AreaActivity, Observer { response ->
-            if (response.isSuccessful && enabledStatus == 0) {
+            if (response.isSuccessful) {
                 Toast.makeText(context as AreaActivity, (if (isChecked) "Enabled" else "Disabled"), Toast.LENGTH_SHORT).show()
-                enabledStatus++
+                enabledStatus = !enabledStatus
+            }
+            else {
+                view.findViewById<Switch>(R.id.enableItemListSwitch).isChecked = !isChecked
             }
         })
     }

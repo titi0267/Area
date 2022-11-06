@@ -11,7 +11,7 @@
                 <p> {{ getService(area, 'action').actions.find(action => action.id == area.actionId).name }} </p>
             </div>
             <div class="edit">
-                <b-icon icon="pen" @click="setEdit(area.id)"></b-icon>
+                <b-icon icon="pen" @click.native="setEdit(area.id)"></b-icon>
             </div>
             <div class="reaction" v-if="getService(area, 'reaction')">
                 <p> {{ getService(area, 'reaction').reactions.find(reaction => reaction.id == area.reactionId).name }} </p>

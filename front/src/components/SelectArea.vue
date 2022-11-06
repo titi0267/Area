@@ -124,7 +124,7 @@ export default vue.extend({
         postOAuthCode(): void {
             this.$nextTick(async(): Promise<void> => {
                 let serviceOauthName: string = this.services.find(service => service.id == this.area[this.type + "ServiceId"])['oauthName'];
-                if (serviceOauthName == "none" || this.tokensTable[serviceOauthName + 'Token'] != null) {
+                if (serviceOauthName == null || this.tokensTable[serviceOauthName + 'Token'] != null) {
                     this.$emit("loading");
                     return;
                 }

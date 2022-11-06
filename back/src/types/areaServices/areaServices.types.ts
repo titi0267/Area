@@ -47,4 +47,4 @@ export type ServiceName =
   | "Gmail"
   | "Weather";
 
-export type OauthService = "google" | "spotify" | "github" | "discord" | "none";
+export type OauthService = "google" | "spotify" | "github" | "discord";

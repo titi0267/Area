@@ -89,7 +89,7 @@ const addTrackToPlaylist = async (area: Area): Promise<string | null> => {
   let playlist = playlistItems;
   const playlistTracks = await spotifyApi.getPlaylistTracks(playlist.id);
 
-  let lastTrack = playlistTracks.body.items[playlistTracks.body.total];
+  let lastTrack = playlistTracks.body.items[playlistTracks.body.total - 1];
 
   if (area.lastActionValue == null) {
     await AreaService.updateAreaValues(area.id, lastTrack.added_at);

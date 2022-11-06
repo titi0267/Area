@@ -3,5 +3,6 @@ export const FORMAT = {
   youtubeVideoUrl: /(\w+:\/+[\w+.]+\/)(watch\?v=)(\w+)/,
   email: /[a-z._A-Z0-9]+@\w+.\w+/,
   githubIssueFormat: /([a-zA-Z0-9-%]+)\/([a-zA-Z0-9-%]+)\/([a-zA-Z0-9-%]+)/,
+  mailContent: /([a-z._A-Z0-9]+@\w+.\w+)\/([a-zA-Z0-9-%]+)\/([a-zA-Z0-9-% ]+)/,
   githubPullRequestFormat: /([a-zA-Z0-9-%]+)\/([a-zA-Z0-9-%]+)/,
 };

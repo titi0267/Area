@@ -254,3 +254,83 @@ describe("Test get Discord infos", () => {
     });
   });
 });
+
+describe("Test remove user token", () => {
+  describe("Test working cases", () => {
+    test("Remove one token field", async () => {
+      await UserService.createUser("Ludo", "Str", "ludostr@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+      await TokenService.setDiscordInfos(users[0].id, "token", "guild_id");
+      const infos = await TokenService.getDiscordInfos(users[0].id);
+      const tokenTableAfter = await TokenService.removeUserToken(
+        users[0].id,
+        true,
+        true,
+        false,
+        false,
+        false,
+      );
+
+      expect(infos).not.toBe(null);
+      expect(infos?.discordToken).toBe("token");
+      expect(infos?.guildId).toBe("guild_id");
+      expect(tokenTableAfter.discordToken).toBeNull();
+
+      await UserService.removeUserById(users[0].id);
+    });
+
+    test("Remove all token field", async () => {
+      await UserService.createUser("Ludo", "Str", "ludostr@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+      await TokenService.setDiscordInfos(users[0].id, "token", "guild_id");
+      const discordInfos = await TokenService.getDiscordInfos(users[0].id);
+      const tokenTableAfter = await TokenService.removeUserToken(
+        users[0].id,
+        true,
+        true,
+        true,
+        true,
+        true,
+      );
+
+      expect(discordInfos).not.toBe(null);
+      expect(discordInfos?.discordToken).toBe("token");
+      expect(discordInfos?.guildId).toBe("guild_id");
+      expect(tokenTableAfter.discordToken).toBeNull();
+      expect(tokenTableAfter.googleToken).toBeNull();
+
+      await UserService.removeUserById(users[0].id);
+    });
+
+    test("Remove no token field", async () => {
+      await UserService.createUser("Ludo", "Str", "ludostr@mail.com", "passwd");
+      const users = await UserService.getAllUsers();
+      await TokenService.setDiscordInfos(users[0].id, "token", "guild_id");
+      const infos = await TokenService.getDiscordInfos(users[0].id);
+      const tokenTableAfter = await TokenService.removeUserToken(
+        users[0].id,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+      );
+
+      expect(infos).not.toBe(null);
+      expect(infos?.discordToken).toBe("token");
+      expect(infos?.guildId).toBe("guild_id");
+      expect(tokenTableAfter.discordToken).not.toBeNull();
+
+      await UserService.removeUserById(users[0].id);
+    });
+  });
+  describe("Test invalid cases", () => {
+    test("Remove with invalid userId", async () => {
+      try {
+        await TokenService.removeUserToken(56, true, true, false, false, false);
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
+  });
+});

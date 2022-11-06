@@ -116,7 +116,7 @@ describe("Test getGithubPullRequestParams", () => {
 
 describe("Test getGithubIssueParams", () => {
   describe("Test valid cases", () => {
-    test("Test if return return issue params", () => {
+    test("Test if return a valid issue params", () => {
       const channelName = ServiceHelper.getGithubIssueParams(
         "ludovic-str/test/lol",
       );
@@ -127,6 +127,44 @@ describe("Test getGithubIssueParams", () => {
     test("Test with missing text", () => {
       const channelName = ServiceHelper.getGithubIssueParams("ludovic-str/");
       expect(channelName).toBeNull();
+    });
+  });
+});
+
+describe("Test getTime", () => {
+  describe("Test valid cases", () => {
+    test("Test if return a valid time", () => {
+      const time = ServiceHelper.getTime("16:12");
+
+      expect(time?.hours).toBe(16);
+      expect(time?.minutes).toBe(12);
+    });
+
+    test("Test with a too high hour value", () => {
+      const time = ServiceHelper.getTime("28:12");
+      expect(time).toBeNull();
+    });
+
+    test("Test with test word", () => {
+      const time = ServiceHelper.getTime("test");
+      expect(time).toBeNull();
+    });
+  });
+});
+
+describe("Test getMailContentParams", () => {
+  describe("Test valid cases", () => {
+    test("Test if return mail params", () => {
+      const mailContentParam = ServiceHelper.getMailContentParams(
+        "ludovic@gmail.com/test/lol",
+      );
+
+      expect(mailContentParam?.to).toBe("ludovic@gmail.com");
+    });
+
+    test("Test with missing text", () => {
+      const mailContentParam = ServiceHelper.getMailContentParams("ludo");
+      expect(mailContentParam).toBeNull();
     });
   });
 });

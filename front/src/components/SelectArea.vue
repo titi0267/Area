@@ -58,13 +58,12 @@ export default vue.extend({
     },
     mounted() {
         this.checkAlreadyOAuth();
-        console.log("test")
     },
     watch: {
         /**
          * It's a function that is call when the tokensTable is fill or when the component is load.
          */
-        'tokensTable': function(): void {
+        'services': function(): void {
             this.postOAuthCode();
         },
     },
@@ -125,7 +124,7 @@ export default vue.extend({
         postOAuthCode(): void {
             this.$nextTick(async(): Promise<void> => {
                 let serviceOauthName: string = this.services.find(service => service.id == this.area[this.type + "ServiceId"])['oauthName'];
-                if (this.tokensTable[serviceOauthName + 'Token'] != null) {
+                if (serviceOauthName == null || this.tokensTable[serviceOauthName + 'Token'] != null) {
                     this.$emit("loading");
                     return;
                 }

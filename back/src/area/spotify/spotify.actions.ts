@@ -87,14 +87,6 @@ const addTrackToPlaylist = async (area: Area): Promise<string | null> => {
   );
   if (playlistItems == undefined) return null;
   let playlist = playlistItems;
-  if (playlistItems == null) {
-    const newPlaylist = await spotifyApi.createPlaylist(area.actionParam, {
-      description: "My description",
-      collaborative: false,
-      public: true,
-    });
-    playlist = newPlaylist.body;
-  }
   const playlistTracks = await spotifyApi.getPlaylistTracks(playlist.id);
 
   let trackAddedAt = playlistTracks.body.items[0].added_at;

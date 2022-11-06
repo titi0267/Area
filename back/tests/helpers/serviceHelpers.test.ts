@@ -98,6 +98,22 @@ describe("Test getYoutubeChannelName", () => {
   });
 });
 
+describe("Test getGithubPullRequestParams", () => {
+  describe("Test valid cases", () => {
+    test("Test if return owner name", () => {
+      const pullRequestParam =
+        ServiceHelper.getGithubPullRequestParams("ludovic-str/test");
+
+      expect(pullRequestParam?.owner).toBe("ludovic-str");
+    });
+
+    test("Test with random string", () => {
+      const pullRequestParam = ServiceHelper.getGithubPullRequestParams("test");
+      expect(pullRequestParam).toBeNull();
+    });
+  });
+});
+
 describe("Test getGithubIssueParams", () => {
   describe("Test valid cases", () => {
     test("Test if return a valid issue params", () => {
@@ -132,6 +148,23 @@ describe("Test getTime", () => {
     test("Test with test word", () => {
       const time = ServiceHelper.getTime("test");
       expect(time).toBeNull();
+    });
+  });
+});
+
+describe("Test getMailContentParams", () => {
+  describe("Test valid cases", () => {
+    test("Test if return mail params", () => {
+      const mailContentParam = ServiceHelper.getMailContentParams(
+        "ludovic@gmail.com/test/lol",
+      );
+
+      expect(mailContentParam?.to).toBe("ludovic@gmail.com");
+    });
+
+    test("Test with missing text", () => {
+      const mailContentParam = ServiceHelper.getMailContentParams("ludo");
+      expect(mailContentParam).toBeNull();
     });
   });
 });

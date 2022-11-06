@@ -80,14 +80,19 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
     }
 
     private fun onDeleteButton(token: String?) {
+        val observer: Observer<Response<ActionReaction>?> = Observer { response ->
+            if (response == null) {
+                return@Observer
+            }
+            if (response.isSuccessful) {
+                Toast.makeText(context as AreaActivity, "Area successfully deleted", Toast.LENGTH_SHORT).show()
+                (context as AreaActivity).changeFragment(AreaListFragment(), "area_list")
+            }
+        }
+
         if (token != null) {
-            viewModel.deleteArea(token, item.id)
-            viewModel.deleteAreaResponse.observe(context as AreaActivity, Observer { response ->
-                if (response.isSuccessful) {
-                    Toast.makeText(context as AreaActivity, "Area successfully deleted", Toast.LENGTH_SHORT).show()
-                    (context as AreaActivity).changeFragment(AreaListFragment(), "area_list")
-                }
-            })
+            viewModel.deleteArea(token, item.id, context as AreaActivity, observer)
+            viewModel.deleteAreaResponse.observe(context as AreaActivity, observer)
         }
     }
 }

@@ -24,6 +24,7 @@ import com.example.area.model.OAuthServiceListElement
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
 import com.google.android.material.textview.MaterialTextView
+import retrofit2.Response
 
 class OAuthServiceItemAdapter(private val context: Context, private val dataset: List<OAuthServiceListElement>) : RecyclerView.Adapter<OAuthServiceItemAdapter.OAuthServiceViewHolder>() {
     private var selectedItem = 0
@@ -66,9 +67,9 @@ class OAuthServiceItemAdapter(private val context: Context, private val dataset:
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
         val viewModel = ViewModelProvider(context, viewModelFactory)[MainViewModel::class.java]
-
-        viewModel.getServiceLink(token, service)
-        viewModel.linkResponse.observe(context, Observer { response ->
+        val observer: Observer<Response<String>?> = Observer { response ->
+            if (response == null)
+                return@Observer
             if (response.isSuccessful) {
                 val oAuthLink = response.body()!!.toString()
                 val bundle = Bundle()
@@ -78,6 +79,9 @@ class OAuthServiceItemAdapter(private val context: Context, private val dataset:
                 intent.putExtras(bundle)
                 context.startActivity(intent)
             }
-        })
+        }
+
+        viewModel.getServiceLink(token, service, context, observer)
+        viewModel.linkResponse.observe(context, observer)
     }
 }

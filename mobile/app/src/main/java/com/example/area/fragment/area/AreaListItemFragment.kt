@@ -63,17 +63,20 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
     }
 
     private fun onEnableDisableSwitch(isChecked: Boolean, token: String?) {
-        enable = EnableDisable(item.id, isChecked)
-        if (token == null)
-            return
-        enabledStatus=0
-        viewModel.putEnableDisable(token, enable)
-        viewModel.enableResponse.observe(context as AreaActivity, Observer { response ->
+        val observer: Observer<Response<ActionReaction>?> = Observer { response ->
+            if (response == null)
+                return@Observer
             if (response.isSuccessful && enabledStatus == 0) {
                 Toast.makeText(context as AreaActivity, (if (isChecked) "Enabled" else "Disabled"), Toast.LENGTH_SHORT).show()
                 enabledStatus++
             }
-        })
+        }
+        enable = EnableDisable(item.id, isChecked)
+        if (token == null)
+            return
+        enabledStatus=0
+        viewModel.putEnableDisable(token, enable, context as AreaActivity, observer)
+        viewModel.enableResponse.observe(context as AreaActivity, observer)
     }
 
     private fun onDeleteButton(token: String?) {

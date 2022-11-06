@@ -8,6 +8,7 @@ import * as GithubAction from "../area/github/github.action";
 import * as GithubReaction from "../area/github/github.reaction";
 import * as GmailAction from "../area/gmail/gmail.action";
 import * as WeatherAction from "../area/weather/weather.action";
+import * as TimeAction from "../area/time/time.action";
 import { FORMAT } from "./paramFormat";
 
 export const SERVICES: Service[] = [
@@ -218,6 +219,25 @@ export const SERVICES: Service[] = [
         description: "The weather became clear in your city",
         fct: WeatherAction.weatherBecameClear,
         availableInjectParams: ["temperature", "clouds"],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 7,
+    serviceName: "Time & Date",
+    backgroundColor: "#000000",
+    imageUrl: "assets/time.png",
+    oauthName: null,
+    actions: [
+      {
+        id: 1,
+        actionName: "Every day at",
+        actionParamName: "Time (format: 00:00)",
+        paramFormat: FORMAT.time,
+        description: "Do something everyday at a precise time",
+        fct: TimeAction.everyDayAt,
+        availableInjectParams: [],
       },
     ],
     reactions: [],

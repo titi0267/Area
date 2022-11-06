@@ -161,6 +161,18 @@ const getYoutubeChannelName = (url: string) => {
   return matches[1];
 };
 
+const getTime = (actionParam: string) => {
+  const regex = FORMAT.time;
+
+  const matches = actionParam.match(regex);
+
+  if (!matches || matches.length < 3) return null;
+
+  if (parseInt(matches[1]) > 23) return null;
+
+  return { hours: parseInt(matches[1]), minutes: parseInt(matches[2]) };
+};
+
 const getGithubIssueParams = (reactionParam: string) => {
   let regex = FORMAT.githubIssueFormat;
 
@@ -253,4 +265,5 @@ export {
   getGithubClient,
   getSpotifyClient,
   getGithubIssueParams,
+  getTime,
 };

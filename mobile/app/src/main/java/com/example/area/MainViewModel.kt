@@ -22,9 +22,9 @@ import java.net.SocketTimeoutException
 
 class MainViewModel(private val repository: Repository) : ViewModel() {
 
-    val emptyResponse: MutableLiveData<Response<Unit>> = MutableLiveData()
+    val emptyResponse: MutableLiveData<Response<Unit>?> = MutableLiveData()
     val userInfoResponse: MutableLiveData<Response<UserInfo>?> = MutableLiveData()
-    val linkResponse: MutableLiveData<Response<String>> = MutableLiveData()
+    val linkResponse: MutableLiveData<Response<String>?> = MutableLiveData()
     val userResponse: MutableLiveData<Response<Token>?> = MutableLiveData()
     val aboutResponse: MutableLiveData<Response<About>?> = MutableLiveData()
     val listAREAResponse: MutableLiveData<Response<List<ActionReaction>>?> = MutableLiveData()
@@ -173,17 +173,46 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
     
-    fun getServiceLink(auth: String, service: String) {
+    fun getServiceLink(auth: String, service: String, context: Context, observer: Observer<Response<String>?>) {
         viewModelScope.launch {
-            val response = repository.getServiceLink(auth, service)
-            linkResponse.value = response
+            (context as AreaActivity).loading = true
+            try {
+                val response = repository.getServiceLink(auth, service)
+                context.loading = false
+                linkResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                linkResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                linkResponse.value = null
+            }
+            finally {
+                (context).loading = false
+                linkResponse.removeObserver(observer)
+            }
         }
     }
 
-    fun postServiceCode(auth: String, service: String, code: OAuthCode) {
+    fun postServiceCode(auth: String, service: String, code: OAuthCode, context: Context, observer: Observer<Response<Unit>?>) {
         viewModelScope.launch {
-            val response = repository.postServiceCode(auth, service, code)
-            emptyResponse.value = response
+            try {
+                val response = repository.postServiceCode(auth, service, code)
+                emptyResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                emptyResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                emptyResponse.value = null
+            }
+            finally {
+                emptyResponse.removeObserver(observer)
+            }
         }
     }
     fun putEnableDisable(auth: String, enable: EnableDisable) {

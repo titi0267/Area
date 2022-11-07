@@ -24,7 +24,7 @@ const main = async () => {
 
   server.register(fastifyCors, {
     credentials: true,
-    origin: `http://localhost:${ENV.clientPort}`,
+    origin: `http://${ENV.clientUrl}:${ENV.clientPort}`,
   });
 
   server.listen(
@@ -41,7 +41,7 @@ const main = async () => {
 
 setInterval(async () => {
   await areaLoop();
-}, 1 * 60 * 1000);
+}, 0.5 * 60 * 1000);
 
 main()
   .catch(e => {

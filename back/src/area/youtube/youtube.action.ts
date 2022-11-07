@@ -8,8 +8,6 @@ import * as ServiceHelper from "../../helpers/service.helpers";
 const checkUploadedVideo = async (area: Area): Promise<string | null> => {
   const youtube = google.youtube({ version: "v3", auth: ENV.googleApiKey });
 
-  await AreaService.updateAreaValues(area.id, null);
-
   const channel = await youtube.channels.list({
     forUsername: area.actionParam,
     part: ["contentDetails"],
@@ -38,25 +36,33 @@ const checkUploadedVideo = async (area: Area): Promise<string | null> => {
   )
     return null;
 
-  if (new Date(lastVideo.snippet.publishedAt) > area.lastActionFetch)
+  if (area.lastActionValue === null) {
+    await AreaService.updateAreaValues(area.id, "");
     return null;
+  }
 
   const params = {
     name: lastVideo.snippet.title,
     channelName: lastVideo.snippet.channelTitle,
   };
 
-  return ServiceHelper.injectParamInReaction<typeof params>(
-    area.reactionParam,
-    params,
-  );
+  if (new Date(lastVideo.snippet.publishedAt) > area.lastActionFetch) {
+    await AreaService.updateAreaValues(area.id, "");
+    return ServiceHelper.injectParamInReaction<typeof params>(
+      area.reactionParam,
+      params,
+    );
+  }
+
+  await AreaService.updateAreaValues(area.id, "");
+
+  return null;
 };
 
 const checkVideoLike = async (area: Area): Promise<string | null> => {
   const youtube = google.youtube({ version: "v3", auth: ENV.googleApiKey });
 
   const videoId = ServiceHelper.getYoutubeVideoId(area.actionParam);
-
   if (!videoId) return null;
 
   const video = (
@@ -70,12 +76,12 @@ const checkVideoLike = async (area: Area): Promise<string | null> => {
 
   const statistics = video[0].statistics;
 
-  if (!statistics || !statistics.likeCount || !statistics.dislikeCount)
+  if (!statistics || !statistics.likeCount || !statistics.viewCount)
     return null;
 
   const params = {
     like: statistics.likeCount,
-    dislike: statistics.dislikeCount,
+    viewCount: statistics.viewCount,
   };
 
   if (area.lastActionValue === null) {
@@ -90,6 +96,9 @@ const checkVideoLike = async (area: Area): Promise<string | null> => {
       params,
     );
   }
+
+  await AreaService.updateAreaValues(area.id, statistics.likeCount);
+
   return null;
 };
 
@@ -152,6 +161,11 @@ const checkNewVideoLiked = async (area: Area): Promise<string | null> => {
       params,
     );
   }
+
+  await AreaService.updateAreaValues(
+    area.id,
+    String(playlist.pageInfo.totalResults),
+  );
 
   return null;
 };

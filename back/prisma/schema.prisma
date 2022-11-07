@@ -25,10 +25,10 @@ model User {
 
 model TokensTable {
   id                Int           @id @default(autoincrement())
-  twitterToken      String?
   githubToken       String?
   googleToken      String?
-  trelloToken       String?
+  discordGuildId    String?
+  discordToken      String?
   spotifyToken      String?
   user              User          @relation(references: [id], fields: [userId])
   userId            Int           @unique
@@ -44,6 +44,7 @@ model Area {
     reactionServiceId   Int
     reactionId          Int
     reactionParam       String
+    enabled            Boolean          @default(true)
     user                User            @relation(fields: [userId], references: [id])
     userId              Int
 }

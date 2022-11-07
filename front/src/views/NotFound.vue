@@ -20,5 +20,7 @@ export default vue.extend({
 </script>
 
 <style scoped lang="scss">
-
+#notFound {
+    padding-top: 100px;
+}
 </style>

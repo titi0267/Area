@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/areaRealCreationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#D9D9D9"
+        android:text="@string/area_creation_button"
+        android:textColor="#000000"
+        app:cornerRadius="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/reactionParamText"
+        android:layout_width="350sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="20dp"
+        android:hint="@string/reaction_parameter"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/areaRealCreationButton" />
+
+    <Button
+        android:id="@+id/backFromReactionCreationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/perfect_gray"
+        android:text="@string/back_button"
+        android:textColor="#000000"
+        app:cornerRadius="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectedReactionServiceLogoShow">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewReaction"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/selectedReactionServiceLogoShow"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backFromReactionCreationButton"
+        app:srcCompat="@drawable/free_youtube_logo_icon_2431_thumb" />
+
+    <TextView
+        android:id="@+id/selectedReactionServiceTextShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="35dp"
+        app:layout_constraintStart_toEndOf="@+id/selectedReactionServiceLogoShow"
+        app:layout_constraintTop_toBottomOf="@+id/backFromReactionCreationButton"
+        tools:text="serviceName" />
+
+    <Spinner
+        android:id="@+id/injectActionParamsSpinner"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:clickable="true"
+        android:contentDescription="@string/spinner_desc"
+        android:minHeight="48dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintBottom_toTopOf="@+id/reactionParamText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:focusable="true" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

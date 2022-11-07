@@ -1,31 +1,35 @@
 <template>
     <div id="login">
-        <h3>Login</h3>
-        <b-field label="E-mail" label-position="on-border" :type="login.email.error != '' ? 'is-danger' : ''" :message="login.email.error">
-            <b-input type="email" @input="checkEmail($event)" v-model="login.email.value"></b-input>
-        </b-field>
-        <b-field label="Password" label-position="on-border" :type="login.password.error != '' ? 'is-danger' : ''" :message="login.password.error">
-            <b-input type="password" @input="checkPassword()" password-reveal v-model="login.password.value"></b-input>
-        </b-field>
-        <div class="buttonContent">
-            <div ref="loginButton" class="loginButton" @mouseover="validate == false ? moveButton() : ''">
-                <b-button @click="validate == true ? sendLogin() : ''" :type="validate == true ? 'is-success is-light' : 'is-danger is-light'">Login</b-button>
+        <section class="loginForm">
+            <h3>Login</h3>
+            <b-field label="E-mail" label-position="on-border" :type="login.email.error != '' ? 'is-danger' : ''" :message="login.email.error">
+                <b-input type="email" @input="checkEmail($event)" v-model="login.email.value"></b-input>
+            </b-field>
+            <b-field label="Password" label-position="on-border" :type="login.password.error != '' ? 'is-danger' : ''" :message="login.password.error">
+                <b-input type="password" @input="checkPassword()" password-reveal v-model="login.password.value"></b-input>
+            </b-field>
+            <div class="buttonContent">
+                <div ref="loginButton" class="loginButton" @mouseover="validate == false ? moveButton() : ''">
+                    <b-button @click="validate == true ? sendLogin() : ''" :type="validate == true ? 'is-success is-light' : 'is-danger is-light'">Login</b-button>
+                </div>
             </div>
-        </div>
-        <br/>
-        <router-link to="/register">
-            <a>Not account ? Register</a>
-        </router-link>
+            <div class="register">
+                <router-link to="/register">
+                    <a>No account ? Register</a>
+                </router-link>
+            </div>
+        </section>
     </div>
 </template>
 
 <script lang="ts">
 import vue from 'vue';
+import { Login } from '../types/index'
 
 export default vue.extend({
     data() {
         return {
-            login: {
+            login: { /** It's a variable that contains the login form. */
                 email: {
                     value: "",
                     error: "",
@@ -36,13 +40,18 @@ export default vue.extend({
                     error: "",
                     valide: false
                 }
-            },
-            validate: false,
-            timeout: false,
+            } as Login,
+            validate: false, /** If this variable is true all the fields form are valides. */
+            timeout: false, /** This variable is used to block the time of the button animation */
         }
     },
     methods: {
-        valideForm() {
+        /**
+         * It's a function that check if the entire form is valide or not.
+         * @data {Object} login
+         * @data {Boolean} validate
+         */
+        valideForm(): void {
             if (this.login.email.valide == true &&
             this.login.password.valide == true) {
                 this.$refs.loginButton.style.left = "50px";
@@ -50,7 +59,11 @@ export default vue.extend({
             } else
                 this.validate = false;
         },
-        moveButton() {
+        /**
+         * It's a function that move the button to the left or to the right when the form is not valid.
+         * @data {Boolean} timeout
+         */
+        moveButton(): void {
             let button = this.$refs.loginButton as HTMLElement;
             button.style.transitionProperty = "left";
             button.style.transitionDuration = "0.3s";
@@ -64,7 +77,12 @@ export default vue.extend({
                 this.timeout = false;
             }, 290)
         },
-        checkEmail(input) {
+        /**
+         * It's a function that check if the email is valide or not.
+         * @param {String} input - Text input
+         * @data {Object} login
+         */
+        checkEmail(input: String): void {
             const email_regex = (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
             if (input == "") {
                 this.login.email.error = "Cannot be empty";
@@ -78,7 +96,11 @@ export default vue.extend({
             }
             this.valideForm();
         },
-        checkPassword() {
+        /**
+         * It's a function that check if the password is empty or not.
+         * @data {Object} login
+         */
+        checkPassword(): void {
             if (this.login.password.value == "") {
                 this.login.password.error = "Password cannot be empty"
                 this.login.password.valide = false;
@@ -88,7 +110,12 @@ export default vue.extend({
             }
             this.valideForm();
         },
-        async sendLogin() {
+        /**
+         * It's a function that send the login form to the server.
+         * @data {Object} login
+         * @async
+         */
+        async sendLogin(): Promise<any> {
             try {
                 let {data: resp} = await this.$axios.post('/users/login', {
                     'email': this.login.email.value,
@@ -98,7 +125,7 @@ export default vue.extend({
                 this.$store.commit('updateToken', resp.token);
                 this.$router.push('/home');
             } catch (err) {
-                console.log(err);
+                this.notification(err.response.data.message, 'is-danger');
             }
         }
     }
@@ -107,6 +134,30 @@ export default vue.extend({
 
 <style scoped lang="scss">
 #login {
+    .loginForm {
+        background-color: white;
+        min-width: 400px;
+        width: 450px;
+        height: fit-content;
+        position: absolute;
+        box-shadow: 0 0 30px 1px black;
+        border-radius: 20px;
+        padding: 20px 25px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        h3 {
+            font-size: 40px;
+            margin-bottom: 25px;
+            font-family: Bebas Regular;
+        }
+        :deep(.field) {
+            margin-bottom: 20px;
+        }
+        .register {
+            margin-top: 15px;
+        }
+    }
     .buttonContent {
         transform: translate(calc(50% - 85px), 0%);
         position: relative;

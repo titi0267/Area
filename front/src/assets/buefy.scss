@@ -13,6 +13,10 @@ $twitter-invert: findColorInvert($twitter);
 $custom-colors: null !default;
 $custom-shades: null !default;
 
+// Icons size
+$icon-svg-height: 27px;
+$icon-svg-width: 27px;
+
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: mergeColorMaps(
     (
@@ -76,6 +80,14 @@ $colors: mergeColorMaps(
 $link: $primary;
 $link-invert: $primary-invert;
 $link-focus-border: $primary;
+
+// CSS for NavBar dropdown
+.dropdown-menu {
+    top: 95px !important;
+    .dropdown-content {
+        box-shadow: 0 0 15px 1px #00000099;
+    }
+}
 
 // Import Bulma and Buefy styles
 @import "~bulma";

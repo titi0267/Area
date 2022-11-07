@@ -41,6 +41,65 @@ describe("Test post user service", () => {
   });
 });
 
+describe("Test connect oauth user service", () => {
+  describe("Test working cases", () => {
+    test("Create one valid oauth user", async () => {
+      const token = await UserService.connectOauthUser(
+        "Ludo",
+        "Str",
+        "ludostr@mail.com",
+        "passwd",
+        "ezrtyuiopazekiazjeiaz",
+      );
+      const users = await UserService.getAllUsers();
+
+      expect(token.token.length).toBeGreaterThan(1);
+      expect(users[0].firstName).toBe("Ludo");
+
+      await UserService.removeUserById(users[0].id);
+    });
+
+    test("Login one valid oauth user", async () => {
+      await UserService.connectOauthUser(
+        "Ludo",
+        "Str",
+        "ludostr@mail.com",
+        "passwd",
+        "ezrtyuiopazekiazjeiaz",
+      );
+      const token = await UserService.connectOauthUser(
+        "Ludo",
+        "Str",
+        "ludostr@mail.com",
+        "passwd",
+        "ezrtyuiopazekiazjeiaz",
+      );
+      const users = await UserService.getAllUsers();
+
+      expect(token.token.length).toBeGreaterThan(1);
+      expect(users[0].firstName).toBe("Ludo");
+
+      await UserService.removeUserById(users[0].id);
+    });
+  });
+
+  describe("Test error cases", () => {
+    test("Create user but one field is null", async () => {
+      try {
+        await UserService.connectOauthUser(
+          "Ludo",
+          "Str",
+          "ludostr@mail.com",
+          "passwd",
+          null,
+        );
+      } catch (e) {
+        expect(e.status).toBe(httpStatus.BAD_REQUEST);
+      }
+    });
+  });
+});
+
 describe("Test login user service", () => {
   describe("Test working cases", () => {
     test("Login one valid user", async () => {

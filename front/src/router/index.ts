@@ -1,13 +1,16 @@
 import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
+import VueRouter, { Route, RouteConfig } from "vue-router";
+import axios from "../axiosInstance";
+import store from "../store";
+
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import NotFound from "../views/NotFound.vue";
 import Home from "../views/Home.vue";
-import CreateArea from "../views/CreateArea.vue";
-import Area from "../views/Area.vue"
-import axios from "../axiosInstance";
-import store from "../store";
+import Area from "../views/Area.vue";
+import Profile from "../views/Profile.vue";
+import Services from "../views/Services.vue";
+import Create from "../views/Create.vue"
 
 Vue.use(VueRouter);
 
@@ -34,6 +37,12 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
+            path: '/create',
+            name: 'create',
+            component: Create,
+            meta: { requiresAuth: true }
+        },
+        {
             path: '/create/action',
             name: 'create-action',
             component: Area,
@@ -52,19 +61,37 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
+            path: '/profile',
+            name: 'profile',
+            component: Profile,
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/services',
+            name: 'services',
+            component: Services,
+            meta: { requiresAuth: true }
+        },
+        {
             path: '/',
             redirect: '/home',
             meta: { requiresAuth: true }
         },
         {
             path: '/:pathMatch(.*)*',
-            name: 'notFound',
+            name: 'not-found',
             component: NotFound,
             meta: { requiresAuth: false }
         },
     ]
 })
 
+/**
+ * A function that is called before each route is loaded to check if the user is correctly unauthenticated.
+ * @constant
+ * @name router
+ * @type {VueRouter}
+ */
 router.beforeEach(async (to, from, next) => {
     let usrToken = localStorage.getItem('usr-token');
     if (usrToken != null)

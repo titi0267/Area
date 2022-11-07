@@ -1,6 +1,10 @@
+import { createOAuthUserAuth } from "@octokit/auth-oauth-user";
 import { OAuth2Client } from "google-auth-library";
 import { google } from "googleapis";
 import httpStatus from "http-status";
+import { Octokit } from "octokit";
+import SpotifyWebApi from "spotify-web-api-node";
+import { FORMAT } from "../constants/paramFormat";
 import { SERVICES } from "../constants/serviceList";
 import ENV from "../env";
 import ClientError from "../error";
@@ -9,8 +13,10 @@ import { TokenService } from "../services";
 const rejectInvalidArea = (
   actionServiceId: number,
   actionId: number,
+  actionParam: string,
   reactionServiceId: number,
   reactionId: number,
+  reactionParam: string,
 ) => {
   const doesActionServiceExist = SERVICES.find(
     service => service.id === actionServiceId,
@@ -27,6 +33,30 @@ const rejectInvalidArea = (
   const doesReactionExist = doesReactionServiceExist?.reactions.find(
     reaction => reaction.id === reactionId,
   );
+
+  if (
+    doesActionExist?.paramFormat &&
+    !actionParam.match(doesActionExist.paramFormat)
+  ) {
+    throw new ClientError({
+      name: "Invalid Param",
+      message: "Action param does not match the require format",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  if (
+    doesReactionExist?.paramFormat &&
+    !reactionParam.match(doesReactionExist.paramFormat)
+  ) {
+    throw new ClientError({
+      name: "Invalid Param",
+      message: "Reaction param does not match the require format",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
 
   if (
     !doesActionExist ||
@@ -67,8 +97,52 @@ const getReactionFct = (reactionServiceId: number, reactionId: number) => {
   return reaction?.fct || null;
 };
 
+const checkActionFormat = (
+  actionServiceId: number,
+  actionId: number,
+  param: string,
+): boolean => {
+  const doesActionServiceExist = SERVICES.find(
+    service => service.id === actionServiceId,
+  );
+
+  const doesActionExist = doesActionServiceExist?.actions.find(
+    action => action.id === actionId,
+  );
+
+  if (!doesActionServiceExist || !doesActionExist) return false;
+
+  if (!doesActionExist.paramFormat) return true;
+
+  if (!param.match(doesActionExist.paramFormat)) return false;
+
+  return true;
+};
+
+const checkReactionFormat = (
+  reactionServiceId: number,
+  reactionId: number,
+  param: string,
+): boolean => {
+  const doesReactionServiceExist = SERVICES.find(
+    service => service.id === reactionServiceId,
+  );
+
+  const doesReactionExist = doesReactionServiceExist?.reactions.find(
+    reaction => reaction.id === reactionId,
+  );
+
+  if (!doesReactionServiceExist || !doesReactionExist) return false;
+
+  if (!doesReactionExist.paramFormat) return true;
+
+  if (!param.match(doesReactionExist.paramFormat)) return false;
+
+  return true;
+};
+
 const getYoutubeVideoId = (url: string) => {
-  let regex = /(\w+:\/+[\w+.]+\/)(watch\?v=)(\w+)/;
+  let regex = FORMAT.youtubeVideoUrl;
 
   const matches = url.match(regex);
 
@@ -78,7 +152,7 @@ const getYoutubeVideoId = (url: string) => {
 };
 
 const getYoutubeChannelName = (url: string) => {
-  let regex = /https:\/+www.youtube.com\/user\/(\w+)/;
+  let regex = FORMAT.youtubeChannelUrl;
 
   const matches = url.match(regex);
 
@@ -87,23 +161,66 @@ const getYoutubeChannelName = (url: string) => {
   return matches[1];
 };
 
+const getTime = (actionParam: string) => {
+  const regex = FORMAT.time;
+
+  const matches = actionParam.match(regex);
+
+  if (!matches || matches.length < 3) return null;
+
+  if (parseInt(matches[1]) > 23) return null;
+
+  return { hours: parseInt(matches[1]), minutes: parseInt(matches[2]) };
+};
+
+const getGithubIssueParams = (reactionParam: string) => {
+  let regex = FORMAT.githubIssueFormat;
+
+  const matches = reactionParam.match(regex);
+
+  if (!matches || matches.length < 4) return null;
+
+  return { owner: matches[1], repo: matches[2], title: matches[3] };
+};
+
+const getMailContentParams = (reactionParam: string) => {
+  let regex = FORMAT.mailContent;
+
+  const matches = reactionParam.match(regex);
+
+  if (!matches || matches.length < 4) return null;
+
+  return { to: matches[1], subject: matches[2], content: matches[3] };
+};
+
+const getGithubPullRequestParams = (actionParam: string) => {
+  let regex = FORMAT.githubPullRequestFormat;
+
+  const matches = actionParam.match(regex);
+
+  if (!matches || matches.length < 3) return null;
+
+  return { owner: matches[1], repo: matches[2] };
+};
+
 const injectParamInReaction = <T extends Object>(
   reactionParam: string,
   param: T,
 ): string => {
-  const matchParamRegex = /(%(\w+)%)/;
-  const replaceRegex = /(%\w+%)/;
+  const matchParamRegex = /(%(\w+)%)/g;
 
-  const matches = reactionParam.match(matchParamRegex);
+  const matches = reactionParam.matchAll(matchParamRegex);
 
-  if (!matches || !matches[2]) return reactionParam;
-  const key = matches[2];
+  for (const match of matches) {
+    const key = match[2];
 
-  if (!param.hasOwnProperty(key)) return reactionParam;
+    if (!param.hasOwnProperty(key)) continue;
+    const value = String(param[key as keyof T]);
 
-  const value = String(param[key as keyof T]);
+    reactionParam = reactionParam.replace("%" + key + "%", value);
+  }
 
-  return reactionParam.replace(replaceRegex, value);
+  return reactionParam;
 };
 
 const getGoogleOauthClient = async (
@@ -124,12 +241,51 @@ const getGoogleOauthClient = async (
   return oAuth2Client;
 };
 
+const getGithubClient = async (userId: number) => {
+  const token = await TokenService.getGithubToken(userId);
+
+  if (!token) return null;
+
+  const octokit = new Octokit({
+    authStrategy: createOAuthUserAuth,
+    auth: {
+      clientId: ENV.githubClientId,
+      clientSecret: ENV.githubClientSecret,
+      token,
+      clientType: "oauth-app",
+    },
+  });
+
+  return octokit;
+};
+
+const getSpotifyClient = async (userId: number) => {
+  const token = await TokenService.getSpotifyToken(userId);
+
+  if (!token) return null;
+
+  const spotifyApi = new SpotifyWebApi({
+    clientId: ENV.spotifyClientId,
+    clientSecret: ENV.spotifyClientSecret,
+  });
+
+  return { client: spotifyApi, token };
+};
+
 export {
   rejectInvalidArea,
+  checkActionFormat,
+  checkReactionFormat,
   getActionFct,
   getReactionFct,
   getYoutubeVideoId,
   getYoutubeChannelName,
   injectParamInReaction,
   getGoogleOauthClient,
+  getGithubClient,
+  getSpotifyClient,
+  getGithubIssueParams,
+  getTime,
+  getMailContentParams,
+  getGithubPullRequestParams,
 };

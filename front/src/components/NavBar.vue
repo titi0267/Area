@@ -8,7 +8,7 @@
         <div class="right">
             <div class="APK">
                 <b-icon icon="download"/>
-                <p>Download APK</p>
+                <p>Download APP</p>
             </div>
             <div class="profile">
                 <b-dropdown

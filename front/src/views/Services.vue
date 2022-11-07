@@ -75,9 +75,7 @@ export default vue.extend({
                 if (code == null || code == undefined) {
                     localStorage.removeItem('oauth');
                     this.loading = false;
-                    this.$forceUpdate();
                     this.notification("Your authentification has failed", 'is-danger');
-                    // this.$router.go()
                     return;
                 }
                 if (serviceOauthName == "discord") {
@@ -109,6 +107,7 @@ export default vue.extend({
                 localStorage.removeItem('oauth');
                 this.$router.replace({'query': null});
                 this.loading = false;
+                this.getUserInfos();
             })
         },
         /**

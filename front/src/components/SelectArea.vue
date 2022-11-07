@@ -129,8 +129,8 @@ export default vue.extend({
                     return;
                 }
                 const code: String = this.$route.query.code;
-                let oauthParam = {}
-                if (code == null || code == undefined && this.tokensTable[serviceOauthName + 'Token'] == null) {
+                let oauthParam: object
+                if ((code == null || code == undefined) && this.tokensTable[serviceOauthName + 'Token'] == null) {
                     this.$emit('previous');
                     this.$emit('save');
                     this.$emit('loading');
@@ -156,13 +156,14 @@ export default vue.extend({
                         }
                     });
                     this.$set(this.tokensTable, serviceOauthName + 'Token', tokens[serviceOauthName + 'Token']);
-                } catch {
+                } catch (err) {
                     this.$emit('previous');
                     this.$emit('save');
                     this.notification("Your authentification has failed", 'is-danger');
                 }
+                this.$emit("loading");
+                this.$emit("oauth")
             })
-            this.$emit("loading");
         },
     }
 });

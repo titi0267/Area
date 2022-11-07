@@ -43,6 +43,9 @@
 | **GITHUB_CLIENT_ID**      | Github client id         | `string` | _No default value_ |
 | **GITHUB_REDIRECT_URL**   | Github redirect url      | `string` | _No default value_ |
 | **DISCORD_BOT_TOKEN**     | Discord bot token        | `string` | _No default value_ |
+| **DISCORD_CLIENT_ID**     | Discord client id        | `string` | _No default value_ |
+| **DISCORD_CLIENT_SECRET** | Discord client secret    | `string` | _No default value_ |
+| **DISCORD_REDIRECT_URL**  | Discord redirect url     | `string` | _No default value_ |
 
 ## Dependency Installation
 
@@ -129,7 +132,25 @@ const SERVICES: Service[] = [
 
 Files linked to Action and Reaction: loop.area.ts contain the loop of launching action and reaction if action return true. Other folders are here to store actions and reactions.
 
-Example:
+Exemple Reaction:
+
+```ts
+const createGithubIssue = async (reactionParam: string, userId: number) => {
+  const githubClient = await ServiceHelper.getGithubClient(userId);
+
+  if (!githubClient) return;
+
+  const issueParam = ServiceHelper.getGithubIssueParams(reactionParam);
+
+  if (!issueParam) return;
+
+  await githubClient.rest.issues.create({
+    owner: issueParam.owner,
+    repo: issueParam.repo,
+    title: issueParam.title,
+  });
+};
+```
 
 ### /helpers
 

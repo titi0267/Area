@@ -5,8 +5,6 @@ const areaLoop = async () => {
   const areas = await AreaService.getEnabledAreas();
 
   for (const area of areas) {
-    console.log(area.actionParam);
-
     const action = ServiceHelper.getActionFct(
       area.actionServiceId,
       area.actionId,

@@ -6,5 +6,7 @@ data class AreaListElement(
     val actionServiceBitmap: Bitmap,
     val reactionServiceBitmap: Bitmap,
     val actionName: String,
-    val reactionName: String
+    val reactionName: String,
+    val actionServiceName: String,
+    val reactionServiceName: String
 )

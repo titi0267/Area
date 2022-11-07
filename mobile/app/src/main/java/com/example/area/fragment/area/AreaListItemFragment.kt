@@ -1,6 +1,9 @@
 package com.example.area.fragment.area
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +14,6 @@ import com.example.area.AREAApplication
 import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.model.ActionReaction
-import com.example.area.model.about.About
 
 class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout.fragment_area_list_item) {
 
@@ -22,10 +24,14 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
         val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return view
+        val gradient = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(Color.parseColor(aboutClass.getServiceBackgroundColor(item.actionServiceId)), Color.parseColor(aboutClass.getServiceBackgroundColor(item.reactionServiceId))))
 
+        view.background = gradient
         view.findViewById<Button>(R.id.backFromAreaListItemButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
+        Log.d("actionColor", aboutClass.getServiceBackgroundColor(item.actionServiceId)!!)
+        Log.d("reactionColor", aboutClass.getServiceBackgroundColor(item.reactionServiceId)!!)
         view.findViewById<TextView>(R.id.actionServiceTextInItem).text = aboutClass.getServiceNameById(item.actionServiceId)
         view.findViewById<TextView>(R.id.actionNameInItem).text = aboutClass.getServiceActionNameById(item.actionServiceId, item.actionId)
         view.findViewById<TextView>(R.id.actionParamInItem).text = item.actionParam

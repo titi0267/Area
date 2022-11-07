@@ -67,7 +67,9 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
                         servicesImages[item.actionServiceId - 1],
                         servicesImages[item.reactionServiceId - 1],
                         aboutClass.getServiceActionNameById(item.actionServiceId, item.actionId) ?: continue,
-                        aboutClass.getServiceReactionNameById(item.reactionServiceId, item.reactionId) ?: continue
+                        aboutClass.getServiceReactionNameById(item.reactionServiceId, item.reactionId) ?: continue,
+                        aboutClass.getServiceNameById(item.actionServiceId) ?: continue,
+                        aboutClass.getServiceNameById(item.reactionServiceId) ?: continue
                     )
                 }
                 updateRecycler(recycler, myDataSet, jsonArray)

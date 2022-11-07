@@ -125,13 +125,15 @@ export default vue.extend({
             display: flex;
             align-items: center;
             :deep(figure) {
-                height: 100%;
+                height: 40px;
+                width: 40px;
                 width: auto;
                 margin: 10px;
                 max-height: 50px;
-                width: auto;
                 img {
                     height: 100%;
+                    width: auto;
+                    object-fit: contain;
                 }
             }
             p {

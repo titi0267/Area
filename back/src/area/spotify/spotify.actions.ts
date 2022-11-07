@@ -57,16 +57,57 @@ const checkIsMusicLiked = async (area: Area): Promise<string | null> => {
     artists: likedTracks.items[0].track.artists[0].name,
   };
 
-  if (likedTracks.total != parseInt(area.lastActionValue)) {
-    await AreaService.updateAreaValues(area.id, likedTracks.total.toString());
-  }
   if (likedTracks.total > parseInt(area.lastActionValue)) {
+    await AreaService.updateAreaValues(area.id, likedTracks.total.toString());
     return ServiceHelper.injectParamInReaction<typeof params>(
       area.reactionParam,
       params,
     );
   }
+  await AreaService.updateAreaValues(area.id, likedTracks.total.toString());
   return null;
 };
 
-export { checkMusicSkip, checkIsMusicLiked };
+const addTrackToPlaylist = async (area: Area): Promise<string | null> => {
+  const spotifyCredential = await ServiceHelper.getSpotifyClient(area.userId);
+
+  if (!spotifyCredential) return null;
+
+  const spotifyApi = spotifyCredential.client;
+
+  spotifyApi.setRefreshToken(spotifyCredential.token);
+  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
+  spotifyApi.setAccessToken(accessToken);
+
+  const yourPlaylists = await spotifyApi.getUserPlaylists();
+
+  if (yourPlaylists.body.items == undefined) return null;
+  let playlistItems = yourPlaylists.body.items.find(
+    elem => elem.name == area.actionParam,
+  );
+  if (playlistItems == undefined) return null;
+  const playlistTracks = await spotifyApi.getPlaylistTracks(playlistItems.id);
+
+  let lastTrack = playlistTracks.body.items[playlistTracks.body.total - 1];
+
+  if (area.lastActionValue == null) {
+    await AreaService.updateAreaValues(area.id, lastTrack.added_at);
+    return null;
+  }
+  if (lastTrack.track == null) return null;
+  const params = {
+    songAdded: lastTrack.track.name,
+    songArtists: lastTrack.track.artists,
+  };
+  if (lastTrack.added_at > area.lastActionValue) {
+    await AreaService.updateAreaValues(area.id, lastTrack.added_at);
+    return ServiceHelper.injectParamInReaction<typeof params>(
+      area.reactionParam,
+      params,
+    );
+  }
+  await AreaService.updateAreaValues(area.id, lastTrack.added_at);
+  return null;
+};
+
+export { checkMusicSkip, checkIsMusicLiked, addTrackToPlaylist };

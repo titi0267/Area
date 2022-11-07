@@ -196,39 +196,34 @@ export default (
     },
   );
 
-  instance.get(
-    "/spotify/link",
-    (req: FastifyRequest, res: FastifyReply) => {
-      const rootUrl = "https://accounts.spotify.com/authorize";
-      const options = {
-        client_id: ENV.spotifyClientId,
-        response_type: "code",
-        redirect_uri: ENV.spotifyRedirectUrl,
-        scope: [
-          "user-read-private",
-          "user-read-email",
-          "user-modify-playback-state",
-          "user-read-playback-state",
-          "user-read-playback-position",
-          "user-read-recently-played",
-          "playlist-read-private",
-          "user-read-currently-playing",
-          "user-library-modify",
-          "user-library-read",
-          "playlist-modify-private",
-          "playlist-modify-public",
-        ].join(" "),
-      };
+  instance.get("/spotify/link", (req: FastifyRequest, res: FastifyReply) => {
+    const rootUrl = "https://accounts.spotify.com/authorize";
+    const options = {
+      client_id: ENV.spotifyClientId,
+      response_type: "code",
+      redirect_uri: ENV.spotifyRedirectUrl,
+      scope: [
+        "user-read-private",
+        "user-read-email",
+        "user-modify-playback-state",
+        "user-read-playback-state",
+        "user-read-playback-position",
+        "user-read-recently-played",
+        "playlist-read-private",
+        "user-read-currently-playing",
+        "user-library-modify",
+        "user-library-read",
+        "playlist-modify-private",
+        "playlist-modify-public",
+      ].join(" "),
+    };
 
-      const qs = new URLSearchParams(options);
+    const qs = new URLSearchParams(options);
 
-      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
-    },
-  );
+    res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+  });
 
-  instance.get(
-    "/discord/link",
-    (req: FastifyRequest, res: FastifyReply) => {
+  instance.get("/discord/link", (req: FastifyRequest, res: FastifyReply) => {
     const rootUrl = "https://discord.com/api/oauth2/authorize";
 
     const option = {
@@ -251,48 +246,44 @@ export default (
     res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
   });
 
-  instance.get(
-    "/google/link",
-    (req: FastifyRequest, res: FastifyReply) => {
-      const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+  instance.get("/google/link", (req: FastifyRequest, res: FastifyReply) => {
+    const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
 
-      const options = {
-        redirect_uri: ENV.googleRedirectUrl,
-        client_id: ENV.googleClientId,
-        access_type: "offline",
-        response_type: "code",
-        prompt: "consent",
-        scope: [
-          "https://www.googleapis.com/auth/userinfo.profile",
-          "https://www.googleapis.com/auth/userinfo.email",
-          "https://www.googleapis.com/auth/youtube.readonly",
-          "https://www.googleapis.com/auth/youtube",
-          "https://www.googleapis.com/auth/youtube.upload",
-          "https://www.googleapis.com/auth/gmail.modify",
-          "https://www.googleapis.com/auth/gmail.compose",
-        ].join(" "),
-      };
-      const qs = new URLSearchParams(options);
+    const options = {
+      redirect_uri: ENV.googleRedirectUrl,
+      client_id: ENV.googleClientId,
+      access_type: "offline",
+      response_type: "code",
+      prompt: "consent",
+      scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/youtube.readonly",
+        "https://www.googleapis.com/auth/youtube",
+        "https://www.googleapis.com/auth/youtube.upload",
+        "https://www.googleapis.com/auth/gmail.modify",
+        "https://www.googleapis.com/auth/gmail.compose",
+        "https://www.googleapis.com/auth/drive",
+        "https://www.googleapis.com/auth/calendar",
+      ].join(" "),
+    };
+    const qs = new URLSearchParams(options);
 
-      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
-    },
-  );
+    res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+  });
 
-  instance.get(
-    "/github/link",
-    (req: FastifyRequest, res: FastifyReply) => {
-      const rootUrl = "https://github.com/login/oauth/authorize";
+  instance.get("/github/link", (req: FastifyRequest, res: FastifyReply) => {
+    const rootUrl = "https://github.com/login/oauth/authorize";
 
-      const options = {
-        redirect_uri: ENV.githubRedirectUrl,
-        client_id: ENV.githubClientId,
-        scope: ["repo"].join(" "),
-      };
-      const qs = new URLSearchParams(options);
+    const options = {
+      redirect_uri: ENV.githubRedirectUrl,
+      client_id: ENV.githubClientId,
+      scope: ["repo"].join(" "),
+    };
+    const qs = new URLSearchParams(options);
 
-      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
-    },
-  );
+    res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+  });
 
   done();
 };

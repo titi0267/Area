@@ -25,12 +25,10 @@ model User {
 
 model TokensTable {
   id                Int           @id @default(autoincrement())
-  twitterToken      String?
   githubToken       String?
   googleToken      String?
   discordGuildId    String?
   discordToken      String?
-  trelloToken       String?
   spotifyToken      String?
   user              User          @relation(references: [id], fields: [userId])
   userId            Int           @unique

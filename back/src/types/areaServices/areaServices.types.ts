@@ -35,7 +35,7 @@ interface Reaction {
   reactionParamName: string;
   paramFormat: RegExp | null;
   description: string;
-  fct: (reactionParam: string, userId: number) => void;
+  fct: (reactionParam: string, userId: number) => Promise<void>;
 }
 
 export type ServiceName =

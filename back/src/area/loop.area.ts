@@ -5,23 +5,25 @@ const areaLoop = async () => {
   const areas = await AreaService.getEnabledAreas();
 
   for (const area of areas) {
+    console.log(area.actionParam);
+
     const action = ServiceHelper.getActionFct(
       area.actionServiceId,
       area.actionId,
     );
 
-    if (action === null) return;
+    if (action === null) continue;
     try {
       const reactionParam = await action(area);
 
-      if (reactionParam === null) return;
+      if (reactionParam === null) continue;
 
       const reaction = ServiceHelper.getReactionFct(
         area.reactionServiceId,
         area.reactionId,
       );
 
-      if (reaction === null) return;
+      if (reaction === null) continue;
 
       await reaction(reactionParam, area.userId);
     } catch (e) {

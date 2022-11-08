@@ -1,6 +1,9 @@
 package com.example.area.fragment.area
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,11 +45,15 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
         val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return view
+        val gradient = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(Color.parseColor(aboutClass.getServiceBackgroundColor(item.actionServiceId)), Color.parseColor(aboutClass.getServiceBackgroundColor(item.reactionServiceId))))
 
+        view.background = gradient
         viewModel = ViewModelProvider(context as AreaActivity, viewModelFactory)[MainViewModel::class.java]
         view.findViewById<Button>(R.id.backFromAreaListItemButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
+        Log.d("actionColor", aboutClass.getServiceBackgroundColor(item.actionServiceId)!!)
+        Log.d("reactionColor", aboutClass.getServiceBackgroundColor(item.reactionServiceId)!!)
         view.findViewById<TextView>(R.id.actionServiceTextInItem).text = aboutClass.getServiceNameById(item.actionServiceId)
         view.findViewById<TextView>(R.id.actionNameInItem).text = aboutClass.getServiceActionNameById(item.actionServiceId, item.actionId)
         view.findViewById<TextView>(R.id.actionParamInItem).text = item.actionParam

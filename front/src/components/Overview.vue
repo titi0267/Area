@@ -1,9 +1,9 @@
 <template>
     <div id="Overview">
-        <!-- <b-icon class="previous" icon="chevron-right" @click.native="$emit('previous'), $emit('save'), $router.push('/create/reaction')"></b-icon> -->
+        <b-icon class="previous" icon="chevron-right" @click.native="$router.push('/create/reaction'), $emit('previous'), $emit('save')"></b-icon>
         <h2 class="overview-title">Overview of your action - reaction creation</h2>
         <div class="if" v-if="action.actions">
-            <h2>IF</h2>
+            <h2> IF</h2>
             <div class="action" :style="{ 'background-color' : action.backgroundColor }">
                 <p>Action</p>
                 <b-image :src="$store.state.serveurURL + action.imageUrl"></b-image>
@@ -13,7 +13,7 @@
                 </span>
                 <span style="width: 85%;">
                     <h3> {{ action.actions.actionParamName }} </h3>
-                    <b-input v-if="action.actions.actionParamName" disabled :value="area.actionParam" />
+                    <b-input v-if="action.actions.actionParamName" v-model="area.actionParam" />
                 </span>
             </div>
         </div>
@@ -28,12 +28,11 @@
                 </span>
                 <span style="width: 85%;">
                     <h3> {{ reaction.reactions.reactionParamName }} </h3>
-                    <b-input v-if="reaction.reactions.reactionParamName" disabled :value="area.reactionParam" />
+                    <b-input v-if="reaction.reactions.reactionParamName" v-model="area.reactionParam" />
                 </span>
             </div>
         </div>
         <b-button @click="$emit('create')" type="is-success is-light">Create</b-button>
-         <!-- <b-button @click="$emit('previous'), $router.push('/create/reaction')">Précédent</b-button> -->
     </div>
 </template>
 
@@ -52,6 +51,15 @@ export default vue.extend({
         this.getArea('action');
         this.getArea('reaction');
     },
+    watch: {
+        /**
+         * It's a watcher that is called when the services array is modified.
+         */
+        'services': function(): void {
+            this.getArea('action');
+            this.getArea('reaction');
+        }
+    },
     props: {
         area: Object /** Object that contains the area creation fields */,
         services: Array /** Array that contains the About.JSON file */,
@@ -67,7 +75,8 @@ export default vue.extend({
             this.$nextTick(() => {
                 let area = this.services.find(service => service.id == this.area[type + 'ServiceId']);
                 if (area) {
-                    this[type] = area;
+                    this[type] = JSON.parse(JSON.stringify(area));
+                    this[type][type + 's'].splice(0, this[type][type + 's'].length);
                     this[type][type + 's'] = area[type + 's'].find(actrea => actrea.id == this.area[type + 'Id']);
                 }
             })

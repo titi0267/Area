@@ -81,7 +81,7 @@ export default (
       const oauthClient = new google.auth.OAuth2(
         ENV.googleClientId,
         ENV.googleClientSecret,
-        ENV.googleRedirectUrl,
+        ENV.googleRedirectRegisterUrl,
       );
 
       const tokens = (await oauthClient.getToken(code)).tokens;
@@ -279,6 +279,32 @@ export default (
       redirect_uri: ENV.githubRedirectUrl,
       client_id: ENV.githubClientId,
       scope: ["repo"].join(" "),
+    };
+    const qs = new URLSearchParams(options);
+
+    res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+  });
+
+  instance.get("/google/register", (req: FastifyRequest, res: FastifyReply) => {
+    const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+
+    const options = {
+      redirect_uri: ENV.googleRedirectRegisterUrl,
+      client_id: ENV.googleClientId,
+      access_type: "offline",
+      response_type: "code",
+      prompt: "consent",
+      scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/youtube.readonly",
+        "https://www.googleapis.com/auth/youtube",
+        "https://www.googleapis.com/auth/youtube.upload",
+        "https://www.googleapis.com/auth/gmail.modify",
+        "https://www.googleapis.com/auth/gmail.compose",
+        "https://www.googleapis.com/auth/drive",
+        "https://www.googleapis.com/auth/calendar",
+      ].join(" "),
     };
     const qs = new URLSearchParams(options);
 

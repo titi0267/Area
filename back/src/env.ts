@@ -11,6 +11,7 @@ const ENV = {
   googleClientId: process.env.GOOGLE_CLIENT_ID as string,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
   googleRedirectUrl: process.env.GOOGLE_REDIRECT_URL as string,
+  googleRedirectRegisterUrl: process.env.GOOGLE_REDIRECT_REGISTER_URL as string,
   spotifyClientId: process.env.SPOTIFY_CLIENT_ID as string,
   spotifyClientSecret: process.env.SPOTIFY_CLIENT_SECRET as string,
   spotifyRedirectUrl: process.env.SPOTIFY_REDIRECT_URL as string,

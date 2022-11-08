@@ -12,6 +12,9 @@
                 <div ref="loginButton" class="loginButton" @mouseover="validate == false ? moveButton() : ''">
                     <b-button @click="validate == true ? sendLogin() : ''" :type="validate == true ? 'is-success is-light' : 'is-danger is-light'">Login</b-button>
                 </div>
+                <div>
+                    <b-button @click="getGoogleOauthLogin()"></b-button>
+                </div>
             </div>
             <div class="register">
                 <router-link to="/register">
@@ -43,9 +46,45 @@ export default vue.extend({
             } as Login,
             validate: false, /** If this variable is true all the fields form are valides. */
             timeout: false, /** This variable is used to block the time of the button animation */
+            oauthURL: ""
         }
     },
+    mounted() {
+        if (localStorage.getItem('google-oauth') == 'true')
+            this.postGoogleOauth();
+    },
     methods: {
+        async postGoogleOauth(): Promise<void> {
+            const code: string = this.$route.query.code;
+
+            if (code == null || code == undefined) {
+                this.$emit('previous');
+                this.$emit('save');
+                this.$emit('loading');
+                this.notification("Your authentification has failed", 'is-danger');
+                return;
+            }
+            try {
+            let {data: resp} = await this.$axios.post("/oauth/google/register", { code })
+            localStorage.removeItem('google-oauth')
+            localStorage.setItem('usr-token', resp.token);
+            this.$store.commit('updateToken', resp.token);
+            this.$router.push('/home');
+            } catch (e) {
+                console.log(e)
+            }
+
+        },
+        async getGoogleOauthLogin(): Promise<void> {
+            const {data: url} = await this.$axios.get("/oauth/google/register", {
+                headers: {
+                    Authorization: this.$store.getters.userToken || "noToken",
+                },
+            })
+            this.oauthURL = url;
+            localStorage.setItem('google-oauth', 'true');
+            window.location.href = this.oauthURL;
+        },
         /**
          * It's a function that check if the entire form is valide or not.
          * @data {Object} login

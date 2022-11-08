@@ -46,6 +46,7 @@ export type ServiceName =
   | "Github"
   | "Gmail"
   | "Weather"
+  | "Drive"
   | "Calendar"
   | "Time & Date";
 

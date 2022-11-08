@@ -8,6 +8,7 @@ import * as GithubAction from "../area/github/github.action";
 import * as GithubReaction from "../area/github/github.reaction";
 import * as GmailAction from "../area/gmail/gmail.action";
 import * as WeatherAction from "../area/weather/weather.action";
+import * as DriveAction from "../area/drive/drive.action";
 import * as CalendarAction from "../area/calendar/calendar.action";
 import * as TimeAction from "../area/time/time.action";
 import { FORMAT } from "./paramFormat";
@@ -110,6 +111,15 @@ export const SERVICES: Service[] = [
         description: "You liked a new song",
         fct: SpotifyAction.checkIsMusicLiked,
         availableInjectParams: ["songName", "artists"],
+      },
+      {
+        id: 3,
+        actionName: "New track added to a playlist",
+        actionParamName: "Playlist name to add the track",
+        paramFormat: null,
+        description: "You added a ne song to a specific playlist",
+        fct: SpotifyAction.addTrackToPlaylist,
+        availableInjectParams: ["songAdded", "SongArtists"],
       },
     ],
     reactions: [
@@ -275,6 +285,25 @@ export const SERVICES: Service[] = [
         paramFormat: FORMAT.time,
         description: "Do something everyday at a precise time",
         fct: TimeAction.everyDayAt,
+        availableInjectParams: [],
+      },
+    ],
+    reactions: [],
+  },
+  {
+    id: 9,
+    serviceName: "Drive",
+    backgroundColor: "#FFBA00",
+    imageUrl: "assets/drive.png",
+    oauthName: null,
+    actions: [
+      {
+        id: 1,
+        actionName: "New file in drive",
+        actionParamName: "",
+        paramFormat: null,
+        description: "New file in your drive",
+        fct: DriveAction.newFileInDrive,
         availableInjectParams: [],
       },
     ],

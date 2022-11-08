@@ -29,6 +29,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     val aboutResponse: MutableLiveData<Response<About>?> = MutableLiveData()
     val listAREAResponse: MutableLiveData<Response<List<ActionReaction>>?> = MutableLiveData()
     val enableResponse: MutableLiveData<Response<ActionReaction>?> = MutableLiveData()
+    val editAreaResponse: MutableLiveData<Response<ActionReaction>?> = MutableLiveData()
     val deleteAreaResponse: MutableLiveData<Response<ActionReaction>?> = MutableLiveData()
 
     // Back calls
@@ -234,6 +235,12 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 (context).loading = false
                 enableResponse.removeObserver(observer)
             }
+        }
+    }
+    fun editArea(auth: String, edit: EditActionReaction) {
+        viewModelScope.launch {
+            val response = repository.putEditArea(auth, edit)
+            editAreaResponse.value = response
         }
     }
     fun deleteArea(auth: String, areaId: Int, context: Context, observer: Observer<Response<ActionReaction>?>) {

@@ -237,7 +237,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             }
         }
     }
-    fun editArea(auth: String, edit: EditActionReaction) {
+    fun putEditArea(auth: String, edit: EditActionReaction) {
         viewModelScope.launch {
             val response = repository.putEditArea(auth, edit)
             editAreaResponse.value = response

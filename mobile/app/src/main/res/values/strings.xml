@@ -57,4 +57,7 @@
     <string name="spinner_desc">Injected action parameters</string>
     <string name="oauth_service_item_button_true">Unlink</string>
     <string name="oauth_service_item_button_false">Link</string>
+    <string name="action_param_hint">actionParam</string>
+    <string name="reaction_param_hint">reactionParam</string>
+    <string name="edit_area_button">Edit</string>
 </resources>

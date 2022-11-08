@@ -22,16 +22,22 @@ export interface Service {
     reactions: Reaction[];
 }
 
-interface Action {
+export interface Action {
     id: number;
     actionName: string;
     actionParamName: string;
+    availableInjectParams: string[];
+    description: string;
+    name: string;
 }
 
-interface Reaction {
+export interface Reaction {
     id: number;
     reactionName: string;
     reactionParamName: string;
+    availableInjectParams: string[];
+    description: string;
+    name: string;
 }
 
 export type ServiceName =
@@ -81,11 +87,19 @@ interface Field {
 export interface Token {
     discordToken: string | undefined;
     discordGuildId: string | undefined;
-    twitterToken: string | undefined;
     githubToken: string | undefined;
     googleToken: string | undefined;
-    trelloToken: string | undefined;
     spotifyToken: string | undefined;
     userId: number;
     id: number;
+}
+
+export interface User {
+    email: string,
+    firstName: string,
+    id: number,
+    lastName: string,
+    password: string,
+    role: string,
+    tokensTable: Token,
 }

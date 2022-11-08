@@ -16,14 +16,14 @@
 
 <script scoped lang="ts">
 import vue from 'vue';
-import { Service } from '../types/index'
+import { Service, User } from '../types/index'
 
 export default vue.extend({
     data() {
         return {
             services: [] as Service[], /** An array that will be filled with the about.json from the server. */
-            user: [],
-            loading: false,
+            user: [] as User[], /** An array that is fill with the user infos (email, first name, last name...) */
+            loading: false, /** Loading when a new oAuth page is loading */
         }
     },
     mounted() {
@@ -33,6 +33,11 @@ export default vue.extend({
         this.postOauth();
     },
     methods: {
+        /**
+         * It's a function that deletes the link between the user and the service.
+         * @param {Object} service - Current service to delete
+         * @data {Array} user
+         */
         deleteServiceLink(service): void {
             try {
                 let toRemove: Object;
@@ -46,11 +51,11 @@ export default vue.extend({
                         [service.oauthName + 'Token'] : true,
                     }
                 }
-                let test = this.$axios.put('/tokens/delete', toRemove);
-                console.log(test)
+                this.$axios.put('/tokens/delete', toRemove);
                 this.$set(this.user.tokensTable, service.oauthName + 'Token', null);
+                this.notification('Your link to ' + service.name + ' has been deleted', 'is-success')
             } catch {
-
+                this.notification('Failed to unlink your ' + service.name + ' account', 'is-success')
             }
         },
         /**
@@ -125,7 +130,7 @@ export default vue.extend({
                 this.notification('A problem occured, please select another ' + this.type, 'is-danger');
                 return;
             }
-            // this.loading = true;
+            this.loading = true;
             const { data: url } = await this.$axios.get("/oauth/" + serviceOauthName + "/link", {
             headers: {
                     Authorization: this.$store.getters.userToken || "noToken",

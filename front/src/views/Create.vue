@@ -11,8 +11,8 @@ import { Area } from '../types/index'
 export default vue.extend({
     data() {
         return {
-            area: {} as Area,
-            loading: true,
+            area: {} as Area, /** Current area creation */
+            loading: true, /** Loading when a new oAuth page is loading */
         }
     },
     mounted() {
@@ -20,11 +20,19 @@ export default vue.extend({
         this.redirect();
     },
     methods: {
+        /**
+         * Getting the area from local storage.
+         * @data {Object} area
+         */
         getLocalStorage(): void {
             let area: Area = JSON.parse(localStorage.getItem('area'));
             if (area != null)
                 this.area = area;
         },
+        /**
+         * Checking the state of the area and redirecting to the appropriate page.
+         * @data {Object} area
+         */
         redirect(): void {
             if (JSON.stringify(this.area)== '{}') {
                 this.$router.push({path: 'services', query: this.$route.query})

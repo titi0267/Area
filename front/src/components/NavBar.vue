@@ -49,28 +49,39 @@
 
 <script scoped lang="ts">
 import vue from 'vue';
+import { User } from '../types/index'
 
 export default vue.extend({
     data() {
         return {
-            user: [],
-            navigation: "",
+            user: [] as User[], /** An array that is fill with the user infos (email, first name, last name...) */
+            navigation: "", /** Current open page on user dropdown */
         }
     },
     mounted() {
         this.getUserInfos();
     },
     watch: {
+        /**
+         * A watcher that is called when the route name changes.
+         */
         '$route.name': function(): void {
             this.checkRoute();
         }
     },
     methods: {
+        /**
+         * A method that is called when the user clicks on the create button. It removes the area from the local storage and redirects the user to the create page.
+         */
         createRedirect(): void {
             localStorage.removeItem('area');
             this.$router.push('/tmp')
-            this.$router.push('/create/action');
+            this.$router.push('/create/action')
         },
+        /**
+         * Checking the route name and setting the navigation variable to the route name.
+         * @data {String} navigation
+         */
         checkRoute(): void {
             if (this.$route.name == 'profile')
                 this.navigation = "profile";

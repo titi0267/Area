@@ -39,31 +39,38 @@
 
 <script scoped lang="ts">
 import vue from 'vue';
+import { Action, Reaction } from '../types/index'
 
 export default vue.extend({
     data() {
         return {
-            action: {},
-            reaction: {}
+            action: {} as Action, /** Current created action */
+            reaction: {} as Reaction, /** Current created reaction */
         }
     },
     mounted() {
-        this.$nextTick(() => {
-            this.getArea('action');
-            this.getArea('reaction');
-        })
+        this.getArea('action');
+        this.getArea('reaction');
     },
     props: {
-        area: Object,
-        services: Array,
+        area: Object /** Object that contains the area creation fields */,
+        services: Array /** Array that contains the About.JSON file */,
     },
     methods: {
-        getArea(type: string) {
-            let area = this.services.find(service => service.id == this.area[type + 'ServiceId']);
-            if (area) {
-                this[type] = area;
-                this[type][type + 's'] = area[type + 's'].find(actrea => actrea.id == this.area[type + 'Id'])
-            }
+        /**
+         * It's a method that is called when the component is mounted. It's used to get the action and reaction from the services array.
+         * @param {string} type - Type between action or reaction
+         * @data {Object} area
+         * @data {Array} services
+         */
+        getArea(type: string): void {
+            this.$nextTick(() => {
+                let area = this.services.find(service => service.id == this.area[type + 'ServiceId']);
+                if (area) {
+                    this[type] = area;
+                    this[type][type + 's'] = area[type + 's'].find(actrea => actrea.id == this.area[type + 'Id']);
+                }
+            })
         }
     }
 })

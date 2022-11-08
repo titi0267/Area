@@ -12,9 +12,10 @@
                 <div ref="loginButton" class="loginButton" @mouseover="validate == false ? moveButton() : ''">
                     <b-button @click="validate == true ? sendLogin() : ''" :type="validate == true ? 'is-success is-light' : 'is-danger is-light'">Login</b-button>
                 </div>
-                <div>
-                    <b-button @click="getGoogleOauthLogin()"></b-button>
-                </div>
+            </div>
+            <p class="or">or</p>
+            <div class="googleOauth">
+                <b-button @click="getGoogleOauthLogin()"> <b-image :src="require('@/assets/google_logo.png')"> </b-image> Login with Google </b-button>
             </div>
             <div class="register">
                 <router-link to="/register">
@@ -46,7 +47,6 @@ export default vue.extend({
             } as Login,
             validate: false, /** If this variable is true all the fields form are valides. */
             timeout: false, /** This variable is used to block the time of the button animation */
-            oauthURL: ""
         }
     },
     mounted() {
@@ -54,36 +54,48 @@ export default vue.extend({
             this.postGoogleOauth();
     },
     methods: {
+        /**
+         * It's a function that check if the user is authenticated and post the oauth code to the server.
+         * @async
+         */
         async postGoogleOauth(): Promise<void> {
             const code: string = this.$route.query.code;
 
             if (code == null || code == undefined) {
-                this.$emit('previous');
-                this.$emit('save');
-                this.$emit('loading');
                 this.notification("Your authentification has failed", 'is-danger');
+                localStorage.removeItem('google-oauth')
                 return;
             }
             try {
-            let {data: resp} = await this.$axios.post("/oauth/google/register", { code })
-            localStorage.removeItem('google-oauth')
-            localStorage.setItem('usr-token', resp.token);
-            this.$store.commit('updateToken', resp.token);
-            this.$router.push('/home');
-            } catch (e) {
-                console.log(e)
+                let {data: resp} = await this.$axios.post("/oauth/google/register", {
+                    code: code
+                })
+                localStorage.removeItem('google-oauth')
+                localStorage.setItem('usr-token', resp.token);
+                this.$store.commit('updateToken', resp.token);
+                this.$router.push('/home');
+            } catch {
+                this.notification("Your authentification has failed", 'is-danger');
+                localStorage.removeItem('google-oauth')
             }
 
         },
+        /**
+         * It's a function that get the google oauth url for login.
+         * @async
+         */
         async getGoogleOauthLogin(): Promise<void> {
-            const {data: url} = await this.$axios.get("/oauth/google/register", {
-                headers: {
-                    Authorization: this.$store.getters.userToken || "noToken",
-                },
-            })
-            this.oauthURL = url;
-            localStorage.setItem('google-oauth', 'true');
-            window.location.href = this.oauthURL;
+            try {
+                const {data: url} = await this.$axios.get("/oauth/google/register", {
+                    headers: {
+                        Authorization: this.$store.getters.userToken || "noToken",
+                    },
+                })
+                localStorage.setItem('google-oauth', 'true');
+                window.location.href = url;
+            } catch {
+                this.notification("Internal server error", 'is-danger');
+            }
         },
         /**
          * It's a function that check if the entire form is valide or not.
@@ -206,6 +218,35 @@ export default vue.extend({
             width: fit-content;
             left: 50px;
             position: relative;
+        }
+    }
+    .or {
+        margin-top: 15px;
+        font-family: Century Gothic Regular;
+    }
+    .googleOauth {
+        margin-top: 15px;
+        :deep(button) {
+            background-color: #537ebf;
+            width: 250px;
+            font-family: Century Gothic Regular;
+            color: white;
+            font-weight: 700;
+            span {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+            }
+            figure {
+                height: 30px;
+                width: auto;
+                margin-right: 15px;
+                img {
+                    height: 100%;
+                    width: auto;
+                }
+            }
         }
     }
 }

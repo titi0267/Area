@@ -53,6 +53,7 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         view.findViewById<TextView>(R.id.reactionServiceTextInItem).text = aboutClass.getServiceNameById(item.reactionServiceId)
         view.findViewById<TextView>(R.id.reactionNameInItem).text = aboutClass.getServiceReactionNameById(item.reactionServiceId, item.reactionId)
         view.findViewById<TextView>(R.id.reactionParamInItem).text = item.reactionParam
+        view.findViewById<Switch>(R.id.enableItemListSwitch).isChecked = item.enabled
         view.findViewById<Switch>(R.id.enableItemListSwitch).setOnCheckedChangeListener { _, isChecked ->
             onEnableDisableSwitch(isChecked, token)
         }

@@ -161,6 +161,18 @@ const getYoutubeChannelName = (url: string) => {
   return matches[1];
 };
 
+const getTime = (actionParam: string) => {
+  const regex = FORMAT.time;
+
+  const matches = actionParam.match(regex);
+
+  if (!matches || matches.length < 3) return null;
+
+  if (parseInt(matches[1]) > 23) return null;
+
+  return { hours: parseInt(matches[1]), minutes: parseInt(matches[2]) };
+};
+
 const getGithubIssueParams = (reactionParam: string) => {
   let regex = FORMAT.githubIssueFormat;
 
@@ -169,6 +181,26 @@ const getGithubIssueParams = (reactionParam: string) => {
   if (!matches || matches.length < 4) return null;
 
   return { owner: matches[1], repo: matches[2], title: matches[3] };
+};
+
+const getMailContentParams = (reactionParam: string) => {
+  let regex = FORMAT.mailContent;
+
+  const matches = reactionParam.match(regex);
+
+  if (!matches || matches.length < 4) return null;
+
+  return { to: matches[1], subject: matches[2], content: matches[3] };
+};
+
+const getGithubPullRequestParams = (actionParam: string) => {
+  let regex = FORMAT.githubPullRequestFormat;
+
+  const matches = actionParam.match(regex);
+
+  if (!matches || matches.length < 3) return null;
+
+  return { owner: matches[1], repo: matches[2] };
 };
 
 const injectParamInReaction = <T extends Object>(
@@ -180,8 +212,6 @@ const injectParamInReaction = <T extends Object>(
   const matches = reactionParam.matchAll(matchParamRegex);
 
   for (const match of matches) {
-    if (!match || !match[2]) continue;
-
     const key = match[2];
 
     if (!param.hasOwnProperty(key)) continue;
@@ -239,13 +269,7 @@ const getSpotifyClient = async (userId: number) => {
     clientSecret: ENV.spotifyClientSecret,
   });
 
-  spotifyApi.setRefreshToken(token);
-
-  const accessToken = (await spotifyApi.refreshAccessToken()).body.access_token;
-
-  spotifyApi.setAccessToken(accessToken);
-
-  return spotifyApi;
+  return { client: spotifyApi, token };
 };
 
 export {
@@ -261,4 +285,7 @@ export {
   getGithubClient,
   getSpotifyClient,
   getGithubIssueParams,
+  getTime,
+  getMailContentParams,
+  getGithubPullRequestParams,
 };

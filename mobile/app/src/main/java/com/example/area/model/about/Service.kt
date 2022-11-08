@@ -5,7 +5,7 @@ data class Service (
     val name: String,
     val backgroundColor: String,
     val imageUrl: String,
-    val oauthName: String,
+    val oauthName: String?,
     val actions: List<Action>,
     val reactions: List<Reaction>
 )

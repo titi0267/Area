@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.area.AREAApplication
 import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.model.OAuthCode
@@ -19,6 +20,7 @@ import com.example.area.utils.SessionManager
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.internal.wait
+import retrofit2.Response
 
 class OAuthConnectionActivity : AppCompatActivity() {
 
@@ -56,14 +58,20 @@ class OAuthConnectionActivity : AppCompatActivity() {
         val url = sessionManager.fetchAuthToken("url") ?: return
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
-
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        viewModel.postServiceCode(token, service, code)
-        viewModel.emptyResponse.observe(this, Observer { response ->
+        val observer: Observer<Response<Unit>?> = Observer { response ->
+            if (response == null) {
+                finish()
+                return@Observer
+            }
             if (response.isSuccessful) {
+                (this.application as AREAApplication).setTokenInTokenTable(service, code.code)
                 Toast.makeText(this, "Code successfully added", Toast.LENGTH_SHORT).show()
             }
             finish()
-        })
+        }
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        viewModel.postServiceCode(token, service, code, this, observer)
+        viewModel.emptyResponse.observe(this, observer)
     }
 }

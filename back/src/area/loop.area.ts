@@ -10,20 +10,20 @@ const areaLoop = async () => {
       area.actionId,
     );
 
-    if (action === null) return;
+    if (action === null) continue;
     try {
       const reactionParam = await action(area);
 
-      if (reactionParam === null) return;
+      if (reactionParam === null) continue;
 
       const reaction = ServiceHelper.getReactionFct(
         area.reactionServiceId,
         area.reactionId,
       );
 
-      if (reaction === null) return;
+      if (reaction === null) continue;
 
-      reaction(reactionParam, area.userId);
+      await reaction(reactionParam, area.userId);
     } catch (e) {
       console.log(e);
     }

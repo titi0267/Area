@@ -5,38 +5,44 @@
             <a @click="$router.push('/home')" :style="{ 'color' : ($route.path == '/home' ? '#19191a' : '') }">Home</a>
             <a @click="createRedirect()" :style="{ 'color' : ($route.path.includes('create') ? '#19191a' : '') }">Create</a>
         </div>
-        <div class="profile">
-            <b-dropdown
-                v-model="navigation"
-                position="is-bottom-left"
-                append-to-body
-                aria-role="menu">
-                <template #trigger>
-                    <a class="navbarItem"
-                        role="button">
-                        <div class="userIcon">
-                            <b-icon icon="circle-user" size="is-large"></b-icon>
-                        </div>
-                    </a>
-                </template>
-                <b-dropdown-item custom aria-role="profileItem">
-                    Logged as <b> {{ user.firstName }} {{ user.lastName }} </b>
-                </b-dropdown-item>
-                <hr class="dropdown-divider">
-                <b-dropdown-item value="profile" class="dropItem" @click="$router.push('/profile')">
-                    <b-icon icon="address-card"></b-icon>
-                    Profile
-                </b-dropdown-item>
-                <b-dropdown-item value="services" class="dropItem" @click="$router.push('/services')">
-                    <b-icon icon="link"></b-icon>
-                    Services
-                </b-dropdown-item>
-                <hr class="dropdown-divider">
-                <b-dropdown-item value="logout" aria-role="profileItem" @click="logout()" class="dropItem">
-                    <b-icon icon="right-from-bracket"></b-icon>
-                    Logout
-                </b-dropdown-item>
-            </b-dropdown>
+        <div class="right">
+            <div class="APK">
+                <b-icon icon="download"/>
+                <p>Download APK</p>
+            </div>
+            <div class="profile">
+                <b-dropdown
+                    v-model="navigation"
+                    position="is-bottom-left"
+                    append-to-body
+                    aria-role="menu">
+                    <template #trigger>
+                        <a class="navbarItem"
+                            role="button">
+                            <div class="userIcon">
+                                <b-icon icon="circle-user" size="is-large"></b-icon>
+                            </div>
+                        </a>
+                    </template>
+                    <b-dropdown-item custom aria-role="profileItem">
+                        Logged as <b> {{ user.firstName }} {{ user.lastName }} </b>
+                    </b-dropdown-item>
+                    <hr class="dropdown-divider">
+                    <b-dropdown-item value="profile" class="dropItem" @click="$router.push('/profile')">
+                        <b-icon icon="address-card"></b-icon>
+                        Profile
+                    </b-dropdown-item>
+                    <b-dropdown-item value="services" class="dropItem" @click="$router.push('/services')">
+                        <b-icon icon="link"></b-icon>
+                        Services
+                    </b-dropdown-item>
+                    <hr class="dropdown-divider">
+                    <b-dropdown-item value="logout" aria-role="profileItem" @click="logout()" class="dropItem">
+                        <b-icon icon="right-from-bracket"></b-icon>
+                        Logout
+                    </b-dropdown-item>
+                </b-dropdown>
+            </div>
         </div>
     </div>
 </template>
@@ -110,7 +116,7 @@ $navbar-height: 75px;
     position: fixed;
     z-index: 10;
     margin: 10px;
-    width: -webkit-fill-available;
+    width: calc(100% - 20px);
     box-shadow: 0 0 15px 1px #00000099;
     border-radius: 20px;
     .logo {
@@ -128,7 +134,6 @@ $navbar-height: 75px;
             margin-right: 15px;
         }
         a {
-            font-family: Avenir;
             font-size: 25px;
             color: #e5e4e4;
             text-transform: uppercase;
@@ -140,19 +145,38 @@ $navbar-height: 75px;
         }
 
     }
-    .profile {right: -12px;
-        position: relative;
-        width: 206.53px;
+    .right {
         display: flex;
         justify-content: flex-end;
-        >:deep(div) {
-            .icon {
-                color: rgb(25 25 66 / 81%);
+        align-items: center;
+        width: 206.53px;
+        .APK {
+            font-size: 13px;
+            p {
+                top: 9px;
+                position: relative;
+                font-family: Avenir Roman;
             }
-            margin-right: 23px;
-            svg {
-                width: 34px;
-                height: 34px;
+            :deep(.icon) {
+                top: 9px;
+                position: relative;
+                cursor: pointer;
+            }
+        }
+        .profile {
+            right: -12px;
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+            >:deep(div) {
+                .icon {
+                    color: rgb(25 25 66 / 81%);
+                }
+                margin-right: 23px;
+                svg {
+                    width: 34px;
+                    height: 34px;
+                }
             }
         }
     }

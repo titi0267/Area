@@ -31,6 +31,14 @@ class AREAApplication : Application() {
         userInfo = user
     }
 
+    fun setTokenInTokenTable(service: String, token: String?) {
+        if (userInfo == null)
+            return
+        val tokensTable = userInfo!!.tokensTable.toMutableMap()
+        tokensTable[service + "Token"] = token
+        userInfo!!.tokensTable = tokensTable
+    }
+
     fun isAboutClassSet() : Boolean {
         aboutClass ?: return false
         return true

@@ -167,136 +167,6 @@ export default (
     },
   );
 
-  instance.get(
-    "/spotify/link/front",
-    (req: FastifyRequest, res: FastifyReply) => {
-      const rootUrl = "https://accounts.spotify.com/authorize";
-      const options = {
-        client_id: ENV.spotifyClientId,
-        response_type: "code",
-        redirect_uri: ENV.spotifyRedirectUrl,
-        scope: [
-          "user-read-private",
-          "user-read-email",
-          "user-modify-playback-state",
-          "user-read-playback-state",
-          "user-read-playback-position",
-          "user-read-recently-played",
-          "playlist-read-private",
-          "user-read-currently-playing",
-          "user-library-modify",
-          "user-library-read",
-          "playlist-modify-private",
-          "playlist-modify-public",
-        ].join(" "),
-      };
-
-      const qs = new URLSearchParams(options);
-
-      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
-    },
-  );
-
-  instance.get("/discord/link/", (req: FastifyRequest, res: FastifyReply) => {
-    const rootUrl = "https://discord.com/api/oauth2/authorize";
-
-    const option = {
-      client_id: ENV.discordClientId,
-      response_type: "code",
-      permissions: "8",
-      redirect_uri: ENV.discordRedirectUrl,
-      scope: [
-        "identify",
-        "email",
-        "guilds",
-        "connections",
-        "bot",
-        "guilds.join",
-      ].join(" "),
-    };
-
-    const qs = new URLSearchParams(option);
-
-    res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
-  });
-
-  instance.get(
-    "/spotify/link/mobile",
-    (req: FastifyRequest, res: FastifyReply) => {
-      const rootUrl = "https://accounts.spotify.com/authorize";
-      const options = {
-        client_id: ENV.spotifyClientId,
-        response_type: "code",
-        redirect_uri: ENV.spotifyRedirectUrlMobile,
-        scope: [
-          "user-read-private",
-          "user-read-email",
-          "user-modify-playback-state",
-          "user-read-playback-position",
-          "user-read-recently-played",
-          "playlist-read-private",
-          "user-read-currently-playing",
-          "user-read-playback-state",
-        ].join(" "),
-      };
-
-      const qs = new URLSearchParams(options);
-
-      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
-    },
-  );
-
-  instance.get(
-    "/google/link/front",
-    (req: FastifyRequest, res: FastifyReply) => {
-      const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
-
-      const options = {
-        redirect_uri: ENV.googleRedirectUrl,
-        client_id: ENV.googleClientId,
-        access_type: "offline",
-        response_type: "code",
-        prompt: "consent",
-        scope: [
-          "https://www.googleapis.com/auth/userinfo.profile",
-          "https://www.googleapis.com/auth/userinfo.email",
-          "https://www.googleapis.com/auth/youtube.readonly",
-          "https://www.googleapis.com/auth/youtube",
-          "https://www.googleapis.com/auth/youtube.upload",
-          "https://www.googleapis.com/auth/gmail.modify",
-          "https://www.googleapis.com/auth/gmail.compose",
-        ].join(" "),
-      };
-      const qs = new URLSearchParams(options);
-
-      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
-    },
-  );
-  instance.get(
-    "/google/link/mobile",
-    (req: FastifyRequest, res: FastifyReply) => {
-      const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
-
-      const options = {
-        redirect_uri: ENV.googleRedirectUrlMobile,
-        client_id: ENV.googleClientId,
-        access_type: "offline",
-        response_type: "code",
-        prompt: "consent",
-        scope: [
-          "https://www.googleapis.com/auth/userinfo.profile",
-          "https://www.googleapis.com/auth/userinfo.email",
-          "https://www.googleapis.com/auth/youtube.readonly",
-          "https://www.googleapis.com/auth/youtube",
-          "https://www.googleapis.com/auth/youtube.upload",
-        ].join(" "),
-      };
-      const qs = new URLSearchParams(options);
-
-      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
-    },
-  );
-
   instance.post(
     "/spotify",
     { onRequest: [authentificationMiddleware()] },
@@ -325,35 +195,95 @@ export default (
       res.status(httpStatus.OK).send(tokenTable);
     },
   );
-  instance.get(
-    "/github/link/front",
-    (req: FastifyRequest, res: FastifyReply) => {
-      const rootUrl = "https://github.com/login/oauth/authorize";
 
-      const options = {
-        redirect_uri: ENV.githubRedirectUrl,
-        client_id: ENV.githubClientId,
-        scope: ["repo"].join(" "),
-      };
-      const qs = new URLSearchParams(options);
+  instance.get("/spotify/link", (req: FastifyRequest, res: FastifyReply) => {
+    const rootUrl = "https://accounts.spotify.com/authorize";
+    const options = {
+      client_id: ENV.spotifyClientId,
+      response_type: "code",
+      redirect_uri: ENV.spotifyRedirectUrl,
+      scope: [
+        "user-read-private",
+        "user-read-email",
+        "user-modify-playback-state",
+        "user-read-playback-state",
+        "user-read-playback-position",
+        "user-read-recently-played",
+        "playlist-read-private",
+        "user-read-currently-playing",
+        "user-library-modify",
+        "user-library-read",
+        "playlist-modify-private",
+        "playlist-modify-public",
+      ].join(" "),
+    };
 
-      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
-    },
-  );
-  instance.get(
-    "/github/link/mobile",
-    (req: FastifyRequest, res: FastifyReply) => {
-      const rootUrl = "https://github.com/login/oauth/authorize";
+    const qs = new URLSearchParams(options);
 
-      const options = {
-        redirect_uri: ENV.githubRedirectUrlMobile,
-        client_id: ENV.githubClientId,
-      };
-      const qs = new URLSearchParams(options);
+    res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+  });
 
-      res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
-    },
-  );
+  instance.get("/discord/link", (req: FastifyRequest, res: FastifyReply) => {
+    const rootUrl = "https://discord.com/api/oauth2/authorize";
+
+    const option = {
+      client_id: ENV.discordClientId,
+      response_type: "code",
+      permissions: "8",
+      redirect_uri: ENV.discordRedirectUrl,
+      scope: [
+        "identify",
+        "email",
+        "guilds",
+        "connections",
+        "bot",
+        "guilds.join",
+      ].join(" "),
+    };
+
+    const qs = new URLSearchParams(option);
+
+    res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+  });
+
+  instance.get("/google/link", (req: FastifyRequest, res: FastifyReply) => {
+    const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+
+    const options = {
+      redirect_uri: ENV.googleRedirectUrl,
+      client_id: ENV.googleClientId,
+      access_type: "offline",
+      response_type: "code",
+      prompt: "consent",
+      scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/youtube.readonly",
+        "https://www.googleapis.com/auth/youtube",
+        "https://www.googleapis.com/auth/youtube.upload",
+        "https://www.googleapis.com/auth/gmail.modify",
+        "https://www.googleapis.com/auth/gmail.compose",
+        "https://www.googleapis.com/auth/drive",
+        "https://www.googleapis.com/auth/calendar",
+      ].join(" "),
+    };
+    const qs = new URLSearchParams(options);
+
+    res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+  });
+
+  instance.get("/github/link", (req: FastifyRequest, res: FastifyReply) => {
+    const rootUrl = "https://github.com/login/oauth/authorize";
+
+    const options = {
+      redirect_uri: ENV.githubRedirectUrl,
+      client_id: ENV.githubClientId,
+      scope: ["repo"].join(" "),
+    };
+    const qs = new URLSearchParams(options);
+
+    res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+  });
 
   done();
 };

@@ -1,12 +1,4 @@
-export interface GoogleOauthBody {
-  code: string;
-}
-
-export interface SpotifyOauthBody {
-  code: string;
-}
-
-export interface GithubOauthBody {
+export interface BaseOauthBody {
   code: string;
 }
 

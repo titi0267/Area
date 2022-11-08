@@ -14,9 +14,7 @@ import {
   discordOauthQueryValidator,
 } from "../schema/oauth.schema";
 import {
-  GoogleOauthBody,
-  SpotifyOauthBody,
-  GithubOauthBody,
+  BaseOauthBody,
   DiscordOauthBody,
 } from "../types/body/oauthRequestBody.types";
 import * as SecurityHelper from "../helpers/security.helper";
@@ -25,16 +23,8 @@ import ENV from "../env";
 import authentificationMiddleware from "../middlewares/authentification.middleware";
 import { TokenService, UserService } from "../services";
 
-type GoogleOauthRequest = FastifyRequest<{
-  Body: GoogleOauthBody;
-}>;
-
-type SpotifyOauthRequest = FastifyRequest<{
-  Body: SpotifyOauthBody;
-}>;
-
-type GithubOauthRequest = FastifyRequest<{
-  Body: GithubOauthBody;
+type BaseOauthRequest = FastifyRequest<{
+  Body: BaseOauthBody;
 }>;
 
 type DiscordOauthRequest = FastifyRequest<{
@@ -49,7 +39,7 @@ export default (
   instance.post(
     "/google",
     { onRequest: [authentificationMiddleware()] },
-    async (req: GoogleOauthRequest, res: FastifyReply) => {
+    async (req: BaseOauthRequest, res: FastifyReply) => {
       if (!googleOauthQueryValidator(req.body)) ErrorHelper.throwBodyError();
 
       const userInfos = SecurityHelper.getUserInfos(req);
@@ -75,7 +65,7 @@ export default (
 
   instance.post(
     "/google/register",
-    async (req: GoogleOauthRequest, res: FastifyReply) => {
+    async (req: BaseOauthRequest, res: FastifyReply) => {
       const code = req.body.code;
 
       const oauthClient = new google.auth.OAuth2(
@@ -107,7 +97,7 @@ export default (
   instance.post(
     "/github",
     { onRequest: [authentificationMiddleware()] },
-    async (req: GithubOauthRequest, res: FastifyReply) => {
+    async (req: BaseOauthRequest, res: FastifyReply) => {
       if (!githubOauthQueryValidator(req.body)) ErrorHelper.throwBodyError();
 
       const userInfos = SecurityHelper.getUserInfos(req);
@@ -170,7 +160,7 @@ export default (
   instance.post(
     "/spotify",
     { onRequest: [authentificationMiddleware()] },
-    async (req: SpotifyOauthRequest, res: FastifyReply) => {
+    async (req: BaseOauthRequest, res: FastifyReply) => {
       if (!spotifyOauthQueryValidator(req.body)) ErrorHelper.throwBodyError();
 
       const userInfos = SecurityHelper.getUserInfos(req);

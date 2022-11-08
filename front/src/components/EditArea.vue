@@ -2,35 +2,37 @@
     <div id="EditArea" :style="{ 'background' : `linear-gradient(to right, ${action ? action.backgroundColor : ''}, ${reaction ? reaction.backgroundColor : ''})` }">
         <div class="action-param">
             <p>Action parameter</p>
-            <b-input v-model="area.actionParam"></b-input>
+            <b-input :value="area.actionParam" @input="debounceUpdate($event, 'action')"></b-input>
         </div>
         <div class="manage">
             <div class="edit">
                 <b-icon icon="trash" @click.native="deleteArea()"></b-icon>
             </div>
-            <b-switch size="is-medium" passive-type="is-danger" type="is-success" v-model="area.enabled" @input="enableDisableArea()"></b-switch>
+            <b-switch size="is-medium" passive-type="is-danger" type="is-success" v-model="area.enabled" @input="postArea()"></b-switch>
         </div>
         <div class="reaction-param">
             <p>Reaction parameter</p>
-            <b-input v-model="area.actionParam"></b-input>
+            <b-input :value="area.reactionParam" @input="debounceUpdate($event, 'reaction')"></b-input>
         </div>
     </div>
 </template>
 
 <script scoped lang="ts">
 import vue from 'vue';
+import _ from "lodash";
 
 export default vue.extend({
-    data() {
-        return {
-        }
-    },
     props: {
-        area: Object,
-        action: Object,
-        reaction: Object,
+        area: Object /** Object that contains the area creation fields */,
+        action: Object, /** Current action */
+        reaction: Object, /** Current reaction */
     },
     methods: {
+        /**
+         * It's a function that delete area in back-end server.
+         * @data {Object} area
+         * @async
+         */
         async deleteArea(): Promise<void> {
             await this.$axios.delete("/areas/" + this.area.id, {
                 headers: {
@@ -39,7 +41,20 @@ export default vue.extend({
             })
             this.$emit('deleted')
         },
-        async enableDisableArea(): Promise<void> {
+        /**
+         * It's a function that wait 400ms before post the new values in back-end server.
+         * @data {Object} area
+         */
+        debounceUpdate: _.debounce(function(input, type: string): void {
+            this.area[type + 'Param'] = input;
+            this.postArea()
+        }, 400),
+        /**
+         * It's a function that post the new values in back-end server.
+         * @data {Object} area
+         * @async
+         */
+        async postArea(): Promise<void> {
             try {
                 await this.$axios.put("/areas/", {
                     areaId: this.area.id,
@@ -51,8 +66,9 @@ export default vue.extend({
                         Authorization: this.$store.getters.userToken || "noToken",
                     }
                 })
+                this.notification("Your area has been updated !", "is-success");
             } catch {
-                
+                this.notification("Failed to update your area", "is-danger");
             }
         }
     }

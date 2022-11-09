@@ -3,10 +3,7 @@ package com.example.area.adapter
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
-import android.hardware.Camera.Area
-import android.media.Image
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +16,7 @@ import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
-import com.example.area.activity.OAuthConnectionActivity
+import com.example.area.activity.OAuthLinkingActivity
 import com.example.area.model.OAuthServiceListElement
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
@@ -73,7 +70,7 @@ class OAuthServiceItemAdapter(private val context: Context, private val dataset:
             if (response.isSuccessful) {
                 val oAuthLink = response.body()!!.toString()
                 val bundle = Bundle()
-                val intent = Intent(context as AreaActivity, OAuthConnectionActivity::class.java)
+                val intent = Intent(context as AreaActivity, OAuthLinkingActivity::class.java)
                 bundle.putString("link", oAuthLink)
                 bundle.putString("service", service)
                 intent.putExtras(bundle)

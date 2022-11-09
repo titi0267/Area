@@ -79,12 +79,6 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
-            path: '/client.apk',
-            name: 'download-apk',
-            component: Download,
-            meta: { requiresAuth: true }
-        },
-        {
             path: '/:pathMatch(.*)*',
             name: 'not-found',
             component: NotFound,

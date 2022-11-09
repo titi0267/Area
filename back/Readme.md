@@ -363,7 +363,7 @@ instance.post(
   reactions: []
 ```
 
-### If your does not require oauth
+### If your service does not require oauth
 
 6. Add service name at ServiceName type in src/types/areaServices/areaServices, the service logo in assets/types.ts and then add the service to src/constants/serviceList.ts with the following format:
 

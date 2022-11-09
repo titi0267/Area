@@ -281,7 +281,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     }
     fun postRegisterWithGoogle(code: OAuthCode, context: Context, observer: Observer<Response<Token>?>) {
         viewModelScope.launch {
-            (context as UserConnectionActivity).loading = true
             try {
                 val response = repository.postRegisterWithGoogle(code)
                 userResponse.value = response
@@ -295,7 +294,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 userResponse.value = null
             }
             finally {
-                context.loading = false
                 userResponse.removeObserver(observer)
             }
         }

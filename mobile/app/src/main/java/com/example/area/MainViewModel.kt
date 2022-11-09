@@ -1,6 +1,7 @@
 package com.example.area
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -233,6 +234,8 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             finally {
                 (context).loading = false
                 enableResponse.removeObserver(observer)
+                Log.d("???allo", enableResponse.hasActiveObservers().toString())
+                Log.d("???laterre", enableResponse.hasObservers().toString())
             }
         }
     }

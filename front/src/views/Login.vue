@@ -13,6 +13,10 @@
                     <b-button @click="validate == true ? sendLogin() : ''" :type="validate == true ? 'is-success is-light' : 'is-danger is-light'">Login</b-button>
                 </div>
             </div>
+            <p class="or">or</p>
+            <div class="googleOauth">
+                <b-button @click="getGoogleOauthLogin()"> <b-image :src="require('@/assets/google_logo.png')"> </b-image> Login with Google </b-button>
+            </div>
             <div class="register">
                 <router-link to="/register">
                     <a>No account ? Register</a>
@@ -45,7 +49,54 @@ export default vue.extend({
             timeout: false, /** This variable is used to block the time of the button animation */
         }
     },
+    mounted() {
+        if (localStorage.getItem('google-oauth') == 'true')
+            this.postGoogleOauth();
+    },
     methods: {
+        /**
+         * It's a function that check if the user is authenticated and post the oauth code to the server.
+         * @async
+         */
+        async postGoogleOauth(): Promise<void> {
+            const code: string = this.$route.query.code;
+
+            if (code == null || code == undefined) {
+                this.notification("Your authentification has failed", 'is-danger');
+                localStorage.removeItem('google-oauth')
+                return;
+            }
+            try {
+                let {data: resp} = await this.$axios.post("/oauth/google/register", {
+                    code: code
+                })
+                localStorage.removeItem('google-oauth')
+                localStorage.setItem('usr-token', resp.token);
+                this.$store.commit('updateToken', resp.token);
+                this.$router.push('/home');
+            } catch {
+                this.notification("Your authentification has failed", 'is-danger');
+                localStorage.removeItem('google-oauth')
+            }
+
+        },
+        /**
+         * It's a function that get the google oauth url for login.
+         * @async
+         */
+        async getGoogleOauthLogin(): Promise<void> {
+            try {
+                const {data: url} = await this.$axios.get("/oauth/google/register", {
+                    headers: {
+                        Authorization: this.$store.getters.userToken || "noToken",
+                    },
+                })
+                localStorage.setItem('google-oauth', 'true');
+                window.location.href = url;
+            } catch {
+                this.notification("Internal server error", 'is-danger');
+            }
+        },
         /**
          * It's a function that check if the entire form is valide or not.
          * @data {Object} login
@@ -168,6 +219,35 @@ export default vue.extend({
             width: fit-content;
             left: 50px;
             position: relative;
+        }
+    }
+    .or {
+        margin-top: 15px;
+        font-family: Century Gothic Regular;
+    }
+    .googleOauth {
+        margin-top: 15px;
+        :deep(button) {
+            background-color: #537ebf;
+            width: 250px;
+            font-family: Century Gothic Regular;
+            color: white;
+            font-weight: 700;
+            span {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+            }
+            figure {
+                height: 30px;
+                width: auto;
+                margin-right: 15px;
+                img {
+                    height: 100%;
+                    width: auto;
+                }
+            }
         }
     }
 }

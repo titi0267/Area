@@ -8,6 +8,7 @@ import ClientError from "../error";
 import { Token, UserWithTokens } from "../types/global.types";
 import ENV from "../env";
 import { TokenService } from ".";
+import { google } from "googleapis";
 
 const prisma = new PrismaClient();
 
@@ -79,7 +80,7 @@ const connectOauthUser = async (
   id: string | null,
   googleToken: string | null,
 ): Promise<Token> => {
-  if (!firstName || !lastName || !email || !id || !googleToken) {
+  if (!firstName || !email || !id || !googleToken) {
     throw new ClientError({
       name: "Invalid Credential",
       message: "Invalid google account",
@@ -98,7 +99,7 @@ const connectOauthUser = async (
     data: {
       email,
       firstName,
-      lastName,
+      lastName: lastName || "",
       password: hashedPassword,
       tokensTable: { create: {} },
     },

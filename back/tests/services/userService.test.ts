@@ -81,10 +81,27 @@ describe("Test connect oauth user service", () => {
 
       await UserService.removeUserById(users[0].id);
     });
+
+    test("Create one valid oauth user where lastName field is null", async () => {
+      const token = await UserService.connectOauthUser(
+        "Ludo",
+        null,
+        "ludostr@mail.com",
+        "passwd",
+        "ezrtyuiopazekiazjeiaz",
+      );
+      const users = await UserService.getAllUsers();
+
+      expect(token.token.length).toBeGreaterThan(1);
+      expect(users[0].lastName).toBe("");
+
+      await UserService.removeUserById(users[0].id);
+    });
+
   });
 
   describe("Test error cases", () => {
-    test("Create user but one field is null", async () => {
+    test("Create user but one field is null (set apart lastName)", async () => {
       try {
         await UserService.connectOauthUser(
           "Ludo",

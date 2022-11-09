@@ -26,6 +26,8 @@ export default vue.extend({
     height: 100vh;
 }
 
+/** ALL FONTS ARE LOADED HERE */
+
 @font-face {
     font-family: "Hitmo Regular";
     src: url("@/assets/fonts/HITMO-REGULAR.ttf");

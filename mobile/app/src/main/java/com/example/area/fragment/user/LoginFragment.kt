@@ -1,5 +1,6 @@
 package com.example.area.fragment.user
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,8 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
-import com.example.area.activity.MainActivity
-import com.example.area.activity.UserConnectionActivity
+import com.example.area.activity.*
 import com.example.area.model.LoginFields
 import com.example.area.model.Token
 import com.example.area.repository.Repository
@@ -43,7 +43,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         view.findViewById<Button>(R.id.login_with_google_button).setOnClickListener {
             if ((context as UserConnectionActivity).loading)
                 return@setOnClickListener
-            (context as UserConnectionActivity).changeFragment(GoogleOAuthFragment(), "google_oauth_login")
+            getOAuthLinkRequestThenOAuth()
         }
         view.findViewById<Button>(R.id.request_button).setOnClickListener {
             if ((context as UserConnectionActivity).loading)
@@ -105,5 +105,29 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     {
         textFieldsFocusListener(view, R.id.login_email_field_edit_text, R.id.login_email_field_layout, ::checkEmail)
         textFieldsFocusListener(view, R.id.login_password_field_edit_text, R.id.login_password_field_layout, ::checkPasswordLogin)
+    }
+
+    private fun getOAuthLinkRequestThenOAuth() {
+        val sessionManager = SessionManager(context as UserConnectionActivity)
+        val url = sessionManager.fetchAuthToken("url") ?: return
+        val rep = Repository(url)
+        val viewModelFactory = MainViewModelFactory(rep)
+        val observer: Observer<Response<String>?> = Observer { response ->
+            if (response == null)
+                return@Observer
+            if (response.isSuccessful) {
+                val oAuthLink = response.body()!!.toString()
+                val bundle = Bundle()
+                val intent = Intent(context as UserConnectionActivity, OAuthLoginWithGoogleActivity::class.java)
+                Log.d("link", oAuthLink)
+                bundle.putString("link", oAuthLink)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
+        }
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        viewModel.getGoogleRegisterLink(context as UserConnectionActivity, observer)
+        viewModel.linkResponse.observe(context as UserConnectionActivity, observer)
     }
 }

@@ -24,6 +24,7 @@ import com.example.area.utils.SessionManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.area.repository.Repository
+import com.google.android.material.switchmaterial.SwitchMaterial
 import retrofit2.Response
 
 class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout.fragment_area_list_item) {
@@ -31,7 +32,7 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
     private var abt: About? = null
     private lateinit var viewModel: MainViewModel
     private lateinit var enable: EnableDisable
-    private var enabledStatus: Boolean = false
+    private var enabledStatus: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,9 +59,15 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         view.findViewById<TextView>(R.id.reactionServiceTextInItem).text = aboutClass.getServiceNameById(item.reactionServiceId)
         view.findViewById<TextView>(R.id.reactionNameInItem).text = aboutClass.getServiceReactionNameById(item.reactionServiceId, item.reactionId)
         view.findViewById<TextView>(R.id.reactionParamInItem).text = item.reactionParam
-        view.findViewById<Switch>(R.id.enableItemListSwitch).isChecked = item.enabled
-        view.findViewById<Switch>(R.id.enableItemListSwitch).setOnCheckedChangeListener { _, isChecked ->
-            onEnableDisableSwitch(isChecked, token, view)
+        view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).isChecked = item.enabled
+        view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).setOnCheckedChangeListener {_, _ ->}
+        view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).setOnClickListener {
+            view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).isChecked = !view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).isChecked
+            Log.d("Loading value", (context as AreaActivity).loading.toString())
+            Log.d("Enable Status in listen", enabledStatus.toString())
+            if ((context as AreaActivity).loading)
+                return@setOnClickListener
+            onEnableDisableSwitch(view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).isChecked, token, view)
         }
         view.findViewById<Button>(R.id.deleteItemListButton).setOnClickListener {
             onDeleteButton(token)
@@ -68,19 +75,21 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         return view
     }
 
-
     private fun onEnableDisableSwitch(isChecked: Boolean, token: String?, view:View) {
+        Log.d("I don't get it", "really not")
         val observer: Observer<Response<ActionReaction>?> = Observer { response ->
-            if (response == null) {
-                view.findViewById<Switch>(R.id.enableItemListSwitch).isChecked = !isChecked
+            Log.d("???", "???")
+            Log.d("Enable Status", enabledStatus.toString())
+            if (!enabledStatus || response == null) {
+                enabledStatus = true
                 return@Observer
             }
+            Log.d("???2", "???2")
             if (response.isSuccessful) {
-                Toast.makeText(context as AreaActivity, (if (isChecked) "Enabled" else "Disabled"), Toast.LENGTH_SHORT).show()
-                enabledStatus = !enabledStatus
-            }
-            else {
-                view.findViewById<Switch>(R.id.enableItemListSwitch).isChecked = !isChecked
+                Log.d("???3", "???3")
+                view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).isChecked = !isChecked
+                Toast.makeText(context as AreaActivity, (if (!isChecked) "Enabled" else "Disabled"), Toast.LENGTH_SHORT).show()
+                enabledStatus = false
             }
         }
         enable = EnableDisable(item.id, isChecked)

@@ -11,38 +11,34 @@
                 :style=" { 'background' : `linear-gradient(to top left, ${service.backgroundColor}, ${service.backgroundColor})` }"
                 v-for="actrea in service[type + 's']"
                 :key="actrea.id"
-                @click="$emit(type + 'Id', actrea.id), $emit('next'),
-                $emit('save'), $router.push(type == 'action' ? 'reaction' : 'overview')">
+                @click="$emit(type + 'Id', actrea.id), $emit('save'), popUpIsOpen = true">
                     <p class="title"> {{ actrea.name }} </p>
                     <p class="description"> {{ actrea.description }} </p>
             </div>
         </div>
     </div>
-    <!-- <div class="buttons">
-        <b-field v-if="area[type + 'Id'] != -1">
-            <b-autocomplete
-                class="param-input"
-                ref="autocomplete"
-                :data="searchInjectParams()"
-                :placeholder="getParamName()"
-                keep-first
-                open-on-focus
-                @select="option => selected = option"
-                >
-                <template #empty>No results for {{injectedParam}}</template>
-            </b-autocomplete>
-        </b-field>
-    </div> -->
+    <div v-if="popUpIsOpen">
+        <ParamPopUp
+            :services="services"
+            :area="area"
+            :type="type"
+            @close="popUpIsOpen = false"
+            @next="$emit('next'), $emit('save'), $router.push(type == 'action' ? 'reaction' : 'overview'), popUpIsOpen = false"
+            @save="$emit('save')"
+        />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import vue from "vue";
+import ParamPopUp from "./ParamPopUp.vue";
 
 export default vue.extend({
     data() {
         return {
             injectedParam: "", /** Current injected param name */
+            popUpIsOpen: false, /** If the pop-up param is open the value will be true */
         };
     },
     props: {
@@ -50,6 +46,9 @@ export default vue.extend({
         services: Array /** Array that contains the About.JSON file */,
         area: Object /** Object that contains the area creation fields */,
         tokensTable: Object, /** Object that contains all oauth tokens of the user */
+    },
+    components: {
+        ParamPopUp,
     },
     mounted() {
         this.checkAlreadyOAuth();
@@ -59,40 +58,10 @@ export default vue.extend({
          * It's a function that is call when the tokensTable is fill or when the component is load.
          */
         'services': function(): void {
-            console.log('new service', this.services, this.area, this.type)
             this.postOAuthCode();
         },
     },
     methods: {
-        /**
-         * It's a function that returns the name
-         * @data {Object} area
-         * @data {Array} services
-         */
-        searchInjectParams() {
-            let service = this.services.find(service => service.id == this.area[this.type + 'ServiceId']);
-            let area: Object;
-            if (service != undefined)
-                area = service[this.type + 's'].find(actrea => actrea.id == this.area[this.type + 'Id']).availableInjectParams;
-            return area;
-        },
-        /**
-         * It's a function that returns the name of the parameter of the action or reaction.
-         * @data {Object} area
-         * @data {Array} services
-         * @data {String} type
-         * @return {String} - Return the actual selected service name.
-         */
-        getParamName(): String {
-            if (this.area[this.type + "Id"] == -1 || this.services[0] == null) return;
-            let service = this.services.find(
-                (service) => service.id == this.area[this.type + "ServiceId"]
-            );
-            let paramName = service[this.type + "s"].find(
-                (actrea) => actrea.id == this.area[this.type + "Id"]
-            )[this.type + "ParamName"];
-            return paramName;
-        },
         /**
          * It's a function that check if the user is already authenticated with the oAuth.
          * @data {Array} services

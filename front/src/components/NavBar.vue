@@ -7,7 +7,7 @@
         </div>
         <div class="right">
             <div class="APK">
-                <b-icon icon="download"/>
+                <b-icon @click.native="getApk()" icon="download"/>
                 <p>Download APP</p>
             </div>
             <div class="profile">
@@ -70,6 +70,9 @@ export default vue.extend({
         }
     },
     methods: {
+        async getApk(): Promise<void> {
+            window.location.href = './client.txt';
+        },
         /**
          * A method that is called when the user clicks on the create button. It removes the area from the local storage and redirects the user to the create page.
          */

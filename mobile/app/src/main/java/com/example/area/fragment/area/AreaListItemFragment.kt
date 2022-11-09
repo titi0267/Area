@@ -52,8 +52,6 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         view.findViewById<Button>(R.id.backFromAreaListItemButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
-        Log.d("actionColor", aboutClass.getServiceBackgroundColor(item.actionServiceId)!!)
-        Log.d("reactionColor", aboutClass.getServiceBackgroundColor(item.reactionServiceId)!!)
         view.findViewById<TextView>(R.id.actionServiceTextInItem).text = aboutClass.getServiceNameById(item.actionServiceId)
         view.findViewById<TextView>(R.id.actionNameInItem).text = aboutClass.getServiceActionNameById(item.actionServiceId, item.actionId)
         view.findViewById<TextView>(R.id.actionParamInItem).text = item.actionParam

@@ -4,7 +4,9 @@
         <div class="popUp">
             <p>Please put your {{getParamName().toLowerCase()}}</p>
             <div class="params">
-                <b-input :placeholder="getParamName()" v-model="area[type + 'Param']" @input="$emit('save')"></b-input>
+                <b-field :type="errorMessage != '' ? 'is-danger' : ''" :message="errorMessage != '' ? errorMessage : ''">
+                    <b-input :placeholder="getParamName()" v-model="area[type + 'Param']" @input="$emit('save'), checkInput()"></b-input>
+                </b-field>
                 <b-dropdown aria-role="list" v-if="type == 'reaction' && getInjectParams().length != 0">
                     <template #trigger="{ active }">
                         <b-button
@@ -17,7 +19,7 @@
             </div>
             <div class="buttons">
                 <b-button type="is-danger is-light" @click="$emit('close')">Cancel</b-button>
-                <b-button type="is-success is-light" @click="$emit('next')">Done</b-button>
+                <b-button type="is-success is-light" :disabled="errorMessage === '' ? false : true" @click="$emit('next')">Done</b-button>
             </div>
         </div>
     </div>
@@ -27,11 +29,17 @@
 import vue from 'vue';
 
 export default vue.extend({
+    data() {
+        return {
+            errorMessage: '', /** Message error of the input */
+        };
+    },
     mounted() {
         if (this.getParamName() === '') {
             this.$emit('next')
             this.$emit('save')
         }
+        this.checkInput();
     },
     props: {
         services: Array,
@@ -39,6 +47,25 @@ export default vue.extend({
         type: String,
     },
     methods: {
+        /**
+         * It's a function that checks if the input is empty or not and set the error message.
+         * @data {string} type
+         * @data {Object} area
+         * @data {String} errorMessage
+         */
+        checkInput(): void {
+            if (this.area[this.type + 'Param'] === '') {
+                this.errorMessage = "Input cannot be empty !";
+                return;
+            } else {
+                this.errorMessage = '';
+            }
+        },
+        /**
+         * It's a function that appends the value of the injected parameter to the input.
+         * @data {Object} area
+         * @data {string} type
+         */
         appendInput(value: string) {
             this.area[this.type + 'Param'] = this.area[this.type + 'Param'] + '%' + value + '%';
         },
@@ -102,16 +129,22 @@ export default vue.extend({
         border-radius: 20px;
         padding: 18px;
         width: 560px;
-        height: 200px;
+        height: auto;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        >p {
+            margin-bottom: 5px;
+        }
         .params {
             display: flex;
             flex-direction: column;
             align-items: center;
             >:deep(div) {
                 width: 85%;
+                .help {
+                    margin-block: 0px;
+                }
                 &.dropdown {
                     margin-top: 10px;
                 }

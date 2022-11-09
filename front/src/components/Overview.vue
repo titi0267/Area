@@ -13,7 +13,7 @@
                 </span>
                 <span style="width: 85%;">
                     <h3> {{ action.actions.actionParamName }} </h3>
-                    <b-input v-if="action.actions.actionParamName" v-model="area.actionParam" />
+                    <b-input disabled v-if="action.actions.actionParamName" v-model="area.actionParam" />
                 </span>
             </div>
         </div>
@@ -28,7 +28,7 @@
                 </span>
                 <span style="width: 85%;">
                     <h3> {{ reaction.reactions.reactionParamName }} </h3>
-                    <b-input v-if="reaction.reactions.reactionParamName" v-model="area.reactionParam" />
+                    <b-input disabled v-if="reaction.reactions.reactionParamName" v-model="area.reactionParam" />
                 </span>
             </div>
         </div>

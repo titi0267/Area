@@ -58,7 +58,6 @@ export default vue.extend({
          * It's a function that is call when the tokensTable is fill or when the component is load.
          */
         'services': function(): void {
-            console.log('new service', this.services, this.area, this.type)
             this.postOAuthCode();
         },
     },

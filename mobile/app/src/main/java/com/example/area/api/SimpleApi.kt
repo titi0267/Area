@@ -39,4 +39,10 @@ interface SimpleApi {
 
     @DELETE("/areas/{areaId}")
     suspend fun deleteArea(@Header("Authorization") auth: String, @Path("areaId") areaId: Int) : Response<ActionReaction>
+
+    @GET("/oauth/google/register")
+    suspend fun getGoogleRegisterLink() : Response<String>
+
+    @POST("/oauth/google/register")
+    suspend fun postRegisterWithGoogle(@Body post: OAuthCode) : Response<Token>
 }

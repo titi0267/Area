@@ -416,11 +416,11 @@ onst getGoogleOauthClient = async (
 (area: Area) => Promise<string | null>;
 ```
 
-2. Use the helper fonction you previously created or the one that already exist to get your credential if your service need oauth
+2. Use the helper function you previously created or the one that already exist to get your credential if your service needs oauth
 
-3. Use your service API endpoint or client to get the informations you want. If any informations you get are invalid return null
+3. Use your service API endpoint or client to get the information you want. If any information you get is invalid return null
 
-4. If its the first time you pass in the fonction you have to set the value you want to compare with in futures action check. This can be done like this:
+4. If it's the first time you pass in the function you have to set the value you want to compare with in futures action check. This can be done like this:
 
 ```ts
 if (area.lastActionValue === null) {
@@ -429,7 +429,7 @@ if (area.lastActionValue === null) {
 }
 ```
 
-5. You can define a params object which contain data available to be injected in the reaction paramater by a user
+5. You can define a params object which contains data available to be injected in the reaction paramater by a user
    Here is a params object example:
 
 ```ts
@@ -460,7 +460,7 @@ if (value > area.lastActionValue) {
 }
 ```
 
-7. Finally in the file src/constants/serviceList.ts add your action to actions array in your service in this format:
+7. Finally, in the file src/constants/serviceList.ts add your action to actions array in your service in this format:
 
 ```ts
 {
@@ -512,18 +512,18 @@ onst getGoogleOauthClient = async (
 (reactionParam: string, userId: number) => Promise<void>;
 ```
 
-2. Use the helper fonction you previously created or the one that already exist to get your credential if your service need oaut
+2. Use the helper function you previously created or the one that already exist to get your credential if your service need oaut
 
-3. Use your service API endpoint or execute the reaction you want. If their is any problem with data you get simply return.
+3. Use your service API endpoint or execute the reaction you want. If there is any problem with the data you get simply return.
 
-4. Finally in the file src/constants/serviceList.ts add your reaction to reactions array in your service in this format:
+4. Finally, in the file src/constants/serviceList.ts add your reaction to reactions array in your service in this format:
 
 ```ts
 {
   id: 1,
   reactionName: "Create an issue", // Reaction name
   reactionParamName: "Issue infos (format: /owner/repo/issueTitle)", // Reaction param, format can be precised in it
-  paramFormat: FORMAT.githubIssueFormat, // Reaction format check regex, can be null if their isn't
+  paramFormat: FORMAT.githubIssueFormat, // Reaction format check regex, can be null if there isn't
   fct: GithubReaction.createGithubIssue, // Reaction Function
   description:
     "Create an issue on a public repository or a private repository on which you belong",  // A short description of your reaction

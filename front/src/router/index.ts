@@ -44,19 +44,19 @@ const router = new VueRouter({
         },
         {
             path: '/create/action',
-            name: 'create-action',
+            name: 'action',
             component: Area,
             meta: { requiresAuth: true }
         },
         {
             path: '/create/reaction',
-            name: 'create-reaction',
+            name: 'reaction',
             component: Area,
             meta: { requiresAuth: true }
         },
         {
             path: '/create/overview',
-            name: 'create-overview',
+            name: 'overview',
             component: Area,
             meta: { requiresAuth: true }
         },

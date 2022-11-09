@@ -11,7 +11,7 @@
             @save="saveAreaLocalStorage"
             @previous="area.state--"
             @loading="loading = true"
-            :type="$route.path.split('/')[2]"
+            :type="$route.name"
         />
         <SelectArea
             v-else-if="area.state == 1 || area.state == 3"
@@ -26,7 +26,7 @@
             @previous="area.state--"
             @save="saveAreaLocalStorage"
             @loading="loading = false"
-            :type="$route.path.split('/')[2]"
+            :type="$route.name == 'overview' ? 'reaction' : $route.name"
         />
         <Overview
             v-else-if="area.state == 4"

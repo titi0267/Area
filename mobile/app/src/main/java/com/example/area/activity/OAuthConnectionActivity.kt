@@ -20,6 +20,7 @@ import com.example.area.utils.SessionManager
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.internal.wait
+import retrofit2.Response
 
 class OAuthConnectionActivity : AppCompatActivity() {
 
@@ -57,10 +58,11 @@ class OAuthConnectionActivity : AppCompatActivity() {
         val url = sessionManager.fetchAuthToken("url") ?: return setOAuthValue(false)
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
-
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        viewModel.postServiceCode(token, service, code)
-        viewModel.emptyResponse.observe(this, Observer { response ->
+        val observer: Observer<Response<Unit>?> = Observer { response ->
+            if (response == null) {
+                finish()
+                return@Observer
+            }
             if (response.isSuccessful) {
                 (this.application as AREAApplication).setTokenInTokenTable(service, code.code)
                 setOAuthValue(true)
@@ -69,7 +71,11 @@ class OAuthConnectionActivity : AppCompatActivity() {
                 setOAuthValue(false)
             }
             finish()
-        })
+        }
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        viewModel.postServiceCode(token, service, code, this, observer)
+        viewModel.emptyResponse.observe(this, observer)
     }
 
     private fun setOAuthValue(boolean: Boolean) {

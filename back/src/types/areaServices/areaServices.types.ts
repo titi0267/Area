@@ -35,7 +35,7 @@ interface Reaction {
   reactionParamName: string;
   paramFormat: RegExp | null;
   description: string;
-  fct: (reactionParam: string, userId: number) => void;
+  fct: (reactionParam: string, userId: number) => Promise<void>;
 }
 
 export type ServiceName =
@@ -45,6 +45,9 @@ export type ServiceName =
   | "Spotify"
   | "Github"
   | "Gmail"
-  | "Weather";
+  | "Weather"
+  | "Drive"
+  | "Calendar"
+  | "Time & Date";
 
 export type OauthService = "google" | "spotify" | "github" | "discord";

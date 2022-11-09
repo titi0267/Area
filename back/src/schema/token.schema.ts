@@ -1,23 +1,21 @@
 import Ajv, { JSONSchemaType } from "ajv";
-import { TokenBody } from "../types/body/tokenRequestBody.types";
+import { RemoveTokenBody } from "../types/body/tokenRequestBody.types";
 
 const ajv = new Ajv();
 
-const tokenBodySchema: JSONSchemaType<TokenBody> = {
+const removeTokenBodySchema: JSONSchemaType<RemoveTokenBody> = {
   type: "object",
   properties: {
-    discordToken: { type: "string", nullable: true },
-    twitterToken: { type: "string", nullable: true },
-    githubToken: { type: "string", nullable: true },
-    youtubeToken: { type: "string", nullable: true },
-    spotifyToken: { type: "string", nullable: true },
-    trelloToken: { type: "string", nullable: true },
-    userId: { type: "integer" },
+    googleToken: { type: "boolean", nullable: true },
+    githubToken: { type: "boolean", nullable: true },
+    spotifyToken: { type: "boolean", nullable: true },
+    discordGuildId: { type: "boolean", nullable: true },
+    discordToken: { type: "boolean", nullable: true },
   },
-  required: ["userId"],
+  required: [],
   additionalProperties: false,
 };
 
-const tokenBodyValidator = ajv.compile(tokenBodySchema);
+const removeTokenBodyValidator = ajv.compile(removeTokenBodySchema);
 
-export { tokenBodyValidator };
+export { removeTokenBodyValidator };

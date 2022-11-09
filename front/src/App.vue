@@ -26,6 +26,8 @@ export default vue.extend({
     height: 100vh;
 }
 
+/** ALL FONTS ARE LOADED HERE */
+
 @font-face {
     font-family: "Hitmo Regular";
     src: url("@/assets/fonts/HITMO-REGULAR.ttf");
@@ -37,5 +39,9 @@ export default vue.extend({
 @font-face {
     font-family: "Avenir Roman";
     src: url("@/assets/fonts/AVENIRLTSTD-ROMAN.OTF");
+}
+@font-face {
+    font-family: "Century Gothic Regular";
+    src: url("@/assets/fonts/CENTURYGOTHIC-REGULAR.TTF");
 }
 </style>

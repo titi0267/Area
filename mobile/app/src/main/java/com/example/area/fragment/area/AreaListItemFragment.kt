@@ -1,6 +1,9 @@
 package com.example.area.fragment.area
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +24,7 @@ import com.example.area.utils.SessionManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.area.repository.Repository
+import retrofit2.Response
 
 class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout.fragment_area_list_item) {
 
@@ -41,17 +45,22 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
         val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return view
+        val gradient = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(Color.parseColor(aboutClass.getServiceBackgroundColor(item.actionServiceId)), Color.parseColor(aboutClass.getServiceBackgroundColor(item.reactionServiceId))))
 
+        view.background = gradient
         viewModel = ViewModelProvider(context as AreaActivity, viewModelFactory)[MainViewModel::class.java]
         view.findViewById<Button>(R.id.backFromAreaListItemButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
+        Log.d("actionColor", aboutClass.getServiceBackgroundColor(item.actionServiceId)!!)
+        Log.d("reactionColor", aboutClass.getServiceBackgroundColor(item.reactionServiceId)!!)
         view.findViewById<TextView>(R.id.actionServiceTextInItem).text = aboutClass.getServiceNameById(item.actionServiceId)
         view.findViewById<TextView>(R.id.actionNameInItem).text = aboutClass.getServiceActionNameById(item.actionServiceId, item.actionId)
         view.findViewById<TextView>(R.id.actionParamInItem).text = item.actionParam
         view.findViewById<TextView>(R.id.reactionServiceTextInItem).text = aboutClass.getServiceNameById(item.reactionServiceId)
         view.findViewById<TextView>(R.id.reactionNameInItem).text = aboutClass.getServiceReactionNameById(item.reactionServiceId, item.reactionId)
         view.findViewById<TextView>(R.id.reactionParamInItem).text = item.reactionParam
+        view.findViewById<Switch>(R.id.enableItemListSwitch).isChecked = item.enabled
         view.findViewById<Switch>(R.id.enableItemListSwitch).setOnCheckedChangeListener { _, isChecked ->
             onEnableDisableSwitch(isChecked, token)
         }
@@ -62,28 +71,36 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
     }
 
     private fun onEnableDisableSwitch(isChecked: Boolean, token: String?) {
-        enable = EnableDisable(item.id, isChecked)
-        if (token == null)
-            return
-        enabledStatus=0
-        viewModel.putEnableDisable(token, enable)
-        viewModel.enableResponse.observe(context as AreaActivity, Observer { response ->
+        val observer: Observer<Response<ActionReaction>?> = Observer { response ->
+            if (response == null)
+                return@Observer
             if (response.isSuccessful && enabledStatus == 0) {
                 Toast.makeText(context as AreaActivity, (if (isChecked) "Enabled" else "Disabled"), Toast.LENGTH_SHORT).show()
                 enabledStatus++
             }
-        })
+        }
+        enable = EnableDisable(item.id, isChecked)
+        if (token == null)
+            return
+        enabledStatus=0
+        viewModel.putEnableDisable(token, enable, context as AreaActivity, observer)
+        viewModel.enableResponse.observe(context as AreaActivity, observer)
     }
 
     private fun onDeleteButton(token: String?) {
+        val observer: Observer<Response<ActionReaction>?> = Observer { response ->
+            if (response == null) {
+                return@Observer
+            }
+            if (response.isSuccessful) {
+                Toast.makeText(context as AreaActivity, "Area successfully deleted", Toast.LENGTH_SHORT).show()
+                (context as AreaActivity).changeFragment(AreaListFragment(), "area_list")
+            }
+        }
+
         if (token != null) {
-            viewModel.deleteArea(token, item.id)
-            viewModel.deleteAreaResponse.observe(context as AreaActivity, Observer { response ->
-                if (response.isSuccessful) {
-                    Toast.makeText(context as AreaActivity, "Area successfully deleted", Toast.LENGTH_SHORT).show()
-                    (context as AreaActivity).changeFragment(AreaListFragment(), "area_list")
-                }
-            })
+            viewModel.deleteArea(token, item.id, context as AreaActivity, observer)
+            viewModel.deleteAreaResponse.observe(context as AreaActivity, observer)
         }
     }
 }

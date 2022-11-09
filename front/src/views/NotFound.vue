@@ -21,6 +21,7 @@ export default vue.extend({
 
 <style scoped lang="scss">
 #notFound {
-    padding-top: 100px;
+    padding-top: 110px;
+    font-family: "Avenir Roman";
 }
 </style>

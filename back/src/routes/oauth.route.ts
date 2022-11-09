@@ -99,7 +99,6 @@ export default (
         userinfos.id || null,
         tokens.refresh_token || null,
       );
-
       res.status(httpStatus.OK).send(token);
     },
   );

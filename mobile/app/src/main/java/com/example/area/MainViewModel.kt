@@ -234,8 +234,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             finally {
                 (context).loading = false
                 enableResponse.removeObserver(observer)
-                Log.d("???allo", enableResponse.hasActiveObservers().toString())
-                Log.d("???laterre", enableResponse.hasObservers().toString())
             }
         }
     }

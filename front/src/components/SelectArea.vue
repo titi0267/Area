@@ -1,5 +1,6 @@
 <template>
   <div id="SelectArea">
+    <b-icon class="previous" icon="chevron-right" @click.native="$emit('previous'), $emit('save')"></b-icon>
     <div v-for="service in services" :key="service.name">
         <div class="selected-service" v-if="area[type + 'ServiceId'] == service.id" :style="{ 'background-color': service.backgroundColor }">
             <h2>Select your {{ type }} type</h2>
@@ -8,20 +9,17 @@
         <div class="areas" v-if="service.id == area[type + 'ServiceId']">
             <div class="area"
                 :style=" { 'background' : `linear-gradient(to top left, ${service.backgroundColor}, ${service.backgroundColor})` }"
-                :class="{ selected: actrea.id == area[type + 'Id'] }"
                 v-for="actrea in service[type + 's']"
-                :key="actrea.name"
-                @click="$emit(type + 'Id', actrea.id), $emit('save')">
+                :key="actrea.id"
+                @click="$emit(type + 'Id', actrea.id), $emit('next'),
+                $emit('save'), $router.push(type == 'action' ? 'reaction' : 'overview')">
                     <p class="title"> {{ actrea.name }} </p>
                     <p class="description"> {{ actrea.description }} </p>
             </div>
         </div>
     </div>
-    <div class="buttons">
-        <b-button @click="$emit('previous'), $emit('save')">
-            Previous
-        </b-button>
-        <!-- <b-field v-if="area[type + 'Id'] != -1">
+    <!-- <div class="buttons">
+        <b-field v-if="area[type + 'Id'] != -1">
             <b-autocomplete
                 class="param-input"
                 ref="autocomplete"
@@ -33,11 +31,8 @@
                 >
                 <template #empty>No results for {{injectedParam}}</template>
             </b-autocomplete>
-        </b-field> -->
-        <b-button @click="$emit('next'), $emit('save'), $router.push(type == 'action' ? 'reaction' : 'overview')">
-            Next
-        </b-button>
-    </div>
+        </b-field>
+    </div> -->
   </div>
 </template>
 
@@ -64,6 +59,7 @@ export default vue.extend({
          * It's a function that is call when the tokensTable is fill or when the component is load.
          */
         'services': function(): void {
+            console.log('new service', this.services, this.area, this.type)
             this.postOAuthCode();
         },
     },
@@ -122,6 +118,9 @@ export default vue.extend({
          * @async
          */
         postOAuthCode(): void {
+            if (this.area[this.type + 'ServiceId'] != -1) {
+                return;
+            }
             this.$nextTick(async(): Promise<void> => {
                 let serviceOauthName: string = this.services.find(service => service.id == this.area[this.type + "ServiceId"])['oauthName'];
                 if (serviceOauthName == null || this.tokensTable[serviceOauthName + 'Token'] != null) {
@@ -129,8 +128,8 @@ export default vue.extend({
                     return;
                 }
                 const code: String = this.$route.query.code;
-                let oauthParam = {}
-                if (code == null || code == undefined && this.tokensTable[serviceOauthName + 'Token'] == null) {
+                let oauthParam: object
+                if ((code == null || code == undefined) && this.tokensTable[serviceOauthName + 'Token'] == null) {
                     this.$emit('previous');
                     this.$emit('save');
                     this.$emit('loading');
@@ -156,13 +155,14 @@ export default vue.extend({
                         }
                     });
                     this.$set(this.tokensTable, serviceOauthName + 'Token', tokens[serviceOauthName + 'Token']);
-                } catch {
+                } catch (err) {
                     this.$emit('previous');
                     this.$emit('save');
                     this.notification("Your authentification has failed", 'is-danger');
                 }
+                this.$emit("loading");
+                this.$emit("oauth")
             })
-            this.$emit("loading");
         },
     }
 });
@@ -171,6 +171,13 @@ export default vue.extend({
 <style scoped lang="scss">
 #SelectArea {
     width: 100%;
+    .previous {
+        position: absolute;
+        transform: rotate(180deg);
+        top: 120px;
+        left: 30px;
+        cursor: pointer;
+    }
     .selected-service {
         display: flex;
         justify-content: center;
@@ -190,24 +197,6 @@ export default vue.extend({
             margin-bottom: 10px;
             color: white;
             font-family: 'Courier New', Courier, monospace;
-        }
-    }
-    .buttons {
-        display: flex;
-        position: absolute;
-        padding: 0px 30px;
-        left: 0;
-        width: 100%;
-        bottom: 20px;
-        justify-content: space-between;
-        :deep(button) {
-            width: 100px;
-            span, a {
-                color: hsl(0deg, 0%, 21%);
-            }
-        }
-        .param-input {
-            width: 300px;
         }
     }
     .areas {

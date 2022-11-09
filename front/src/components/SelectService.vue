@@ -1,5 +1,6 @@
 <template>
   <div id="SelectService">
+    <b-icon v-if="type != 'action'" class="previous" icon="chevron-right" @click.native="$emit('previous'), $emit('save'), $router.push('/create/action')"></b-icon>
     <h2>Select your {{ type }} service name</h2>
     <div>
       <b-input class="search-input" @input="filterInput = $event" placeholder="Search your service here"></b-input>
@@ -8,7 +9,6 @@
           <div
             class="service"
             :style="{ 'background-color': service.backgroundColor }"
-            :class="{ selected: service.id == area[type + 'ServiceId'] }"
             v-if="service[type + 's'].length != 0 && service.name.toLowerCase().includes(filterInput.toLowerCase())"
             @click="$emit(type + 'ServiceId', service.id), $emit('next'), $emit('save'), getOAuthUrl()">
                 <p> {{ service.name }} </p>
@@ -16,19 +16,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="buttons">
-      <b-button
-        @click="
-          $emit('previous'),
-            $emit('save'),
-            $router.push(area.state == -1 ? '/home' : '/create/action')"
-      >
-        Previous
-      </b-button>
-      <b-button @click="$emit('save')">
-        Next
-      </b-button>
     </div>
   </div>
 </template>
@@ -41,7 +28,6 @@ export default vue.extend({
     return {
       filterInput: "" /** It's a filter input used for search a service */,
       oauthURL: "" /** This variable contains the oAuth URL of the right service */,
-      picture: "",
     };
   },
   props: {
@@ -107,6 +93,13 @@ $service-size: 175px;
     width: 100%;
     height: 100%;
     position: relative;
+    .previous {
+        position: absolute;
+        transform: rotate(180deg);
+        top: 25px;
+        left: 30px;
+        cursor: pointer;
+    }
     .search-input {
         display: flex;
         justify-content: center;
@@ -119,21 +112,6 @@ $service-size: 175px;
     h2 {
         margin: 20px 0px 10px;
         font-family: 'Courier New', Courier, monospace;
-    }
-    .buttons {
-        display: flex;
-        position: absolute;
-        padding: 0px 30px;
-        left: 0;
-        width: 100%;
-        bottom: 20px;
-        justify-content: space-between;
-        :deep(button) {
-            width: 100px;
-            span, a {
-                color: hsl(0deg, 0%, 21%);
-            }
-        }
     }
     .services {
         margin: 10px;

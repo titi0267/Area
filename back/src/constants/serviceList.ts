@@ -295,7 +295,7 @@ export const SERVICES: Service[] = [
     serviceName: "Drive",
     backgroundColor: "#FFBA00",
     imageUrl: "assets/drive.png",
-    oauthName: null,
+    oauthName: "google",
     actions: [
       {
         id: 1,

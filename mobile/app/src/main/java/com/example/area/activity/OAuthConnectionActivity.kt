@@ -1,14 +1,10 @@
 package com.example.area.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.area.AREAApplication
@@ -17,9 +13,6 @@ import com.example.area.MainViewModelFactory
 import com.example.area.model.OAuthCode
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.suspendCancellableCoroutine
-import okhttp3.internal.wait
 import retrofit2.Response
 
 class OAuthConnectionActivity : AppCompatActivity() {
@@ -34,6 +27,7 @@ class OAuthConnectionActivity : AppCompatActivity() {
         val service = intent.getStringExtra("service") ?: return
 
         sessionManager.saveAuthToken("service", service)
+        Log.d("Service at creation", service)
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
         finish()
     }
@@ -66,8 +60,7 @@ class OAuthConnectionActivity : AppCompatActivity() {
             if (response.isSuccessful) {
                 (this.application as AREAApplication).setTokenInTokenTable(service, code.code)
                 setOAuthValue(true)
-            }
-            else {
+            } else {
                 setOAuthValue(false)
             }
             finish()
@@ -79,6 +72,6 @@ class OAuthConnectionActivity : AppCompatActivity() {
     }
 
     private fun setOAuthValue(boolean: Boolean) {
-        (this.application as AREAApplication).successOauth = boolean;
+        (this.application as AREAApplication).successOauth = boolean
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,6 +81,7 @@ class OAuthServiceItemAdapter(private val context: Context, private val dataset:
                 val intent = Intent(context as AreaActivity, OAuthConnectionActivity::class.java)
                 bundle.putString("link", oAuthLink)
                 bundle.putString("service", service)
+                Log.d("Service in request", service)
                 intent.putExtras(bundle)
                 GlobalScope.launch {
                     waitForSuccess(context)

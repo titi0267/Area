@@ -12,14 +12,31 @@ import { google } from "googleapis";
 
 const prisma = new PrismaClient();
 
-const getAllUsers = async (): Promise<User[]> => {
-  return await prisma.user.findMany();
+const getAllUsers = async (): Promise<Omit<User, "password">[]> => {
+  return await prisma.user.findMany({
+    select: {
+      email: true,
+      id: true,
+      password: false,
+      firstName: true,
+      lastName: true,
+      role: true,
+    },
+  });
 };
 
 const getOneUser = async (userId: number): Promise<UserWithTokens> => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    include: { tokensTable: true },
+    select: {
+      email: true,
+      id: true,
+      password: false,
+      firstName: true,
+      lastName: true,
+      role: true,
+      tokensTable: true,
+    },
   });
 
   if (!user) {

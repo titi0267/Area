@@ -1,7 +1,7 @@
 <template>
     <div id="ParamPopUp">
         <div class="background"/>
-        <div class="popUp">
+        <div class="popUp" :class="{ 'darkMode' : $store.getters.darkMode }">
             <p>Please put your {{getParamName().toLowerCase()}}</p>
             <div class="params">
                 <b-field :type="errorMessage != '' ? 'is-danger' : ''" :message="errorMessage != '' ? errorMessage : ''">
@@ -14,7 +14,7 @@
                             type="is-primary"
                             :icon-right="active ? 'chevron-up' : 'chevron-down'" />
                     </template>
-                    <b-dropdown-item v-for="param of getInjectParams()" :key="param" @click="appendInput(param)" aria-role="listitem"> {{ param }} </b-dropdown-item>
+                    <b-dropdown-item v-for="param of getInjectParams()" :key="param" @click="appendInput(param), checkInput()" aria-role="listitem"> {{ param }} </b-dropdown-item>
                 </b-dropdown>
             </div>
             <div class="buttons">
@@ -133,6 +133,12 @@ export default vue.extend({
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        &.darkMode {
+            background-color: #21242b;
+            >p {
+                color: white;
+            }
+        }
         >p {
             margin-bottom: 5px;
         }

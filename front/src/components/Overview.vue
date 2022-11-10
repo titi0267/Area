@@ -1,5 +1,5 @@
 <template>
-    <div id="Overview">
+    <div id="Overview" :class="{ 'darkMode' : $store.getters.darkMode }">
         <b-icon class="previous" icon="chevron-right" @click.native="$router.push('/create/reaction'), $emit('previous'), $emit('save')"></b-icon>
         <h2 class="overview-title">Overview of your action - reaction creation</h2>
         <div class="if" v-if="action.actions">
@@ -93,6 +93,14 @@ export default vue.extend({
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+    &.darkMode {
+        h2 {
+            color: white;
+        }
+        .previous {
+            color: white;
+        }
+    }
     .previous {
         position: absolute;
         transform: rotate(180deg);

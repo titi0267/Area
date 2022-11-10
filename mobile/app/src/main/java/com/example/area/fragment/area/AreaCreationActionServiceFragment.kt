@@ -7,17 +7,15 @@ import android.hardware.Camera.Area
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.area.AREAApplication
 import com.example.area.MainViewModel
@@ -36,7 +34,6 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creation_action_service) {
-    private var serviceSelectedIndex: Int = -1
     private lateinit var serviceAdapter: ServiceItemAdapter
     val serviceList = ServiceDatasource()
 
@@ -51,7 +48,7 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
         val servicesImages = ((context as AreaActivity).application as AREAApplication).aboutBitmapList ?: return view
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerViewActionService)
 
-        recycler.layoutManager = LinearLayoutManager(context as AreaActivity)
+        recycler.layoutManager = GridLayoutManager(context as AreaActivity, 2)
         feelSearchedList(serviceList, feelEntireList(aboutClass, servicesImages))
         view.findViewById<Button>(R.id.backFromActionServiceCreationButton).setOnClickListener {
             (context as AreaActivity).onBackPressed()
@@ -80,6 +77,7 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
             }
         })
         updateRecycler(recycler, serviceList)
+        //recycler.addItemDecoration(MarginItemDecoration(50)) /* Line to uncomment when the MarginItemDecoration class is merged (it applies margin to the items) */
         return view
     }
 
@@ -100,14 +98,13 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
         serviceAdapter = ServiceItemAdapter(
             context as AreaActivity,
             serviceList.loadServiceInfo()
-        ) { position -> onItemClick(position, serviceList.loadServiceInfo()[position].name) }
+        ) { position -> onItemClick(position, serviceList) }
         recycler.setHasFixedSize(true)
         recycler.adapter = serviceAdapter
     }
 
-    private fun onItemClick(position: Int, toPrint: String) {
-        serviceSelectedIndex = position
-        Toast.makeText(context as AreaActivity, "$toPrint selected", Toast.LENGTH_SHORT).show()
+    private fun onItemClick(position: Int, serviceList: ServiceDatasource) {
+        (context as AreaActivity).changeFragment(AreaCreationActionFragment(serviceList.loadServiceInfo()[position]), "action_creation")
     }
 
     private fun feelEntireList(aboutClass: AboutClass, servicesImages: List<Bitmap>): List<ServiceListElement> {

@@ -16,6 +16,7 @@ import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.adapter.ItemAdapter
+import com.example.area.adapter.MarginItemDecoration
 import com.example.area.data.Datasource
 import com.example.area.model.ActionReaction
 import com.example.area.repository.Repository
@@ -77,6 +78,7 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
             }
         }
 
+        recycler.addItemDecoration(MarginItemDecoration(50))
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         viewModel.getUserAreaList(token, context as AreaActivity, observer)
         viewModel.listAREAResponse.observe(viewLifecycleOwner, observer)

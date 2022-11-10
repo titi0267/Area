@@ -12,6 +12,7 @@ import com.example.area.AREAApplication
 import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
+import com.example.area.fragment.area.LoadingFragment
 import com.example.area.fragment.area.MainFragment
 import com.example.area.model.UserInfo
 import com.example.area.model.about.About
@@ -30,7 +31,7 @@ class AreaActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                add<MainFragment>(R.id.area_fragment_container, "main_fragment")
+                add<LoadingFragment>(R.id.area_fragment_container, "loading_fragment")
             }   
         }
         setContentView(R.layout.activity_area)

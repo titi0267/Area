@@ -2,6 +2,7 @@ package com.example.area.model.about
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import java.net.URL
 
 class AboutClass(val about: About) {

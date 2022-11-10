@@ -28,8 +28,9 @@ class OAuthLinkingFragment : Fragment(R.layout.fragment_oauth_linking) {
         return view
     }
 
-    private fun refreshList(view: View) {
-        val recycler = view.findViewById<RecyclerView>(R.id.oauth_linking_recycler_view)
+    fun refreshList(viewArg: View?) {
+        val usedView = viewArg ?: view ?: return
+        val recycler = usedView.findViewById<RecyclerView>(R.id.oauth_linking_recycler_view)
         val oauthServiceList = OAuthServiceDatasource()
         val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return
         val servicesImages = ((context as AreaActivity).application as AREAApplication).aboutBitmapList ?: return

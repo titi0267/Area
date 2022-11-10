@@ -56,6 +56,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             // Check registration validity
             try {
                 checkRegisterField(registerForm)
+                checkConfirmPassword(registerForm.password, view.findViewById<EditText>(R.id.register_confirm_password_field_edit_text).text.toString())
             }
             catch (e: IllegalArgumentException) {
                 Toast.makeText(context as UserConnectionActivity, "Error: " + e.message, Toast.LENGTH_SHORT).show()

@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -50,22 +51,6 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
 
         recycler.layoutManager = GridLayoutManager(context as AreaActivity, 2)
         feelSearchedList(serviceList, feelEntireList(aboutClass, servicesImages))
-        view.findViewById<Button>(R.id.backFromActionServiceCreationButton).setOnClickListener {
-            (context as AreaActivity).onBackPressed()
-        }
-        view.findViewById<Button>(R.id.nextFromActionServiceCreation).setOnClickListener {
-            if (serviceSelectedIndex == -1) {
-                Toast.makeText(context as AreaActivity, "Please select an action service", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val tokenTable = (((context as AreaActivity).application as AREAApplication).userInfo ?: return@setOnClickListener).tokensTable
-            val serviceId = aboutClass.getServiceIdByName(serviceList.loadServiceInfo()[serviceSelectedIndex].name) ?: return@setOnClickListener
-            val oauthName = aboutClass.getServiceOAuthName(serviceId)
-            if (oauthName == null || tokenTable[oauthName + "Token"] != null) {
-                return@setOnClickListener((context as AreaActivity).changeFragment(AreaCreationActionFragment(serviceList.loadServiceInfo()[serviceSelectedIndex]), "action_creation"))
-            }
-            getOAuthLinkRequest(oauthName, context as AreaActivity)
-        }
         view.findViewById<SearchView>(R.id.searchActionService).setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(toSearch: String?): Boolean {
                 onQuery(toSearch, aboutClass, servicesImages, serviceList, recycler)
@@ -104,7 +89,14 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
     }
 
     private fun onItemClick(position: Int, serviceList: ServiceDatasource) {
-        (context as AreaActivity).changeFragment(AreaCreationActionFragment(serviceList.loadServiceInfo()[position]), "action_creation")
+        val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return
+        val tokenTable = (((context as AreaActivity).application as AREAApplication).userInfo ?: return).tokensTable
+        val serviceId = aboutClass.getServiceIdByName(serviceList.loadServiceInfo()[position].name) ?: return
+        val oauthName = aboutClass.getServiceOAuthName(serviceId)
+        if (oauthName == null || tokenTable[oauthName + "Token"] != null) {
+            return ((context as AreaActivity).changeFragment(AreaCreationActionFragment(serviceList.loadServiceInfo()[position]), "action_creation"))
+        }
+        getOAuthLinkRequest(oauthName, position, context as AreaActivity)
     }
 
     private fun feelEntireList(aboutClass: AboutClass, servicesImages: List<Bitmap>): List<ServiceListElement> {
@@ -116,7 +108,7 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
         return list
     }
 
-    private fun getOAuthLinkRequest(service: String, context: Context) {
+    private fun getOAuthLinkRequest(service: String, position: Int, context: Context) {
         val sessionManager = SessionManager(context as AreaActivity)
         val url = sessionManager.fetchAuthToken("url") ?: return
         val token = sessionManager.fetchAuthToken("user_token") ?:return
@@ -135,7 +127,7 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
                 bundle.putString("service", service)
                 intent.putExtras(bundle)
                 GlobalScope.launch {
-                    waitForSuccess()
+                    waitForSuccess(position)
                 }
                 context.startActivity(intent)
             }
@@ -144,10 +136,10 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
         viewModel.linkResponse.observe(context, observer)
     }
 
-    private suspend fun waitForSuccess() {
+    private suspend fun waitForSuccess(position: Int) {
         while (((context as AreaActivity).application as AREAApplication).successOauth == null);
         if (((context as AreaActivity).application as AREAApplication).successOauth == true) {
-            onSuccessOauth((context as AreaActivity))
+            onSuccessOauth(context as AreaActivity, position)
         }
         else {
             onFailureOauth((context as AreaActivity))
@@ -155,12 +147,12 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
         ((context as AreaActivity).application as AREAApplication).successOauth = null;
     }
 
-    private fun onSuccessOauth(context: Context) {
+    private fun onSuccessOauth(context: Context, position: Int) {
         val fragment: AreaCreationActionServiceFragment = ((context as AreaActivity).supportFragmentManager.findFragmentByTag("action_service_creation")?: return) as AreaCreationActionServiceFragment
 
         while (fragment.isStateSaved);
         Handler(Looper.getMainLooper()).post {
-            (context as AreaActivity).changeFragment(AreaCreationActionFragment(serviceList.loadServiceInfo()[serviceSelectedIndex]), "action_creation")
+            (context as AreaActivity).changeFragment(AreaCreationActionFragment(serviceList.loadServiceInfo()[position]), "action_creation")
             Toast.makeText(context as AreaActivity, "OAuth success!", Toast.LENGTH_LONG).show()
         }
     }

@@ -81,7 +81,6 @@ class OAuthServiceItemAdapter(private val context: Context, private val dataset:
                 val intent = Intent(context as AreaActivity, OAuthLinkingActivity::class.java)
                 bundle.putString("link", oAuthLink)
                 bundle.putString("service", service)
-                Log.d("Service in request", service)
                 intent.putExtras(bundle)
                 GlobalScope.launch {
                     waitForSuccess(context)

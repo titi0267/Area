@@ -28,7 +28,6 @@ class OAuthLinkingActivity : AppCompatActivity() {
         val service = intent.getStringExtra("service") ?: return
 
         sessionManager.saveAuthToken("service", service)
-        Log.d("Service at creation", service)
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
         finish()
     }

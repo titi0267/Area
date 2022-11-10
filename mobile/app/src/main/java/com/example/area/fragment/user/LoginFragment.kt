@@ -3,6 +3,8 @@ package com.example.area.fragment.user
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +15,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.area.AREAApplication
 import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.*
+import com.example.area.fragment.area.OAuthLinkingFragment
 import com.example.area.model.LoginFields
 import com.example.area.model.Token
 import com.example.area.repository.Repository
 import com.example.area.utils.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -119,9 +125,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 val oAuthLink = response.body()!!.toString()
                 val bundle = Bundle()
                 val intent = Intent(context as UserConnectionActivity, OAuthLoginWithGoogleActivity::class.java)
-                Log.d("link", oAuthLink)
                 bundle.putString("link", oAuthLink)
                 intent.putExtras(bundle)
+                GlobalScope.launch {
+                    waitForSuccess(context as UserConnectionActivity)
+                }
                 startActivity(intent)
             }
         }
@@ -129,5 +137,31 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         viewModel.getGoogleRegisterLink(context as UserConnectionActivity, observer)
         viewModel.linkResponse.observe(context as UserConnectionActivity, observer)
+    }
+
+    private suspend fun waitForSuccess(context: Context) {
+        while (((context as AreaActivity).application as AREAApplication).successOauth == null);
+        if (((context as AreaActivity).application as AREAApplication).successOauth == true) {
+            onSuccessOauth(context)
+        }
+        else {
+            onFailureOauth(context)
+        }
+        ((context as AreaActivity).application as AREAApplication).successOauth = null;
+    }
+
+    private fun onSuccessOauth(context: Context) {
+        Handler(Looper.getMainLooper()).post {
+            val fragment: OAuthLinkingFragment = ((context as AreaActivity).supportFragmentManager.findFragmentByTag("oauth_linking")?: return@post) as OAuthLinkingFragment
+
+            Toast.makeText(context as UserConnectionActivity, "Successfully logged in!", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(context, MainActivity::class.java))
+        }
+    }
+
+    private fun onFailureOauth(context: Context) {
+        Handler(Looper.getMainLooper()).post {
+            Toast.makeText(context as AreaActivity, "OAuth failure!", Toast.LENGTH_LONG).show()
+        }
     }
 }

@@ -53,10 +53,7 @@ class OAuthLoginWithGoogleActivity : AppCompatActivity() {
                 finish()
                 return@Observer
             }
-            Log.d("response value", response.code().toString())
-            Log.d("code value", code.code)
             if (response.isSuccessful) {
-                Log.d("?", "Good")
                 sessionManager.saveAuthToken("user_token", response.body()!!.token)
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
             }

@@ -16,6 +16,7 @@
   - [/types](#types)
   - [/middlewares](#middlewares)
   - [/schema](#schema)
+- [How to create a new Service](#how-to-create-a-new-service)
 
 ## Languages
 
@@ -220,4 +221,158 @@ const loginBodySchema: JSONSchemaType<LoginBody> = {
   required: ["email", "password"],
   additionalProperties: false,
 };
+```
+
+## How to create a new Service
+
+### If your service require oauth
+
+1. Generate your client id and client secret on the service website in developer part (ex: for google https://cloud.google.com) and the redirect url which the path on which you want to redirect on the front
+
+2. Add your credentials to .env and so in src/env.ts like this:
+
+```ts
+  clientId: process.env.CLIENT_ID as string,
+  clientSecret: process.env.CLIENT_SECRET as string,
+  redirectUrl: process.env.REDIRECT_URL as string
+```
+
+3. Add token field in database schema in prisma/schema.prisma like this:
+
+```
+  serviceToken      String?
+```
+
+Then run the following command
+
+```bash
+  npm run db:migrate
+```
+
+4. Create a service to save your token in the database like this:
+
+```ts
+const setServiceNameToken = async (
+  userId: number,
+  token: string | undefined | null,
+): Promise<TokensTable> => {
+  if (!token) {
+    throw new ClientError({
+      name: "Invalid Token",
+      message: "Given token is invalid",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+
+  const tokensTableExist = await prisma.tokensTable.findUnique({
+    where: { userId },
+  });
+
+  if (!tokensTableExist) {
+    // this part has for goal to check if the user exist
+    throw new ClientError({
+      name: "Invalid Credential",
+      message: "UserId does not exist",
+      level: "warm",
+      status: httpStatus.BAD_REQUEST,
+    });
+  }
+  // this part set the token in the database
+  const tokenTable = await prisma.tokensTable.update({
+    where: {
+      userId,
+    },
+    data: {
+      serviceToken: token,
+    },
+  });
+
+  return tokenTable;
+};
+```
+
+5. Add oauth service name in OauthService type in src/types/areaServices/areaServices.types.ts. Create oauth routes in src/routes/oauth.route.ts, one for sending the oauth link to the front like this:
+
+```ts
+instance.get("/serviceName/link", (req: FastifyRequest, res: FastifyReply) => {
+  const rootUrl = "https://serviceName.com/api/oauth2/authorize"; // The base services oauth url are usually in this format but not always
+
+  const option = {
+    client_id: ENV.ClientId, // client id previously set
+    response_type: "code",
+    redirect_uri: ENV.redirectUrl, // redirect url previously set
+    scope: [
+      // scope you want to access to on the application, specific scope are documented on the service website
+      "identify",
+      "email",
+      "guilds",
+      "connections",
+      "bot",
+      "guilds.join",
+    ].join(" "),
+  };
+
+  const qs = new URLSearchParams(option);
+
+  res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+});
+```
+
+and one to save the route in your database like this:
+
+```ts
+instance.post(
+  "/serviceName",
+  { onRequest: [authentificationMiddleware()] },
+  async (req: BaseOauthBody, res: FastifyReply) => {
+    if (!googleOauthQueryValidator(req.body)) ErrorHelper.throwBodyError();
+
+    const userInfos = SecurityHelper.getUserInfos(req);
+
+    const code = req.body.code;
+
+    // This part is an example with google API using the google npm library, some service have an oauth npm library and one some other you have to make a request on a specific endpoint
+    const oauthClient = new google.auth.OAuth2(
+      ENV.googleClientId,
+      ENV.googleClientSecret,
+      ENV.googleRedirectUrl,
+    );
+
+    const tokens = (await oauthClient.getToken(code)).tokens;
+
+    const tokenTable = await TokenService.setGoogleToken(
+      userInfos.id,
+      tokens.refresh_token,
+    );
+
+    res.status(httpStatus.OK).send(tokenTable);
+  },
+);
+```
+
+6. Add service name at ServiceName type in src/types/areaServices/areaServices, the service logo in assets/types.ts and then add the service to src/constants/serviceList.ts with the following format:
+
+```ts
+  id: 1,
+  serviceName: "serviceName",
+  backgroundColor: "#DE5145", // background color to be displayed in the front
+  imageUrl: "assets/serviceName.png",  // path to image to be displayed in the front
+  oauthName: "serviceName", // name of the oauth service
+  actions: []
+  reactions: []
+```
+
+### If your service does not require oauth
+
+6. Add service name at ServiceName type in src/types/areaServices/areaServices, the service logo in assets/types.ts and then add the service to src/constants/serviceList.ts with the following format:
+
+```ts
+  id: 1,
+  serviceName: "serviceName",
+  backgroundColor: "#DE5145", // background color to be displayed in the front
+  imageUrl: "assets/serviceName.png",  // image to be displayed in the front
+  oauthName: null, // name of the oauth service
+  actions: []
+  reactions: []
 ```

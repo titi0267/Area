@@ -173,5 +173,4 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
             Toast.makeText(context as AreaActivity, "OAuth failure!", Toast.LENGTH_LONG).show()
         }
     }
-
 }

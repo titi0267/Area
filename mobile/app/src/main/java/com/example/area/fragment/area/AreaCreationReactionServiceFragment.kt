@@ -61,9 +61,9 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceList
                 return@setOnClickListener
             }
             val tokenTable = (((context as AreaActivity).application as AREAApplication).userInfo ?: return@setOnClickListener).tokensTable
-            val serviceName = aboutClass.getServiceNameById(serviceSelectedIndex + 1)
-            val oauthName = aboutClass.getServiceOAuthName(serviceSelectedIndex + 1)
-            if (serviceName == null ||  oauthName == null || tokenTable[oauthName + "Token"] != null) {
+            val serviceId = aboutClass.getServiceIdByName(serviceList.loadServiceInfo()[serviceSelectedIndex].name) ?: return@setOnClickListener
+            val oauthName = aboutClass.getServiceOAuthName(serviceId)
+            if (oauthName == null || tokenTable[oauthName + "Token"] != null) {
                 return@setOnClickListener((context as AreaActivity).changeFragment(AreaCreationReactionFragment(actionService, action, serviceList.loadServiceInfo()[serviceSelectedIndex]), "reaction_creation"))
             }
             getOAuthLinkRequest(oauthName, context as AreaActivity)

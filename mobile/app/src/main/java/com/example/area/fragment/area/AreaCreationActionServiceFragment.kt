@@ -121,10 +121,8 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
 
     private fun getOAuthLinkRequest(service: String, context: Context) {
         val sessionManager = SessionManager(context as AreaActivity)
-        Log.d("???", "???")
         val url = sessionManager.fetchAuthToken("url") ?: return
         val token = sessionManager.fetchAuthToken("user_token") ?:return
-        Log.d("???", "???")
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
         val viewModel = ViewModelProvider(context, viewModelFactory)[MainViewModel::class.java]

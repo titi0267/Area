@@ -145,9 +145,6 @@ export default vue.extend({
                 .help {
                     margin-block: 0px;
                 }
-                &.dropdown {
-                    margin-top: 10px;
-                }
                 .dropdown-menu {
                     width: 100%;
                     margin-top: 10px;

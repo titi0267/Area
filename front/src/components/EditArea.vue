@@ -1,8 +1,11 @@
 <template>
     <div id="EditArea" :style="{ 'background' : `linear-gradient(to right, ${action ? action.backgroundColor : ''}, ${reaction ? reaction.backgroundColor : ''})` }">
-        <div class="action-param">
-            <p>Action parameter</p>
-            <b-input :value="area.actionParam" @input="debounceUpdate($event, 'action')"></b-input>
+        <div class="action">
+            <div class="action-param" v-if="this.area['actionParam'] !== ''">
+                <p>Action parameter</p>
+                <b-input :value="area.actionParam" @input="debounceUpdate($event, 'action')"></b-input>
+            </div>
+            <p v-else> No action parameter </p>
         </div>
         <div class="manage">
             <div class="edit">
@@ -10,9 +13,12 @@
             </div>
             <b-switch size="is-medium" passive-type="is-danger" type="is-success" v-model="area.enabled" @input="postArea()"></b-switch>
         </div>
-        <div class="reaction-param">
-            <p>Reaction parameter</p>
-            <b-input :value="area.reactionParam" @input="debounceUpdate($event, 'reaction')"></b-input>
+        <div class="reaction">
+            <div class="reaction-param" v-if="this.area['reactionParam'] !== ''">
+                <p>Reaction parameter</p>
+                <b-input :value="area.reactionParam" @input="debounceUpdate($event, 'reaction')"></b-input>
+            </div>
+            <p v-else> No reaction parameter </p>
         </div>
     </div>
 </template>
@@ -87,26 +93,47 @@ export default vue.extend({
     height: 110px;
     padding: 10px 30px;
     border-radius: 20px;
-    .action-param,
-    .reaction-param {
+    .action,
+    .reaction {
+        width: 85%;
         color: white;
-        font-family: "Avenir Roman";
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
         text-align: start;
-        width: 100%;
-        :deep(.control) {
-        width: 100%;
-            input {
-                width: 80%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        >p {
+            text-align: center;
+            width: 100%;
+            font-family: "Avenir Roman";
+            font-size: 20px;
+        }
+        .action-param,
+        .reaction-param {
+            color: white;
+            font-family: "Avenir Roman";
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            text-align: start;
+            width: 100%;
+            :deep(.control) {
+                width: 100%;
+                input {
+                    width: 80%;
+                }
             }
         }
     }
-    .reaction-param {
-        align-items: flex-end;
-        text-align: end;
+    .reaction {
+        .reaction-param {
+            text-align: end;
+            p {
+                text-align: end;
+                width: 100%;
+            }
+        }
     }
     .manage {
         display: flex;
@@ -120,6 +147,7 @@ export default vue.extend({
             display: flex;
             align-items: center;
             text-transform: uppercase;
+            color: #2c3e50;
             :deep(span) {
                 padding: 20px;
                 box-shadow: 0 0 15px 1px #000000a1;

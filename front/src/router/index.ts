@@ -11,6 +11,7 @@ import Area from "../views/Area.vue";
 import Profile from "../views/Profile.vue";
 import Services from "../views/Services.vue";
 import Create from "../views/Create.vue"
+import Download from "../views/Download.vue"
 
 Vue.use(VueRouter);
 

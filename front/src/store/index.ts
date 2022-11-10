@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         token: "",
-        serveurURL: `http://${process.env.VUE_APP_URL}:${process.env.VUE_APP_PORT || 8081}/`,
+        serveurURL: `http://${process.env.VUE_APP_URL}:${process.env.VUE_APP_PORT || 8080}/`,
     },
     getters: {
         userToken: state => state.token,

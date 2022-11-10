@@ -87,7 +87,7 @@ export default vue.extend({
          * @async
          */
         postOAuthCode(): void {
-            if (this.area[this.type + 'ServiceId'] != -1) {
+            if (this.area[this.type + 'ServiceId'] == -1) {
                 return;
             }
             this.$nextTick(async(): Promise<void> => {

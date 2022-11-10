@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.area.AREAApplication
 import com.example.area.R
@@ -21,7 +19,6 @@ import com.example.area.model.ServiceListElement
 import com.example.area.model.about.AboutClass
 
 class AreaCreationReactionServiceFragment(private val actionService: ServiceListElement, private val action: ActionReactionInfo) : Fragment(R.layout.fragment_area_creation_reaction_service) {
-    private var serviceSelectedIndex: Int = -1
     private lateinit var serviceAdapter: ServiceItemAdapter
 
     override fun onCreateView(
@@ -36,18 +33,8 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceList
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerViewReactionService)
         val serviceList = ServiceDatasource()
 
-        recycler.layoutManager = LinearLayoutManager(context as AreaActivity)
+        recycler.layoutManager = GridLayoutManager(context as AreaActivity, 2)
         feelSearchedList(serviceList, feelEntireList(aboutClass, servicesImages))
-        view.findViewById<Button>(R.id.backFromReactionServiceCreationButton).setOnClickListener {
-            (context as AreaActivity).onBackPressed()
-        }
-        view.findViewById<Button>(R.id.nextFromReactionServiceCreation).setOnClickListener {
-            if (serviceSelectedIndex != -1) {
-                (context as AreaActivity).changeFragment(AreaCreationReactionFragment(actionService, action, serviceList.loadServiceInfo()[serviceSelectedIndex]), "reaction_creation")
-            } else {
-                Toast.makeText(context as AreaActivity, "Please select a reaction service", Toast.LENGTH_SHORT).show()
-            }
-        }
         view.findViewById<SearchView>(R.id.searchReactionService).setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(toSearch: String?): Boolean {
                 onQuery(toSearch, aboutClass, servicesImages, serviceList, recycler)
@@ -59,6 +46,7 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceList
             }
         })
         updateRecycler(recycler, serviceList)
+        //recycler.addItemDecoration(MarginItemDecoration(50)) /* Line to uncomment when the MarginItemDecoration class is merged (it applies margin to the items) */
         return view
     }
 
@@ -79,14 +67,13 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceList
         serviceAdapter = ServiceItemAdapter(
             context as AreaActivity,
             serviceList.loadServiceInfo()
-        ) { position -> onItemClick(position, serviceList.loadServiceInfo()[position].name) }
+        ) { position -> onItemClick(position, serviceList) }
         recycler.setHasFixedSize(true)
         recycler.adapter = serviceAdapter
     }
 
-    private fun onItemClick(position: Int, toPrint: String) {
-        serviceSelectedIndex = position
-        Toast.makeText(context as AreaActivity, "$toPrint selected", Toast.LENGTH_SHORT).show()
+    private fun onItemClick(position: Int, serviceList: ServiceDatasource) {
+        (context as AreaActivity).changeFragment(AreaCreationReactionFragment(actionService, action, serviceList.loadServiceInfo()[position]), "reaction_creation")
     }
 
     private fun feelEntireList(aboutClass: AboutClass, servicesImages: List<Bitmap>): List<ServiceListElement> {

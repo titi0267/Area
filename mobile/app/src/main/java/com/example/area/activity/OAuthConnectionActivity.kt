@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +15,7 @@ import com.example.area.model.OAuthCode
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
 import retrofit2.Response
+import java.net.URLEncoder
 
 class OAuthConnectionActivity : AppCompatActivity() {
 
@@ -39,13 +41,18 @@ class OAuthConnectionActivity : AppCompatActivity() {
 
         if (!uri.toString().startsWith("http://localhost"))
             return
-        val code = uri.getQueryParameter("code") ?: return setOAuthValue(false)
-        val service = sessionManager.fetchAuthToken("service") ?: return setOAuthValue(false)
+        val queryParameterNames = uri.queryParameterNames
+        val queryParams: MutableMap<String, String> = mutableMapOf()
+        for (queryParameterName in queryParameterNames) {
+            val queryParameterValue = uri.getQueryParameter(queryParameterName) ?: continue
+            queryParams[queryParameterName] = queryParameterValue
+        }
+        val service = sessionManager.fetchAuthToken("service") ?: return
         sessionManager.removeAuthToken("service")
-        postServiceCode(service, OAuthCode(code))
+        postServiceCode(service, queryParams)
     }
 
-    private fun postServiceCode(service: String, code: OAuthCode)
+    private fun postServiceCode(service: String, code: MutableMap<String, String>)
     {
         val sessionManager = SessionManager(this)
         val token = sessionManager.fetchAuthToken("user_token") ?: return setOAuthValue(false)
@@ -58,7 +65,8 @@ class OAuthConnectionActivity : AppCompatActivity() {
                 return@Observer
             }
             if (response.isSuccessful) {
-                (this.application as AREAApplication).setTokenInTokenTable(service, code.code)
+                (this.application as AREAApplication).setTokenInTokenTable(service, code["code"])
+                Toast.makeText(this, "Code successfully added", Toast.LENGTH_SHORT).show()
                 setOAuthValue(true)
             } else {
                 setOAuthValue(false)

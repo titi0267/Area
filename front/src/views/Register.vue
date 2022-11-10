@@ -1,5 +1,6 @@
 <template>
     <div id="register">
+        <b-image src="https://images.unsplash.com/photo-1667925459217-e7b7a9797409?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"/>
         <section class="registerForm">
             <h3>Create your account</h3>
             <div class="names">
@@ -213,6 +214,18 @@ export default vue.extend({
 <style scoped lang="scss">
 #register {
     display: flex;
+    height: 100vh;
+    width: 100vw;
+    :deep(figure) {
+        height: 100%;
+        width: 100%;
+        img {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-size: 100% 100%;
+        }
+    }
     .registerForm {
         background-color: white;
         min-width: 400px;

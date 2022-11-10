@@ -1,5 +1,6 @@
 <template>
     <div id="login">
+        <b-image src="https://images.unsplash.com/photo-1666442131138-f010c5304948?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"/>
         <section class="loginForm">
             <h3>Login</h3>
             <b-field label="E-mail" label-position="on-border" :type="login.email.error != '' ? 'is-danger' : ''" :message="login.email.error">
@@ -15,7 +16,7 @@
             </div>
             <p class="or">or</p>
             <div class="googleOauth">
-                <b-button @click="getGoogleOauthLogin()"> <b-image :src="require('@/assets/google_logo.png')"> </b-image> Login with Google </b-button>
+                <b-button @click="getGoogleOauthLogin()"> <b-image :src="require('@/assets/pictures/google_logo.png')"> </b-image> Login with Google </b-button>
             </div>
             <div class="register">
                 <router-link to="/register">
@@ -186,6 +187,13 @@ export default vue.extend({
 
 <style scoped lang="scss">
 #login {
+    height: 100vh;
+    :deep(figure) {
+        height: 100%;
+        img {
+            height: 100%;
+        }
+    }
     .loginForm {
         background-color: white;
         min-width: 400px;

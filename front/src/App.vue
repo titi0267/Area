@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" :class="{ 'darkMode' : $store.getters.darkMode }">
         <NavBar v-if="$route.name != 'register' && $route.name != 'login'"/>
         <router-view/>
     </div>
@@ -24,6 +24,10 @@ export default vue.extend({
     text-align: center;
     color: #2c3e50;
     height: 100vh;
+    transition: background-color 0.5s;
+    &.darkMode {
+        background-color: #2f2e2f;
+    }
 }
 
 /** ALL FONTS ARE LOADED HERE */

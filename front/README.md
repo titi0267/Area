@@ -41,8 +41,8 @@ You do to fill the `.enf` file with the following values.
 | Name | Description | Type | Default Value |
 |:----|:------------|:-----|:------------------|
 <span style="color: #FF5500; text-decoration: underline;">***APP VARIABLES***</span> | | | |
-| **VUE_APP_URL** | Front-end server URL | `string` | *No default value* |
-| **VUE_APP_PORT** | Front-end server PORT | `number` | *8081* |
+| **VUE_APP_URL** | Back-end server URL | `string` | *No default value* |
+| **VUE_APP_PORT** | Back-end server PORT | `number` | *8080* |
 
 ## Compilation
 Two methods to compile the frontend

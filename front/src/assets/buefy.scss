@@ -92,7 +92,8 @@ $link-focus-border: $primary;
 .field {
     p {
         &.is-danger {
-            position: absolute;
+            position: relative;
+            text-align: start;
         }
     }
 }

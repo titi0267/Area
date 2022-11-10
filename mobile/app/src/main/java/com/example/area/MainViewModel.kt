@@ -197,7 +197,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun postServiceCode(auth: String, service: String, code: OAuthCode, context: Context, observer: Observer<Response<Unit>?>) {
+    fun postServiceCode(auth: String, service: String, code: MutableMap<String, String>, context: Context, observer: Observer<Response<Unit>?>) {
         viewModelScope.launch {
             try {
                 val response = repository.postServiceCode(auth, service, code)

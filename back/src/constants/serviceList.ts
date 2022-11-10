@@ -97,7 +97,7 @@ export const SERVICES: Service[] = [
       {
         id: 1,
         actionName: "Skip to next song",
-        actionParamName: "Skip song",
+        actionParamName: "",
         paramFormat: null,
         description: "You skipped a song",
         fct: SpotifyAction.checkMusicSkip,
@@ -106,7 +106,7 @@ export const SERVICES: Service[] = [
       {
         id: 2,
         actionName: "New liked song",
-        actionParamName: "Liked track",
+        actionParamName: "",
         paramFormat: null,
         description: "You liked a new song",
         fct: SpotifyAction.checkIsMusicLiked,
@@ -115,7 +115,7 @@ export const SERVICES: Service[] = [
       {
         id: 3,
         actionName: "New track added to a playlist",
-        actionParamName: "Playlist name to add the track",
+        actionParamName: "Playlist name",
         paramFormat: null,
         description: "You added a ne song to a specific playlist",
         fct: SpotifyAction.addTrackToPlaylist,

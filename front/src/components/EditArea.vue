@@ -40,12 +40,17 @@ export default vue.extend({
          * @async
          */
         async deleteArea(): Promise<void> {
-            await this.$axios.delete("/areas/" + this.area.id, {
-                headers: {
-                    Authorization: this.$store.getters.userToken || "noToken",
-                }
-            })
-            this.$emit('deleted')
+            try {
+                await this.$axios.delete("/areas/" + this.area.id, {
+                    headers: {
+                        Authorization: this.$store.getters.userToken || "noToken",
+                    }
+                })
+                this.notification('Your area has been deleted', 'is-success');
+                this.$emit('deleted')
+            } catch {
+                this.notification('Failed to delete your area', 'is-danger');
+            }
         },
         /**
          * It's a function that wait 400ms before post the new values in back-end server.

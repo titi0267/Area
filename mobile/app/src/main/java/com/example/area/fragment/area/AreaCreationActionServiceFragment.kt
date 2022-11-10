@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.area.AREAApplication
 import com.example.area.R
 import com.example.area.activity.AreaActivity
+import com.example.area.adapter.MarginItemDecoration
 import com.example.area.adapter.ServiceItemAdapter
 import com.example.area.data.ServiceDatasource
 import com.example.area.model.ServiceListElement
@@ -45,7 +46,7 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
             }
         })
         updateRecycler(recycler, serviceList)
-        //recycler.addItemDecoration(MarginItemDecoration(50)) /* Line to uncomment when the MarginItemDecoration class is merged (it applies margin to the items) */
+        recycler.addItemDecoration(MarginItemDecoration(50))
         return view
     }
 

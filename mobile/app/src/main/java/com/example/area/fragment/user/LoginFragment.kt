@@ -139,29 +139,30 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         viewModel.linkResponse.observe(context as UserConnectionActivity, observer)
     }
 
-    private suspend fun waitForSuccess(context: Context) {
-        while (((context as AreaActivity).application as AREAApplication).successOauth == null);
-        if (((context as AreaActivity).application as AREAApplication).successOauth == true) {
+    private suspend fun waitForSuccess(context:  UserConnectionActivity) {
+        while (((context).application as AREAApplication).successOauth == null);
+        if (((context).application as AREAApplication).successOauth == true) {
             onSuccessOauth(context)
         }
         else {
             onFailureOauth(context)
         }
-        ((context as AreaActivity).application as AREAApplication).successOauth = null;
+        ((context).application as AREAApplication).successOauth = null;
     }
 
     private fun onSuccessOauth(context: Context) {
-        Handler(Looper.getMainLooper()).post {
-            val fragment: OAuthLinkingFragment = ((context as AreaActivity).supportFragmentManager.findFragmentByTag("oauth_linking")?: return@post) as OAuthLinkingFragment
+        val fragment: LoginFragment = ((context as UserConnectionActivity).supportFragmentManager.findFragmentByTag("login")?: return) as LoginFragment
 
-            Toast.makeText(context as UserConnectionActivity, "Successfully logged in!", Toast.LENGTH_SHORT).show()
+        while (!fragment.isStateSaved);
+        Handler(Looper.getMainLooper()).post {
+            Toast.makeText(context, "Successfully logged in!", Toast.LENGTH_SHORT).show()
             startActivity(Intent(context, MainActivity::class.java))
         }
     }
 
     private fun onFailureOauth(context: Context) {
         Handler(Looper.getMainLooper()).post {
-            Toast.makeText(context as AreaActivity, "OAuth failure!", Toast.LENGTH_LONG).show()
+            Toast.makeText(context as UserConnectionActivity, "OAuth failure!", Toast.LENGTH_LONG).show()
         }
     }
 }

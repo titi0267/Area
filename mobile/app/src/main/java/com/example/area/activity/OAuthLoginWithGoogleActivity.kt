@@ -45,17 +45,22 @@ class OAuthLoginWithGoogleActivity : AppCompatActivity() {
     private fun postRegisterWithGoogle(code: OAuthCode)
     {
         val sessionManager = SessionManager(this)
-        val url = sessionManager.fetchAuthToken("url") ?: return
+        val url = sessionManager.fetchAuthToken("url") ?: return setOAuthValue(false)
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
         val observer: Observer<Response<Token>?> = Observer { response ->
             if (response == null) {
+                setOAuthValue(false)
                 finish()
                 return@Observer
             }
             if (response.isSuccessful) {
                 sessionManager.saveAuthToken("user_token", response.body()!!.token)
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+                setOAuthValue(true)
+            }
+            else {
+                setOAuthValue(false)
             }
             finish()
         }
@@ -63,5 +68,9 @@ class OAuthLoginWithGoogleActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         viewModel.postRegisterWithGoogle(code, this, observer)
         viewModel.userResponse.observe(this, observer)
+    }
+
+    private fun setOAuthValue(boolean: Boolean) {
+        (this.application as AREAApplication).successOauth = boolean
     }
 }

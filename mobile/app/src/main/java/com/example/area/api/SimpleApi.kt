@@ -32,7 +32,7 @@ interface SimpleApi {
     suspend fun getServiceLink(@Header("Authorization") auth: String, @Path("service") service: String) : Response<String>
 
     @POST("/oauth/{service}")
-    suspend fun postServiceCode(@Header("Authorization") auth: String, @Path("service") service: String, @Body post: OAuthCode) : Response<Unit>
+    suspend fun postServiceCode(@Header("Authorization") auth: String, @Path("service") service: String, @Body post: MutableMap<String, String>) : Response<Unit>
 
     @PUT("/areas")
     suspend fun putEnableDisable(@Header("Authorization") auth: String, @Body put: EnableDisable): Response<ActionReaction>

@@ -118,7 +118,6 @@ export default vue.extend({
                     }
                 }
                 try {
-                    console.log("name = " + serviceOauthName + " param = " + oauthParam)
                     let {data: tokens} = await this.$axios.post("/oauth/" + serviceOauthName, oauthParam, {
                         headers: {
                             Authorization: this.$store.getters.userToken || "noToken",

@@ -87,7 +87,7 @@ export default vue.extend({
          * @async
          */
         postOAuthCode(): void {
-            if (this.area[this.type + 'ServiceId'] != -1) {
+            if (this.area[this.type + 'ServiceId'] == -1) {
                 return;
             }
             this.$nextTick(async(): Promise<void> => {
@@ -118,6 +118,7 @@ export default vue.extend({
                     }
                 }
                 try {
+                    console.log("name = " + serviceOauthName + " param = " + oauthParam)
                     let {data: tokens} = await this.$axios.post("/oauth/" + serviceOauthName, oauthParam, {
                         headers: {
                             Authorization: this.$store.getters.userToken || "noToken",

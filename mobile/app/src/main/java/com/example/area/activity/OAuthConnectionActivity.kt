@@ -21,6 +21,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.internal.wait
 import retrofit2.Response
+import java.net.URLEncoder
 
 class OAuthConnectionActivity : AppCompatActivity() {
 
@@ -45,13 +46,19 @@ class OAuthConnectionActivity : AppCompatActivity() {
 
         if (!uri.toString().startsWith("http://localhost"))
             return
-        val code = uri.getQueryParameter("code") ?: return
+        Log.d("Query params", uri.toString())
+        val queryParameterNames = uri.queryParameterNames
+        val queryParams: MutableMap<String, String> = mutableMapOf()
+        for (queryParameterName in queryParameterNames) {
+            val queryParameterValue = uri.getQueryParameter(queryParameterName) ?: continue
+            queryParams[queryParameterName] = queryParameterValue
+        }
         val service = sessionManager.fetchAuthToken("service") ?: return
         sessionManager.removeAuthToken("service")
-        postServiceCode(service, OAuthCode(code))
+        postServiceCode(service, queryParams)
     }
 
-    private fun postServiceCode(service: String, code: OAuthCode)
+    private fun postServiceCode(service: String, code: MutableMap<String, String>)
     {
         val sessionManager = SessionManager(this)
         val token = sessionManager.fetchAuthToken("user_token") ?: return
@@ -64,7 +71,7 @@ class OAuthConnectionActivity : AppCompatActivity() {
                 return@Observer
             }
             if (response.isSuccessful) {
-                (this.application as AREAApplication).setTokenInTokenTable(service, code.code)
+                (this.application as AREAApplication).setTokenInTokenTable(service, code["code"])
                 Toast.makeText(this, "Code successfully added", Toast.LENGTH_SHORT).show()
             }
             finish()

@@ -13,6 +13,7 @@ class AREAApplication : Application() {
     var aboutClass: AboutClass? = null
     var aboutBitmapList: List<Bitmap>? = null
     var userInfo: UserInfo? = null
+    var successOauth: Boolean? = null
 
     fun setAboutClass(about: About) {
         aboutClass = AboutClass(about)

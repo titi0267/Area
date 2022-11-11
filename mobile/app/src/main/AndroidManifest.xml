@@ -15,7 +15,7 @@
         android:theme="@style/Theme.AREA"
         tools:targetApi="31">
         <activity
-            android:name=".activity.OAuthConnectionActivity"
+            android:name=".activity.OAuthLinkingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -24,6 +24,19 @@
                 <data
                     android:host="localhost"
                     android:pathPattern="/create"
+                    android:scheme="http"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.OAuthLoginWithGoogleActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="localhost"
+                    android:pathPattern="/login"
                     android:scheme="http"/>
             </intent-filter>
         </activity>

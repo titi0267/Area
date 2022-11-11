@@ -197,7 +197,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun postServiceCode(auth: String, service: String, code: OAuthCode, context: Context, observer: Observer<Response<Unit>?>) {
+    fun postServiceCode(auth: String, service: String, code: MutableMap<String, String>, context: Context, observer: Observer<Response<Unit>?>) {
         viewModelScope.launch {
             try {
                 val response = repository.postServiceCode(auth, service, code)
@@ -234,8 +234,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             finally {
                 (context).loading = false
                 enableResponse.removeObserver(observer)
-                Log.d("???allo", enableResponse.hasActiveObservers().toString())
-                Log.d("???laterre", enableResponse.hasObservers().toString())
             }
         }
     }
@@ -257,6 +255,46 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             finally {
                 context.loading = false
                 deleteAreaResponse.removeObserver(observer)
+            }
+        }
+    }
+    fun getGoogleRegisterLink(context: Context, observer: Observer<Response<String>?>) {
+        viewModelScope.launch {
+            (context as UserConnectionActivity).loading = true
+            try {
+                val response = repository.getGoogleRegisterLink()
+                linkResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                linkResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                linkResponse.value = null
+            }
+            finally {
+                context.loading = false
+                linkResponse.removeObserver(observer)
+            }
+        }
+    }
+    fun postRegisterWithGoogle(code: OAuthCode, context: Context, observer: Observer<Response<Token>?>) {
+        viewModelScope.launch {
+            try {
+                val response = repository.postRegisterWithGoogle(code)
+                userResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                userResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                userResponse.value = null
+            }
+            finally {
+                userResponse.removeObserver(observer)
             }
         }
     }

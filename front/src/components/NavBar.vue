@@ -7,7 +7,9 @@
         </div>
         <div class="right">
             <div class="APK">
-                <b-icon icon="download"/>
+                <a href="/client.apk" download>
+                    <b-icon icon="download"/>
+                </a>
                 <p>Download APP</p>
             </div>
             <div class="profile">
@@ -193,6 +195,9 @@ $navbar-height: 75px;
         width: 206.53px;
         .APK {
             font-size: 13px;
+            >a {
+                color: rgba(25, 25, 66, 0.81);
+            }
             p {
                 top: 9px;
                 position: relative;

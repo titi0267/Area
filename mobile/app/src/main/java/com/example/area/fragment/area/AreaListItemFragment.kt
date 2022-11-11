@@ -63,8 +63,6 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).setOnCheckedChangeListener {_, _ ->}
         view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).setOnClickListener {
             view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).isChecked = !view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).isChecked
-            Log.d("Loading value", (context as AreaActivity).loading.toString())
-            Log.d("Enable Status in listen", enabledStatus.toString())
             if ((context as AreaActivity).loading)
                 return@setOnClickListener
             onEnableDisableSwitch(view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).isChecked, token, view)
@@ -76,17 +74,12 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
     }
 
     private fun onEnableDisableSwitch(isChecked: Boolean, token: String?, view:View) {
-        Log.d("I don't get it", "really not")
         val observer: Observer<Response<ActionReaction>?> = Observer { response ->
-            Log.d("???", "???")
-            Log.d("Enable Status", enabledStatus.toString())
             if (!enabledStatus || response == null) {
                 enabledStatus = true
                 return@Observer
             }
-            Log.d("???2", "???2")
             if (response.isSuccessful) {
-                Log.d("???3", "???3")
                 view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).isChecked = !isChecked
                 Toast.makeText(context as AreaActivity, (if (!isChecked) "Enabled" else "Disabled"), Toast.LENGTH_SHORT).show()
                 enabledStatus = false

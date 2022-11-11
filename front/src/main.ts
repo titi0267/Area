@@ -5,7 +5,6 @@ import store from './store'
 import axios from './axiosInstance'
 import { Notifications } from './mixins'
 
-import i18n from './lang/i18n'
 import Buefy from 'buefy'
 import "@/assets/buefy.scss"
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -38,7 +37,6 @@ Vue.prototype.$axios = axios;
 Vue.mixin(Notifications);
 
 new Vue({
-    i18n,
     router,
     store,
     render: h => h(App)

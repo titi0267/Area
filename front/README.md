@@ -15,7 +15,6 @@ It manages all the pages and interactive elements linked to this project.
     * [Axios](#axios)
     * [VueX](#vuex)
     * [Vue Router](#vue-router)
-    * [I18n](#vue-i18n)
     * [Buefy](#buefy)
     * [Mixins](#mixins)
 
@@ -81,6 +80,9 @@ Here is a list of data saved
 |:----|:------------|:-----|
 | **token** | user token | `string` |
 | **area** | area creation | `objet` |
+| **dark-mode** | dark mode actif | `boolean` |
+| **google-oauth** | login with google oauth | `boolean` |
+| **oauth** | current oauth service | `string` |
 
 ## Unit tests
 The unit tests allow you to test each Vue file from the project.
@@ -187,44 +189,6 @@ router.beforeEach(async (to, from, next) => {
     }
     next();
 });
-```
-## Vue-I18n
-Vue I18n is used for the language management on the user interface.
-Two choices are available, French or English.
-Just below is the VueI18n declaration, it allows to define the default language which is in this example English.
-The object message contains every imported languages.
-
-Filepath : `front/src/lang/i18n.ts`
-```ts
-const en = require("./en.json");
-const fr = require('./fr.json');
-
-export default new VueI18n({
-    locale: "en-US",
-    fallbackLocale: ['en-US'],
-    messages: {
-        "en-US": en,
-        "fr-FR": fr,
-    }
-});
-```
-The languages are imported as a `.JSON` file, each language has its own file.
-The file below contains the english words.
-
-Filepath : `front/src/lang/fr.json`
-```json
-{
-    "register": {
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        ...
-    }
-}
-```
-The example below shows you how to get the information in the HTML code.
-The result will be : `First Name`
-```html
-<p> {{ $t('register.firstName') }} </p>
 ```
 ## Buefy
 Buefy is a UI component library for VueJs.

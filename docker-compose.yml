@@ -15,7 +15,7 @@ services:
       - db
     env_file:
       - ./docker.env
-  front:
+  client_web:
     build: ./front
     env_file:
       - ./docker.env

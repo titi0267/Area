@@ -37,15 +37,9 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
 
         updateRecycler(recycler, Datasource(), null)
         areaListRequest(recycler)
-        view.findViewById<Button>(R.id.area_list_fetch).setOnClickListener {
+        /*view.findViewById<Button>(R.id.area_list_fetch).setOnClickListener {
             areaListRequest(recycler)
-        }
-        view.findViewById<Button>(R.id.areaCreationButton).setOnClickListener {
-            (context as AreaActivity).changeFragment(AreaCreationActionServiceFragment(), "action_service_creation")
-        }
-        view.findViewById<Button>(R.id.backFromAreaListButton).setOnClickListener {
-            (context as AreaActivity).onBackPressed()
-        }
+        }*/ //Code for refresh in comment in case we implement it
         return view
     }
 

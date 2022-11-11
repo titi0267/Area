@@ -33,15 +33,14 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
+        val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerView)
 
         updateRecycler(recycler, Datasource(), null)
-        areaListRequest(recycler)
         /*view.findViewById<Button>(R.id.area_list_fetch).setOnClickListener {
             areaListRequest(recycler)
         }*/ //Code for refresh in comment in case we implement it
-        view = areaListRequest(recycler, view)
+        areaListRequest(recycler, view)
         return view
     }
 

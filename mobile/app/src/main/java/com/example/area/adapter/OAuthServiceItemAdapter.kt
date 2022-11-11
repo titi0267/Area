@@ -49,7 +49,7 @@ class OAuthServiceItemAdapter(private val context: Context, private val dataset:
             button.text = context.resources.getString(R.string.oauth_service_item_button_true)
             button.setTextColor(context.resources.getColor(R.color.green))
             button.setOnClickListener {
-                Toast.makeText(context as AreaActivity, "Unlink not available!", Toast.LENGTH_LONG).show()
+                unlinkRequest(dataset[index].oauthName, context)
             }
         } else {
             button.text = context.resources.getString(R.string.oauth_service_item_button_false)
@@ -117,5 +117,35 @@ class OAuthServiceItemAdapter(private val context: Context, private val dataset:
         Handler(Looper.getMainLooper()).post {
             Toast.makeText(context as AreaActivity, "OAuth failure!", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun unlinkRequest(oauthName: String, context: Context) {
+        val sessionManager = SessionManager(context as AreaActivity)
+        val url = sessionManager.fetchAuthToken("url") ?: return
+        val token = sessionManager.fetchAuthToken("user_token") ?:return
+        var tokenTable: MutableMap<String, String?> =
+            (((context as AreaActivity).application as AREAApplication).userInfo ?: return).tokensTable as MutableMap<String, String?>
+        val deletedToken: MutableMap<String, Boolean> = mutableMapOf()
+        val fragment: OAuthLinkingFragment = ((context as AreaActivity).supportFragmentManager.findFragmentByTag("oauth_linking")?: return) as OAuthLinkingFragment
+        val rep = Repository(url)
+        val viewModelFactory = MainViewModelFactory(rep)
+        val viewModel = ViewModelProvider(context, viewModelFactory)[MainViewModel::class.java]
+        val observer: Observer<Response<Unit>?> = Observer { response ->
+            if (response == null)
+                return@Observer
+            if (response.isSuccessful) {
+                (((context).application as AREAApplication).userInfo ?: return@Observer).tokensTable = tokenTable
+                fragment.refreshList(null)
+                Toast.makeText(context as AreaActivity, "Account unlinked successfully!", Toast.LENGTH_LONG).show()
+            }
+        }
+        for (tokenOauth in tokenTable) {
+            if (tokenOauth.key.startsWith(oauthName)) {
+                tokenTable[tokenOauth.key] = null
+                deletedToken[tokenOauth.key] = true
+            }
+        }
+        viewModel.deleteTokens(token, deletedToken, context, observer)
+        viewModel.emptyResponse.observe(context, observer)
     }
 }

@@ -45,4 +45,7 @@ interface SimpleApi {
 
     @POST("/oauth/google/register")
     suspend fun postRegisterWithGoogle(@Body post: OAuthCode) : Response<Token>
+
+    @PUT("/tokens/delete")
+    suspend fun deleteTokens(@Header("Authorization") auth: String, @Body tokensTable: MutableMap<String, Boolean>) : Response<Unit>
 }

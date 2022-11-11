@@ -45,4 +45,8 @@ class Repository(private val URL_INPUT : String) {
     suspend fun postRegisterWithGoogle(code: OAuthCode) : Response<Token> {
         return RetrofitInstance(URL_INPUT).api.postRegisterWithGoogle(code)
     }
+    suspend fun deleteTokens(auth: String, tokensTable: MutableMap<String, Boolean>) : Response<Unit> {
+        return RetrofitInstance(URL_INPUT).api.deleteTokens(auth, tokensTable)
+    }
+
 }

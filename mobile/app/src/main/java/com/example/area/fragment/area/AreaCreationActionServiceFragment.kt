@@ -21,7 +21,7 @@ import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
-import com.example.area.activity.OAuthConnectionActivity
+import com.example.area.activity.OAuthLinkingActivity
 import com.example.area.adapter.MarginItemDecoration
 import com.example.area.adapter.ServiceItemAdapter
 import com.example.area.data.ServiceDatasource
@@ -121,7 +121,7 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
             if (response.isSuccessful) {
                 val oAuthLink = response.body()!!.toString()
                 val bundle = Bundle()
-                val intent = Intent(context as AreaActivity, OAuthConnectionActivity::class.java)
+                val intent = Intent(context, OAuthLinkingActivity::class.java)
                 bundle.putString("link", oAuthLink)
                 bundle.putString("service", service)
                 intent.putExtras(bundle)

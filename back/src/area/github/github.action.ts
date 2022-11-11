@@ -88,16 +88,16 @@ const newPullRequestOnRepository = async (
     })
   ).data;
 
-  if (!pulls[0] || !pulls[0].milestone?.creator?.login) return null;
-
   if (area.lastActionValue === null) {
     await AreaService.updateAreaValues(area.id, "");
     return null;
   }
 
+  if (!pulls[0] || !pulls[0].user?.login) return null;
+
   const params = {
     title: pulls[0].title,
-    creator: pulls[0].milestone.creator.login,
+    creator: pulls[0].user?.login,
     body: pulls[0].body || "",
   };
 

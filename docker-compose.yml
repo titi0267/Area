@@ -7,7 +7,7 @@ services:
       - ./docker.env
     ports:
       - "33061:3306"
-  back:
+  server:
     build: ./back
     ports:
       - "8080:8080"
@@ -15,16 +15,23 @@ services:
       - db
     env_file:
       - ./docker.env
-  front:
+  client_web:
     build: ./front
     env_file:
       - ./docker.env
     volumes:
       - ./front/src:/usr/vue_app/
       - /usr/vue_app/node_modules
+      - apk:/mobile
     ports:
       - "8081:8081"
     depends_on:
-      - back
+      - server
+      - client_mobile
   client_mobile:
     build: ./mobile
+    volumes:
+      - apk:/mobile
+
+volumes:
+  apk:

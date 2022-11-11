@@ -176,6 +176,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     
     fun getServiceLink(auth: String, service: String, context: Context, observer: Observer<Response<String>?>) {
         viewModelScope.launch {
+            linkResponse.value = null
             (context as AreaActivity).loading = true
             try {
                 val response = repository.getServiceLink(auth, service)
@@ -295,6 +296,26 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             }
             finally {
                 userResponse.removeObserver(observer)
+            }
+        }
+    }
+    fun deleteTokens(auth: String, code: MutableMap<String, Boolean>, context: Context, observer: Observer<Response<Unit>?>) {
+        viewModelScope.launch {
+            emptyResponse.value = null
+            try {
+                val response = repository.deleteTokens(auth, code)
+                emptyResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                emptyResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                emptyResponse.value = null
+            }
+            finally {
+                emptyResponse.removeObserver(observer)
             }
         }
     }

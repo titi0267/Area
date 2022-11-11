@@ -21,7 +21,7 @@ import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
-import com.example.area.activity.OAuthConnectionActivity
+import com.example.area.activity.OAuthLinkingActivity
 import com.example.area.fragment.area.OAuthLinkingFragment
 import com.example.area.model.OAuthServiceListElement
 import com.example.area.repository.Repository
@@ -78,10 +78,9 @@ class OAuthServiceItemAdapter(private val context: Context, private val dataset:
             if (response.isSuccessful) {
                 val oAuthLink = response.body()!!.toString()
                 val bundle = Bundle()
-                val intent = Intent(context as AreaActivity, OAuthConnectionActivity::class.java)
+                val intent = Intent(context as AreaActivity, OAuthLinkingActivity::class.java)
                 bundle.putString("link", oAuthLink)
                 bundle.putString("service", service)
-                Log.d("Service in request", service)
                 intent.putExtras(bundle)
                 GlobalScope.launch {
                     waitForSuccess(context)

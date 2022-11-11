@@ -12,6 +12,7 @@ const areaLoop = async () => {
 
     if (action === null) continue;
     try {
+      console.log("ar");
       const reactionParam = await action(area);
 
       if (reactionParam === null) continue;
@@ -23,6 +24,7 @@ const areaLoop = async () => {
 
       if (reaction === null) continue;
 
+      console.log("ea");
       await reaction(reactionParam, area.userId);
     } catch (e) {
       console.log(e);

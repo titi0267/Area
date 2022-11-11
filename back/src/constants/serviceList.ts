@@ -137,7 +137,7 @@ export const SERVICES: Service[] = [
         id: 2,
         reactionName: "Update your volume",
         reactionParamName: "Number to set volume to",
-        paramFormat: null,
+        paramFormat: FORMAT.volumeFormat,
         description: "Change the volume of your device",
         fct: SpotifyReaction.updateVolume,
       },

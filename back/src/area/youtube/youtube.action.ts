@@ -145,6 +145,14 @@ const checkNewVideoLiked = async (area: Area): Promise<string | null> => {
 
   if (!playlist.pageInfo?.totalResults || !playlist.items) return null;
 
+  if (area.lastActionValue === null) {
+    await AreaService.updateAreaValues(
+      area.id,
+      String(playlist.pageInfo.totalResults),
+    );
+    return null;
+  }
+
   const lastVideo = playlist.items[0];
 
   if (
@@ -158,14 +166,6 @@ const checkNewVideoLiked = async (area: Area): Promise<string | null> => {
     channel: lastVideo.snippet.videoOwnerChannelTitle,
     title: lastVideo.snippet.title,
   };
-
-  if (area.lastActionValue === null) {
-    await AreaService.updateAreaValues(
-      area.id,
-      String(playlist.pageInfo.totalResults),
-    );
-    return null;
-  }
 
   if (playlist.pageInfo.totalResults > parseInt(area.lastActionValue)) {
     await AreaService.updateAreaValues(

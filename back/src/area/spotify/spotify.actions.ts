@@ -2,7 +2,7 @@ import { Area } from "@prisma/client";
 import { AreaService, TokenService } from "../../services";
 import * as ServiceHelper from "../../helpers/service.helpers";
 
-const checkMusicSkip = async (area: Area): Promise<string | null> => {
+const checkMusicChanged = async (area: Area): Promise<string | null> => {
   const spotifyCredential = await ServiceHelper.getSpotifyClient(area.userId);
 
   if (!spotifyCredential) return null;
@@ -110,4 +110,4 @@ const addTrackToPlaylist = async (area: Area): Promise<string | null> => {
   return null;
 };
 
-export { checkMusicSkip, checkIsMusicLiked, addTrackToPlaylist };
+export { checkMusicChanged, checkIsMusicLiked, addTrackToPlaylist };

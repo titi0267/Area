@@ -96,11 +96,11 @@ export const SERVICES: Service[] = [
     actions: [
       {
         id: 1,
-        actionName: "Skip to next song",
+        actionName: "Song changed",
         actionParamName: "",
         paramFormat: null,
-        description: "You skipped a song",
-        fct: SpotifyAction.checkMusicSkip,
+        description: "You passed to the next song",
+        fct: SpotifyAction.checkMusicChanged,
         availableInjectParams: ["songName"],
       },
       {

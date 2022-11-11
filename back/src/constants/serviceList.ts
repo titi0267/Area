@@ -96,11 +96,11 @@ export const SERVICES: Service[] = [
     actions: [
       {
         id: 1,
-        actionName: "Skip to next song",
+        actionName: "Song changed",
         actionParamName: "",
         paramFormat: null,
-        description: "You skipped a song",
-        fct: SpotifyAction.checkMusicSkip,
+        description: "You passed to the next song",
+        fct: SpotifyAction.checkMusicChanged,
         availableInjectParams: ["songName"],
       },
       {
@@ -137,7 +137,7 @@ export const SERVICES: Service[] = [
         id: 2,
         reactionName: "Update your volume",
         reactionParamName: "Number to set volume to",
-        paramFormat: null,
+        paramFormat: FORMAT.volumeFormat,
         description: "Change the volume of spotify (not available on smartphones)",
         fct: SpotifyReaction.updateVolume,
       },

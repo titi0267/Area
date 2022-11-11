@@ -79,25 +79,6 @@ describe("Test getYoutubeVideoId", () => {
   });
 });
 
-describe("Test getYoutubeChannelName", () => {
-  describe("Test valid cases", () => {
-    test("Test if return channel name", () => {
-      const channelName = ServiceHelper.getYoutubeChannelName(
-        "https://www.youtube.com/c/Floowmecofficiel",
-      );
-
-      expect(channelName).toBe("Floowmecofficiel");
-    });
-
-    test("Test with random link", () => {
-      const channelName = ServiceHelper.getYoutubeChannelName(
-        "https://prettier.io/docs/en/ignore.html",
-      );
-      expect(channelName).toBeNull();
-    });
-  });
-});
-
 describe("Test getGithubPullRequestParams", () => {
   describe("Test valid cases", () => {
     test("Test if return owner name", () => {

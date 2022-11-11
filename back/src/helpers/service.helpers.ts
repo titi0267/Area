@@ -151,16 +151,6 @@ const getYoutubeVideoId = (url: string) => {
   return matches[3];
 };
 
-const getYoutubeChannelName = (url: string) => {
-  let regex = FORMAT.youtubeChannelUrl;
-
-  const matches = url.match(regex);
-
-  if (!matches || !matches[1]) return null;
-
-  return matches[1];
-};
-
 const getTime = (actionParam: string) => {
   const regex = FORMAT.time;
 
@@ -279,7 +269,6 @@ export {
   getActionFct,
   getReactionFct,
   getYoutubeVideoId,
-  getYoutubeChannelName,
   injectParamInReaction,
   getGoogleOauthClient,
   getGithubClient,

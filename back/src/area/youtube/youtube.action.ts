@@ -6,23 +6,39 @@ import { AreaService } from "../../services";
 import * as ServiceHelper from "../../helpers/service.helpers";
 
 const checkUploadedVideo = async (area: Area): Promise<string | null> => {
-  const youtube = google.youtube({ version: "v3", auth: ENV.googleApiKey });
+  const oAuth2Client = await ServiceHelper.getGoogleOauthClient(area.userId);
 
-  const channel = await youtube.channels.list({
-    forUsername: area.actionParam,
-    part: ["contentDetails"],
+  if (!oAuth2Client) return null;
+
+  const youtube = google.youtube({ version: "v3", auth: oAuth2Client });
+
+  const channelInfos = await youtube.search.list({
+    type: ["channel"],
+    maxResults: 1,
+    part: ["snippet"],
+    q: area.actionParam,
   });
 
+  if (!channelInfos.data.items || !channelInfos.data.items[0].id?.channelId)
+    return null;
+
+  const channel = (
+    await youtube.channels.list({
+      id: [channelInfos.data.items[0].id.channelId],
+      part: ["contentDetails"],
+    })
+  ).data;
+
   if (
-    !channel.data.items ||
-    !channel.data.items[0].contentDetails?.relatedPlaylists?.uploads
+    !channel.items ||
+    !channel.items[0].contentDetails?.relatedPlaylists?.uploads
   )
     return null;
 
   const videos = await youtube.playlistItems.list({
     maxResults: 1,
     part: ["snippet"],
-    playlistId: channel.data.items[0].contentDetails.relatedPlaylists.uploads,
+    playlistId: channel.items[0].contentDetails.relatedPlaylists.uploads,
   });
 
   if (!videos.data.items || !videos.data.items[0]) return null;

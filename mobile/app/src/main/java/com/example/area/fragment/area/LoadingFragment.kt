@@ -36,5 +36,5 @@ class LoadingFragment : Fragment(R.layout.fragment_loading) {
 private suspend fun waitForSuccess(context: Context) {
     val app = ((context as AreaActivity).application as AREAApplication)
     while (app.aboutClass == null || app.aboutBitmapList == null || app.userInfo == null);
-    context.changeFragment(MainFragment(), "main_fragment")
+    context.changeFragment(AreaListFragment(), "area_list")
 }

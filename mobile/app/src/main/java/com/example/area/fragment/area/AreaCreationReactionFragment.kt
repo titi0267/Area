@@ -3,6 +3,7 @@ package com.example.area.fragment.area
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,14 +20,13 @@ import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.adapter.ActionReactionItemAdapter
 import com.example.area.data.ActionReactionDatasource
-import com.example.area.model.AREAFields
-import com.example.area.model.ActionReactionInfo
-import com.example.area.model.ServiceListElement
-import com.example.area.model.Token
+import com.example.area.model.*
 import com.example.area.model.about.AboutClass
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Response
 
 class AreaCreationReactionFragment(private val actionService: ServiceListElement, private val action: ActionReactionInfo, private val reactionService: ServiceListElement) : Fragment(R.layout.fragment_area_creation_reaction) {
@@ -102,6 +102,10 @@ class AreaCreationReactionFragment(private val actionService: ServiceListElement
             if (response.isSuccessful) {
                 Toast.makeText(context as AreaActivity, "Area added successfully!", Toast.LENGTH_SHORT).show()
                 (context as AreaActivity).changeFragment(AreaListFragment(), "area_list")
+            }
+            else {
+                val error: ErrorResponse = Gson().fromJson((response.errorBody()?: return@Observer).charStream(), (object : TypeToken<ErrorResponse>() {}.type)) ?: return@Observer
+                Toast.makeText(context as AreaActivity, "Error: " + error.message, Toast.LENGTH_SHORT).show()
             }
         }
 

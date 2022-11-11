@@ -2,7 +2,9 @@ package com.example.area.fragment.area
 
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -17,6 +19,7 @@ import com.google.android.material.textfield.TextInputEditText
 import java.util.*
 
 class AreaCreationReactionParamFragment(private val actionService: ServiceListElement, private val action: ActionReactionInfo, private val reactionService: ServiceListElement, private val reaction: ActionReactionInfo) : Fragment(R.layout.fragment_area_creation_reaction_params) {
+    private var first = true
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,6 +30,7 @@ class AreaCreationReactionParamFragment(private val actionService: ServiceListEl
         val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return view
         val textEdit = view.findViewById<TextInputEditText>(R.id.reactionParamText)
 
+        first = true
         view.findViewById<TextView>(R.id.reactionParamFragmentText).text = ("Please put your "+reactionService.name+" "+(aboutClass.getServiceReactionParamNameById(reactionService.id, reaction.id)?.lowercase(Locale.getDefault())))
         textEdit.hint = ("Enter your "+ (aboutClass.getServiceReactionParamNameById(reactionService.id, reaction.id))?.lowercase(Locale.getDefault()))
         view.findViewById<Button>(R.id.cancelButtonInReactionParam).setOnClickListener {
@@ -41,7 +45,6 @@ class AreaCreationReactionParamFragment(private val actionService: ServiceListEl
     }
 
     private fun createSpinner(view: View, aboutClass: AboutClass) {
-        var first: Boolean = true
         val injectSpinner = view.findViewById<Spinner>(R.id.injectActionParamsSpinner)
         val injectedParams: ArrayAdapter<String> = ArrayAdapter(context as AreaActivity, android.R.layout.simple_spinner_item, aboutClass.getServiceActionAvailableInjectParamsById(actionService.id, action.id) ?: return)
         injectedParams.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -60,6 +63,7 @@ class AreaCreationReactionParamFragment(private val actionService: ServiceListEl
                 reactionParameterText.append("%${adapter.selectedItem}%")
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {}
+
         }
     }
 }

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/reactionParamFragmentText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/hitmo_2_0_regular"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Please put your youtube video URL" />
+
+    <Button
+        android:id="@+id/cancelButtonInReactionParam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="@color/background_cancel_red"
+        android:fontFamily="@font/avenir_lt_std_55_roman"
+        android:text="@string/cancel_button"
+        android:textAllCaps="false"
+        android:textColor="@color/font_cancel_red"
+        app:cornerRadius="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/createButtonInReactionParam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="@color/background_done_green"
+        android:fontFamily="@font/avenir_lt_std_55_roman"
+        android:text="@string/area_creation_button"
+        android:textAllCaps="false"
+        android:textColor="@color/font_done_green"
+        app:cornerRadius="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintBottom_toTopOf="@+id/createButtonInReactionParam"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/reactionParamText"
+            android:layout_width="350sp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:fontFamily="@font/avenir_lt_std_55_roman"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toTopOf="@+id/doneButtonInActionParam"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/injectActionParamsSpinner"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:contentDescription="@string/spinner_desc"
+        android:focusable="true"
+        android:minHeight="48dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintBottom_toTopOf="@+id/reactionParamFragmentText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

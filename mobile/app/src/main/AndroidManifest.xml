@@ -40,7 +40,9 @@
                     android:scheme="http"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.AreaActivity" />
+        <activity android:name=".activity.AreaActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity android:name=".activity.UserConnectionActivity" />
         <activity
             android:name=".activity.MainActivity"

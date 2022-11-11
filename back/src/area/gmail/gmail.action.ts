@@ -18,12 +18,16 @@ const newMailFrom = async (area: Area): Promise<string | null> => {
     })
   ).data;
 
-  if (
-    !messages.resultSizeEstimate ||
-    !messages.messages ||
-    !messages.messages[0].id
-  )
+  if (!messages.resultSizeEstimate) return null;
+  if (area.lastActionValue === null) {
+    await AreaService.updateAreaValues(
+      area.id,
+      String(messages.resultSizeEstimate),
+    );
     return null;
+  }
+
+  if (!messages.messages || !messages.messages[0].id) return null;
 
   const mail = (
     await gmail.users.messages.get({
@@ -45,14 +49,6 @@ const newMailFrom = async (area: Area): Promise<string | null> => {
     content: mail.snippet,
     subject: subject.value,
   };
-
-  if (area.lastActionValue === null) {
-    await AreaService.updateAreaValues(
-      area.id,
-      String(messages.resultSizeEstimate),
-    );
-    return null;
-  }
 
   if (messages.resultSizeEstimate > parseInt(area.lastActionValue)) {
     await AreaService.updateAreaValues(

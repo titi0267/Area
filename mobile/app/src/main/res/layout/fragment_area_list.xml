@@ -43,12 +43,14 @@
         app:layout_constraintStart_toEndOf="@id/areaCreationButton"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
+    <RelativeLayout
+        android:id="@+id/frameLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/areaCreationButton"
+        android:layout_height="635dp"
+        app:layout_constrainedHeight="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/areaCreationButton">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -56,5 +58,17 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical"
             app:layoutManager="LinearLayoutManager" />
-    </FrameLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/titleOnNoArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/courier_new_regular"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/areaCreationButton"
+        tools:text="You currently have no\naction - reaction" />
 </androidx.constraintlayout.widget.ConstraintLayout>

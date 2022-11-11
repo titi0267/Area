@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -32,13 +33,13 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
+        var view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerView)
 
         updateRecycler(recycler, Datasource(), null)
-        areaListRequest(recycler)
+        view = areaListRequest(recycler, view)
         view.findViewById<Button>(R.id.area_list_fetch).setOnClickListener {
-            areaListRequest(recycler)
+            view = areaListRequest(recycler, view)
         }
         view.findViewById<Button>(R.id.areaCreationButton).setOnClickListener {
             (context as AreaActivity).changeFragment(AreaCreationActionServiceFragment(), "action_service_creation")
@@ -49,14 +50,14 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
         return view
     }
 
-    private fun areaListRequest(recycler: RecyclerView) {
+    private fun areaListRequest(recycler: RecyclerView, view: View): View {
         val sessionManager = SessionManager(context as AreaActivity)
-        val token = sessionManager.fetchAuthToken("user_token") ?: return
-        val url = sessionManager.fetchAuthToken("url") ?: return
+        val token = sessionManager.fetchAuthToken("user_token") ?: return view
+        val url = sessionManager.fetchAuthToken("url") ?: return view
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
-        val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return
-        val servicesImages = ((context as AreaActivity).application as AREAApplication).aboutBitmapList ?: return
+        val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return view
+        val servicesImages = ((context as AreaActivity).application as AREAApplication).aboutBitmapList ?: return view
         val myDataSet = Datasource()
         val observer: Observer<Response<List<ActionReaction>>?> = Observer { response ->
             if (response == null)
@@ -64,17 +65,22 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
             if (response.isSuccessful) {
                 val jsonArray: List<ActionReaction> = response.body()!!
                 myDataSet.clear()
-                for (item in jsonArray) {
-                    myDataSet.addArea(
-                        servicesImages[item.actionServiceId - 1],
-                        servicesImages[item.reactionServiceId - 1],
-                        aboutClass.getServiceActionNameById(item.actionServiceId, item.actionId) ?: continue,
-                        aboutClass.getServiceReactionNameById(item.reactionServiceId, item.reactionId) ?: continue,
-                        aboutClass.getServiceNameById(item.actionServiceId) ?: continue,
-                        aboutClass.getServiceNameById(item.reactionServiceId) ?: continue
-                    )
+                if (jsonArray.isEmpty())
+                    view.findViewById<TextView>(R.id.titleOnNoArea).text = "You currently have no\naction - reaction"
+                else {
+                    view.findViewById<TextView>(R.id.titleOnNoArea).text = ""
+                    for (item in jsonArray) {
+                        myDataSet.addArea(
+                            servicesImages[item.actionServiceId - 1],
+                            servicesImages[item.reactionServiceId - 1],
+                            aboutClass.getServiceActionNameById(item.actionServiceId, item.actionId) ?: continue,
+                            aboutClass.getServiceReactionNameById(item.reactionServiceId, item.reactionId) ?: continue,
+                            aboutClass.getServiceNameById(item.actionServiceId) ?: continue,
+                            aboutClass.getServiceNameById(item.reactionServiceId) ?: continue
+                        )
+                    }
+                    updateRecycler(recycler, myDataSet, jsonArray)
                 }
-                updateRecycler(recycler, myDataSet, jsonArray)
             }
         }
 
@@ -82,6 +88,7 @@ class AreaListFragment : Fragment(R.layout.fragment_area_list) {
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         viewModel.getUserAreaList(token, context as AreaActivity, observer)
         viewModel.listAREAResponse.observe(viewLifecycleOwner, observer)
+        return view
     }
 
     private fun updateRecycler(recycler: RecyclerView, myDataSet: Datasource, jsonArray: List<ActionReaction>?) {

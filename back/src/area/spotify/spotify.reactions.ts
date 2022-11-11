@@ -56,10 +56,14 @@ const updateVolume = async (
 
   const device = await spotifyApi.getMyDevices();
 
+  const value = parseInt(reactionParam);
+
+  if (isNaN(value) || value < 0 || value > 100) return;
+
   device.body.devices.forEach(element => {
     if (element.is_active == true) {
       if (element.type != "Smartphone" && element.id != null) {
-        spotifyApi.setVolume(100, { device_id: element.id });
+        spotifyApi.setVolume(value, { device_id: element.id });
       }
     }
   });

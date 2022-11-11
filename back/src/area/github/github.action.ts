@@ -51,7 +51,10 @@ const newIssue = async (area: Area): Promise<string | null> => {
     return null;
   }
 
-  if (!issues[0] || !issues[0].repository) return null;
+  if (!issues[0] || !issues[0].repository) {
+    await AreaService.updateAreaValues(area.id, "");
+    return null;
+  }
 
   const params = {
     title: issues[0].title,

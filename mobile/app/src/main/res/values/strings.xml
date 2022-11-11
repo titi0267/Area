@@ -61,4 +61,6 @@
     <string name="navbar_creation">New AREA</string>
     <string name="navbar_profile">Profile</string>
     <string name="profile_nav_bar_logged_in_as_text">Logged in as </string>
+    <string name="navbar_services">Services</string>
+    <string name="navbar_logout">Logout</string>
 </resources>

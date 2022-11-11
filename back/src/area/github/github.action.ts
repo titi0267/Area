@@ -19,11 +19,12 @@ const checkNewFollowingUser = async (area: Area): Promise<string | null> => {
 
   const lastFollowingUser = followingUser[followingUser.length - 1];
 
-  if (!lastFollowingUser.name) return null;
+  if (!lastFollowingUser.login) return null;
 
   const params = {
-    lastFollowingUserName: lastFollowingUser.name,
+    lastFollowingUserName: lastFollowingUser.login,
   };
+  console.log(followingUser);
 
   if (parseInt(area.lastActionValue) < followingUser.length) {
     await AreaService.updateAreaValues(area.id, String(followingUser.length));

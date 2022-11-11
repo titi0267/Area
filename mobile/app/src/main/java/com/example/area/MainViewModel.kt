@@ -237,10 +237,26 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             }
         }
     }
-    fun putEditArea(auth: String, edit: EditActionReaction) {
+    fun putEditArea(auth: String, edit: EditActionReaction, context: Context, observer: Observer<Response<ActionReaction>?>) {
         viewModelScope.launch {
-            val response = repository.putEditArea(auth, edit)
-            editAreaResponse.value = response
+            editAreaResponse.value = null
+            (context as AreaActivity).loading = true
+            try {
+                val response = repository.putEditArea(auth, edit)
+                editAreaResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                editAreaResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                editAreaResponse.value = null
+            }
+            finally {
+                context.loading = false
+                editAreaResponse.removeObserver(observer)
+            }
         }
     }
     fun deleteArea(auth: String, areaId: Int, context: Context, observer: Observer<Response<ActionReaction>?>) {

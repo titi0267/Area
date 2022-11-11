@@ -2,6 +2,7 @@ package com.example.area.fragment.area
 
 import android.hardware.Camera.Area
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,9 +74,7 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
     private fun onEditButton(token: String?, actionParam: String?, reactionParam: String?) {
         lateinit var edit: EditActionReaction
         val observer: Observer<Response<ActionReaction>?> = Observer { response ->
-            if (response == null)
-                return@Observer
-            if (actionParam == null || reactionParam == null)
+            if (response == null || actionParam == null || reactionParam == null)
                 return@Observer
             if (response.isSuccessful) {
                 Toast.makeText(context as AreaActivity, "Area successfully edited", Toast.LENGTH_SHORT).show()
@@ -90,7 +89,7 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
             return
         if (checkChangedParam(false, actionParam, null) || checkChangedParam(true, null, reactionParam)) {
             edit = EditActionReaction(item.id, actionParam, reactionParam)
-            viewModel.putEditArea(token, edit)
+            viewModel.putEditArea(token, edit, context as AreaActivity, observer)
             viewModel.editAreaResponse.observe(context as AreaActivity, observer)
         }
     }

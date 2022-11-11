@@ -1,23 +1,32 @@
 import { Client, GatewayIntentBits, Message } from "discord.js";
 import ENV from "../../env";
+import { TokenService } from "../../services";
 
 const sendMessageToServer = async (reactionParam: string, userId: number) => {
   const client = new Client({
     intents: [GatewayIntentBits.Guilds],
   });
 
+  const discordInfos = await TokenService.getDiscordInfos(userId);
+
+  if (!discordInfos) return;
+
   client.login(ENV.discordBotToken);
 
-  const firstGuild = (await client.guilds.fetch()).first();
+  const guildId = (await client.guilds.fetch()).find(
+    guild => guild.id === discordInfos.guildId,
+  );
 
-  if (firstGuild === undefined) return;
+  if (!guildId) return;
 
-  const guild = await firstGuild.fetch();
+  const guild = await guildId.fetch();
 
   try {
     const channels = await guild.channels.fetch();
 
-    const channel = channels.find(item => item?.name === "tests");
+    const channel = channels.find(
+      guildChannel => guildChannel?.isTextBased() === true,
+    );
 
     if (channel?.isTextBased()) channel.send(reactionParam);
     else {

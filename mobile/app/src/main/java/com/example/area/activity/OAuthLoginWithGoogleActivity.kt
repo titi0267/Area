@@ -56,7 +56,6 @@ class OAuthLoginWithGoogleActivity : AppCompatActivity() {
             }
             if (response.isSuccessful) {
                 sessionManager.saveAuthToken("user_token", response.body()!!.token)
-                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                 setOAuthValue(true)
             }
             else {

@@ -121,7 +121,7 @@ class AreaCreationActionServiceFragment : Fragment(R.layout.fragment_area_creati
             if (response.isSuccessful) {
                 val oAuthLink = response.body()!!.toString()
                 val bundle = Bundle()
-                val intent = Intent(context as AreaActivity, OAuthLinkingActivity::class.java)
+                val intent = Intent(context, OAuthLinkingActivity::class.java)
                 bundle.putString("link", oAuthLink)
                 bundle.putString("service", service)
                 intent.putExtras(bundle)

@@ -196,6 +196,7 @@ $navbar-height: 75px;
         .APK {
             font-size: 13px;
             >a {
+                transition: 0.5s color;
                 color: rgba(25, 25, 66, 0.81);
             }
             p {
@@ -242,6 +243,13 @@ $navbar-height: 75px;
         }
         .right {
             color: white;
+            .APK {
+                :deep(a) {
+                    span {
+                        color: white;
+                    }
+                }
+            }
             .userIcon {
                 :deep(.icon) {
                     color: white;

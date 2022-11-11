@@ -153,7 +153,11 @@ export default vue.extend({
          * @data {Object} login
          */
         checkPassword(): void {
-            if (this.login.password.value == "") {
+            const password_regex = (/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*"'/~_.+:;=-]).{8,}$/)
+            if (!this.login.password.value.match(password_regex)) {
+                this.login.password.error = "Minimum requirement for password is : 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character"
+                this.login.password.valide = false;
+            } else if (this.login.password.value == "") {
                 this.login.password.error = "Password cannot be empty"
                 this.login.password.valide = false;
             } else {

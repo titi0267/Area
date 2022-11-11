@@ -156,7 +156,7 @@ export default vue.extend({
          * @data {Object} register
          */
         checkPassword(input: String, type: any): void {
-            const password_regex = (/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*"'-]).{8,}$/)
+            const password_regex = (/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*"'/~_.+:;=-]).{8,}$/)
             if (type == "password") {
                 if (!input.match(password_regex)) {
                     this.register[type].error = "Minimum requirement for password is : 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character"

@@ -50,8 +50,6 @@ const newMailFrom = async (area: Area): Promise<string | null> => {
     subject: subject.value,
   };
 
-  console.log(params);
-
   if (messages.resultSizeEstimate > parseInt(area.lastActionValue)) {
     await AreaService.updateAreaValues(
       area.id,

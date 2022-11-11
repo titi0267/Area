@@ -17,9 +17,7 @@ const newMailFrom = async (area: Area): Promise<string | null> => {
       q: "from:" + area.actionParam,
     })
   ).data;
-  console.log(messages.resultSizeEstimate)
   if (messages.resultSizeEstimate === undefined || messages.resultSizeEstimate === null) return null;
-  console.log("last action")
   if (area.lastActionValue === null) {
     await AreaService.updateAreaValues(
       area.id,

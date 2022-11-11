@@ -13,12 +13,14 @@ const newFileInDrive = async (area: Area): Promise<string | null> => {
 
   const data = (await drive.files.list({ pageSize: 1000 })).data;
 
-  if (!data.files) return null;
+  if (!data.files || !data.files[0]) return null;
 
   if (area.lastActionValue === null) {
     await AreaService.updateAreaValues(area.id, String(data.files.length));
     return null;
   }
+
+  if (!data.files[0].name || !data.files[0].mimeType) return null;
 
   if (data.files.length > parseInt(area.lastActionValue)) {
     await AreaService.updateAreaValues(area.id, String(data.files.length));

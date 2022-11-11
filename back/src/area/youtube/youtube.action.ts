@@ -159,8 +159,13 @@ const checkNewVideoLiked = async (area: Area): Promise<string | null> => {
     !lastVideo.snippet ||
     !lastVideo.snippet.videoOwnerChannelTitle ||
     !lastVideo.snippet.title
-  )
+  ) {
+    await AreaService.updateAreaValues(
+      area.id,
+      String(playlist.pageInfo.totalResults),
+    );
     return null;
+  }
 
   const params = {
     channel: lastVideo.snippet.videoOwnerChannelTitle,

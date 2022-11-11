@@ -7,7 +7,7 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/overview_if_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
@@ -18,19 +18,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/actionPart"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/overview_action_fragment_container"
+        android:layout_height="wrap_content"
         android:layout_width="250dp"
-        android:layout_height="200dp"
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@id/overview_if_text" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/overview_then_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -39,19 +37,19 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/actionPart" />
+        app:layout_constraintTop_toBottomOf="@id/overview_action_fragment_container" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/reactionPart"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/overview_reaction_fragment_container"
         android:layout_width="250dp"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/overview_then_text" />
 
     <Button
-        android:id="@+id/areaCreationButtonOverview"
+        android:id="@+id/overview_create_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -62,6 +60,6 @@
         app:cornerRadius="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reactionPart" />
+        app:layout_constraintTop_toBottomOf="@+id/overview_reaction_fragment_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

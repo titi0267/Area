@@ -79,7 +79,7 @@ class AreaCreationReactionServiceFragment(private val actionService: ServiceList
     private fun feelEntireList(aboutClass: AboutClass, servicesImages: List<Bitmap>): List<ServiceListElement> {
         val list = mutableListOf<ServiceListElement>()
         for (elem in aboutClass.getServiceList()) {
-            if (elem.actions.isNotEmpty())
+            if (elem.reactions.isNotEmpty())
                 list += ServiceListElement(elem.id, elem.name, servicesImages[elem.id - 1])
         }
         return list

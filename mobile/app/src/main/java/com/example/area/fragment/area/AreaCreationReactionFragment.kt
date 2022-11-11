@@ -4,33 +4,22 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.area.AREAApplication
-import com.example.area.MainViewModel
-import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.adapter.ActionReactionItemAdapter
 import com.example.area.data.ActionReactionDatasource
-import com.example.area.model.AREAFields
 import com.example.area.model.ActionReactionInfo
 import com.example.area.model.ServiceListElement
-import com.example.area.model.Token
 import com.example.area.model.about.AboutClass
-import com.example.area.repository.Repository
-import com.example.area.utils.SessionManager
-import com.google.android.material.textfield.TextInputEditText
-import retrofit2.Response
 
 class AreaCreationReactionFragment(private val actionService: ServiceListElement, private val action: ActionReactionInfo, private val reactionService: ServiceListElement) : Fragment(R.layout.fragment_area_creation_reaction) {
 
@@ -71,9 +60,9 @@ class AreaCreationReactionFragment(private val actionService: ServiceListElement
 
     private fun onItemClick(position: Int, actionReactionList: ActionReactionDatasource, aboutClass: AboutClass) {
         if (aboutClass.getServiceReactionParamNameById(reactionService.id, actionReactionList.loadActionReactionInfo()[position].id)?.isEmpty() == true)
-            (context as AreaActivity).changeFragment(AreaCreationReactionParamFragment(actionService, action, reactionService, actionReactionList.loadActionReactionInfo()[position]), "reaction_param_creation")
-        else
             (context as AreaActivity).changeFragment(AreaCreationOverviewFragment(actionService, action, reactionService, actionReactionList.loadActionReactionInfo()[position]), "overview_creation")
+        else
+            (context as AreaActivity).changeFragment(AreaCreationReactionParamFragment(actionService, action, reactionService, actionReactionList.loadActionReactionInfo()[position]), "reaction_param_creation")
     }
 
     /*private fun createAreaRequest(textHint: Editable) {

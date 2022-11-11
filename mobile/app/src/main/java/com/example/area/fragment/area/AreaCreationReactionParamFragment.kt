@@ -27,15 +27,14 @@ class AreaCreationReactionParamFragment(private val actionService: ServiceListEl
         val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return view
         val textEdit = view.findViewById<TextInputEditText>(R.id.reactionParamText)
 
-        view.findViewById<TextView>(R.id.reactionParamFragmentText).text = ("Please put your "+reactionService.name+" "+(aboutClass.getServiceActionParamNameById(reactionService.id, reaction.id)?.lowercase(Locale.getDefault())))
-        textEdit.hint = ("Enter your "+ (aboutClass.getServiceActionParamNameById(reactionService.id, reaction.id))?.lowercase(Locale.getDefault()))
+        view.findViewById<TextView>(R.id.reactionParamFragmentText).text = ("Please put your "+reactionService.name+" "+(aboutClass.getServiceReactionParamNameById(reactionService.id, reaction.id)?.lowercase(Locale.getDefault())))
+        textEdit.hint = ("Enter your "+ (aboutClass.getServiceReactionParamNameById(reactionService.id, reaction.id))?.lowercase(Locale.getDefault()))
         view.findViewById<Button>(R.id.cancelButtonInReactionParam).setOnClickListener {
             (context as AreaActivity).onBackPressed()
         }
         view.findViewById<Button>(R.id.createButtonInReactionParam).setOnClickListener {
-            val textHint = textEdit.text ?: null
-            //action.paramName = textHint.toString()
-            //change to overview
+            reaction.paramName = textEdit.text?.toString() ?: ""
+            (context as AreaActivity).changeFragment(AreaCreationOverviewFragment(actionService, action, reactionService, reaction), "overview_creation")
         }
         createSpinner(view, aboutClass)
         return view

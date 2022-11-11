@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/overview_item_logo"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/overview_item_type"
@@ -50,17 +50,18 @@
         android:id="@+id/overview_item_param_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/avenir_lt_std_55_roman"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/overview_item_description"
         tools:text="actionParam" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:id="@+id/constraintLayout"
+        android:layout_width="200sp"
         android:layout_height="30dp"
         android:background="@drawable/round_corner_on_layout_white"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/overview_item_param_title">
@@ -69,16 +70,22 @@
             android:id="@+id/overview_item_param"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="3dp"
             android:fontFamily="@font/avenir_lt_std_55_roman"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:layout_marginStart="3dp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="2dp"
             tools:layout_editor_absoluteY="2dp"
             tools:text="actionParamContent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

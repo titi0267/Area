@@ -101,8 +101,8 @@ export default vue.extend({
          */
         createRedirect(): void {
             localStorage.removeItem('area');
-            this.$router.push('/tmp')
-            this.$router.push('/create/action')
+            this.$router.push('/tmp');
+            this.$router.push('/create/action');
         },
         /**
          * Checking the route name and setting the navigation variable to the route name.

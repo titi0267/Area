@@ -1,7 +1,7 @@
 <template>
     <div id="EditArea" :style="{ 'background' : `linear-gradient(to right, ${action ? action.backgroundColor : ''}, ${reaction ? reaction.backgroundColor : ''})` }">
         <div class="action">
-            <div class="action-param" v-if="this.area['actionParam'] !== ''">
+            <div class="action-param" v-if="action && getArea('action')['actionParamName'] !== ''">
                 <p>Action parameter</p>
                 <b-input ref="action" :autofocus="true" :value="area.actionParam" @input="debounceUpdate($event, 'action')"></b-input>
             </div>
@@ -14,7 +14,7 @@
             <b-switch size="is-medium" passive-type="is-danger" type="is-success" v-model="area.enabled" @input="postArea()"></b-switch>
         </div>
         <div class="reaction">
-            <div class="reaction-param" v-if="this.area['reactionParam'] !== ''">
+            <div class="reaction-param" v-if="reaction && getArea('reaction')['reactionParamName'] !== ''">
                 <p>Reaction parameter</p>
                 <b-input ref="reaction" :value="area.reactionParam" @input="debounceUpdate($event, 'reaction')"></b-input>
             </div>
@@ -34,6 +34,10 @@ export default vue.extend({
         reaction: Object, /** Current reaction */
     },
     methods: {
+        getArea(type: string) {
+            let test =this[type][type + 's'].find(actrea => actrea.id === this.area[type + 'Id'])
+            return test;
+        },
         /**
          * It's a function that delete area in back-end server.
          * @data {Object} area

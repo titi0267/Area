@@ -68,4 +68,5 @@
     <string name="profile_nav_bar_logged_in_as_text">Logged in as </string>
     <string name="navbar_services">Services</string>
     <string name="navbar_logout">Logout</string>
+    <string name="user_activity_change_wifi_text">Settings</string>
 </resources>

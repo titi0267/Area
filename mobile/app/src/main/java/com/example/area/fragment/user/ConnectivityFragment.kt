@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
+import com.example.area.activity.AreaActivity
 import com.example.area.activity.UserConnectionActivity
 import com.example.area.model.LoginFields
 import com.example.area.model.Token
@@ -31,6 +32,7 @@ class ConnectivityFragment() : Fragment(R.layout.fragment_connectivity) {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
 
         connectivityFocusListener(view)
+        (context as UserConnectionActivity).setVisibilityFAB(View.GONE)
         view.findViewById<Button>(R.id.connectivity_test_connection_button).setOnClickListener {
             if ((context as UserConnectionActivity).loading)
                 return@setOnClickListener
@@ -86,7 +88,7 @@ class ConnectivityFragment() : Fragment(R.layout.fragment_connectivity) {
             else {
                 Toast.makeText(context as UserConnectionActivity, "Connection successful!", LENGTH_SHORT).show()
                 sessionManager.saveAuthToken("url", url)
-                (context as UserConnectionActivity).changeFragment(NotLoggedInFragment(), "not_logged_in")
+                (context as UserConnectionActivity).changeFragment(LoginFragment(), "login")
             }
         }
         viewModel.login(LoginFields("", ""), context as UserConnectionActivity, observer)

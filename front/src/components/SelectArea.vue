@@ -96,7 +96,7 @@ export default vue.extend({
                     this.$emit("loading");
                     return;
                 }
-                const code: String = this.$route.query.code;
+                const code: string = this.$route.query.code;
                 let oauthParam: object
                 if ((code == null || code == undefined) && this.tokensTable[serviceOauthName + 'Token'] == null) {
                     this.$emit('previous');

@@ -131,10 +131,10 @@ export default vue.extend({
         },
         /**
          * It's a function that check if the email is valide or not.
-         * @param {String} input - Text input
+         * @param {string} input - Text input
          * @data {Object} login
          */
-        checkEmail(input: String): void {
+        checkEmail(input: string): void {
             const email_regex = (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
             if (input == "") {
                 this.login.email.error = "Cannot be empty";

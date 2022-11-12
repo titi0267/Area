@@ -86,9 +86,9 @@ export default vue.extend({
          * @data {Object} area
          * @data {Array} services
          * @data {String} type
-         * @return {String} - Return the actual selected service name.
+         * @return {string} - Return the actual selected service name.
          */
-        getParamName(): String {
+        getParamName(): string {
             if (this.area[this.type + "Id"] == -1 || this.services[0] === null) return;
             let service = this.services.find(
                 (service) => service.id == this.area[this.type + "ServiceId"]

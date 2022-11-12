@@ -109,11 +109,11 @@ export default vue.extend({
         },
         /**
          * It's a function that check if the name is valide or not.
-         * @param {String} input - Text input
-         * @param {String} type - firstName or lastName
+         * @param {string} input - Text input
+         * @param {string} type - firstName or lastName
          * @data {Object} register
          */
-        checkNameInput(input: String, type: string): void {
+        checkNameInput(input: string, type: string): void {
             const name_regex = (/^[a-zA-Z]+$/)
             if (input == "") {
                 this.register[type].error = "Cannot be empty";
@@ -132,10 +132,10 @@ export default vue.extend({
         },
         /**
          * It's a function that check if the email is valide or not.
-         * @param {String} input - Text input
+         * @param {string} input - Text input
          * @data {Object} login
          */
-        checkEmail(input: String): void {
+        checkEmail(input: string): void {
             const email_regex = (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
             if (input == "") {
                 this.register.email.error = "Cannot be empty";
@@ -151,11 +151,11 @@ export default vue.extend({
         },
         /**
          * It's a function that check if the password is valide or not.
-         * @param {String} input - Text input
-         * @param {String} type - Password or confirmPassword
+         * @param {string} input - Text input
+         * @param {string} type - Password or confirmPassword
          * @data {Object} register
          */
-        checkPassword(input: String, type: any): void {
+        checkPassword(input: string, type: string): void {
             const password_regex = (/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*"'/~_.+:;=-]).{8,}$/)
             if (type == "password") {
                 if (!input.match(password_regex)) {

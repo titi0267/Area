@@ -1,15 +1,21 @@
 package com.example.area.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.ShapeDrawable
 import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
+import com.example.area.AREAApplication
 import com.example.area.R
+import com.example.area.activity.AreaActivity
 import com.example.area.model.ServiceListElement
 import java.util.*
 import kotlin.collections.ArrayList
@@ -28,9 +34,14 @@ class ServiceItemAdapter(private val context: Context, private var dataset: List
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceItemAdapter.ServiceViewHolder {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build())
         val adapterLayout = LayoutInflater.from(parent.context).inflate(R.layout.service_item, parent, false)
+        val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return ServiceViewHolder(adapterLayout, onItemClick)
+        val drawable: GradientDrawable? = AppCompatResources.getDrawable(context as AreaActivity, R.drawable.round_service_background) as GradientDrawable?
+        val newDrawable: GradientDrawable? = drawable?.constantState?.newDrawable()?.mutate() as GradientDrawable?
 
         if (selectedItem == itemCount)
             selectedItem = 0
+        newDrawable?.colors = intArrayOf(Color.parseColor(aboutClass.getServiceBackgroundColor(dataset[selectedItem].id)), Color.parseColor(aboutClass.getServiceBackgroundColor(dataset[selectedItem].id)))
+        adapterLayout.background = newDrawable
         adapterLayout.findViewById<ImageView>(R.id.serviceItemLogo).setImageDrawable(BitmapDrawable(context.resources, dataset[selectedItem].imageBitmap))
         adapterLayout.findViewById<TextView>(R.id.serviceItemName).text = dataset[selectedItem].name
         selectedItem++

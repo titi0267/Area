@@ -28,11 +28,11 @@ interface SimpleApi {
     @GET("about.json")
     suspend fun getAboutJson(): Response<About>
 
-    @GET("/oauth/{service}/link/front")
+    @GET("/oauth/{service}/link")
     suspend fun getServiceLink(@Header("Authorization") auth: String, @Path("service") service: String) : Response<String>
 
     @POST("/oauth/{service}")
-    suspend fun postServiceCode(@Header("Authorization") auth: String, @Path("service") service: String, @Body post: OAuthCode) : Response<Unit>
+    suspend fun postServiceCode(@Header("Authorization") auth: String, @Path("service") service: String, @Body post: MutableMap<String, String>) : Response<Unit>
 
     @PUT("/areas")
     suspend fun putEnableDisable(@Header("Authorization") auth: String, @Body put: EnableDisable): Response<ActionReaction>
@@ -42,4 +42,13 @@ interface SimpleApi {
 
     @DELETE("/areas/{areaId}")
     suspend fun deleteArea(@Header("Authorization") auth: String, @Path("areaId") areaId: Int) : Response<ActionReaction>
+
+    @GET("/oauth/google/register")
+    suspend fun getGoogleRegisterLink() : Response<String>
+
+    @POST("/oauth/google/register")
+    suspend fun postRegisterWithGoogle(@Body post: OAuthCode) : Response<Token>
+
+    @PUT("/tokens/delete")
+    suspend fun deleteTokens(@Header("Authorization") auth: String, @Body tokensTable: MutableMap<String, Boolean>) : Response<Unit>
 }

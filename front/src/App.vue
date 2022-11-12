@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <NavBar v-if="$route.name != 'register' && $route.name != 'login'"/>
+        <NavBar v-if="$route.name !== 'register' && $route.name !== 'login' && navBarPageNotFound() === true"/>
         <router-view/>
     </div>
 </template>
@@ -11,8 +11,18 @@ import NavBar from './components/NavBar.vue'
 
 export default vue.extend({
     components: {
-        NavBar,
+        NavBar, /** Navigation bar */
     },
+    methods: {
+        /**
+         * Checking if the user is on the not-found page and if the user is not logged in. If the user is not logged in, then the navbar will not be shown.
+         */
+        navBarPageNotFound(): boolean {
+            if (this.$route.name === 'not-found' && this.$store.getters.userToken.length === 0)
+                return false;
+            return true;
+        }
+    }
 })
 </script>
 
@@ -25,6 +35,8 @@ export default vue.extend({
     color: #2c3e50;
     height: 100vh;
 }
+
+/** ALL FONTS ARE LOADED HERE */
 
 @font-face {
     font-family: "Hitmo Regular";

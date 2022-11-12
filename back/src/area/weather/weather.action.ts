@@ -19,22 +19,24 @@ const weatherBecameClear = async (area: Area): Promise<string | null> => {
   };
 
   if (area.lastActionValue === null) {
-    await AreaService.updateAreaValues(area.id, weatherInfos.weather.main);
+    await AreaService.updateAreaValues(area.id, "");
     return null;
   }
 
+  if (!weatherInfos.weather[0]) return null;
+
   if (
     area.lastActionValue !== "Clear" &&
-    weatherInfos.weather.main === "Clear"
+    weatherInfos.weather[0].main === "Clear"
   ) {
-    await AreaService.updateAreaValues(area.id, weatherInfos.weather.main);
+    await AreaService.updateAreaValues(area.id, weatherInfos.weather[0].main);
     return ServiceHelper.injectParamInReaction<typeof params>(
       area.reactionParam,
       params,
     );
   }
 
-  await AreaService.updateAreaValues(area.id, weatherInfos.weather.main);
+  await AreaService.updateAreaValues(area.id, weatherInfos.weather[0].main);
 
   return null;
 };

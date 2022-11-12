@@ -26,10 +26,6 @@
     <string name="left_logo_desc">Left logo of a listView item</string>
     <string name="right_logo_desc">Right logo of a listView item</string>
     <string name="service_item_logo_desc">Logo of a listView item</string>
-    <!-- Test start -->
-    <string name="test1">Hello</string>
-    <string name="test2">World</string>
-    <!-- Test end -->
     <string name="not_logged_in_login_button_text">Log in</string>
     <string name="not_logged_in_register_button_text">Register</string>
     <string name="area_list_fetch_button">Refresh</string>
@@ -60,4 +56,11 @@
     <string name="action_param_hint">actionParam</string>
     <string name="reaction_param_hint">reactionParam</string>
     <string name="edit_area_button">Edit</string>
+    <string name="loading_reload">Reload</string>
+    <string name="loading_loading_text">Loading...</string>
+    <string name="select_action_service_field">Select your action service</string>
+    <string name="select_reaction_service_field">Select your reaction service</string>
+    <string name="navbar_home">Home</string>
+    <string name="navbar_creation">New AREA</string>
+    <string name="navbar_profile">Profile</string>
 </resources>

@@ -14,9 +14,7 @@ import {
   discordOauthQueryValidator,
 } from "../schema/oauth.schema";
 import {
-  GoogleOauthBody,
-  SpotifyOauthBody,
-  GithubOauthBody,
+  BaseOauthBody,
   DiscordOauthBody,
 } from "../types/body/oauthRequestBody.types";
 import * as SecurityHelper from "../helpers/security.helper";
@@ -25,16 +23,8 @@ import ENV from "../env";
 import authentificationMiddleware from "../middlewares/authentification.middleware";
 import { TokenService, UserService } from "../services";
 
-type GoogleOauthRequest = FastifyRequest<{
-  Body: GoogleOauthBody;
-}>;
-
-type SpotifyOauthRequest = FastifyRequest<{
-  Body: SpotifyOauthBody;
-}>;
-
-type GithubOauthRequest = FastifyRequest<{
-  Body: GithubOauthBody;
+type BaseOauthRequest = FastifyRequest<{
+  Body: BaseOauthBody;
 }>;
 
 type DiscordOauthRequest = FastifyRequest<{
@@ -49,7 +39,7 @@ export default (
   instance.post(
     "/google",
     { onRequest: [authentificationMiddleware()] },
-    async (req: GoogleOauthRequest, res: FastifyReply) => {
+    async (req: BaseOauthRequest, res: FastifyReply) => {
       if (!googleOauthQueryValidator(req.body)) ErrorHelper.throwBodyError();
 
       const userInfos = SecurityHelper.getUserInfos(req);
@@ -75,13 +65,13 @@ export default (
 
   instance.post(
     "/google/register",
-    async (req: GoogleOauthRequest, res: FastifyReply) => {
+    async (req: BaseOauthRequest, res: FastifyReply) => {
       const code = req.body.code;
 
       const oauthClient = new google.auth.OAuth2(
         ENV.googleClientId,
         ENV.googleClientSecret,
-        ENV.googleRedirectUrl,
+        ENV.googleRedirectRegisterUrl,
       );
 
       const tokens = (await oauthClient.getToken(code)).tokens;
@@ -99,7 +89,6 @@ export default (
         userinfos.id || null,
         tokens.refresh_token || null,
       );
-
       res.status(httpStatus.OK).send(token);
     },
   );
@@ -107,7 +96,7 @@ export default (
   instance.post(
     "/github",
     { onRequest: [authentificationMiddleware()] },
-    async (req: GithubOauthRequest, res: FastifyReply) => {
+    async (req: BaseOauthRequest, res: FastifyReply) => {
       if (!githubOauthQueryValidator(req.body)) ErrorHelper.throwBodyError();
 
       const userInfos = SecurityHelper.getUserInfos(req);
@@ -170,7 +159,7 @@ export default (
   instance.post(
     "/spotify",
     { onRequest: [authentificationMiddleware()] },
-    async (req: SpotifyOauthRequest, res: FastifyReply) => {
+    async (req: BaseOauthRequest, res: FastifyReply) => {
       if (!spotifyOauthQueryValidator(req.body)) ErrorHelper.throwBodyError();
 
       const userInfos = SecurityHelper.getUserInfos(req);
@@ -279,6 +268,32 @@ export default (
       redirect_uri: ENV.githubRedirectUrl,
       client_id: ENV.githubClientId,
       scope: ["repo"].join(" "),
+    };
+    const qs = new URLSearchParams(options);
+
+    res.status(httpStatus.OK).send(`${rootUrl}?${qs.toString()}`);
+  });
+
+  instance.get("/google/register", (req: FastifyRequest, res: FastifyReply) => {
+    const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+
+    const options = {
+      redirect_uri: ENV.googleRedirectRegisterUrl,
+      client_id: ENV.googleClientId,
+      access_type: "offline",
+      response_type: "code",
+      prompt: "consent",
+      scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/youtube.readonly",
+        "https://www.googleapis.com/auth/youtube",
+        "https://www.googleapis.com/auth/youtube.upload",
+        "https://www.googleapis.com/auth/gmail.modify",
+        "https://www.googleapis.com/auth/gmail.compose",
+        "https://www.googleapis.com/auth/drive",
+        "https://www.googleapis.com/auth/calendar",
+      ].join(" "),
     };
     const qs = new URLSearchParams(options);
 

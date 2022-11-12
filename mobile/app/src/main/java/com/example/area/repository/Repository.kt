@@ -30,7 +30,7 @@ class Repository(private val URL_INPUT : String) {
     suspend fun getServiceLink(auth: String, service: String) : Response<String>{
         return RetrofitInstance(URL_INPUT).api.getServiceLink(auth, service)
     }
-    suspend fun postServiceCode(auth: String, service: String, code: OAuthCode) : Response<Unit> {
+    suspend fun postServiceCode(auth: String, service: String, code: MutableMap<String, String>) : Response<Unit> {
         return RetrofitInstance(URL_INPUT).api.postServiceCode(auth, service, code)
     }
     suspend fun putEnableDisable(auth: String, enable: EnableDisable) : Response<ActionReaction> {
@@ -42,4 +42,14 @@ class Repository(private val URL_INPUT : String) {
     suspend fun deleteArea(auth: String, areaId: Int) : Response<ActionReaction> {
         return RetrofitInstance(URL_INPUT).api.deleteArea(auth, areaId)
     }
+    suspend fun getGoogleRegisterLink() : Response<String> {
+        return RetrofitInstance(URL_INPUT).api.getGoogleRegisterLink()
+    }
+    suspend fun postRegisterWithGoogle(code: OAuthCode) : Response<Token> {
+        return RetrofitInstance(URL_INPUT).api.postRegisterWithGoogle(code)
+    }
+    suspend fun deleteTokens(auth: String, tokensTable: MutableMap<String, Boolean>) : Response<Unit> {
+        return RetrofitInstance(URL_INPUT).api.deleteTokens(auth, tokensTable)
+    }
+
 }

@@ -37,6 +37,6 @@ export interface ImageParam {
   image: string;
 }
 
-export interface UserWithTokens extends User {
+export interface UserWithTokens extends Omit<User, "password"> {
   tokensTable: TokensTable | null;
 }

@@ -3,20 +3,24 @@
         <div class="no-area" v-if="!areas.length">
             <p>You currently have no action - reaction</p>
         </div>
-        <div v-else class="area-list" v-for="area in areas" :key="area.actionServiceId.toString() + area.actionParam + area.reactionId.toString() + area.actionId.toString()"
-            :style="{ 'background' : `linear-gradient(to right, ${getService(area, 'action') ? getService(area, 'action').backgroundColor : ''}, ${getService(area, 'reaction') ? getService(area, 'reaction').backgroundColor : ''})` }">
-            <div class="action" v-if="getService(area, 'action')">
-                <b-image :src="$store.state.serveurURL + getService(area, 'action').imageUrl"></b-image>
-                <p> {{ getService(area, 'action').name }} </p>
-                <p> {{ getService(area, 'action').actions.find(action => action.id == area.actionId).name }} </p>
+        <div v-else v-for="area in areas" :key="area.actionServiceId.toString() + area.actionParam + area.reactionId.toString() + area.actionId.toString()">
+            <div class="area-list" :style="{ 'background' : `linear-gradient(to right, ${getService(area, 'action') ? getService(area, 'action').backgroundColor : ''}, ${getService(area, 'reaction') ? getService(area, 'reaction').backgroundColor : ''})` }">
+                <div class="action" v-if="getService(area, 'action')">
+                    <b-image :src="$store.state.serveurURL + getService(area, 'action').imageUrl"></b-image>
+                    <p> {{ getService(area, 'action').name }} </p>
+                    <p> {{ getService(area, 'action').actions.find(action => action.id == area.actionId).name }} </p>
+                </div>
+                <div class="edit" :class="{'isActive' : isEditing[area.id]}">
+                    <b-icon icon="pen" @click.native="setEdit(area.id)"></b-icon>
+                </div>
+                <div class="reaction" v-if="getService(area, 'reaction')">
+                    <p> {{ getService(area, 'reaction').reactions.find(reaction => reaction.id == area.reactionId).name }} </p>
+                    <p> {{ getService(area, 'reaction').name }} </p>
+                    <b-image :src="$store.state.serveurURL + getService(area, 'reaction').imageUrl"></b-image>
+                </div>
             </div>
-            <div class="edit">
-                <b-icon icon="pen"></b-icon>
-            </div>
-            <div class="reaction" v-if="getService(area, 'reaction')">
-                <p> {{ getService(area, 'reaction').reactions.find(reaction => reaction.id == area.reactionId).name }} </p>
-                <p> {{ getService(area, 'reaction').name }} </p>
-                <b-image :src="$store.state.serveurURL + getService(area, 'reaction').imageUrl"></b-image>
+            <div v-show="isEditing[area.id]">
+                <EditArea :area="area" :action="getService(area, 'action')" :reaction="getService(area, 'reaction')" @deleted="deleteArea(area.id)"/>
             </div>
         </div>
     </div>
@@ -25,19 +29,31 @@
 <script lang="ts">
 import vue from 'vue';
 import { Areas, Service } from '../types/index'
+import EditArea from '../components/EditArea.vue'
 
 export default vue.extend({
     data() {
         return {
             areas: [] as Areas[], /** An array that will be filled with the actions and reactions of the users */
             services: [] as Service[], /** An array that will be filled with the about.json from the server. */
+            isEditing: [] as Boolean[]
         }
     },
     mounted() {
         this.getUserAreas();
         this.getAbout();
     },
+    components: {
+        EditArea
+    },
     methods: {
+        deleteArea(id: number) : void {
+            const areaIndex = this.areas.findIndex(area => area.id == id)
+            this.areas.splice(areaIndex, 1);
+        },
+        setEdit(id: number): void {
+            this.isEditing[id] == true ? this.$set(this.isEditing, id, false) : this.$set(this.isEditing, id, true);
+        },
         /**
          * It removes the localStorage item called 'area'
          */
@@ -132,6 +148,11 @@ export default vue.extend({
             display: flex;
             align-items: center;
             text-transform: uppercase;
+            transition-property: transform;
+            transition-duration: 0.5s;
+            &.isActive {
+                transform: rotate(180deg);
+            }
             :deep(span) {
                 padding: 20px;
                 box-shadow: 0 0 15px 1px #000000a1;

@@ -11,11 +11,12 @@
 
 <script scoped lang="ts">
 import vue from 'vue';
+import { User } from '../types/index'
 
 export default vue.extend({
     data() {
         return {
-            user: [],
+            user: [] as User[], /** An array that is fill with the user infos (email, first name, last name...) */
         }
     },
     mounted() {

@@ -75,6 +75,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/actionParamInput"
                 android:layout_width="match_parent"
+                android:singleLine="true"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,30 +151,28 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/reactionParamInput"
                 android:layout_width="match_parent"
+                android:singleLine="true"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/enableItemListSwitch"
-        style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+        style="@style/Widget.Material3.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
         android:layout_marginTop="20dp"
+        android:textSize="20sp"
         android:checked="true"
-        android:minHeight="48dp"
-        android:textSize="0sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-        app:showText="false"
-        app:thumbTint="@color/white"
-        app:trackTint="@color/red" />
+        android:text="@string/list_item_enabled"
+        android:fontFamily="@font/avenir_lt_std_55_roman"
+        app:layout_constraintStart_toStartOf="@id/constraintLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"/>
 
     <Button
-        style="@style/Widget.Material3.Button.IconButton.Filled"
         android:id="@+id/deleteItemListButton"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -187,17 +186,17 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
     <Button
-        style="@style/Widget.Material3.Button.IconButton.Filled"
         android:id="@+id/editAreaItemButton"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="25dp"
         android:backgroundTint="@color/perfect_gray"
+        app:cornerRadius="100dp"
         app:icon="@drawable/pen_icon"
         app:iconSize="25dp"
         app:iconTint="@color/black"
-        app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

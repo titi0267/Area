@@ -34,7 +34,8 @@
     <string name="profile_user_first_name">First name:</string>
     <string name="profile_user_last_name">Last name:</string>
     <string name="profile_user_email">Email:</string>
-    <string name="profile_current_ip">Current IP/Port:</string>
+    <string name="profile_current_ip">Current IP:</string>
+    <string name="profile_current_port">Current Port:</string>
     <string name="profile_change_ip_port_button">Change IP/Port</string>
     <string name="profile_edit_ip_port_confirmation">Edit</string>
     <string name="delete_area">Delete</string>
@@ -60,4 +61,11 @@
     <string name="navbar_home">Home</string>
     <string name="navbar_creation">New AREA</string>
     <string name="navbar_profile">Profile</string>
+    <string name="oauth_linking_refresh_content_description">Refresh button</string>
+    <string name="profile_user_title">About you</string>
+    <string name="profile_connectivity_title">Connectivity</string>
+    <string name="profile_connectivity_edit_ip_port">Change connectivity settings</string>
+    <string name="profile_nav_bar_logged_in_as_text">Logged in as </string>
+    <string name="navbar_services">Services</string>
+    <string name="navbar_logout">Logout</string>
 </resources>

@@ -19,7 +19,7 @@ import com.example.area.repository.Repository
 import com.example.area.utils.*
 import retrofit2.Response
 
-class ProfileConnectivityEditFragment : Fragment(R.layout.fragment_profile_connectivity) {
+class ProfileConnectivityEditFragment : Fragment(R.layout.fragment_profile_edit_connectivity) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

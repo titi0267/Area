@@ -61,6 +61,7 @@
     <string name="navbar_home">Home</string>
     <string name="navbar_creation">New AREA</string>
     <string name="navbar_profile">Profile</string>
+    <string name="oauth_linking_refresh_content_description">Refresh button</string>
     <string name="profile_user_title">About you</string>
     <string name="profile_connectivity_title">Connectivity</string>
     <string name="profile_connectivity_edit_ip_port">Change connectivity settings</string>

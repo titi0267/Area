@@ -14,6 +14,17 @@
         app:layout_constraintBottom_toTopOf="@id/area_bottom_navbar"
         />
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/profile_nav_fragment_container"
+        android:name="com.example.area.fragment.area.ProfileNavbarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/area_bottom_navbar"
+        />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/area_bottom_navbar"
         android:layout_width="match_parent"

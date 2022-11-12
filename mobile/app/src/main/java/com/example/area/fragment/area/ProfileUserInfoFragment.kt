@@ -1,33 +1,32 @@
 package com.example.area.fragment.area
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import com.example.area.AREAApplication
-import com.example.area.MainViewModel
 import com.example.area.R
 import com.example.area.activity.AreaActivity
-import com.example.area.activity.MainActivity
-import com.example.area.utils.SessionManager
 import com.google.android.material.textview.MaterialTextView
 
-class ProfileFragment : Fragment(R.layout.fragment_profile) {
-
-    private lateinit var viewModel: MainViewModel
-
+class ProfileUserInfoFragment : Fragment(R.layout.fragment_profile_user_info) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
+        getAndDisplayUserInfo(view)
+
         return view
     }
 
+    private fun getAndDisplayUserInfo(view: View) {
+        val userInfo = ((context as AreaActivity).application as AREAApplication).userInfo ?: return
 
+        view.findViewById<MaterialTextView>(R.id.profile_user_first_name_value).text = userInfo.firstName
+        view.findViewById<MaterialTextView>(R.id.profile_user_last_name_value).text = userInfo.lastName
+        view.findViewById<MaterialTextView>(R.id.profile_user_email_value).text = userInfo.email
+    }
 }

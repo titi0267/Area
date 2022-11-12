@@ -41,7 +41,9 @@ class ItemAdapter(private val context: Context, private val dataset: List<AreaLi
         adapterLayout.findViewById<TextView>(R.id.actionServiceNameInItemList).text = dataset[selectedItem].actionServiceName
         adapterLayout.findViewById<TextView>(R.id.reactionServiceNameInItemList).text = dataset[selectedItem].reactionServiceName
         adapterLayout.findViewById<TextView>(R.id.actionNameInItemList).text = dataset[selectedItem].actionName
+        adapterLayout.findViewById<TextView>(R.id.actionNameInItemList).isSelected = true
         adapterLayout.findViewById<TextView>(R.id.reactionNameInItemList).text = dataset[selectedItem].reactionName
+        adapterLayout.findViewById<TextView>(R.id.reactionNameInItemList).isSelected = true
         adapterLayout.findViewById<ImageView>(R.id.leftLogo).setImageDrawable(BitmapDrawable(context.resources, dataset[selectedItem].actionServiceBitmap))
         adapterLayout.findViewById<ImageView>(R.id.rightLogo).setImageDrawable(BitmapDrawable(context.resources, dataset[selectedItem].reactionServiceBitmap))
         selectedItem++

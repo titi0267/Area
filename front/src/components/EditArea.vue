@@ -3,7 +3,7 @@
         <div class="action">
             <div class="action-param" v-if="this.area['actionParamName'] !== ''">
                 <p>Action parameter</p>
-                <b-input :value="area.actionParam" @input="debounceUpdate($event, 'action')"></b-input>
+                <b-input ref="action" :autofocus="true" :value="area.actionParam" @input="debounceUpdate($event, 'action')"></b-input>
             </div>
             <p v-else> No action parameter </p>
         </div>
@@ -16,7 +16,7 @@
         <div class="reaction">
             <div class="reaction-param" v-if="this.area['reactionParamName'] !== ''">
                 <p>Reaction parameter</p>
-                <b-input :value="area.reactionParam" @input="debounceUpdate($event, 'reaction')"></b-input>
+                <b-input ref="reaction" :value="area.reactionParam" @input="debounceUpdate($event, 'reaction')"></b-input>
             </div>
             <p v-else> No reaction parameter </p>
         </div>
@@ -59,6 +59,7 @@ export default vue.extend({
         debounceUpdate: _.debounce(function(input, type: string): void {
             this.area[type + 'Param'] = input;
             this.postArea()
+            this.$refs[type].focus()
         }, 400),
         /**
          * It's a function that post the new values in back-end server.

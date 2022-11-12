@@ -15,7 +15,7 @@
         android:theme="@style/Theme.AREA"
         tools:targetApi="31">
         <activity
-            android:name=".activity.OAuthConnectionActivity"
+            android:name=".activity.OAuthLinkingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -27,7 +27,22 @@
                     android:scheme="http"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.AreaActivity" />
+        <activity
+            android:name=".activity.OAuthLoginWithGoogleActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="localhost"
+                    android:pathPattern="/login"
+                    android:scheme="http"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.AreaActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity android:name=".activity.UserConnectionActivity" />
         <activity
             android:name=".activity.MainActivity"
@@ -42,6 +57,10 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

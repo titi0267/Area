@@ -2,7 +2,9 @@ package com.example.area.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +24,7 @@ import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.AreaActivity
-import com.example.area.activity.OAuthConnectionActivity
+import com.example.area.activity.OAuthLinkingActivity
 import com.example.area.fragment.area.OAuthLinkingFragment
 import com.example.area.model.OAuthServiceListElement
 import com.example.area.repository.Repository
@@ -40,16 +43,19 @@ class OAuthServiceItemAdapter(private val context: Context, private val dataset:
         val adapterLayout = LayoutInflater.from(parent.context).inflate(R.layout.oauth_service_item, parent, false)
         val button: Button = adapterLayout.findViewById<Button>(R.id.oauth_service_button)
         val index = selectedItem
+        val drawable: GradientDrawable = (((AppCompatResources.getDrawable(context as AreaActivity, R.drawable.round_service_background) ?: return OAuthServiceViewHolder(adapterLayout)).constantState ?: return OAuthServiceViewHolder(adapterLayout)).newDrawable().mutate()) as GradientDrawable
 
         if (selectedItem == itemCount)
             selectedItem = 0
+        drawable.colors = intArrayOf(Color.parseColor(dataset[index].backgroundColor), Color.parseColor(dataset[index].backgroundColor))
+        adapterLayout.background = drawable
         adapterLayout.findViewById<ImageView>(R.id.oauth_service_logo).setImageDrawable(BitmapDrawable(context.resources, dataset[index].imageBitmap))
         adapterLayout.findViewById<MaterialTextView>(R.id.oauth_service_name).text = dataset[index].name
         if (dataset[index].connected) {
             button.text = context.resources.getString(R.string.oauth_service_item_button_true)
             button.setTextColor(context.resources.getColor(R.color.green))
             button.setOnClickListener {
-                Toast.makeText(context as AreaActivity, "Unlink not available!", Toast.LENGTH_LONG).show()
+                unlinkRequest(dataset[index].oauthName, context)
             }
         } else {
             button.text = context.resources.getString(R.string.oauth_service_item_button_false)
@@ -78,10 +84,9 @@ class OAuthServiceItemAdapter(private val context: Context, private val dataset:
             if (response.isSuccessful) {
                 val oAuthLink = response.body()!!.toString()
                 val bundle = Bundle()
-                val intent = Intent(context as AreaActivity, OAuthConnectionActivity::class.java)
+                val intent = Intent(context as AreaActivity, OAuthLinkingActivity::class.java)
                 bundle.putString("link", oAuthLink)
                 bundle.putString("service", service)
-                Log.d("Service in request", service)
                 intent.putExtras(bundle)
                 GlobalScope.launch {
                     waitForSuccess(context)
@@ -118,5 +123,35 @@ class OAuthServiceItemAdapter(private val context: Context, private val dataset:
         Handler(Looper.getMainLooper()).post {
             Toast.makeText(context as AreaActivity, "OAuth failure!", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun unlinkRequest(oauthName: String, context: Context) {
+        val sessionManager = SessionManager(context as AreaActivity)
+        val url = sessionManager.fetchAuthToken("url") ?: return
+        val token = sessionManager.fetchAuthToken("user_token") ?:return
+        var tokenTable: MutableMap<String, String?> =
+            (((context as AreaActivity).application as AREAApplication).userInfo ?: return).tokensTable as MutableMap<String, String?>
+        val deletedToken: MutableMap<String, Boolean> = mutableMapOf()
+        val fragment: OAuthLinkingFragment = ((context as AreaActivity).supportFragmentManager.findFragmentByTag("oauth_linking")?: return) as OAuthLinkingFragment
+        val rep = Repository(url)
+        val viewModelFactory = MainViewModelFactory(rep)
+        val viewModel = ViewModelProvider(context, viewModelFactory)[MainViewModel::class.java]
+        val observer: Observer<Response<Unit>?> = Observer { response ->
+            if (response == null)
+                return@Observer
+            if (response.isSuccessful) {
+                (((context).application as AREAApplication).userInfo ?: return@Observer).tokensTable = tokenTable
+                fragment.refreshList(null)
+                Toast.makeText(context as AreaActivity, "Account unlinked successfully!", Toast.LENGTH_LONG).show()
+            }
+        }
+        for (tokenOauth in tokenTable) {
+            if (tokenOauth.key.startsWith(oauthName)) {
+                tokenTable[tokenOauth.key] = null
+                deletedToken[tokenOauth.key] = true
+            }
+        }
+        viewModel.deleteTokens(token, deletedToken, context, observer)
+        viewModel.emptyResponse.observe(context, observer)
     }
 }

@@ -21,6 +21,7 @@ import com.example.area.model.ActionReactionInfo
 import com.example.area.model.ServiceListElement
 import com.example.area.model.about.AboutClass
 
+
 class AreaCreationReactionFragment(private val actionService: ServiceListElement, private val action: ActionReactionInfo, private val reactionService: ServiceListElement) : Fragment(R.layout.fragment_area_creation_reaction) {
 
     override fun onCreateView(
@@ -64,24 +65,4 @@ class AreaCreationReactionFragment(private val actionService: ServiceListElement
         else
             (context as AreaActivity).changeFragment(AreaCreationReactionParamFragment(actionService, action, reactionService, actionReactionList.loadActionReactionInfo()[position]), "reaction_param_creation")
     }
-
-    /*private fun createAreaRequest(textHint: Editable) {
-        val sessionManager = SessionManager(context as AreaActivity)
-        val url = sessionManager.fetchAuthToken("url") ?: return
-        val token = sessionManager.fetchAuthToken("user_token") ?: return
-        val rep = Repository(url)
-        val viewModelFactory = MainViewModelFactory(rep)
-        val viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        val observer : Observer<Response<Token>?> = Observer { response ->
-            if (response == null)
-                return@Observer
-            if (response.isSuccessful) {
-                Toast.makeText(context as AreaActivity, "Area added successfully!", Toast.LENGTH_SHORT).show()
-                (context as AreaActivity).changeFragment(AreaListFragment(), "area_list")
-            }
-        }
-
-        viewModel.areaCreation(token, AREAFields(actionService.id, action.id, action.paramName, reactionService.id, reactionSelectedIndex + 1, textHint.toString()), context as AreaActivity, observer)
-        viewModel.userResponse.observe(viewLifecycleOwner, observer)
-    }*/
 }

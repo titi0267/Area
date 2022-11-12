@@ -3,7 +3,6 @@ package com.example.area.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -17,7 +16,7 @@ import com.example.area.utils.SessionManager
 import retrofit2.Response
 import java.net.URLEncoder
 
-class OAuthConnectionActivity : AppCompatActivity() {
+class OAuthLinkingActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
 
@@ -29,7 +28,6 @@ class OAuthConnectionActivity : AppCompatActivity() {
         val service = intent.getStringExtra("service") ?: return
 
         sessionManager.saveAuthToken("service", service)
-        Log.d("Service at creation", service)
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
         finish()
     }

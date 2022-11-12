@@ -7,5 +7,6 @@ data class OAuthServiceListElement(
     val name: String,
     val oauthName: String,
     val imageBitmap: Bitmap,
+    val backgroundColor: String,
     val connected: Boolean
 )

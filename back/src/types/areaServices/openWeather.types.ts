@@ -1,6 +1,6 @@
 export interface OpenWheatherCityInfos {
   coord: Coord;
-  weather: Weather;
+  weather: Weather[];
   base: string;
   main: Main;
   visibility: number;

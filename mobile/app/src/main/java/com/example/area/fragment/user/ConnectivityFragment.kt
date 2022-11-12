@@ -22,7 +22,7 @@ import com.example.area.repository.Repository
 import com.example.area.utils.*
 import retrofit2.Response
 
-class ConnectivityFragment : Fragment(R.layout.fragment_connectivity) {
+class ConnectivityFragment() : Fragment(R.layout.fragment_connectivity) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_connectivity_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/profile_connectivity_title"
+            android:textSize="25sp"
+            android:fontFamily="@font/avenir_lt_std_55_roman"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_current_ip_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/profile_current_ip"
+            android:textSize="20sp"
+            android:fontFamily="@font/gothic_a1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_connectivity_title" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_current_ip_text_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textSize="20sp"
+            android:fontFamily="@font/gothic_a1"
+            app:layout_constraintStart_toEndOf="@id/profile_current_ip_text_view"
+            app:layout_constraintTop_toTopOf="@id/profile_current_ip_text_view"
+            tools:text="127.0.0.1" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_current_port_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/profile_current_port"
+            android:textSize="20sp"
+            android:fontFamily="@font/gothic_a1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_current_ip_text_view" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/profile_current_port_text_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textSize="20sp"
+            android:fontFamily="@font/gothic_a1"
+            app:layout_constraintStart_toEndOf="@id/profile_current_port_text_view"
+            app:layout_constraintTop_toTopOf="@id/profile_current_port_text_view"
+            tools:text="127.0.0.1" />
+
+        <Button
+            android:id="@+id/profile_change_ip_port_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/profile_connectivity_edit_ip_port"
+            android:textSize="20sp"
+            android:fontFamily="@font/avenir_lt_std_55_roman"
+            style="@style/Widget.Material3.Button.TextButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_current_port_text_view" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -5,124 +5,198 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/backFromAreaListItemButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/perfect_gray"
-        android:text="@string/back_button"
-        android:textColor="@color/black"
-        app:cornerRadius="100dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/actionServiceTextInItem"
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/avenir_lt_std_55_roman"
+            android:text="@string/action_parameter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/actionLogoEdit" />
+
+        <ImageView
+            android:id="@+id/actionLogoEdit"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/free_youtube_logo_icon_2431_thumb" />
+
+        <TextView
+            android:id="@+id/actionServiceTextInItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/avenir_lt_std_55_roman"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/actionLogoEdit"
+            app:layout_constraintStart_toEndOf="@+id/actionLogoEdit"
+            app:layout_constraintTop_toTopOf="@+id/actionLogoEdit"
+            tools:text="actionService" />
+
+        <TextView
+            android:id="@+id/actionNameInItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_lt_std_55_roman"
+            app:layout_constraintBottom_toBottomOf="@+id/actionServiceTextInItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/actionServiceTextInItem"
+            app:layout_constraintTop_toTopOf="@+id/actionServiceTextInItem"
+            tools:text="actionName" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/actionParamInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backFromAreaListItemButton"
-        tools:text="actionService" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-    <TextView
-        android:id="@+id/actionNameInItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actionServiceTextInItem"
-        tools:text="actionName" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/avenir_lt_std_55_roman"
+            android:text="@string/reaction_parameter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reactionLogoEdit" />
 
-    <TextView
-        android:id="@+id/reactionServiceTextInItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="55dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
-        tools:text="reactionService" />
+        <ImageView
+            android:id="@+id/reactionLogoEdit"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/free_youtube_logo_icon_2431_thumb" />
 
-    <TextView
-        android:id="@+id/reactionNameInItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reactionServiceTextInItem"
-        tools:text="reactioName" />
+        <TextView
+            android:id="@+id/reactionServiceTextInItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/avenir_lt_std_55_roman"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/reactionLogoEdit"
+            app:layout_constraintStart_toEndOf="@+id/reactionLogoEdit"
+            app:layout_constraintTop_toTopOf="@+id/reactionLogoEdit"
+            tools:text="reactionService" />
 
-    <Switch
+        <TextView
+            android:id="@+id/reactionNameInItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_lt_std_55_roman"
+            app:layout_constraintBottom_toBottomOf="@+id/reactionServiceTextInItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/reactionServiceTextInItem"
+            app:layout_constraintTop_toTopOf="@+id/reactionServiceTextInItem"
+            tools:text="reactioName" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reactionParamInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/enableItemListSwitch"
+        style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="25dp"
-        android:minHeight="48dp"
-        android:text="@string/enable_area"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="20dp"
         android:checked="true"
-        app:layout_constraintBottom_toTopOf="@+id/deleteItemListButton"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:minHeight="48dp"
+        android:textSize="0sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        app:showText="false"
+        app:thumbTint="@color/white"
+        app:trackTint="@color/red" />
 
     <Button
+        style="@style/Widget.Material3.Button.IconButton.Filled"
         android:id="@+id/deleteItemListButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
         android:backgroundTint="@color/perfect_gray"
-        android:text="@string/delete_area"
-        android:textColor="@color/black"
         app:cornerRadius="100sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        app:icon="@drawable/bin_icon"
+        app:iconSize="25dp"
+        app:iconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actionNameInItem">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/actionParamInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/action_param_hint" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reactionNameInItem">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/reactionParamInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/reaction_param_hint" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
     <Button
+        style="@style/Widget.Material3.Button.IconButton.Filled"
         android:id="@+id/editAreaItemButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="25dp"
         android:backgroundTint="@color/perfect_gray"
-        android:text="@string/edit_area_button"
-        android:textColor="@color/black"
+        app:icon="@drawable/pen_icon"
+        app:iconSize="25dp"
+        app:iconTint="@color/black"
         app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

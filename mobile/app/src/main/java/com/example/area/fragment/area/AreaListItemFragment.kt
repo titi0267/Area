@@ -1,5 +1,8 @@
 package com.example.area.fragment.area
 
+import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.GradientDrawable
 import android.hardware.Camera.Area
 import android.os.Bundle
 import android.util.Log
@@ -7,9 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
@@ -24,6 +30,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.area.model.EditActionReaction
 import com.example.area.repository.Repository
+import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
 import retrofit2.Response
 
@@ -48,18 +56,23 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
         val rep = Repository(url)
         val viewModelFactory = MainViewModelFactory(rep)
         val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return view
+        val drawable: GradientDrawable = (((AppCompatResources.getDrawable(context as AreaActivity, R.drawable.round) ?: return view).constantState ?: return view).newDrawable().mutate()) as GradientDrawable // To change with other background
+        val drawable2: GradientDrawable = (((AppCompatResources.getDrawable(context as AreaActivity, R.drawable.round) ?: return view).constantState ?: return view).newDrawable().mutate()) as GradientDrawable // To change with other background
 
         viewModel = ViewModelProvider(context as AreaActivity, viewModelFactory)[MainViewModel::class.java]
-        view.findViewById<Button>(R.id.backFromAreaListItemButton).setOnClickListener {
-            (context as AreaActivity).onBackPressed()
-        }
+        view.findViewById<ImageView>(R.id.actionLogoEdit).setImageDrawable(BitmapDrawable((context as AreaActivity).resources, aboutClass.getServiceImageURL(item.actionServiceId)))
+        view.findViewById<ImageView>(R.id.reactionLogoEdit).setImageDrawable(BitmapDrawable((context as AreaActivity).resources, aboutClass.getServiceImageURL(item.reactionServiceId)))
+        drawable.colors = intArrayOf(Color.parseColor(aboutClass.getServiceBackgroundColor(item.actionServiceId)), Color.parseColor(aboutClass.getServiceBackgroundColor(item.actionServiceId)))
+        view.findViewById<ConstraintLayout>(R.id.constraintLayout).background = drawable
+        drawable2.colors = intArrayOf(Color.parseColor(aboutClass.getServiceBackgroundColor(item.reactionServiceId)), Color.parseColor(aboutClass.getServiceBackgroundColor(item.reactionServiceId)))
+        view.findViewById<ConstraintLayout>(R.id.constraintLayout2).background = drawable2
         view.findViewById<TextView>(R.id.actionServiceTextInItem).text = aboutClass.getServiceNameById(item.actionServiceId)
         view.findViewById<TextView>(R.id.actionNameInItem).text = aboutClass.getServiceActionNameById(item.actionServiceId, item.actionId)
         view.findViewById<TextView>(R.id.actionParamInput).text = item.actionParam
         view.findViewById<TextView>(R.id.reactionServiceTextInItem).text = aboutClass.getServiceNameById(item.reactionServiceId)
         view.findViewById<TextView>(R.id.reactionNameInItem).text = aboutClass.getServiceReactionNameById(item.reactionServiceId, item.reactionId)
         view.findViewById<TextView>(R.id.reactionParamInput).text = item.reactionParam
-        view.findViewById<Switch>(R.id.enableItemListSwitch).setOnCheckedChangeListener { _, isChecked ->
+        view.findViewById<SwitchMaterial>(R.id.enableItemListSwitch).setOnCheckedChangeListener { _, isChecked ->
             onEnableDisableSwitch(isChecked, token)
         }
         view.findViewById<Button>(R.id.deleteItemListButton).setOnClickListener {
@@ -116,6 +129,7 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
             if (response == null) {
                 return@Observer
             }
+            Log.d("Delete", response.toString())
             if (response.isSuccessful) {
                 Toast.makeText(context as AreaActivity, "Area successfully deleted", Toast.LENGTH_SHORT).show()
                 (context as AreaActivity).changeFragment(AreaListFragment(), "area_list")

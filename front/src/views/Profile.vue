@@ -1,6 +1,6 @@
 <template>
     <div id="Profile">
-        <div class="about-you">
+        <div class="about-you" :class="{ 'darkMode' : $store.getters.darkMode }">
             <h2>About You</h2>
             <p>First Name: {{ user.firstName }}</p>
             <p>Last Name: {{ user.lastName }}</p>
@@ -52,6 +52,12 @@ export default vue.extend({
         box-shadow: 0 0 15px 1px rgb(0 0 0 / 28%);
         border-radius: 20px;
         width: 60%;
+        transition: background-color 0.5s;
+        &.darkMode {
+            color: white;
+            background-color: #21242b;
+            box-shadow: 0 0 15px 1px rgb(151 151 151 / 60%);
+        }
         h2 {
             padding: 8px 11px;
             font-size: 20px;

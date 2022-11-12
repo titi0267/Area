@@ -18,6 +18,7 @@ export interface Service {
     serviceName: ServiceName;
     imageUrl: string;
     backgroundColor: string;
+    oauthName: string,
     actions: Action[];
     reactions: Reaction[];
 }

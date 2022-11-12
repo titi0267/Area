@@ -11,5 +11,5 @@ COPY . .
 RUN npm run build
 
 EXPOSE 8081
-RUN ln -s /mobile/app/build/outputs/apk/release/app-release-unsigned.apk public/client.apk
+RUN mkdir ./dist/apk
 CMD ["npx", "serve", "-s", "-l", "tcp://0.0.0.0:8081", "/vue_app/dist"]

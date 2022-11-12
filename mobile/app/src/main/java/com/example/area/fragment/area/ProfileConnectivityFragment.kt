@@ -26,7 +26,7 @@ class ProfileConnectivityFragment : Fragment(R.layout.fragment_profile_connectiv
         view.findViewById<MaterialTextView>(R.id.profile_current_ip_text_value).text = ip
         view.findViewById<MaterialTextView>(R.id.profile_current_port_text_value).text = port
         view.findViewById<Button>(R.id.profile_change_ip_port_button).setOnClickListener {
-            (context as AreaActivity).changeFragment(ChangeIpPortFragment(), "change_ip_port")
+            (context as AreaActivity).changeFragment(ProfileConnectivityEditFragment(), "change_ip_port")
         }
         return view
     }

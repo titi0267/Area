@@ -16,18 +16,4 @@ import com.example.area.activity.MainActivity
 import com.example.area.utils.SessionManager
 import com.google.android.material.textview.MaterialTextView
 
-class ProfileFragment : Fragment(R.layout.fragment_profile) {
-
-    private lateinit var viewModel: MainViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
-        return view
-    }
-
-
-}
+class ProfileFragment : Fragment(R.layout.fragment_profile) {}

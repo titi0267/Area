@@ -1,5 +1,6 @@
 package com.example.area.fragment.area
 
+import android.hardware.Camera.Area
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -56,6 +57,7 @@ class AreaCreationOverviewFragment(private val actionService: ServiceListElement
             if (response.isSuccessful) {
                 Toast.makeText(context as AreaActivity, "Area added successfully!", Toast.LENGTH_SHORT).show()
                 (context as AreaActivity).changeFragment(AreaListFragment(), "area_list")
+                (context as AreaActivity).popAllBackStack()
             }
         }
 

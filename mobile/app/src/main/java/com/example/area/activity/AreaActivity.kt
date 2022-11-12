@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
@@ -50,6 +51,10 @@ class AreaActivity : AppCompatActivity() {
             moveTaskToBack(true)
         else
             supportFragmentManager.popBackStack()
+    }
+
+    fun popAllBackStack() {
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
     private fun setAbout() {

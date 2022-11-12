@@ -59,4 +59,5 @@
 
     <string name="done_button">Done</string>
     <string name="cancel_button">Cancel</string>
+    <string name="action_param_button_text">Show injected action parameters</string>
 </resources>

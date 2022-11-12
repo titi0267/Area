@@ -26,13 +26,13 @@ class OverviewItemWithoutParamFragment(val type: String, val service: ServiceLis
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) ?: return null
         val aboutClass = ((context as AreaActivity).application as AREAApplication).aboutClass ?: return view
-        val drawable: GradientDrawable = (AppCompatResources.getDrawable(context as AreaActivity, R.drawable.round_service_background) ?: return view) as GradientDrawable
+        val drawable: GradientDrawable = (((AppCompatResources.getDrawable(context as AreaActivity, R.drawable.round_service_background) ?: return view).constantState ?: return view).newDrawable().mutate()) as GradientDrawable
         drawable.colors = intArrayOf(Color.parseColor(aboutClass.getServiceBackgroundColor(service.id)), Color.parseColor(aboutClass.getServiceBackgroundColor(service.id)))
         view.background = drawable
         view.findViewById<TextView>(R.id.overview_item_type).text = type
         view.findViewById<ImageView>(R.id.overview_item_logo).setImageDrawable(BitmapDrawable((context as AreaActivity).resources, service.imageBitmap))
-        view.findViewById<TextView>(R.id.overview_item_name).text = aboutClass.getServiceActionNameById(service.id, actionReactionInfo.id)
-        view.findViewById<TextView>(R.id.overview_item_description).text = aboutClass.getServiceActionDescriptionById(service.id, actionReactionInfo.id)
+        view.findViewById<TextView>(R.id.overview_item_name).text = actionReactionInfo.name
+        view.findViewById<TextView>(R.id.overview_item_description).text = actionReactionInfo.description
         return view
     }
 }

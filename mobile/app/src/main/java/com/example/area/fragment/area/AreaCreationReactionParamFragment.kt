@@ -40,30 +40,31 @@ class AreaCreationReactionParamFragment(private val actionService: ServiceListEl
             reaction.paramName = textEdit.text?.toString() ?: ""
             (context as AreaActivity).changeFragment(AreaCreationOverviewFragment(actionService, action, reactionService, reaction), "overview_creation")
         }
-        createSpinner(view, aboutClass)
+        createPopupListActionParam(view, aboutClass)
         return view
     }
 
-    private fun createSpinner(view: View, aboutClass: AboutClass) {
-        val injectSpinner = view.findViewById<Spinner>(R.id.injectActionParamsSpinner)
-        val injectedParams: ArrayAdapter<String> = ArrayAdapter(context as AreaActivity, android.R.layout.simple_spinner_item, aboutClass.getServiceActionAvailableInjectParamsById(actionService.id, action.id) ?: return)
-        injectedParams.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        injectSpinner.isClickable = true
-        injectSpinner.adapter = injectedParams
-        injectSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapter: AdapterView<*>?, viewSpinner: View?, pos: Int, p3: Long) {
-                val reactionParameterText: Editable = view.findViewById<TextInputEditText>(R.id.reactionParamText).text ?: return
+    private fun createPopupListActionParam(view: View, aboutClass: AboutClass) {
+        val button = view.findViewById<Button>(R.id.action_param_button_text)
+        val listActionParam = ListPopupWindow(context ?: return, null, com.google.android.material.R.attr.listPopupWindowStyle)
+        val items = aboutClass.getServiceActionAvailableInjectParamsById(actionService.id, action.id) ?: return
+        val adapter = ArrayAdapter(context ?: return, R.layout.action_param_item, items)
+        val reactionParameterText: Editable = view.findViewById<TextInputEditText>(R.id.reactionParamText).text ?: return
 
-                if (first) {
-                    first = false
-                    return
-                }
-                if (adapter == null)
-                    return
-                reactionParameterText.append("%${adapter.selectedItem}%")
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-
+        if (items.isEmpty()) {
+            button.visibility = View.GONE
+        }
+        listActionParam.isModal = true
+        listActionParam.setAdapter(adapter)
+        listActionParam.anchorView = button
+        listActionParam.setOnItemClickListener { _, _, i, _ ->
+            reactionParameterText.append("%${items[i]}%")
+            listActionParam.dismiss()
+        }
+        button.setOnClickListener { v: View? ->
+            if (v == null)
+                return@setOnClickListener
+            listActionParam.show()
         }
     }
 }

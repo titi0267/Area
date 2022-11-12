@@ -71,18 +71,18 @@
             app:layout_constraintStart_toStartOf="parent" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Spinner
-        android:id="@+id/injectActionParamsSpinner"
-        android:layout_width="150dp"
+    <Button
+        android:id="@+id/action_param_button_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:contentDescription="@string/spinner_desc"
-        android:focusable="true"
-        android:minHeight="48dp"
-        android:spinnerMode="dialog"
+        android:text="@string/action_param_button_text"
+        android:textSize="20sp"
+        android:fontFamily="@font/hitmo_2_0_regular"
+        style="@style/Widget.Material3.Button"
         app:layout_constraintBottom_toTopOf="@+id/reactionParamFragmentText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

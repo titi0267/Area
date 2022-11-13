@@ -20,17 +20,14 @@
     <string name="profile_logout_button">Logout</string>
     <string name="area_list_button">Area List</string>
     <string name="area_creation_button">Create</string>
-    <string name="action_service_title">If ...</string>
-    <string name="action_reaction_title">Does ...</string>
-    <string name="reaction_service_title">Then ...</string>
+    <string name="action_service_title">IF</string>
+    <string name="reaction_service_title">THEN</string>
     <string name="left_logo_desc">Left logo of a listView item</string>
     <string name="right_logo_desc">Right logo of a listView item</string>
     <string name="service_item_logo_desc">Logo of a listView item</string>
     <string name="not_logged_in_login_button_text">Log in</string>
     <string name="not_logged_in_register_button_text">Register</string>
     <string name="area_list_fetch_button">Refresh</string>
-    <string name="action_parameter">Action Parameter</string>
-    <string name="reaction_parameter">Reaction Parameter</string>
     <string name="profile_user_first_name">First name:</string>
     <string name="profile_user_last_name">Last name:</string>
     <string name="profile_user_email">Email:</string>
@@ -58,6 +55,10 @@
     <string name="loading_loading_text">Loading...</string>
     <string name="select_action_service_field">Select your action service</string>
     <string name="select_reaction_service_field">Select your reaction service</string>
+
+    <string name="done_button">Done</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="action_param_button_text">Show injected action parameters</string>
     <string name="navbar_home">Home</string>
     <string name="navbar_creation">New AREA</string>
     <string name="navbar_profile">Profile</string>

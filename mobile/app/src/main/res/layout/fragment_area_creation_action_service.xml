@@ -7,7 +7,7 @@
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="500dp"
+        android:layout_height="515dp"
         android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="25dp"
         android:fontFamily="@font/courier_new_regular"
         android:text="@string/select_action_service_field"
         app:layout_constraintEnd_toEndOf="parent"

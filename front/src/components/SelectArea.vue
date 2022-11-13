@@ -1,9 +1,9 @@
 <template>
   <div id="SelectArea">
-    <b-icon class="previous" icon="chevron-right" @click.native="$emit('previous'), $emit('save')"></b-icon>
+    <b-icon class="previous" icon="chevron-right" :class="{ 'darkMode' : $store.getters.darkMode }" @click.native="$emit('previous'), $emit('save')"></b-icon>
     <div v-for="service in services" :key="service.name">
         <div class="selected-service" v-if="area[type + 'ServiceId'] == service.id" :style="{ 'background-color': service.backgroundColor }">
-            <h2>Select your {{ type }} type</h2>
+            <h2 :class="{ 'darkMode' : $store.getters.darkMode }">Select your {{ type }} type</h2>
             <b-image :src="$store.state.serveurURL + service.imageUrl"></b-image>
         </div>
         <div class="areas" v-if="service.id == area[type + 'ServiceId']">
@@ -96,7 +96,7 @@ export default vue.extend({
                     this.$emit("loading");
                     return;
                 }
-                const code: String = this.$route.query.code;
+                const code: string = this.$route.query.code;
                 let oauthParam: object
                 if ((code == null || code == undefined) && this.tokensTable[serviceOauthName + 'Token'] == null) {
                     this.$emit('previous');
@@ -146,6 +146,9 @@ export default vue.extend({
         top: 120px;
         left: 30px;
         cursor: pointer;
+        &.darkMode {
+            color: white;
+        }
     }
     .selected-service {
         display: flex;
@@ -166,6 +169,9 @@ export default vue.extend({
             margin-bottom: 10px;
             color: white;
             font-family: 'Courier New', Courier, monospace;
+            &.darkMode {
+                color: white;
+            }
         }
     }
     .areas {

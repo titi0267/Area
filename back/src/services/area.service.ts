@@ -182,9 +182,9 @@ const updateAreaValues = async (
 const editArea = async (
   userId: number,
   areaId: number,
-  enabled: boolean | null,
-  actionParam: string | null,
-  reactionParam: string | null,
+  enabled?: boolean,
+  actionParam?: string,
+  reactionParam?: string,
 ): Promise<Area> => {
   const doesUserExist = await prisma.user.findUnique({ where: { id: userId } });
   const doesAreaExist = await prisma.area.findUnique({ where: { id: areaId } });
@@ -208,7 +208,7 @@ const editArea = async (
   }
 
   if (
-    actionParam !== null &&
+    actionParam !== undefined &&
     !ServiceHelper.checkActionFormat(
       doesAreaExist.actionServiceId,
       doesAreaExist.actionId,
@@ -224,7 +224,7 @@ const editArea = async (
   }
 
   if (
-    reactionParam !== null &&
+    reactionParam !== undefined &&
     !ServiceHelper.checkReactionFormat(
       doesAreaExist.reactionServiceId,
       doesAreaExist.reactionId,
@@ -242,9 +242,9 @@ const editArea = async (
   const area = await prisma.area.update({
     where: { id: areaId },
     data: {
-      enabled: enabled !== null ? enabled : undefined,
-      actionParam: actionParam !== null ? actionParam : undefined,
-      reactionParam: reactionParam !== null ? reactionParam : undefined,
+      enabled: enabled !== undefined ? enabled : undefined,
+      actionParam: actionParam !== undefined ? actionParam : undefined,
+      reactionParam: reactionParam !== undefined ? reactionParam : undefined,
     },
   });
 

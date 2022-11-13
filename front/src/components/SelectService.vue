@@ -1,7 +1,7 @@
 <template>
   <div id="SelectService">
-    <b-icon v-if="type != 'action'" class="previous" icon="chevron-right" @click.native="$emit('previous'), $emit('save'), $router.push('/create/action')"></b-icon>
-    <h2>Select your {{ type }} service name</h2>
+    <b-icon v-if="type != 'action'" class="previous" :class="{ 'darkMode' : $store.getters.darkMode }" icon="chevron-right" @click.native="$emit('previous'), $emit('save'), $router.push('/create/action')"></b-icon>
+    <h2 :class="{ 'darkMode' : $store.getters.darkMode }">Select your {{ type }} service name</h2>
     <div>
       <b-input class="search-input" @input="filterInput = $event" placeholder="Search your service here"></b-input>
       <div class="services">
@@ -99,6 +99,9 @@ $service-size: 175px;
         top: 25px;
         left: 30px;
         cursor: pointer;
+        &.darkMode {
+          color: white;
+        }
     }
     .search-input {
         display: flex;
@@ -112,6 +115,9 @@ $service-size: 175px;
     h2 {
         margin: 20px 0px 10px;
         font-family: 'Courier New', Courier, monospace;
+        &.darkMode {
+          color: white;
+        }
     }
     .services {
         margin: 10px;

@@ -1,5 +1,6 @@
 <template>
     <div id="login">
+        <b-image src="https://images.unsplash.com/photo-1666442131138-f010c5304948?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"/>
         <section class="loginForm">
             <h3>Login</h3>
             <b-field label="E-mail" label-position="on-border" :type="login.email.error != '' ? 'is-danger' : ''" :message="login.email.error">
@@ -15,7 +16,7 @@
             </div>
             <p class="or">or</p>
             <div class="googleOauth">
-                <b-button @click="getGoogleOauthLogin()"> <b-image :src="require('@/assets/google_logo.png')"> </b-image> Login with Google </b-button>
+                <b-button @click="getGoogleOauthLogin()"> <b-image :src="require('@/assets/pictures/google_logo.png')"> </b-image> Login with Google </b-button>
             </div>
             <div class="register">
                 <router-link to="/register">
@@ -130,10 +131,10 @@ export default vue.extend({
         },
         /**
          * It's a function that check if the email is valide or not.
-         * @param {String} input - Text input
+         * @param {string} input - Text input
          * @data {Object} login
          */
-        checkEmail(input: String): void {
+        checkEmail(input: string): void {
             const email_regex = (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
             if (input == "") {
                 this.login.email.error = "Cannot be empty";
@@ -152,7 +153,11 @@ export default vue.extend({
          * @data {Object} login
          */
         checkPassword(): void {
-            if (this.login.password.value == "") {
+            const password_regex = (/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*"'/~_.+:;=-]).{8,}$/)
+            if (!this.login.password.value.match(password_regex)) {
+                this.login.password.error = "Minimum requirement for password is : 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character"
+                this.login.password.valide = false;
+            } else if (this.login.password.value == "") {
                 this.login.password.error = "Password cannot be empty"
                 this.login.password.valide = false;
             } else {
@@ -186,6 +191,13 @@ export default vue.extend({
 
 <style scoped lang="scss">
 #login {
+    height: 100vh;
+    :deep(figure) {
+        height: 100%;
+        img {
+            height: 100%;
+        }
+    }
     .loginForm {
         background-color: white;
         min-width: 400px;

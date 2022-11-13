@@ -1,6 +1,6 @@
 <template>
-    <div id="app">
-        <NavBar v-if="$route.name !== 'register' && $route.name !== 'login' && navBarPageNotFound() === true"/>
+    <div id="app" :class="{ 'darkMode' : $store.getters.darkMode }">
+        <NavBar v-if="$route.name != 'register' && $route.name != 'login' && navBarPageNotFound() === true"/>
         <router-view/>
     </div>
 </template>
@@ -33,7 +33,12 @@ export default vue.extend({
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    height: 100vh;
+    min-height: 100vh;
+    height: 100%;
+    transition: background-color 0.5s;
+    &.darkMode {
+        background-color: #2f2e2f;
+    }
 }
 
 /** ALL FONTS ARE LOADED HERE */

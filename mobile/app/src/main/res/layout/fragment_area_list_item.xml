@@ -75,8 +75,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/actionParamInput"
                 android:layout_width="match_parent"
-                android:singleLine="true"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -151,8 +151,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/reactionParamInput"
                 android:layout_width="match_parent"
-                android:singleLine="true"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -163,34 +163,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textSize="20sp"
         android:checked="true"
-        android:text="@string/list_item_enabled"
         android:fontFamily="@font/avenir_lt_std_55_roman"
-        app:layout_constraintStart_toStartOf="@id/constraintLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"/>
+        android:text="@string/list_item_enabled"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
     <Button
         android:id="@+id/deleteItemListButton"
         style="@style/Widget.Material3.Button.IconButton.Filled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="25dp"
         android:backgroundTint="@color/perfect_gray"
         app:cornerRadius="100sp"
         app:icon="@drawable/bin_icon"
         app:iconSize="25dp"
         app:iconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/editAreaItemButton"/>
 
     <Button
         android:id="@+id/editAreaItemButton"
         style="@style/Widget.Material3.Button.IconButton.Filled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
         android:layout_marginBottom="25dp"
         android:backgroundTint="@color/perfect_gray"
         app:cornerRadius="100dp"
@@ -198,6 +198,7 @@
         app:iconSize="25dp"
         app:iconTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/deleteItemListButton"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

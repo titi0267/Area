@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.area.AREAApplication
 import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
@@ -19,12 +20,11 @@ import com.example.area.R
 import com.example.area.activity.AreaActivity
 import com.example.area.fragment.overview.OverviewItemFragment
 import com.example.area.fragment.overview.OverviewItemWithoutParamFragment
-import com.example.area.model.AREAFields
-import com.example.area.model.ActionReactionInfo
-import com.example.area.model.ServiceListElement
-import com.example.area.model.Token
+import com.example.area.model.*
 import com.example.area.repository.Repository
 import com.example.area.utils.SessionManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Response
 
 class AreaCreationOverviewFragment(private val actionService: ServiceListElement, private val action: ActionReactionInfo, private val reactionService: ServiceListElement, private val reaction: ActionReactionInfo) : Fragment(R.layout.fragment_area_creation_overview) {
@@ -58,6 +58,10 @@ class AreaCreationOverviewFragment(private val actionService: ServiceListElement
                 Toast.makeText(context as AreaActivity, "Area added successfully!", Toast.LENGTH_SHORT).show()
                 (context as AreaActivity).changeFragment(AreaListFragment(), "area_list")
                 (context as AreaActivity).popAllBackStack()
+            }
+            else {
+                val error: ErrorResponse = Gson().fromJson((response.errorBody() ?: return@Observer).charStream(), (object : TypeToken<ErrorResponse>() {}.type)) ?: return@Observer
+                Toast.makeText(context as AreaActivity, "Error: " + error.message, Toast.LENGTH_SHORT).show()
             }
         }
 

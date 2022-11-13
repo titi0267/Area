@@ -26,10 +26,13 @@ import com.example.area.utils.SessionManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.area.model.EditActionReaction
+import com.example.area.model.ErrorResponse
 import com.example.area.repository.Repository
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Response
 
 class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout.fragment_area_list_item) {
@@ -95,6 +98,10 @@ class AreaListItemFragment(private val item: ActionReaction) : Fragment(R.layout
                 Toast.makeText(context as AreaActivity, "Area successfully edited", Toast.LENGTH_SHORT).show()
                 oldActionParam = actionParam
                 oldReactionParam = reactionParam
+            }
+            else {
+                val error: ErrorResponse = Gson().fromJson((response.errorBody() ?: return@Observer).charStream(), (object : TypeToken<ErrorResponse>() {}.type)) ?: return@Observer
+                Toast.makeText(context as AreaActivity, "Error: " + error.message, Toast.LENGTH_SHORT).show()
             }
         }
 

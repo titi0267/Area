@@ -54,7 +54,7 @@ class ConnectivityFragment() : Fragment(R.layout.fragment_connectivity) {
         val observer: Observer<Response<Token>?> = Observer { response ->
             if ((context as UserConnectionActivity).loading)
                 return@Observer
-            if (response == null) {
+            if (response == null || response.code() == 404) {
                 Toast.makeText(
                     context as UserConnectionActivity,
                     "Connection test failed!",
@@ -78,8 +78,8 @@ class ConnectivityFragment() : Fragment(R.layout.fragment_connectivity) {
         val observer: Observer<Response<Token>?> = Observer { response ->
             if ((context as UserConnectionActivity).loading)
                 return@Observer
-            if (response == null) {
-                Toast.makeText(
+            if (response == null || response.code() == 404) {
+                    Toast.makeText(
                     context as UserConnectionActivity,
                     "Connection test failed!",
                     LENGTH_SHORT

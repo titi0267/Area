@@ -46,12 +46,7 @@ const newIssue = async (area: Area): Promise<string | null> => {
     await githubClient.rest.issues.list({ filter: "all", state: "open" })
   ).data;
 
-  if (area.lastActionValue === null) {
-    await AreaService.updateAreaValues(area.id, "");
-    return null;
-  }
-
-  if (!issues[0] || !issues[0].repository) {
+  if (area.lastActionValue === null || !issues[0] || !issues[0].repository) {
     await AreaService.updateAreaValues(area.id, "");
     return null;
   }
@@ -91,12 +86,7 @@ const newPullRequestOnRepository = async (
     })
   ).data;
 
-  if (area.lastActionValue === null) {
-    await AreaService.updateAreaValues(area.id, "");
-    return null;
-  }
-
-  if (!pulls[0] || !pulls[0].user?.login) {
+  if (area.lastActionValue === null || !pulls[0] || !pulls[0].user?.login) {
     await AreaService.updateAreaValues(area.id, "");
     return null;
   }

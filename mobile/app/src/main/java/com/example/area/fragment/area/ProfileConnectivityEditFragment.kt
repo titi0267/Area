@@ -51,7 +51,7 @@ class ProfileConnectivityEditFragment : Fragment(R.layout.fragment_profile_edit_
         val observer: Observer<Response<UserInfo>?> = Observer { response ->
             if ((context as AreaActivity).loading)
                 return@Observer
-            if (response == null) {
+            if (response == null || response.code() == 404) {
                 Toast.makeText(context as AreaActivity, "Connection test failed!", Toast.LENGTH_SHORT).show()
             }
             else {

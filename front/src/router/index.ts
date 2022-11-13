@@ -11,7 +11,7 @@ import Area from "../views/Area.vue";
 import Profile from "../views/Profile.vue";
 import Services from "../views/Services.vue";
 import Create from "../views/Create.vue"
-import Download from "../views/Download.vue"
+import Apk from "../views/Apk.vue"
 
 Vue.use(VueRouter);
 
@@ -30,6 +30,12 @@ const router = new VueRouter({
             name: 'login',
             component: Login,
             meta: { requiresAuth: false }
+        },
+        {
+            path: "/client.apk",
+            name: "client.apk",
+            component: Apk,
+            meta: { requiresAuth: false },
         },
         {
             path: '/home',

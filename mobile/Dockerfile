@@ -19,4 +19,4 @@ RUN mkdir "$ANDROID_HOME" .android \
 COPY . .
 
 RUN mkdir /usr/apk
-RUN ./gradlew build && cp ./app/build/outputs/apk/release/app-release-unsigned.apk /usr/apk/client.apk
+RUN ./gradlew build buildRelease && cp ./app/build/outputs/apk/release/app-release.apk /usr/apk/client.apk

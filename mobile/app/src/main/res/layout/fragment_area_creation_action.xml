@@ -38,6 +38,7 @@
             android:fontFamily="@font/courier_new_regular"
             android:gravity="center"
             android:textSize="17sp"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

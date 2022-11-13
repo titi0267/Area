@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="15dp"
+        android:textColor="@color/white"
         android:fontFamily="@font/avenir_lt_std_55_roman"
         app:layout_constraintBottom_toBottomOf="@id/oauth_service_logo"
         app:layout_constraintStart_toEndOf="@id/oauth_service_logo"
@@ -37,6 +38,10 @@
         app:layout_constraintBottom_toBottomOf="@id/oauth_service_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/oauth_service_logo"
-        tools:text="Connexion" />
+        app:layout_constraintBottom_toBottomOf="@id/oauth_service_logo"
+        app:backgroundTint="@color/white"
+        app:cornerRadius="25dp"
+        tools:text="Connexion"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

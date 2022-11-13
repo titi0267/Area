@@ -22,6 +22,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/avenir_lt_std_55_roman"
             android:text="@string/action_parameter"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/actionLogoEdit" />
 
@@ -42,6 +43,7 @@
             android:layout_marginStart="15dp"
             android:fontFamily="@font/avenir_lt_std_55_roman"
             android:textSize="16sp"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/actionLogoEdit"
             app:layout_constraintStart_toEndOf="@+id/actionLogoEdit"
             app:layout_constraintTop_toTopOf="@+id/actionLogoEdit"
@@ -52,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_lt_std_55_roman"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/actionServiceTextInItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/actionServiceTextInItem"
@@ -74,6 +77,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/actionParamInput"
+                android:textColor="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true" />
@@ -98,6 +102,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/avenir_lt_std_55_roman"
             android:text="@string/reaction_parameter"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reactionLogoEdit" />
 
@@ -118,6 +123,7 @@
             android:layout_marginStart="15dp"
             android:fontFamily="@font/avenir_lt_std_55_roman"
             android:textSize="16sp"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/reactionLogoEdit"
             app:layout_constraintStart_toEndOf="@+id/reactionLogoEdit"
             app:layout_constraintTop_toTopOf="@+id/reactionLogoEdit"
@@ -128,6 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_lt_std_55_roman"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/reactionServiceTextInItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/reactionServiceTextInItem"
@@ -152,6 +159,7 @@
                 android:id="@+id/reactionParamInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

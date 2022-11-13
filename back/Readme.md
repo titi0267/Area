@@ -17,6 +17,8 @@
   - [/middlewares](#middlewares)
   - [/schema](#schema)
 - [How to create a new Service](#how-to-create-a-new-service)
+- [How to create an action](#how-to-create-an-action)
+- [How to create a reaction](#how-to-create-a-reaction)
 
 ## Languages
 
@@ -365,7 +367,7 @@ instance.post(
 
 ### If your service does not require oauth
 
-6. Add service name at ServiceName type in src/types/areaServices/areaServices, the service logo in assets/types.ts and then add the service to src/constants/serviceList.ts with the following format:
+1. Add service name at ServiceName type in src/types/areaServices/areaServices, the service logo in assets/types.ts and then add the service to src/constants/serviceList.ts with the following format:
 
 ```ts
   id: 1,
@@ -375,4 +377,155 @@ instance.post(
   oauthName: null, // name of the oauth service
   actions: []
   reactions: []
+```
+## How to create an Action
+
+### Things to do if your service has no actions
+
+1. Create a folder with your serviceName if it doesn't exist
+
+2. Create a file named serviceName.action.ts
+
+3. Create a function in src/helpers/service.helpers.ts to get your oauth client or your service credentials. Here is an example with google:
+
+```ts
+onst getGoogleOauthClient = async (
+  userId: number,
+): Promise<OAuth2Client | null> => {
+  const refreshToken = await TokenService.getGoogleToken(userId); // get token from database
+
+  if (!refreshToken) return null;
+
+  const oAuth2Client = new google.auth.OAuth2(
+    ENV.googleClientId,
+    ENV.googleClientSecret,
+    ENV.googleRedirectUrl,
+  ); // configure google oauth client
+
+  oAuth2Client.setCredentials({ refresh_token: refreshToken }); // set token on google oauth client
+
+  return oAuth2Client;
+};
+```
+
+### Action creation
+
+1. Create a fonction prototyped as follow:
+
+```ts
+(area: Area) => Promise<string | null>;
+```
+
+2. Use the helper function you previously created or the one that already exist to get your credential if your service needs oauth
+
+3. Use your service API endpoint or client to get the information you want. If any information you get is invalid return null
+
+4. If it's the first time you pass in the function you have to set the value you want to compare with in futures action check. This can be done like this:
+
+```ts
+if (area.lastActionValue === null) {
+  await AreaService.updateAreaValues(area.id, value);
+  return null;
+}
+```
+
+5. You can define a params object which contains data available to be injected in the reaction paramater by a user
+   Here is a params object example:
+
+```ts
+const params = {
+  like: statistics.likeCount,
+  viewCount: statistics.viewCount,
+};
+```
+
+6. For all the other time you pass into this function you will have to check if the default value you've set has changed. Here is an example with params:
+
+```ts
+if (value > area.lastActionValue) {
+  await AreaService.updateAreaValues(area.id, value);
+  return ServiceHelper.injectParamInReaction<typeof params>(
+    area.reactionParam,
+    params,
+  );
+}
+```
+
+Here is an example without params:
+
+```ts
+if (value > area.lastActionValue) {
+  await AreaService.updateAreaValues(area.id, value);
+  return area.reactionParam;
+}
+```
+
+7. Finally, in the file src/constants/serviceList.ts add your action to actions array in your service in this format:
+
+```ts
+{
+  id: 1,
+    actionName: "New file in liked video", // Name of your action
+    actionParamName: "", // Param that your action can take
+    paramFormat: null, // if their is a format that your param have to match
+    description: "New file in your drive", // A short description of your action
+    fct: DriveAction.newLikedVideo, // The function of your action
+    availableInjectParams: ["like"], // params which can be injected in the reaction, if their is not it will be empty
+}
+```
+
+## How to create a Reaction
+
+### Things to do if your service has no reactions
+
+1. Create a folder with your serviceName if it doesn't exist
+
+2. Create a file named serviceName.reaction.ts
+
+3. Create a function in src/helpers/service.helpers.ts to get your oauth client or your service credentials. Here is an example with google:
+
+```ts
+onst getGoogleOauthClient = async (
+  userId: number,
+): Promise<OAuth2Client | null> => {
+  const refreshToken = await TokenService.getGoogleToken(userId); // get token from database
+
+  if (!refreshToken) return null;
+
+  const oAuth2Client = new google.auth.OAuth2(
+    ENV.googleClientId,
+    ENV.googleClientSecret,
+    ENV.googleRedirectUrl,
+  ); // configure google oauth client
+
+  oAuth2Client.setCredentials({ refresh_token: refreshToken }); // set token on google oauth client
+
+  return oAuth2Client;
+};
+```
+
+### Action creation
+
+1. Create a fonction prototyped as follow:
+
+```ts
+(reactionParam: string, userId: number) => Promise<void>;
+```
+
+2. Use the helper function you previously created or the one that already exist to get your credential if your service need oaut
+
+3. Use your service API endpoint or execute the reaction you want. If there is any problem with the data you get simply return.
+
+4. Finally, in the file src/constants/serviceList.ts add your reaction to reactions array in your service in this format:
+
+```ts
+{
+  id: 1,
+  reactionName: "Create an issue", // Reaction name
+  reactionParamName: "Issue infos (format: /owner/repo/issueTitle)", // Reaction param, format can be precised in it
+  paramFormat: FORMAT.githubIssueFormat, // Reaction format check regex, can be null if there isn't
+  fct: GithubReaction.createGithubIssue, // Reaction Function
+  description:
+    "Create an issue on a public repository or a private repository on which you belong",  // A short description of your reaction
+},
 ```

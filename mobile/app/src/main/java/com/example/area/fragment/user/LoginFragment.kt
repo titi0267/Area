@@ -21,10 +21,13 @@ import com.example.area.MainViewModelFactory
 import com.example.area.R
 import com.example.area.activity.*
 import com.example.area.fragment.area.OAuthLinkingFragment
+import com.example.area.model.ErrorResponse
 import com.example.area.model.LoginFields
 import com.example.area.model.Token
 import com.example.area.repository.Repository
 import com.example.area.utils.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -98,6 +101,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         MainActivity::class.java
                     )
                 )
+            }
+            else {
+                val error: ErrorResponse = Gson().fromJson((response.errorBody() ?: return@Observer).charStream(), (object : TypeToken<ErrorResponse>() {}.type)) ?: return@Observer
+                Toast.makeText(context as UserConnectionActivity, "Error: " + error.message, Toast.LENGTH_SHORT).show()
             }
         }
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]

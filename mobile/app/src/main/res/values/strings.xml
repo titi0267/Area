@@ -74,4 +74,6 @@
     <string name="navbar_services">Services</string>
     <string name="navbar_logout">Logout</string>
     <string name="user_activity_change_wifi_text">Settings</string>
+    <string name="reaction_parameter">Reaction parameter</string>
+    <string name="action_parameter">Action parameter</string>
 </resources>

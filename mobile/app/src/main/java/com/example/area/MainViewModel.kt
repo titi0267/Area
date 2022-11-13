@@ -30,6 +30,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     val aboutResponse: MutableLiveData<Response<About>?> = MutableLiveData()
     val listAREAResponse: MutableLiveData<Response<List<ActionReaction>>?> = MutableLiveData()
     val enableResponse: MutableLiveData<Response<ActionReaction>?> = MutableLiveData()
+    val editAreaResponse: MutableLiveData<Response<ActionReaction>?> = MutableLiveData()
     val deleteAreaResponse: MutableLiveData<Response<ActionReaction>?> = MutableLiveData()
 
     // Back calls
@@ -235,6 +236,28 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             finally {
                 (context).loading = false
                 enableResponse.removeObserver(observer)
+            }
+        }
+    }
+    fun putEditArea(auth: String, edit: EditActionReaction, context: Context, observer: Observer<Response<ActionReaction>?>) {
+        viewModelScope.launch {
+            editAreaResponse.value = null
+            (context as AreaActivity).loading = true
+            try {
+                val response = repository.putEditArea(auth, edit)
+                editAreaResponse.value = response
+            }
+            catch(e: SocketTimeoutException) {
+                Toast.makeText(context, "Error: Connection Timed Out\nThe cause might be a wrong IP/Port", Toast.LENGTH_LONG).show()
+                editAreaResponse.value = null
+            }
+            catch(e: ConnectException) {
+                Toast.makeText(context, "Error: Failed to connect\nThe cause might be a wrong IP/Port", Toast.LENGTH_SHORT).show()
+                editAreaResponse.value = null
+            }
+            finally {
+                context.loading = false
+                editAreaResponse.removeObserver(observer)
             }
         }
     }

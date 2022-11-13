@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/profile_navbar_services_item"
+        android:enabled="true"
+        android:icon="@drawable/add_link_48px"
+        android:title="@string/navbar_services" />
+
+    <item
+        android:id="@+id/profile_navbar_profile_item"
+        android:enabled="true"
+        android:icon="@drawable/person_48px"
+        android:title="@string/navbar_profile" />
+
+
+    <item
+        android:id="@+id/profile_navbar_logout_item"
+        android:enabled="true"
+        android:icon="@drawable/logout_48px"
+        android:title="@string/navbar_logout" />
+
+</menu>

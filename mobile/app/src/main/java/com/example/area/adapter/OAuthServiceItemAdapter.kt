@@ -2,7 +2,9 @@ package com.example.area.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -40,9 +43,12 @@ class OAuthServiceItemAdapter(private val context: Context, private val dataset:
         val adapterLayout = LayoutInflater.from(parent.context).inflate(R.layout.oauth_service_item, parent, false)
         val button: Button = adapterLayout.findViewById<Button>(R.id.oauth_service_button)
         val index = selectedItem
+        val drawable: GradientDrawable = (((AppCompatResources.getDrawable(context as AreaActivity, R.drawable.round_service_background) ?: return OAuthServiceViewHolder(adapterLayout)).constantState ?: return OAuthServiceViewHolder(adapterLayout)).newDrawable().mutate()) as GradientDrawable
 
         if (selectedItem == itemCount)
             selectedItem = 0
+        drawable.colors = intArrayOf(Color.parseColor(dataset[index].backgroundColor), Color.parseColor(dataset[index].backgroundColor))
+        adapterLayout.background = drawable
         adapterLayout.findViewById<ImageView>(R.id.oauth_service_logo).setImageDrawable(BitmapDrawable(context.resources, dataset[index].imageBitmap))
         adapterLayout.findViewById<MaterialTextView>(R.id.oauth_service_name).text = dataset[index].name
         if (dataset[index].connected) {

@@ -1,5 +1,6 @@
 <template>
     <div id="register">
+        <b-image src="https://images.unsplash.com/photo-1667925459217-e7b7a9797409?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"/>
         <section class="registerForm">
             <h3>Create your account</h3>
             <div class="names">
@@ -108,11 +109,11 @@ export default vue.extend({
         },
         /**
          * It's a function that check if the name is valide or not.
-         * @param {String} input - Text input
-         * @param {String} type - firstName or lastName
+         * @param {string} input - Text input
+         * @param {string} type - firstName or lastName
          * @data {Object} register
          */
-        checkNameInput(input: String, type: string): void {
+        checkNameInput(input: string, type: string): void {
             const name_regex = (/^[a-zA-Z]+$/)
             if (input == "") {
                 this.register[type].error = "Cannot be empty";
@@ -131,10 +132,10 @@ export default vue.extend({
         },
         /**
          * It's a function that check if the email is valide or not.
-         * @param {String} input - Text input
+         * @param {string} input - Text input
          * @data {Object} login
          */
-        checkEmail(input: String): void {
+        checkEmail(input: string): void {
             const email_regex = (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
             if (input == "") {
                 this.register.email.error = "Cannot be empty";
@@ -150,12 +151,12 @@ export default vue.extend({
         },
         /**
          * It's a function that check if the password is valide or not.
-         * @param {String} input - Text input
-         * @param {String} type - Password or confirmPassword
+         * @param {string} input - Text input
+         * @param {string} type - Password or confirmPassword
          * @data {Object} register
          */
-        checkPassword(input: String, type: any): void {
-            const password_regex = (/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*"'-]).{8,}$/)
+        checkPassword(input: string, type: string): void {
+            const password_regex = (/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*"'/~_.+:;=-]).{8,}$/)
             if (type == "password") {
                 if (!input.match(password_regex)) {
                     this.register[type].error = "Minimum requirement for password is : 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character"
@@ -213,6 +214,18 @@ export default vue.extend({
 <style scoped lang="scss">
 #register {
     display: flex;
+    height: 100vh;
+    width: 100vw;
+    :deep(figure) {
+        height: 100%;
+        width: 100%;
+        img {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-size: 100% 100%;
+        }
+    }
     .registerForm {
         background-color: white;
         min-width: 400px;

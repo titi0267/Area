@@ -2,11 +2,13 @@ package com.example.area.activity
 
 import android.os.Bundle
 import android.os.StrictMode
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.ListFragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.area.AREAApplication
@@ -51,7 +53,11 @@ class AreaActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navbar_profile_item -> {
-                    changeFragment(ProfileFragment(), "profile")
+                    val profileNavbarFragment = findViewById<FragmentContainerView>(R.id.profile_nav_fragment_container)
+                    if (profileNavbarFragment.visibility == View.VISIBLE)
+                        profileNavbarFragment.visibility = (View.GONE)
+                    else
+                        profileNavbarFragment.visibility = (View.VISIBLE)
                     true
                 }
                 else -> false
@@ -60,6 +66,9 @@ class AreaActivity : AppCompatActivity() {
     }
 
     fun changeFragment(fragment: Fragment, tag: String?) {
+        val profileNavbarFragment = findViewById<FragmentContainerView>(R.id.profile_nav_fragment_container)
+
+        profileNavbarFragment.visibility = (View.GONE)
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             replace(R.id.area_fragment_container, fragment, tag)
@@ -68,11 +77,18 @@ class AreaActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        val profileNavbarFragment = findViewById<FragmentContainerView>(R.id.profile_nav_fragment_container)
         val fragment = supportFragmentManager.findFragmentByTag("area_list")
+
+        profileNavbarFragment.visibility = (View.GONE)
         if (fragment != null && fragment.isVisible)
             moveTaskToBack(true)
         else
             supportFragmentManager.popBackStack()
+    }
+
+    fun popAllBackStack() {
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
     private fun setAbout() {

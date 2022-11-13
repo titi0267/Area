@@ -24,6 +24,7 @@
     </RelativeLayout>
 
     <TextView
+        android:layout_marginTop="25dp"
         android:id="@+id/titleOnNoArea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,6 +32,6 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="You currently have no\naction - reaction" />
 </androidx.constraintlayout.widget.ConstraintLayout>

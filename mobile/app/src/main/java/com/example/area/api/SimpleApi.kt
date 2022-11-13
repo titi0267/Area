@@ -37,6 +37,9 @@ interface SimpleApi {
     @PUT("/areas")
     suspend fun putEnableDisable(@Header("Authorization") auth: String, @Body put: EnableDisable): Response<ActionReaction>
 
+    @PUT("/areas")
+    suspend fun putEditArea(@Header("Authorization") auth: String, @Body put: EditActionReaction): Response<ActionReaction>
+
     @DELETE("/areas/{areaId}")
     suspend fun deleteArea(@Header("Authorization") auth: String, @Path("areaId") areaId: Int) : Response<ActionReaction>
 

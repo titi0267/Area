@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/connectivity_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connectivity_title"
+        android:textSize="34sp"
+        android:layout_marginTop="25dp"
+        app:fontFamily="@font/bebas_neue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/connectivity_ip_field_layout"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:hint="@string/register_ip_field_hint"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:errorEnabled="true"
+        app:helperText="@string/register_ip_helper_text"
+        app:helperTextEnabled="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/connectivity_title">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/connectivity_ip_field_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789."
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/connectivity_port_field_layout"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/register_port_field_hint"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:helperText="@string/register_port_helper_text"
+        app:helperTextEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/connectivity_ip_field_layout"
+        app:layout_constraintTop_toTopOf="@id/connectivity_ip_field_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/connectivity_port_field_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/connectivity_test_connection_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connectivity_test_connection"
+        android:textSize="18sp"
+        android:fontFamily="@font/avenir_lt_std_55_roman"
+        android:paddingBottom="16dp"
+        style="@style/Widget.Material3.Button.TextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/connectivity_ip_field_layout" />
+
+    <Button
+        android:id="@+id/connectivity_apply_url_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connectivity_apply"
+        android:textSize="18sp"
+        android:fontFamily="@font/avenir_lt_std_55_roman"
+        style="@style/Widget.Material3.Button.TextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/connectivity_test_connection_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

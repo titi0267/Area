@@ -145,17 +145,9 @@ const checkNewVideoLiked = async (area: Area): Promise<string | null> => {
 
   if (!playlist.pageInfo?.totalResults || !playlist.items) return null;
 
-  if (area.lastActionValue === null) {
-    await AreaService.updateAreaValues(
-      area.id,
-      String(playlist.pageInfo.totalResults),
-    );
-    return null;
-  }
-
   const lastVideo = playlist.items[0];
-
   if (
+    area.lastActionValue === null ||
     !lastVideo.snippet ||
     !lastVideo.snippet.videoOwnerChannelTitle ||
     !lastVideo.snippet.title

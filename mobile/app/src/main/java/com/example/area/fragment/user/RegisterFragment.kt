@@ -15,14 +15,18 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.area.MainViewModel
 import com.example.area.MainViewModelFactory
 import com.example.area.R
+import com.example.area.activity.AreaActivity
 import com.example.area.activity.MainActivity
 import com.example.area.activity.UserConnectionActivity
+import com.example.area.model.ErrorResponse
 import com.example.area.model.RegisterFields
 import com.example.area.model.Token
 import com.example.area.repository.Repository
 import com.example.area.utils.*
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Response
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
@@ -96,7 +100,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 )
             }
             else {
-                Toast.makeText(context as UserConnectionActivity, "Email already taken!", Toast.LENGTH_SHORT).show()
+                val error: ErrorResponse = Gson().fromJson((response.errorBody() ?: return@Observer).charStream(), (object : TypeToken<ErrorResponse>() {}.type)) ?: return@Observer
+                Toast.makeText(context as UserConnectionActivity, "Error: " + error.message, Toast.LENGTH_SHORT).show()
             }
         }
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]

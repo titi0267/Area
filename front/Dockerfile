@@ -11,5 +11,5 @@ COPY . .
 RUN npm run build
 
 EXPOSE 8081
-RUN mkdir ./dist/apk
+RUN mkdir /vue_app/dist/apk
 CMD ["npx", "serve", "-s", "-l", "tcp://0.0.0.0:8081", "/vue_app/dist"]

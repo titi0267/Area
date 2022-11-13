@@ -22,7 +22,7 @@ services:
     volumes:
       - ./front/src:/usr/vue_app/
       - /usr/vue_app/node_modules
-      - apk:/usr/vue_app/dist/apk
+      - apk:/vue_app/dist/apk
     ports:
       - "8081:8081"
     depends_on:

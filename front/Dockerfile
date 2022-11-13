@@ -8,6 +8,8 @@ RUN npm install
 RUN npm install @fortawesome/fontawesome-svg-core
 
 COPY . .
+ENV VUE_APP_URL=localhost
+ENV VUE_APP_PORT=8080
 RUN npm run build
 
 EXPOSE 8081

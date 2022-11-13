@@ -1,6 +1,6 @@
 <template>
     <div id="Home">
-        <div class="no-area" v-if="!areas.length">
+        <div class="no-area" v-if="!areas.length" :class="{ 'darkMode' : $store.getters.darkMode }">
             <p>You currently have no action - reaction</p>
         </div>
         <div v-else v-for="area in areas" :key="area.actionServiceId.toString() + area.actionParam + area.reactionId.toString() + area.actionId.toString()">
@@ -111,6 +111,9 @@ export default vue.extend({
     font-family: 'Courier New', Courier, monospace;
     .no-area {
         margin-top: 15px;
+        &.darkMode {
+            color: white;
+        }
     }
     .area-list {
         border-radius: 10px;

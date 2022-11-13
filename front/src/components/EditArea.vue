@@ -1,8 +1,11 @@
 <template>
     <div id="EditArea" :style="{ 'background' : `linear-gradient(to right, ${action ? action.backgroundColor : ''}, ${reaction ? reaction.backgroundColor : ''})` }">
-        <div class="action-param">
-            <p>Action parameter</p>
-            <b-input :value="area.actionParam" @input="debounceUpdate($event, 'action')"></b-input>
+        <div class="action">
+            <div class="action-param" v-if="action && getArea('action')['actionParamName'] !== ''">
+                <p>Action parameter</p>
+                <b-input ref="action" :autofocus="true" :value="area.actionParam" @input="debounceUpdate($event, 'action')"></b-input>
+            </div>
+            <p v-else> No action parameter </p>
         </div>
         <div class="manage">
             <div class="edit">
@@ -10,9 +13,12 @@
             </div>
             <b-switch size="is-medium" passive-type="is-danger" type="is-success" v-model="area.enabled" @input="postArea()"></b-switch>
         </div>
-        <div class="reaction-param">
-            <p>Reaction parameter</p>
-            <b-input :value="area.reactionParam" @input="debounceUpdate($event, 'reaction')"></b-input>
+        <div class="reaction">
+            <div class="reaction-param" v-if="reaction && getArea('reaction')['reactionParamName'] !== ''">
+                <p>Reaction parameter</p>
+                <b-input ref="reaction" :value="area.reactionParam" @input="debounceUpdate($event, 'reaction')"></b-input>
+            </div>
+            <p v-else> No reaction parameter </p>
         </div>
     </div>
 </template>
@@ -28,18 +34,27 @@ export default vue.extend({
         reaction: Object, /** Current reaction */
     },
     methods: {
+        getArea(type: string) {
+            let test =this[type][type + 's'].find(actrea => actrea.id === this.area[type + 'Id'])
+            return test;
+        },
         /**
          * It's a function that delete area in back-end server.
          * @data {Object} area
          * @async
          */
         async deleteArea(): Promise<void> {
-            await this.$axios.delete("/areas/" + this.area.id, {
-                headers: {
-                    Authorization: this.$store.getters.userToken || "noToken",
-                }
-            })
-            this.$emit('deleted')
+            try {
+                await this.$axios.delete("/areas/" + this.area.id, {
+                    headers: {
+                        Authorization: this.$store.getters.userToken || "noToken",
+                    }
+                })
+                this.notification('Your area has been deleted', 'is-success');
+                this.$emit('deleted')
+            } catch {
+                this.notification('Failed to delete your area', 'is-danger');
+            }
         },
         /**
          * It's a function that wait 400ms before post the new values in back-end server.
@@ -48,6 +63,7 @@ export default vue.extend({
         debounceUpdate: _.debounce(function(input, type: string): void {
             this.area[type + 'Param'] = input;
             this.postArea()
+            this.$refs[type].focus()
         }, 400),
         /**
          * It's a function that post the new values in back-end server.
@@ -87,26 +103,47 @@ export default vue.extend({
     height: 110px;
     padding: 10px 30px;
     border-radius: 20px;
-    .action-param,
-    .reaction-param {
+    .action,
+    .reaction {
+        width: 85%;
         color: white;
-        font-family: "Avenir Roman";
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
         text-align: start;
-        width: 100%;
-        :deep(.control) {
-        width: 100%;
-            input {
-                width: 80%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        >p {
+            text-align: center;
+            width: 100%;
+            font-family: "Avenir Roman";
+            font-size: 20px;
+        }
+        .action-param,
+        .reaction-param {
+            color: white;
+            font-family: "Avenir Roman";
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            text-align: start;
+            width: 100%;
+            :deep(.control) {
+                width: 100%;
+                input {
+                    width: 80%;
+                }
             }
         }
     }
-    .reaction-param {
-        align-items: flex-end;
-        text-align: end;
+    .reaction {
+        .reaction-param {
+            text-align: end;
+            p {
+                text-align: end;
+                width: 100%;
+            }
+        }
     }
     .manage {
         display: flex;
@@ -120,6 +157,7 @@ export default vue.extend({
             display: flex;
             align-items: center;
             text-transform: uppercase;
+            color: #2c3e50;
             :deep(span) {
                 padding: 20px;
                 box-shadow: 0 0 15px 1px #000000a1;

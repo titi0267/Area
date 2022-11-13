@@ -49,8 +49,8 @@ describe("Test get all enabled area service", () => {
         users[0].id,
         areasBefore[0].id,
         false,
-        null,
-        null,
+        undefined,
+        undefined,
       );
       const areasAfter = await AreaService.getEnabledAreas();
 
@@ -319,9 +319,9 @@ describe("Test edit area", () => {
       const areaAfter = await AreaService.editArea(
         users[0].id,
         areaBefore.id,
-        null,
-        null,
-        null,
+        undefined,
+        undefined,
+        undefined,
       );
 
       expect(areaBefore.enabled).toBeTruthy();
@@ -343,7 +343,7 @@ describe("Test edit area", () => {
   describe("Test invalid cases", () => {
     test("Edit area with invalid userId and areaId", async () => {
       try {
-        await AreaService.editArea(45, 45, null, null, null);
+        await AreaService.editArea(45, 45, undefined, undefined, undefined);
       } catch (e) {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
       }
@@ -365,7 +365,13 @@ describe("Test edit area", () => {
       );
 
       try {
-        await AreaService.editArea(users[1].id, area.id, false, null, null);
+        await AreaService.editArea(
+          users[1].id,
+          area.id,
+          false,
+          undefined,
+          undefined,
+        );
       } catch (e) {
         expect(e.status).toBe(httpStatus.UNAUTHORIZED);
         await AreaService.removeAreaById(area.id);
@@ -389,7 +395,13 @@ describe("Test edit area", () => {
       );
 
       try {
-        await AreaService.editArea(users[0].id, area.id, null, "lol", null);
+        await AreaService.editArea(
+          users[0].id,
+          area.id,
+          undefined,
+          "lol",
+          undefined,
+        );
       } catch (e) {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
         await AreaService.removeAreaById(area.id);
@@ -412,7 +424,13 @@ describe("Test edit area", () => {
       );
 
       try {
-        await AreaService.editArea(users[0].id, area.id, null, null, "test");
+        await AreaService.editArea(
+          users[0].id,
+          area.id,
+          undefined,
+          undefined,
+          "test",
+        );
       } catch (e) {
         expect(e.status).toBe(httpStatus.BAD_REQUEST);
         await AreaService.removeAreaById(area.id);

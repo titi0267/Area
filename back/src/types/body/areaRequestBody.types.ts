@@ -9,7 +9,7 @@ export interface AreaBody {
 
 export interface EditAreaBody {
   areaId: number;
-  enabled: boolean | null;
-  actionParam: string | null;
-  reactionParam: string | null;
+  enabled?: boolean;
+  actionParam?: string;
+  reactionParam?: string;
 }

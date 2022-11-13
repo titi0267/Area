@@ -38,7 +38,7 @@ export default vue.extend({
          * @param {Object} service - Current service to delete
          * @data {Array} user
          */
-        deleteServiceLink(service): void {
+        deleteServiceLink(service: Service): void {
             try {
                 let toRemove: Object;
                 if (service.oauthName == 'discord') {
@@ -53,9 +53,9 @@ export default vue.extend({
                 }
                 this.$axios.put('/tokens/delete', toRemove);
                 this.$set(this.user.tokensTable, service.oauthName + 'Token', null);
-                this.notification('Your link to ' + service.name + ' has been deleted', 'is-success')
+                this.notification('Your link to ' + service.serviceName + ' has been deleted', 'is-success')
             } catch {
-                this.notification('Failed to unlink your ' + service.name + ' account', 'is-success')
+                this.notification('Failed to unlink your ' + service.serviceName + ' account', 'is-success')
             }
         },
         /**
@@ -75,7 +75,7 @@ export default vue.extend({
                     this.loading = false;
                     return;
                 }
-                const code: String = this.$route.query.code;
+                const code: string = this.$route.query.code;
                 let oauthParam: Object;
                 if (code == null || code == undefined) {
                     localStorage.removeItem('oauth');

@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/leftLogo"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
         android:contentDescription="@string/left_logo_desc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,10 +19,10 @@
 
     <ImageView
         android:id="@+id/rightLogo"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginBottom="10dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="15dp"
         android:contentDescription="@string/right_logo_desc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,23 +52,23 @@
 
     <TextView
         android:id="@+id/actionNameInItemList"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
+        android:layout_marginEnd="15dp"
         android:fontFamily="@font/avenir_lt_std_55_roman"
         app:layout_constraintBottom_toBottomOf="@+id/actionServiceNameInItemList"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/actionServiceNameInItemList"
         tools:text="New Like on a video" />
 
     <TextView
         android:id="@+id/reactionNameInItemList"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
+        android:layout_marginEnd="15dp"
         android:fontFamily="@font/avenir_lt_std_55_roman"
         app:layout_constraintBottom_toBottomOf="@+id/reactionServiceNameInItemList"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/reactionServiceNameInItemList"
         tools:text="Post a tweet" />
 

@@ -29,9 +29,9 @@ const editAreaBodySchema: JSONSchemaType<EditAreaBody> = {
   type: "object",
   properties: {
     areaId: { type: "number" },
-    enabled: { type: "boolean" },
-    actionParam: { type: "string" },
-    reactionParam: { type: "string" },
+    enabled: { type: "boolean", nullable: true },
+    actionParam: { type: "string", nullable: true },
+    reactionParam: { type: "string", nullable: true },
   },
   required: ["areaId"],
   additionalProperties: false,

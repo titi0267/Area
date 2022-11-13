@@ -2,13 +2,13 @@
 /** Area interface */
 
 export interface Area {
-    state: Number,
-    actionServiceId: Number,
-    actionId: Number,
-    actionParam: String,
-    reactionServiceId: Number,
-    reactionId: Number,
-    reactionParam: String,
+    state: number,
+    actionServiceId: number,
+    actionId: number,
+    actionParam: string,
+    reactionServiceId: number,
+    reactionId: number,
+    reactionParam: string,
 }
 
 /** About.json interface */
@@ -18,20 +18,27 @@ export interface Service {
     serviceName: ServiceName;
     imageUrl: string;
     backgroundColor: string;
+    oauthName: string,
     actions: Action[];
     reactions: Reaction[];
 }
 
-interface Action {
+export interface Action {
     id: number;
     actionName: string;
     actionParamName: string;
+    availableInjectParams: string[];
+    description: string;
+    name: string;
 }
 
-interface Reaction {
+export interface Reaction {
     id: number;
     reactionName: string;
     reactionParamName: string;
+    availableInjectParams: string[];
+    description: string;
+    name: string;
 }
 
 export type ServiceName =
@@ -44,15 +51,15 @@ export type ServiceName =
 /** Area interface */
 
 export interface Areas {
-    id: Number;
-    userId: Number;
-    actionServiceId: Number;
-    actionId: Number;
-    actionParam: String;
-    lastActionFetch: String;
-    reactionServiceId: Number;
-    reactionId: Number;
-    reactionParam: String;
+    id: number;
+    userId: number;
+    actionServiceId: number;
+    actionId: number;
+    actionParam: string;
+    lastActionFetch: string;
+    reactionServiceId: number;
+    reactionId: number;
+    reactionParam: string;
 }
 
 /** Authentification interfaces */
@@ -71,21 +78,29 @@ export interface Register {
 }
 
 interface Field {
-    value: String;
-    error: String;
+    value: string;
+    error: string;
     valide: Boolean;
 }
 
-/** Token interface */
+/** User interface */
 
 export interface Token {
     discordToken: string | undefined;
     discordGuildId: string | undefined;
-    twitterToken: string | undefined;
     githubToken: string | undefined;
     googleToken: string | undefined;
-    trelloToken: string | undefined;
     spotifyToken: string | undefined;
     userId: number;
     id: number;
+}
+
+export interface User {
+    email: string,
+    firstName: string,
+    id: number,
+    lastName: string,
+    password: string,
+    role: string,
+    tokensTable: Token,
 }

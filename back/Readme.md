@@ -18,6 +18,7 @@
   - [/schema](#schema)
 - [How to create a new Service](#how-to-create-a-new-service)
 - [How to create an action](#how-to-create-an-action)
+- [How to create a reaction](#how-to-create-a-reaction)
 
 ## Languages
 
@@ -364,9 +365,9 @@ instance.post(
   reactions: []
 ```
 
-### If your does not require oauth
+### If your service does not require oauth
 
-6. Add service name at ServiceName type in src/types/areaServices/areaServices, the service logo in assets/types.ts and then add the service to src/constants/serviceList.ts with the following format:
+1. Add service name at ServiceName type in src/types/areaServices/areaServices, the service logo in assets/types.ts and then add the service to src/constants/serviceList.ts with the following format:
 
 ```ts
   id: 1,
@@ -377,7 +378,6 @@ instance.post(
   actions: []
   reactions: []
 ```
-
 ## How to create an Action
 
 ### Things to do if your service has no actions
@@ -474,7 +474,7 @@ if (value > area.lastActionValue) {
 }
 ```
 
-## How to create an Reaction
+## How to create a Reaction
 
 ### Things to do if your service has no reactions
 

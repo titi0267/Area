@@ -19,10 +19,10 @@ const checkNewFollowingUser = async (area: Area): Promise<string | null> => {
 
   const lastFollowingUser = followingUser[followingUser.length - 1];
 
-  if (!lastFollowingUser.name) return null;
+  if (!lastFollowingUser.login) return null;
 
   const params = {
-    lastFollowingUserName: lastFollowingUser.name,
+    lastFollowingUserName: lastFollowingUser.login,
   };
 
   if (parseInt(area.lastActionValue) < followingUser.length) {
@@ -46,9 +46,7 @@ const newIssue = async (area: Area): Promise<string | null> => {
     await githubClient.rest.issues.list({ filter: "all", state: "open" })
   ).data;
 
-  if (!issues[0] || !issues[0].repository) return null;
-
-  if (area.lastActionValue === null) {
+  if (area.lastActionValue === null || !issues[0] || !issues[0].repository) {
     await AreaService.updateAreaValues(area.id, "");
     return null;
   }
@@ -88,16 +86,14 @@ const newPullRequestOnRepository = async (
     })
   ).data;
 
-  if (!pulls[0] || !pulls[0].milestone?.creator?.login) return null;
-
-  if (area.lastActionValue === null) {
+  if (area.lastActionValue === null || !pulls[0] || !pulls[0].user?.login) {
     await AreaService.updateAreaValues(area.id, "");
     return null;
   }
 
   const params = {
     title: pulls[0].title,
-    creator: pulls[0].milestone.creator.login,
+    creator: pulls[0].user?.login,
     body: pulls[0].body || "",
   };
 

@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/backFromReactionServiceCreationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/perfect_gray"
-        android:text="@string/back_button"
-        android:textColor="#000000"
-        app:cornerRadius="100dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <FrameLayout
-        android:layout_width="350dp"
-        android:layout_height="500dp"
+        android:layout_width="wrap_content"
+        android:layout_height="515dp"
         android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,26 +18,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
-    <Button
-        android:id="@+id/nextFromReactionServiceCreation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/perfect_gray"
-        android:text="@string/next_button"
-        android:textColor="@color/black"
-        app:cornerRadius="100sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <android.widget.SearchView
         android:id="@+id/searchReactionService"
         android:layout_width="300dp"
         android:layout_height="23dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
+        android:queryHint="Search your service here"
+        app:theme="@style/AppSearchView"
+        app:defaultQueryHint="Search your service here"
+        android:iconifiedByDefault="false"
+        app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backFromReactionServiceCreationButton" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/courier_new_regular"
+        android:text="@string/select_reaction_service_field"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

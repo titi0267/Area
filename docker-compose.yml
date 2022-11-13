@@ -15,7 +15,7 @@ services:
       - db
     env_file:
       - ./docker.env
-  front:
+  client_web:
     build: ./front
     env_file:
       - ./docker.env
@@ -26,3 +26,5 @@ services:
       - "8081:8081"
     depends_on:
       - back
+  client_mobile:
+    build: ./mobile

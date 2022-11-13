@@ -89,6 +89,15 @@ $link-focus-border: $primary;
     }
 }
 
+.field {
+    p {
+        &.is-danger {
+            position: relative;
+            text-align: start;
+        }
+    }
+}
+
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";

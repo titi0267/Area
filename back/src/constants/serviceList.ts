@@ -96,17 +96,17 @@ export const SERVICES: Service[] = [
     actions: [
       {
         id: 1,
-        actionName: "Skip to next song",
-        actionParamName: "Skip song",
+        actionName: "Song changed",
+        actionParamName: "",
         paramFormat: null,
-        description: "You skipped a song",
-        fct: SpotifyAction.checkMusicSkip,
+        description: "You passed to the next song",
+        fct: SpotifyAction.checkMusicChanged,
         availableInjectParams: ["songName"],
       },
       {
         id: 2,
         actionName: "New liked song",
-        actionParamName: "Liked track",
+        actionParamName: "",
         paramFormat: null,
         description: "You liked a new song",
         fct: SpotifyAction.checkIsMusicLiked,
@@ -115,7 +115,7 @@ export const SERVICES: Service[] = [
       {
         id: 3,
         actionName: "New track added to a playlist",
-        actionParamName: "Playlist name to add the track",
+        actionParamName: "Playlist name",
         paramFormat: null,
         description: "You added a ne song to a specific playlist",
         fct: SpotifyAction.addTrackToPlaylist,
@@ -137,8 +137,8 @@ export const SERVICES: Service[] = [
         id: 2,
         reactionName: "Update your volume",
         reactionParamName: "Number to set volume to",
-        paramFormat: null,
-        description: "Change the volume of your device",
+        paramFormat: FORMAT.volumeFormat,
+        description: "Change the volume of spotify (not available on smartphones)",
         fct: SpotifyReaction.updateVolume,
       },
       {
@@ -295,7 +295,7 @@ export const SERVICES: Service[] = [
     serviceName: "Drive",
     backgroundColor: "#FFBA00",
     imageUrl: "assets/drive.png",
-    oauthName: null,
+    oauthName: "google",
     actions: [
       {
         id: 1,

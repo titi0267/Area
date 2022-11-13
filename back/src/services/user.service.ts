@@ -8,17 +8,35 @@ import ClientError from "../error";
 import { Token, UserWithTokens } from "../types/global.types";
 import ENV from "../env";
 import { TokenService } from ".";
+import { google } from "googleapis";
 
 const prisma = new PrismaClient();
 
-const getAllUsers = async (): Promise<User[]> => {
-  return await prisma.user.findMany();
+const getAllUsers = async (): Promise<Omit<User, "password">[]> => {
+  return await prisma.user.findMany({
+    select: {
+      email: true,
+      id: true,
+      password: false,
+      firstName: true,
+      lastName: true,
+      role: true,
+    },
+  });
 };
 
 const getOneUser = async (userId: number): Promise<UserWithTokens> => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    include: { tokensTable: true },
+    select: {
+      email: true,
+      id: true,
+      password: false,
+      firstName: true,
+      lastName: true,
+      role: true,
+      tokensTable: true,
+    },
   });
 
   if (!user) {
@@ -79,7 +97,7 @@ const connectOauthUser = async (
   id: string | null,
   googleToken: string | null,
 ): Promise<Token> => {
-  if (!firstName || !lastName || !email || !id || !googleToken) {
+  if (!firstName || !email || !id || !googleToken) {
     throw new ClientError({
       name: "Invalid Credential",
       message: "Invalid google account",
@@ -98,7 +116,7 @@ const connectOauthUser = async (
     data: {
       email,
       firstName,
-      lastName,
+      lastName: lastName || "",
       password: hashedPassword,
       tokensTable: { create: {} },
     },

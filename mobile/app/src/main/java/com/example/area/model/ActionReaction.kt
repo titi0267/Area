@@ -10,5 +10,6 @@ data class ActionReaction(
     val lastActionValue: String?,
     val reactionServiceId: Int,
     val reactionId: Int,
-    val reactionParam: String
+    val reactionParam: String,
+    val enabled: Boolean
 )

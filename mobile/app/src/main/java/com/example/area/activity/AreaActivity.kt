@@ -40,8 +40,7 @@ class AreaActivity : AppCompatActivity() {
         setContentView(R.layout.activity_area)
         val navbar = findViewById<BottomNavigationView>(R.id.area_bottom_navbar) ?: return
         navbar.setOnItemSelectedListener { item ->
-            val fragment = supportFragmentManager.findFragmentByTag("loading_fragment")
-            if (fragment != null && fragment.isVisible)
+            if (!(application as AREAApplication).inApp)
                 return@setOnItemSelectedListener(false)
             when (item.itemId) {
                 R.id.navbar_home_item -> {

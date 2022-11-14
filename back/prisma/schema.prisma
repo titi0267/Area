@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  password    String
+  firstName   String
+  lastName    String
+  role        Role      @default(USER)
+  area        Area[]
+  tokensTable TokensTable?
+}
+
+model TokensTable {
+  id                Int           @id @default(autoincrement())
+  githubToken       String?
+  googleToken      String?
+  discordGuildId    String?
+  discordToken      String?
+  spotifyToken      String?
+  user              User          @relation(references: [id], fields: [userId])
+  userId            Int           @unique
+}
+
+model Area {
+    id                  Int             @id @default(autoincrement())
+    actionServiceId     Int
+    actionId            Int
+    actionParam         String
+    lastActionFetch     DateTime        @default(now())
+    lastActionValue     String?
+    reactionServiceId   Int
+    reactionId          Int
+    reactionParam       String
+    enabled            Boolean          @default(true)
+    user                User            @relation(fields: [userId], references: [id])
+    userId              Int
+}

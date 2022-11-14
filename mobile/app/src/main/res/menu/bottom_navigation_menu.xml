@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navbar_home_item"
+        android:enabled="true"
+        android:icon="@drawable/home_48px"
+        android:title="@string/navbar_home" />
+
+    <item
+        android:id="@+id/navbar_creation_item"
+        android:enabled="true"
+        android:icon="@drawable/add_circle_48px"
+        android:title="@string/navbar_creation" />
+
+    <item
+        android:id="@+id/navbar_profile_item"
+        android:enabled="true"
+        android:icon="@drawable/person_48px"
+        android:title="@string/navbar_profile" />
+</menu>

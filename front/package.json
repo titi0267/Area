@@ -1,0 +1,35 @@
+{
+  "name": "area",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --port 8081",
+    "build": "vue-cli-service build --port 8081",
+    "watch:client": "vue-cli-service build --watch --port 8081"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@fortawesome/vue-fontawesome": "^2.0.8",
+    "axios": "^0.27.2",
+    "buefy": "^0.9.22",
+    "fs": "^0.0.1-security",
+    "lodash": "^4.17.21",
+    "vue": "^2.6.14",
+    "vue-property-decorator": "^9.1.2",
+    "vue-router": "^3.5.1",
+    "vue-router-multiguard": "^1.0.3",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.8.3",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-typescript": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "sass": "^1.32.7",
+    "sass-loader": "^12.0.0",
+    "typescript": "~4.5.5",
+    "vue-template-compiler": "^2.6.14"
+  }
+}

@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  db:
+    image: mariadb:10
+    restart: always
+    env_file:
+      - ./docker.env
+    ports:
+      - "33061:3306"
+  server:
+    build: ./back
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    env_file:
+      - ./docker.env
+  client_web:
+    build: ./front
+    env_file:
+      - ./docker.env
+    volumes:
+      - ./front/src:/usr/vue_app/
+      - /usr/vue_app/node_modules
+      - apk:/vue_app/dist/apk
+    ports:
+      - "8081:8081"
+    depends_on:
+      - server
+      - client_mobile
+  client_mobile:
+    build: ./mobile
+    volumes:
+      - apk:/usr/apk
+
+volumes:
+  apk:

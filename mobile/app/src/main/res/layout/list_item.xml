@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/item_title"
+    android:layout_width="match_parent"
+    android:layout_height="130dp">
+
+    <ImageView
+        android:id="@+id/leftLogo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:contentDescription="@string/left_logo_desc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/free_youtube_logo_icon_2431_thumb" />
+
+    <ImageView
+        android:id="@+id/rightLogo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="15dp"
+        android:contentDescription="@string/right_logo_desc"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@drawable/_968823" />
+
+    <TextView
+        android:id="@+id/actionServiceNameInItemList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/avenir_lt_std_55_roman"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/leftLogo"
+        app:layout_constraintStart_toEndOf="@+id/leftLogo"
+        app:layout_constraintTop_toTopOf="@+id/leftLogo"
+        tools:text="Youtube" />
+
+    <TextView
+        android:id="@+id/reactionServiceNameInItemList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/avenir_lt_std_55_roman"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/rightLogo"
+        app:layout_constraintStart_toEndOf="@+id/rightLogo"
+        app:layout_constraintTop_toTopOf="@+id/rightLogo"
+        tools:text="Twitter" />
+
+    <TextView
+        android:id="@+id/actionNameInItemList"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/avenir_lt_std_55_roman"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/actionServiceNameInItemList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/actionServiceNameInItemList"
+        tools:text="New Like on a video" />
+
+    <TextView
+        android:id="@+id/reactionNameInItemList"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/avenir_lt_std_55_roman"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/reactionServiceNameInItemList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/reactionServiceNameInItemList"
+        tools:text="Post a tweet" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

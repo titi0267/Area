@@ -10,7 +10,6 @@ It manages all the pages and interactive elements linked to this project.
 * [Folders, Components & Files](#folders-components--files)
 * [General Information](#general-information)
     * [LocalStorage](#localstorage)
-    * [Unit tests](#unit-tests)
 * [Vue project](#vue-project)
     * [Axios](#axios)
     * [VueX](#vuex)
@@ -82,10 +81,6 @@ Here is a list of data saved
 | **dark-mode** | dark mode actif | `boolean` |
 | **google-oauth** | login with google oauth | `boolean` |
 | **oauth** | current oauth service | `string` |
-
-## Unit tests
-The unit tests allow you to test each Vue file from the project.
-- `npm run test:unit` Command to run the unit tests
 
 # Vue project
 

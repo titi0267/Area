@@ -23,7 +23,6 @@ It manages all the pages and interactive elements linked to this project.
 [![Languages](https://skillicons.dev/icons?i=ts)](https://www.typescriptlang.org/)
 [![Languages](https://skillicons.dev/icons?i=html)](https://developer.mozilla.org/fr/docs/Web/HTML)
 [![Languages](https://skillicons.dev/icons?i=scss)](https://sass-lang.com/)
-[![Languages](https://skillicons.dev/icons?i=jest)](https://jestjs.io/en/)
 
 ## Installation
 - `npm install` Installation of dependencies.

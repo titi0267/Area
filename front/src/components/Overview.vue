@@ -117,6 +117,8 @@ export default vue.extend({
     .then {
         font-size: 25px;
         margin-bottom: 150px;
+        top: 120px;
+        position: relative;
     }
     .action,
     .reaction {

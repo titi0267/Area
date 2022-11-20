@@ -26,12 +26,6 @@ export default (
   _opts: FastifyPluginOptions,
   done: FastifyPluginDoneFunction,
 ): void => {
-  instance.get("/", async (req: FastifyRequest, res: FastifyReply) => {
-    const users = await UserService.getAllUsers();
-
-    res.status(httpStatus.OK).send(users);
-  });
-
   instance.get(
     "/me",
     { onRequest: [authentificationMiddleware()] },

@@ -43,7 +43,7 @@ In order to use AREA, you must have Docker Compose installed on your computer ([
       1. Extract your EnvInjector.zip at the root of the repository.
       2. Run the following command:
          ```bash
-         cd env_injector && sudo chmod 777 envInjector.sh && ./envInjector.sh
+         cd EnvInjector && sudo chmod 777 envInjector.sh && ./envInjector.sh
          ```
       3. Proceed to the next step.
 

@@ -34,7 +34,7 @@ In order to use AREA, you must have Docker Compose installed on your computer ([
 
     Run the following command:
     ```bash
-    git clone git@github.com:EpitechPromo2025/B-DEV-500-STG-5-1-area-mathieu.brujan.git
+    git clone https://github.com/titi0267/Area.git
     ```
 
 2. Add your docker.env, key.properties and area-release-key.jks to the project.
